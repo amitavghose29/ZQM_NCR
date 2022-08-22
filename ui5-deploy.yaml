@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
+
+specVersion: "2.5"
+metadata:
+  name: com.airbus.ZQMNCR.zqmncr
+type: application
+builder:
+  resources:
+    excludes:
+      - /test/**
+      - /localService/**
+  customTasks:
+    - name: deploy-to-abap
+      afterTask: generateCachebusterInfo
+      configuration:
+        target:
+          destination: RTM_100
+          url: http://hclsdrtm.hcldigilabs.com:8000
+        app:
+          name: Z_QM_NCR
+          description: QM NCR Application
+          package: Z_AB_FIORI
+          transport: RTMK900372

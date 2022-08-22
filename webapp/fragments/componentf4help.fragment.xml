@@ -1,0 +1,46 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:layout="sap.ui.layout" xmlns:f="sap.f"
+	xmlns:fb="sap.ui.comp.filterbar" width="auto">
+	<Dialog id="idUserHelpDialog"  title="Serial No">
+		<VBox class="sapUiSizeCompact">
+			<Table id="idProductsTable" mode="MultiSelect" inset="false" items="{UsersList>/}" selectionChange="handleCloseUserValueHelp"
+				itemPress="handleCloseUserValueHelp">
+				<headerToolbar>
+					<OverflowToolbar>
+						<ToolbarSpacer/>
+						<SearchField search="onSearch" width="17.5rem"/>
+					</OverflowToolbar>
+				</headerToolbar>
+				<columns>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Serial Numbers"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Status"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="User Status"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Refernce"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem vAlign="Middle">
+						<cells>
+							<Text text="{UsersList>RFCDEST}"/>
+							<Text text="{UsersList>BNAME}"/>
+							<Text text="{UsersList>FNAME}"/>
+							<Text text="{UsersList>LNAME}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+			<!--	</f:content>-->
+			<!--</f:DynamicPage>-->
+		</VBox>
+		<endButton>
+			<Button text="Ok" press="onOkUserPopup"/>
+			<Button text="Close" press="onCloseUserPopup"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

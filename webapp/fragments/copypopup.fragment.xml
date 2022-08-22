@@ -1,0 +1,19 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:layout="sap.ui.layout" xmlns:f="sap.f"
+  xmlns:fb="sap.ui.comp.filterbar" width="auto">
+  <Dialog id="idCopyDialog"  title="Copy">
+  <content>
+    <VBox class="sapUiSizeCompact">
+    <RadioButtonGroup id="copyrgb" valueState="Warning">
+      <RadioButton  text="Copy all" />
+      <RadioButton  text="Copy Header data" />
+      <RadioButton  text="Copy Header with Discrepancy and Disposition data" />
+    </RadioButtonGroup>
+
+    </VBox>
+  </content>
+    <endButton>
+      <Button text="Ok" press="onOkCopy"/>
+
+    </endButton>
+  </Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+    <edmx:DataServices m:DataServiceVersion="2.0">
+        <Schema Namespace="ZQM_NC_MS_SRV" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+            <EntityType Name="LINK_SO" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Linkto"/>
+                </Key>
+                <Property Name="SequenceArea" Type="Edm.String" MaxLength="6" sap:unicode="false" sap:label="Sequence"/>
+                <Property Name="Linkto" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="NC Link to"/>
+            </EntityType>
+            <EntityType Name="Subcat_Item" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Flag"/>
+                </Key>
+                <Property Name="Value" Type="Edm.String" MaxLength="10" sap:unicode="false" sap:label="Character Field Length = 10" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="Flag" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Single-Character Flag" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+            </EntityType>
+            <EntityType Name="Subcat_subitem" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Value"/>
+                    <PropertyRef Name="Flag"/>
+                </Key>
+                <Property Name="Value" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Character Field Length = 10" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="ResultRet" Type="Edm.String" MaxLength="10" sap:unicode="false" sap:label="Character Field Length = 10" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <Property Name="Flag" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Single-Character Flag" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+            </EntityType>
+            <EntityType Name="Material_Number" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Matnr"/>
+                </Key>
+                <Property Name="Matnr" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Material" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="Order_Details" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Matnr"/>
+                    <PropertyRef Name="Plant"/>
+                    <PropertyRef Name="OrderNum"/>
+                </Key>
+                <Property Name="Matnr" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Material" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Plant" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Plant" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="OrderNum" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="Order" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Type" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Sales Doc. Type" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Parent" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Material" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Gstrp" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Bas. Start Date" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Gltrp" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Basic fin. date" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="Area_SO" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Area"/>
+                </Key>
+                <Property Name="SequenceArea" Type="Edm.String" MaxLength="2" sap:unicode="false" sap:label="Area Sequence Num"/>
+                <Property Name="Area" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="In Which Area" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="NCTYPE_SO" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Nctype"/>
+                </Key>
+                <Property Name="Nctype" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="NC Type"/>
+                <Property Name="Nctypedesc" Type="Edm.String" MaxLength="40" sap:unicode="false" sap:label="NC Type Desciption"/>
+            </EntityType>
+            <EntityType Name="Subcat_SO" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Subcat"/>
+                </Key>
+                <Property Name="SequenceCat" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:label="Sub cat Seq Num" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Subcat" Type="Edm.String" Nullable="false" MaxLength="25" sap:unicode="false" sap:label="Sub Category" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="Part_number" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Mfrpn"/>
+                </Key>
+                <Property Name="Mfrpn" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Mfr Part Number" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityContainer Name="ZQM_NC_MS_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="LINK_SOSet" EntityType="ZQM_NC_MS_SRV.LINK_SO" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="Subcat_ItemSet" EntityType="ZQM_NC_MS_SRV.Subcat_Item" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="Subcat_subitemSet" EntityType="ZQM_NC_MS_SRV.Subcat_subitem" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="Material_NumberSet" EntityType="ZQM_NC_MS_SRV.Material_Number" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="Order_DetailsSet" EntityType="ZQM_NC_MS_SRV.Order_Details" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="Area_SOSet" EntityType="ZQM_NC_MS_SRV.Area_SO" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="NCTYPE_SOSet" EntityType="ZQM_NC_MS_SRV.NCTYPE_SO" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="Subcat_SOSet" EntityType="ZQM_NC_MS_SRV.Subcat_SO" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="Part_numberSet" EntityType="ZQM_NC_MS_SRV.Part_number" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+            </EntityContainer>
+            <atom:link rel="self" href="http://hclsdrtm.hcldigilabs.com:8000/sap/opu/odata/sap/ZQM_NC_MS_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+            <atom:link rel="latest-version" href="http://hclsdrtm.hcldigilabs.com:8000/sap/opu/odata/sap/ZQM_NC_MS_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

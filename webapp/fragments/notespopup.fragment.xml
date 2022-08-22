@@ -1,0 +1,31 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<!--<Popover-->
+	<!--	id="myPopover"-->
+	<!--	title="Notes"-->
+	<!--	class="sapUiContentPadding"-->
+	<!--	placement="Right"-->
+	<!--	initialFocus="action">-->
+	<!--	<footer>-->
+	<!--		<Toolbar>-->
+	<!--			<ToolbarSpacer/>-->
+	<!--			<Button-->
+	<!--				id="action"-->
+	<!--				text="close"-->
+	<!--				press="handleActionPress" />-->
+	<!--		</Toolbar>-->
+	<!--	</footer>-->
+		<!--<VBox>-->
+		<!--<Title text="Notes" />-->
+	<!--	<TextArea id="idnotes" />-->
+		<!--<Image src="{ProductPicUrl}" width="15em" densityAware="false" />-->
+		<!--</VBox>-->
+	<!--</Popover>-->
+	<Menu itemSelected="onMenuAction">
+		<MenuItem text="Work Group1"/>
+		<MenuItem text="Work Group2"/>
+		<MenuItem text="Work Group3"/>
+		<MenuItem text="Work Group4"/>
+	</Menu>
+</core:FragmentDefinition>
