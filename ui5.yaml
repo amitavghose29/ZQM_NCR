@@ -2,7 +2,7 @@
 
 specVersion: "2.5"
 metadata:
-  name: com.airbus.ZQMNCR.zqmncr
+  name: com.airbus.ZQMNCR
 type: application
 server:
   customMiddleware:
