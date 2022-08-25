@@ -26,7 +26,7 @@ sap.ui.define([
       var fid = oArgs.ID;
 
     },
-
+// 25.8.2022
     onListItemPress: function () {
 
     },
