@@ -1,5 +1,5 @@
 <mvc:View controllerName="com.airbus.ZQM_NCR.controller.Main" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m"
-	xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout">
+	xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns:smartForm="sap.ui.comp.smartform">
 	<!--<Shell id="shell">-->
 		<App id="app">
 			<pages>
@@ -19,7 +19,8 @@
 										<RadioButton id="RB1-2" text="Copy"/>
 									</RadioButtonGroup>
 									<Label text="NC Number"/>
-									<Input id="idncrnumber" placeholder="NC Number" visible="false" showValueHelp="true"/>
+									
+									<Input id="idncrnumber" placeholder="NC Number" valueHelpRequest="ncrCopyRequest" visible="false" showValueHelp="true"/>
 								</f:content>
 							</f:SimpleForm>
 						</VBox>
@@ -45,19 +46,19 @@
 									<!--</Input>-->
 									<!--<Text/>-->
 									<Label text="Sub Category"></Label>
-									<ComboBox id="idlinksubc" items="{/Subcat_SOSet}" change="onNcrLink">
+									<ComboBox id="idlinksubc" items="{/Subcat_SOSet}" change="onChngSubCat">
 										<core:Item key="{SequenceCat}" text="{Subcat}"/>
 										<layoutData>
 											<l:GridData span="XL1 L2 M8 S8"/>
 										</layoutData>
 									</ComboBox>
-									<Input id="idsubcno" valueHelpRequest="helpRequest" showValueHelp="true" liveChange="poEnter">
+									<Input id="idsubcno" valueHelpRequest="helpRequest" visible="true" showValueHelp="true" liveChange="poEnter">
 										<layoutData>
 											<l:GridData span="XL1 L2 M8 S8"/>
 											<!--<f:ColumnElementData cellsSmall="2" cellsLarge="2"/>-->
 										</layoutData>
 									</Input>
-									<Input id="idsubsubno" showValueHelp="true" valueHelpRequest="helpRequestSubsub">
+									<Input id="idsubsubno" showValueHelp="true" visible="true" valueHelpRequest="helpRequestSubsub">
 										<layoutData>
 											<l:GridData span="XL1 L1 M8 S8"/>
 											<!--<f:ColumnElementData cellsSmall="2" cellsLarge="2"/>-->

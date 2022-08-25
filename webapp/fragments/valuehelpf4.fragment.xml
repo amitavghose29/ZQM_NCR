@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog  title="" items="{sample>/tablelist}" liveChange="onSearchOrder" confirm="_configValueF4HelpDialog"
+		cancel="_handleValueHelpClose">
+		<StandardListItem highlight="Information" title="{sample>Id}" info="{Ktext}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

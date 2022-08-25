@@ -41,6 +41,8 @@
 													maxContainerCols="2" class="sapUiSizeCompact" labelMinWidth="1px">
 													<f:content>
 														<!--<core:Title text="General Info"/>-->
+														<Label text="Nc Type"/>
+														<ComboBox width="230px"/>
 														<Label text="Prioity"/>
 														<ComboBox width="230px"/>
 														<Label id="idtype" text="In Which Area"/>
@@ -54,19 +56,19 @@
 															<core:Item text="8008 Mirabel Warehouse"/>
 														</ComboBox>
 														<Label text="Product Code"/>
-														<Input width="230px" showValueHelp="true"/>
+														<Input width="230px" valueHelpRequest="valueHelpRequestF4" showValueHelp="true"/>
 														<Label text="Work Instruction"/>
-														<Input width="230px" showValueHelp="true"/>
+														<Input width="230px" valueHelpRequest="valueHelpRequestF4" showValueHelp="true"/>
 														<Label text="Prod Order"/>
-														<Input width="230px" showValueHelp="true"/>
+														<Input width="230px" valueHelpRequest="valueHelpRequestF4" showValueHelp="true"/>
 														<!--	<Label text="Last Operation"/>
 														<Input width="230px"/>-->
 														<Label text="Supersedes NC"/>
-														<Input width="230px" showValueHelp="true"/>
+														<Input width="230px" valueHelpRequest="valueHelpRequestF4" showValueHelp="true"/>
 														<Label text="Superseded By"/>
-														<Input width="230px" showValueHelp="true"/>
+														<Input width="230px" valueHelpRequest="valueHelpRequestF4" showValueHelp="true"/>
 														<Label text="Reference NC"/>
-														<Input width="230px" showValueHelp="true"/>
+														<Input width="230px" valueHelpRequest="valueHelpRequestF4" showValueHelp="true"/>
 														<Label text="Create Date"/>
 														<Text text=""/>
 														<Label text="Closed Date"/>
@@ -181,13 +183,13 @@
 													<f:content>
 														<!--<core:Title text="Component Location"/>-->
 														<Label text="Responsible"/>
-														<Input width="200px" showValueHelp="true"/>
+														<Input width="200px" valueHelpRequest="valueHelpRequestF4" showValueHelp="true"/>
 														<Label text="Detected At"/>
-														<Input width="200px" showValueHelp="true"/>
+														<Input width="200px" valueHelpRequest="valueHelpRequestF4" showValueHelp="true"/>
 														<Label text="Bin Location"/>
-														<Input width="200px" showValueHelp="true"/>
+														<Input width="200px" valueHelpRequest="valueHelpRequestF4" showValueHelp="true"/>
 														<Label text="Drop Point"/>
-														<Input width="200px" showValueHelp="true"/>
+														<Input width="200px" valueHelpRequest="valueHelpRequestF4" showValueHelp="true"/>
 													</f:content>
 												</f:SimpleForm>
 											</l:BlockLayoutCell>

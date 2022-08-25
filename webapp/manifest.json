@@ -84,6 +84,12 @@
 				"type": "sap.ui.model.json.JSONModel",
 				"settings": {},
 				"preload": false
+			},
+			"sample": {
+				"type": "sap.ui.model.json.JSONModel",
+				"settings": {},
+				"preload": false,
+				"uri": "localjson/sampledata.json"
 			}
 		},
 		"services": {

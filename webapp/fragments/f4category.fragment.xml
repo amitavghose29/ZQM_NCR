@@ -1,110 +1,109 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:layout="sap.ui.layout" xmlns:f="sap.f"
-  xmlns:fb="sap.ui.comp.filterbar">
-  <Dialog id="idUserHelpDialog" title="Production Order Search">
-    <VBox class="sapUiSizeCompact">
-      <!--  <fb:FilterBar id="filterbar" reset="onReset" search="onUserSearch" useToolbar="false" showGoOnFB="true">
-        <fb:filterItems>
-          <fb:FilterItem name="A" label="Product Sequence">
-            <fb:control>
-              <Input id="idConnector" width="130px" required="true" showValueHelp="true" valueHelpRequest="onValueHelpConnectors"/>
-            </fb:control>
-          </fb:FilterItem>
-          <fb:FilterItem name="B" label="Part No.">
-            <fb:control>
-              <Input id="idUser" width="130px"/>
-            </fb:control>
-          </fb:FilterItem>
-          <fb:FilterItem name="C" label="NLP">
-            <fb:control>
-              <Input id="idFname" width="130px"/>
-            </fb:control>
-          </fb:FilterItem>
-
-        </fb:filterItems>
-      </fb:FilterBar>-->
-      <!--    </f:content>-->
-      <!--  </f:DynamicPageHeader>-->
-      <!--</f:header>-->
-      <!-- DynamicPage Content -->
-      <!--<f:content>-->
-
-      <fb:FilterBar reset="onReset" search="onSearch" showRestoreButton="true" showClearButton="true">
-        <fb:filterGroupItems>
-          <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="A1" label="Product Sequence"
-            labelTooltip="Tooltip GroupItem Example">
-            <fb:control>
-              <Input type="Text" valueHelpRequest="helpRequestProduct" showValueHelp="true"/>
-            </fb:control>
-          </fb:FilterGroupItem>
-          <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="B1" label="Part No.">
-            <fb:control>
-              <Input id="idPartNo" showSuggestion="true" suggestionItems="{/}" valueHelpRequest="helpRequestPartNo" showValueHelp="true">
-                <suggestionItems>
-                  <core:Item text="{Matnr}"/>
-                </suggestionItems>
-              </Input>
-            </fb:control>
-          </fb:FilterGroupItem>
-          <!--<fb:FilterGroupItem visibleInFilterBar="true" groupName="G2" groupTitle="Group2" name="A2" label="NLP"
-            labelTooltip="Tooltip GroupItem Example">
-            <fb:control>
-              <Input type="Text" valueHelpRequest="helpRequestProduct" showValueHelp="true"/>
-            </fb:control>
-          </fb:FilterGroupItem>-->
-        </fb:filterGroupItems>
-      </fb:FilterBar>
-      <Table id="idProductsTable" inset="false" items="{/}" mode="SingleSelectMaster" selectionChange="handleCloseUserValueHelp"
-        itemPress="handleCloseUserValueHelp">
-        <columns>
-          <Column minScreenWidth="Tablet" demandPopin="true">
-            <Text text="Plant"/>
-          </Column>
-          <Column minScreenWidth="Tablet" demandPopin="true">
-            <Text text="Order"/>
-          </Column>
-          <Column minScreenWidth="Tablet" demandPopin="true">
-            <Text text="Prod Seq."/>
-          </Column>
-          <Column minScreenWidth="Tablet" demandPopin="true">
-            <Text text="Type"/>
-          </Column>
-          <Column minScreenWidth="Tablet" demandPopin="true">
-            <Text text="Parent"/>
-          </Column>
-          <Column minScreenWidth="Tablet" demandPopin="true">
-            <Text text="NLP"/>
-          </Column>
-          <Column minScreenWidth="Tablet" demandPopin="true">
-            <Text text="Start Date"/>
-          </Column>
-          <Column minScreenWidth="Tablet" demandPopin="true">
-            <Text text="End Date"/>
-          </Column>
-          <Column minScreenWidth="Tablet" demandPopin="true">
-            <Text text="Issue Qty."/>
-          </Column>
-        </columns>
-        <items>
-          <ColumnListItem vAlign="Middle" type="Navigation" press="_configValueHelpDialogOrderPartNo">
-            <cells>
-              <Text text="{Plant}"/>
-              <Text text="{OrderNum}"/>
-              <Text text=""/>
-              <Text text="{Type}"/>
-              <Text text="{Parent}"/>
-              <Text text=""/>
-              <Text text="{Gstrp}"/>
-              <Text text=""/>
-              <Text text=""/>
-            </cells>
-          </ColumnListItem>
-        </items>
-      </Table>
-      <!--  </f:content>-->
-      <!--</f:DynamicPage>-->
-    </VBox>
-    <endButton>
-      <Button text="Close" press="onCloseUserPopup"/>
-    </endButton>
-  </Dialog>
+	xmlns:fb="sap.ui.comp.filterbar">
+	<Dialog id="idUserHelpDialog" title="Production Order Search">
+		<VBox class="sapUiSizeCompact">
+			<!--	<fb:FilterBar id="filterbar" reset="onReset" search="onUserSearch" useToolbar="false" showGoOnFB="true">
+				<fb:filterItems>
+					<fb:FilterItem name="A" label="Product Sequence">
+						<fb:control>
+							<Input id="idConnector" width="130px" required="true" showValueHelp="true" valueHelpRequest="onValueHelpConnectors"/>
+						</fb:control>
+					</fb:FilterItem>
+					<fb:FilterItem name="B" label="Part No.">
+						<fb:control>
+							<Input id="idUser" width="130px"/>
+						</fb:control>
+					</fb:FilterItem>
+					<fb:FilterItem name="C" label="NLP">
+						<fb:control>
+							<Input id="idFname" width="130px"/>
+						</fb:control>
+					</fb:FilterItem>
+					
+				</fb:filterItems>
+			</fb:FilterBar>-->
+			<!--		</f:content>-->
+			<!--	</f:DynamicPageHeader>-->
+			<!--</f:header>-->
+			<!-- DynamicPage Content -->
+			<!--<f:content>-->
+			<fb:FilterBar reset="onReset" search="onSearch" showRestoreButton="true" showClearButton="true">
+				<fb:filterGroupItems>
+					<fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="A1" label="Product Sequence"
+						labelTooltip="Tooltip GroupItem Example">
+						<fb:control>
+							<Input type="Text" valueHelpRequest="helpRequestProduct" showValueHelp="true"/>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="B1" label="Part No.">
+						<fb:control>
+							<Input id="idPartNo" showSuggestion="true" suggestionItems="{/}" valueHelpRequest="helpRequestPartNo" showValueHelp="true">
+								<suggestionItems>
+									<core:Item text="{Matnr}"/>
+								</suggestionItems>
+							</Input>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<!--<fb:FilterGroupItem visibleInFilterBar="true" groupName="G2" groupTitle="Group2" name="A2" label="NLP"
+						labelTooltip="Tooltip GroupItem Example">
+						<fb:control>
+							<Input type="Text" valueHelpRequest="helpRequestProduct" showValueHelp="true"/>
+						</fb:control>
+					</fb:FilterGroupItem>-->
+				</fb:filterGroupItems>
+			</fb:FilterBar>
+			<Table id="idProductsTable" inset="false" items="{/}" mode="SingleSelectMaster" selectionChange="handleCloseUserValueHelp"
+				itemPress="handleCloseUserValueHelp">
+				<columns>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Plant"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Order"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Prod Seq."/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Type"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Parent"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="NLP"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Start Date"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="End Date"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Issue Qty."/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem vAlign="Middle" type="Navigation" press="_configValueHelpDialogOrderPartNo">
+						<cells>
+							<Text text="{Plant}"/>
+							<Text text="{OrderNum}"/>
+							<Text text=""/>
+							<Text text="{Type}"/>
+							<Text text="{Parent}"/>
+							<Text text=""/>
+							<Text text="{Gstrp}"/>
+							<Text text=""/>
+							<Text text=""/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+			<!--	</f:content>-->
+			<!--</f:DynamicPage>-->
+		</VBox>
+		<endButton>
+			<Button text="Close" press="onCloseUserPopup"/>
+		</endButton>
+	</Dialog>
 </core:FragmentDefinition>

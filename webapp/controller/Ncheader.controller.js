@@ -1,442 +1,446 @@
 sap.ui.define([
-  "sap/ui/core/mvc/Controller",
-  'sap/ui/core/Fragment',
-  "sap/ui/model/json/JSONModel",
-  "sap/m/MessagePopover",
-  "sap/m/MenuItem"
+	"sap/ui/core/mvc/Controller",
+	'sap/ui/core/Fragment',
+	"sap/ui/model/json/JSONModel",
+	"sap/m/MessagePopover",
+	"sap/m/MenuItem"
 ], function (Controller, Fragment, JSONModel, MessagePopover, MenuItem) {
-  "use strict";
+	"use strict";
 
-  return Controller.extend("com.airbus.ZQM_NCR.controller.Ncheader", {
+	return Controller.extend("com.airbus.ZQM_NCR.controller.Ncheader", {
 
-    /**
-     * Called when a controller is instantiated and its View controls (if available) are already created.
-     * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
-     * @memberOf com.airbus.ZQM_NCR.view.Ncheader
-     */
-    onInit: function () {
-      //this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
+		/**
+		 * Called when a controller is instantiated and its View controls (if available) are already created.
+		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
+		 * @memberOf com.airbus.ZQM_NCR.view.Ncheader
+		 */
+		onInit: function () {
+			//this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
+		
+			var oRouter = this.getOwnerComponent().getRouter();
+			oRouter.getRoute("Ncheader").attachMatched(this._onRouteMatched, this);
+		},
+			valueHelpRequestF4: function () {
+			this._oDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.valuehelpf4", this);
+			this.getView().addDependent(this._oDialog);
+			this._oDialog.open();
+		},
 
-      var oRouter = this.getOwnerComponent().getRouter();
-      oRouter.getRoute("Ncheader").attachMatched(this._onRouteMatched, this);
-    },
+		_onRouteMatched: function (oEvent) {
+			var oArgs = oEvent.getParameter("arguments");
+			var fid = oArgs.ID;
+			
+		},
 
-    _onRouteMatched: function (oEvent) {
-      var oArgs = oEvent.getParameter("arguments");
-      var fid = oArgs.ID;
+		onListItemPress: function () {
 
-    },
-// 25.8.2022
-    onListItemPress: function () {
+		},
+		onCssChange: function (oEvent) {
+			var a = oEvent.getParameters().value;
+			if (a == "") {
 
-    },
-    onCssChange: function (oEvent) {
-      var a = oEvent.getParameters().value;
-      if (a == "") {
+			} else {
 
-      } else {
+			}
+		},
+		helpRequestComponent: function () {
+			sap.ui.core.BusyIndicator.show();
+			this.Dialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.componentf4help", this);
+			this.getView().addDependent(this.oDialog);
+			this.Dialog.open();
+			sap.ui.core.BusyIndicator.hide();
 
-      }
-    },
+		},
+		onCloseUserPopup: function () {
+			this.Dialog.close();
+			this.Dialog.destroy();
+		},
+		handleIconbarSelect: function (oEvent) {
+			var htext = this.getView().byId("idIconTabBarNoIcons");
+			var key = oEvent.getParameters().selectedItem.getKey();
 
-    helpRequestComponent: function () {
-      sap.ui.core.BusyIndicator.show();
-      this.Dialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.componentf4help", this);
-      this.getView().addDependent(this.oDialog);
-      this.Dialog.open();
-      sap.ui.core.BusyIndicator.hide();
+			//	var bold = oEvent.getParameters().selectedItem.getText().bold();
+			//	oEvent.getParameters().selectedItem.setText(bold);
+			if (key === "Hdata") {
+				var text = "";
+			} else if (key === "log") {
+				text = "Traceability and History";
+			} else {
+				text = oEvent.getParameters().selectedItem.getText();
+			}
+			this.getView().byId("headertext").setText(text);
+		},
+		onPressPrint: function () {
+			// var ctrlstring = "width=500px,height=500px";
+			// var wind = window.open("", "PrintWindow", ctrlstring);
+			//	var hContent = '<html><head></head><body>';
 
-    },
-    onCloseUserPopup: function () {
-      this.Dialog.close();
-      this.Dialog.destroy();
-    },
-    handleIconbarSelect: function (oEvent) {
-      var htext = this.getView().byId("idIconTabBarNoIcons");
-      var key = oEvent.getParameters().selectedItem.getKey();
+			/*var print_Url = $.sap.getModulePath("com", "/css/");
+			var printCssUrl = print_Url + "style.css";
+			// var hContent = '<html><head><link rel="stylesheet" href=' + printCssUrl + ' type="text/css" /></head><body>';
+			var bodyContent = $(".printAreaBox").html();
+			var closeContent = "</body></html>";
+			var htmlpage = hContent + bodyContent + closeContent;
 
-      //  var bold = oEvent.getParameters().selectedItem.getText().bold();
-      //  oEvent.getParameters().selectedItem.setText(bold);
-      if (key === "Hdata") {
-        var text = "";
-      } else if (key === "log") {
-        text = "Traceability and History";
-      } else {
-        text = oEvent.getParameters().selectedItem.getText();
-      }
-      this.getView().byId("headertext").setText(text);
-    },
-    onPressPrint: function () {
-      // var ctrlstring = "width=500px,height=500px";
-      // var wind = window.open("", "PrintWindow", ctrlstring);
-      //  var hContent = '<html><head></head><body>';
+			var win = window.open("", "PrintWindow");
+			win.document.write(htmlpage);
+			win.print();
+			win.stop();*/
+			window.print();
 
-      /*var print_Url = $.sap.getModulePath("com", "/css/");
-      var printCssUrl = print_Url + "style.css";
-      // var hContent = '<html><head><link rel="stylesheet" href=' + printCssUrl + ' type="text/css" /></head><body>';
-      var bodyContent = $(".printAreaBox").html();
-      var closeContent = "</body></html>";
-      var htmlpage = hContent + bodyContent + closeContent;
+		},
+		onNotesChange: function () {
+			var oView = this.getView(),
+				oButton = oView.byId("button");
 
-      var win = window.open("", "PrintWindow");
-      win.document.write(htmlpage);
-      win.print();
-      win.stop();*/
-      window.print();
+			if (!this._oMenuFragment) {
+				this._oMenuFragment = Fragment.load({
+					id: oView.getId(),
+					name: "com.airbus.ZQM_NCR.fragments.notespopup",
+					controller: this
+				}).then(function (oMenu) {
+					oMenu.openBy(oButton);
+					this._oMenuFragment = oMenu;
+					return this._oMenuFragment;
+				}.bind(this));
+			} else {
+				this._oMenuFragment.openBy(oButton);
+			}
+		},
+		onMenuAction: function (oEvent) {
+			var oItem = oEvent.getParameter("item"),
+				sItemPath = "";
 
-    },
-    onNotesChange: function () {
-      var oView = this.getView(),
-        oButton = oView.byId("button");
+			while (oItem instanceof MenuItem) {
+				sItemPath = oItem.getText() + " > " + sItemPath;
+				oItem = oItem.getParent();
+			}
 
-      if (!this._oMenuFragment) {
-        this._oMenuFragment = Fragment.load({
-          id: oView.getId(),
-          name: "com.airbus.ZQM_NCR.fragments.notespopup",
-          controller: this
-        }).then(function (oMenu) {
-          oMenu.openBy(oButton);
-          this._oMenuFragment = oMenu;
-          return this._oMenuFragment;
-        }.bind(this));
-      } else {
-        this._oMenuFragment.openBy(oButton);
-      }
-    },
-    onMenuAction: function (oEvent) {
-      var oItem = oEvent.getParameter("item"),
-        sItemPath = "";
+			sItemPath = sItemPath.substr(0, sItemPath.lastIndexOf(" > "));
 
-      while (oItem instanceof MenuItem) {
-        sItemPath = oItem.getText() + " > " + sItemPath;
-        oItem = oItem.getParent();
-      }
+			sap.m.MessageToast.show("Action triggered on item: " + sItemPath);
+			this.getView().byId("idworkgroup").setText(sItemPath);
+		},
+		onNotesChange1: function (oEvent) {
+			// var oCtx = oEvent.getSource().getBindingContext(),
+			var oCtx = oEvent.getParameters()._userInputValue,
+				oControl = oEvent.getSource(),
+				oView = this.getView();
 
-      sItemPath = sItemPath.substr(0, sItemPath.lastIndexOf(" > "));
+			// create popover
+			if (!this._pPopover) {
+				this._pPopover = Fragment.load({
+					id: oView.getId(),
+					name: "com.airbus.ZQM_NCR.fragments.notespopup",
+					controller: this
+				}).then(function (oPopover) {
+					oView.addDependent(oPopover);
+					oPopover.attachAfterOpen(function () {
+						this.disablePointerEvents();
+					}, this);
+					oPopover.attachAfterClose(function () {
+						this.enablePointerEvents();
+					}, this);
+					return oPopover;
+				}.bind(this));
+			}
+			this._pPopover.then(function (oPopover) {
+				//	oPopover.bindElement(oCtx);
+				oPopover.mAggregations.content[0].setValue(oCtx);
+				oPopover.openBy(oControl);
+			});
+			//	sap.ui.getCore().byId("idnotes").setText(oCtx);
+		},
+		disablePointerEvents: function () {
+			this.byId("idsingoff1").getDomRef().style["pointer-events"] = "none";
+		},
 
-      sap.m.MessageToast.show("Action triggered on item: " + sItemPath);
-      this.getView().byId("idworkgroup").setText(sItemPath);
-    },
-    onNotesChange1: function (oEvent) {
-      // var oCtx = oEvent.getSource().getBindingContext(),
-      var oCtx = oEvent.getParameters()._userInputValue,
-        oControl = oEvent.getSource(),
-        oView = this.getView();
+		enablePointerEvents: function () {
+			this.byId("idsingoff1").getDomRef().style["pointer-events"] = "auto";
+		},
+		onEnterText: function (oEvent) {
+			var text = oEvent.getParameters().value;
+			if (text.lenth == 0 || text == "") {
+				oEvent.getSource().setValueHelpIconSrc("sap-icon://document-text");
 
-      // create popover
-      if (!this._pPopover) {
-        this._pPopover = Fragment.load({
-          id: oView.getId(),
-          name: "com.airbus.ZQM_NCR.fragments.notespopup",
-          controller: this
-        }).then(function (oPopover) {
-          oView.addDependent(oPopover);
-          oPopover.attachAfterOpen(function () {
-            this.disablePointerEvents();
-          }, this);
-          oPopover.attachAfterClose(function () {
-            this.enablePointerEvents();
-          }, this);
-          return oPopover;
-        }.bind(this));
-      }
-      this._pPopover.then(function (oPopover) {
-        //  oPopover.bindElement(oCtx);
-        oPopover.mAggregations.content[0].setValue(oCtx);
-        oPopover.openBy(oControl);
-      });
-      //  sap.ui.getCore().byId("idnotes").setText(oCtx);
-    },
-    disablePointerEvents: function () {
-      this.byId("idsingoff1").getDomRef().style["pointer-events"] = "none";
-    },
+			} else {
+				oEvent.getSource().setValueHelpIconSrc("sap-icon://request");
+			}
+		},
+		//data coming from backend then write validation
+		onformatterText: function (text) {
+			if (text.lenth == 0 || text == "") {
+				var htext = "sap-icon://document-text";
 
-    enablePointerEvents: function () {
-      this.byId("idsingoff1").getDomRef().style["pointer-events"] = "auto";
-    },
-    onEnterText: function (oEvent) {
-      var text = oEvent.getParameters().value;
-      if (text.lenth == 0 || text == "") {
-        oEvent.getSource().setValueHelpIconSrc("sap-icon://document-text");
+			} else {
+				htext = "sap-icon://request";
+			}
+			return htext;
+		},
+		handleActionPress: function () {
+			// note: We don't need to chain to the _pPopover promise, since this event-handler
+			// is only called from within the loaded dialog itself.
+			this.byId("myPopover").close();
+			//sap.m.MessageToast.show("Action has been pressed");
+		},
 
-      } else {
-        oEvent.getSource().setValueHelpIconSrc("sap-icon://request");
-      }
-    },
-    //data coming from backend then write validation
-    onformatterText: function (text) {
-      if (text.lenth == 0 || text == "") {
-        var htext = "sap-icon://document-text";
+		onDiscrepancy: function () {
+			this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Discre");
 
-      } else {
-        htext = "sap-icon://request";
-      }
-      return htext;
-    },
-    handleActionPress: function () {
-      // note: We don't need to chain to the _pPopover promise, since this event-handler
-      // is only called from within the loaded dialog itself.
-      this.byId("myPopover").close();
-      //sap.m.MessageToast.show("Action has been pressed");
-    },
+		},
+		onCopyDiscrepancy: function () {
+			if (!this.oDialog) {
+				this.Dialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.copydiscrepancy", this);
+				this.getView().addDependent(this.oDialog);
+			}
+			this.Dialog.open();
+		},
+		onAddDiscrepancy: function () {
+			if (!this.oDialog) {
+				this.Dialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.adddiscrepancy", this);
+				this.getView().addDependent(this.oDialog);
+			}
+			this.Dialog.open();
+		},
+		onChangeSN: function onChangeSN() {
+			var model = this.getOwnerComponent().getModel("json");
+			var gdata = model.getProperty("/data");
+			var sn = this.getView().byId("idInputSN");
+			var list = this.getView().byId("list").getItems();
+			var that = this;
+			var huValue = "";
+			var SNModel = new JSONModel([]);
+			var _snArr = [];
+			if (sn.getValue().trim() !== "") {
+				huValue = sn.getValue().trim();
+			}
+			_snArr.push({
+				SN: sn.getValue().toUpperCase(),
+			});
 
-    onDiscrepancy: function () {
-      this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Discre");
+			if (gdata === null || gdata == undefined) {
+				var finaldata = _snArr;
+			} else {
+				finaldata = _snArr.concat(gdata);
 
-    },
-    onCopyDiscrepancy: function () {
-      if (!this.oDialog) {
-        this.Dialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.copydiscrepancy", this);
-        this.getView().addDependent(this.oDialog);
-      }
-      this.Dialog.open();
-    },
-    onAddDiscrepancy: function () {
-      if (!this.oDialog) {
-        this.Dialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.adddiscrepancy", this);
-        this.getView().addDependent(this.oDialog);
-      }
-      this.Dialog.open();
-    },
-    onChangeSN: function onChangeSN() {
-      var model = this.getOwnerComponent().getModel("json");
-      var gdata = model.getProperty("/data");
-      var sn = this.getView().byId("idInputSN");
-      var list = this.getView().byId("list").getItems();
-      var that = this;
-      var huValue = "";
-      var SNModel = new JSONModel([]);
-      var _snArr = [];
-      if (sn.getValue().trim() !== "") {
-        huValue = sn.getValue().trim();
-      }
-      _snArr.push({
-        SN: sn.getValue().toUpperCase(),
-      });
+			}
+			model.setProperty("/data", finaldata);
+			SNModel.setData(finaldata);
+			this.getView().byId("list").setModel(SNModel);
+			sn.setValue();
+		},
 
-      if (gdata === null || gdata == undefined) {
-        var finaldata = _snArr;
-      } else {
-        finaldata = _snArr.concat(gdata);
+		handleDelete: function (oEvent) {
+			/*	var oList = oEvent.getSource(),
+					oItem = oEvent.getParameter("listItem"),
+					sPath = oItem.getBindingContext().getPath();
+					var _selIndex = oEvent
+						.getParameter("listItem")
+						.getBindingContextPath()
+						.substr(1);*/
+			// after deletion put the focus back to the list
+			//	oList.attachEventOnce("updateFinished", oList.focus, oList);
+			var _selIndex = oEvent.getParameters().id[oEvent.getParameters().id.length - 1];
+			var _snArr = this.getOwnerComponent().getModel("json").getProperty("/data");
 
-      }
-      model.setProperty("/data", finaldata);
-      SNModel.setData(finaldata);
-      this.getView().byId("list").setModel(SNModel);
-      sn.setValue();
-    },
+			_snArr.splice(_selIndex, 1);
+			this.getOwnerComponent().getModel().setProperty("/data", _snArr);
+			var SNModel = new JSONModel([]);
+			SNModel.setData(_snArr);
+			this.getView().byId("list").setModel(SNModel);
 
-    handleDelete: function (oEvent) {
-      /*  var oList = oEvent.getSource(),
-          oItem = oEvent.getParameter("listItem"),
-          sPath = oItem.getBindingContext().getPath();
-          var _selIndex = oEvent
-            .getParameter("listItem")
-            .getBindingContextPath()
-            .substr(1);*/
-      // after deletion put the focus back to the list
-      //  oList.attachEventOnce("updateFinished", oList.focus, oList);
-      var _selIndex = oEvent.getParameters().id[oEvent.getParameters().id.length - 1];
-      var _snArr = this.getOwnerComponent().getModel("json").getProperty("/data");
+		},
+		onPressCancel: function () {
+			//	this.getView().byId("ncrcreatecopy").setVisible(true);
+			this.getView().byId("SimpleFormChange480_12120Dual").setVisible(true);
+			this.getView().byId("idIconTabBarNoIcons").setVisible(false);
+			this.getView().byId("idsave").setVisible(false);
+			this.getView().byId("idcancel").setVisible(false);
+			this.getView().byId("idncrsave").setVisible(true);
+			this.getView().byId("idncrcancel").setVisible(true);
+			this.getView().byId("page").setTitle("NC Creation");
+			this.getView().byId("idheader").setVisible(false);
+		},
+		onNcrPressCancel: function () {
+			/*	this.getView().byId("idlink").setValue();
+				this.getView().byId("idlink").setVisible(false);
+				this.getView().byId("idin").setValue();
+				this.getView().byId("idpono").setValue();
+				this.getView().byId("idporder").setValue();
+				this.getView().byId("idworkinst").setValue();
+				this.getView().byId("idworkorder").setValue();
+				this.getView().byId("idlast").setValue();
+				this.getView().byId("idncr").setValue();*/
+			this.getOwnerComponent().getRouter().navTo("TargetMain");
+		},
+		onNcrPressSave: function () {
 
-      _snArr.splice(_selIndex, 1);
-      this.getOwnerComponent().getModel().setProperty("/data", _snArr);
-      var SNModel = new JSONModel([]);
-      SNModel.setData(_snArr);
-      this.getView().byId("list").setModel(SNModel);
+			//	this.getView().byId("ncrcreatecopy").setVisible(false);
+			this.getView().byId("SimpleFormChange480_12120Dual").setVisible(false);
+			this.getView().byId("idIconTabBarNoIcons").setVisible(true);
+			this.getView().byId("idsave").setVisible(true);
+			this.getView().byId("idcancel").setVisible(true);
+			this.getView().byId("idncrsave").setVisible(false);
+			this.getView().byId("idncrcancel").setVisible(false);
+			this.getView().byId("page").setTitle("NC F721000007");
+			this.getView().byId("idheader").setVisible(true);
+		},
+		onNcrchange: function () {
+			var ncr = this.getView().byId("idncr").getSelectedKey();
+			if (ncr === "standard") {
+				this.getView().byId("idlink").setVisible(true);
+			} else {
+				this.getView().byId("idlink").setVisible(false);
+			}
 
-    },
-    onPressCancel: function () {
-      //  this.getView().byId("ncrcreatecopy").setVisible(true);
-      this.getView().byId("SimpleFormChange480_12120Dual").setVisible(true);
-      this.getView().byId("idIconTabBarNoIcons").setVisible(false);
-      this.getView().byId("idsave").setVisible(false);
-      this.getView().byId("idcancel").setVisible(false);
-      this.getView().byId("idncrsave").setVisible(true);
-      this.getView().byId("idncrcancel").setVisible(true);
-      this.getView().byId("page").setTitle("NC Creation");
-      this.getView().byId("idheader").setVisible(false);
-    },
-    onNcrPressCancel: function () {
-      /*  this.getView().byId("idlink").setValue();
-        this.getView().byId("idlink").setVisible(false);
-        this.getView().byId("idin").setValue();
-        this.getView().byId("idpono").setValue();
-        this.getView().byId("idporder").setValue();
-        this.getView().byId("idworkinst").setValue();
-        this.getView().byId("idworkorder").setValue();
-        this.getView().byId("idlast").setValue();
-        this.getView().byId("idncr").setValue();*/
-      this.getOwnerComponent().getRouter().navTo("TargetMain");
-    },
-    onNcrPressSave: function () {
+		},
+		inEnter: function () {
+			var inw = this.getView().byId("idin").getValue();
+			if (inw === "") {
+				this.getView().byId("idin").setValueState("Warning");
+				this.getView().byId("idin").setValueStateText("Enter Input Value");
+			} else {
+				this.getView().byId("idin").setValueState("None");
+				this.getView().byId("idin").setValueStateText();
+			}
+		},
+		poEnter: function () {
+			var pono = this.getView().byId("idpono").getValue();
+			if (pono === "") {
+				this.getView().byId("idpono").setValueState("Warning");
+				this.getView().byId("idpono").setValueStateText("PO Number");
+			} else {
+				this.getView().byId("idpono").setValueState("None");
+				this.getView().byId("idpono").setValueStateText();
+			}
+		},
+		PurchaseEnter: function () {
+			var porder = this.getView().byId("idporder").getValue();
+			if (porder === "") {
+				this.getView().byId("idporder").setValueState("Warning");
+				this.getView().byId("idporder").setValueStateText("Enter Purchase Order Value");
+			} else {
+				this.getView().byId("idporder").setValueState("None");
+				this.getView().byId("idporder").setValueStateText();
+			}
+		},
+		onCreate: function () {
+			var ic = this.getView().byId("idIconTabBarNoIcons");
 
-      //  this.getView().byId("ncrcreatecopy").setVisible(false);
-      this.getView().byId("SimpleFormChange480_12120Dual").setVisible(false);
-      this.getView().byId("idIconTabBarNoIcons").setVisible(true);
-      this.getView().byId("idsave").setVisible(true);
-      this.getView().byId("idcancel").setVisible(true);
-      this.getView().byId("idncrsave").setVisible(false);
-      this.getView().byId("idncrcancel").setVisible(false);
-      this.getView().byId("page").setTitle("NC F721000007");
-      this.getView().byId("idheader").setVisible(true);
-    },
-    onNcrchange: function () {
-      var ncr = this.getView().byId("idncr").getSelectedKey();
-      if (ncr === "standard") {
-        this.getView().byId("idlink").setVisible(true);
-      } else {
-        this.getView().byId("idlink").setVisible(false);
-      }
+			/*	var ncr = this.getView().byId("idncr").getSelected();
+				var snag = this.getView().byId("idsnag").getSelected();
+				var stock = this.getView().byId("idstock").getSelected();
+				var supplier = this.getView().byId("idsupplier").getSelected();*/
 
-    },
-    inEnter: function () {
-      var inw = this.getView().byId("idin").getValue();
-      if (inw === "") {
-        this.getView().byId("idin").setValueState("Warning");
-        this.getView().byId("idin").setValueStateText("Enter Input Value");
-      } else {
-        this.getView().byId("idin").setValueState("None");
-        this.getView().byId("idin").setValueStateText();
-      }
-    },
-    poEnter: function () {
-      var pono = this.getView().byId("idpono").getValue();
-      if (pono === "") {
-        this.getView().byId("idpono").setValueState("Warning");
-        this.getView().byId("idpono").setValueStateText("PO Number");
-      } else {
-        this.getView().byId("idpono").setValueState("None");
-        this.getView().byId("idpono").setValueStateText();
-      }
-    },
-    PurchaseEnter: function () {
-      var porder = this.getView().byId("idporder").getValue();
-      if (porder === "") {
-        this.getView().byId("idporder").setValueState("Warning");
-        this.getView().byId("idporder").setValueStateText("Enter Purchase Order Value");
-      } else {
-        this.getView().byId("idporder").setValueState("None");
-        this.getView().byId("idporder").setValueStateText();
-      }
-    },
-    onCreate: function () {
-      var ic = this.getView().byId("idIconTabBarNoIcons");
+			var inw = this.getView().byId("idin").getValue();
+			var pono = this.getView().byId("idpono").getValue();
+			var porder = this.getView().byId("idporder").getValue();
 
-      /*  var ncr = this.getView().byId("idncr").getSelected();
-        var snag = this.getView().byId("idsnag").getSelected();
-        var stock = this.getView().byId("idstock").getSelected();
-        var supplier = this.getView().byId("idsupplier").getSelected();*/
+			if (inw === "" || pono === "" || porder === "") {
+				/*this.getView().byId("idncr").setValueState("Warning");
+				this.getView().byId("idsnag").setValueState("Warning");
+				this.getView().byId("idstock").setValueState("Warning");
+				this.getView().byId("idsupplier").setValueState("Warning");*/
 
-      var inw = this.getView().byId("idin").getValue();
-      var pono = this.getView().byId("idpono").getValue();
-      var porder = this.getView().byId("idporder").getValue();
+				this.getView().byId("idin").setValueState("Warning");
+				this.getView().byId("idpono").setValueState("Warning");
+				this.getView().byId("idporder").setValueState("Warning");
 
-      if (inw === "" || pono === "" || porder === "") {
-        /*this.getView().byId("idncr").setValueState("Warning");
-        this.getView().byId("idsnag").setValueState("Warning");
-        this.getView().byId("idstock").setValueState("Warning");
-        this.getView().byId("idsupplier").setValueState("Warning");*/
+				this.getView().byId("idin").setValueStateText("Enter Input Value");
+				this.getView().byId("idpono").setValueStateText("Enter PO Number");
+				this.getView().byId("idporder").setValueStateText("Enter Purchase Order Value");
+			} else {
 
-        this.getView().byId("idin").setValueState("Warning");
-        this.getView().byId("idpono").setValueState("Warning");
-        this.getView().byId("idporder").setValueState("Warning");
+				for (var i in ic.getItems()) {
+					ic.getItems()[i].setVisible(true);
+				}
+			}
+		},
 
-        this.getView().byId("idin").setValueStateText("Enter Input Value");
-        this.getView().byId("idpono").setValueStateText("Enter PO Number");
-        this.getView().byId("idporder").setValueStateText("Enter Purchase Order Value");
-      } else {
+		handleValueHelp: function () {
+			this.Dialog = sap.ui.xmlfragment("com.airbus.Zncreport.fragments.disposition", this);
+			this.Dialog.open();
 
-        for (var i in ic.getItems()) {
-          ic.getItems()[i].setVisible(true);
-        }
-      }
-    },
+		},
+		onClose: function (oEvent) {
+			this.Dialog.close();
+			this.Dialog.destroy();
+		},
 
-    handleValueHelp: function () {
-      this.Dialog = sap.ui.xmlfragment("com.airbus.Zncreport.fragments.disposition", this);
-      this.Dialog.open();
+		handleValueHelp1: function (oEvent) {
+			/*	var oDialog1 = sap.ui.xmlfragment("com.airbus.Zncreport.fragments.disposition",
+					this);
+				oDialog1.open();*/
+			this._getDialog().open();
+		},
+		_getDialog: function () {
+			if (!this._oDialog) {
+				this._oDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.controller.fragments.disposition");
+				this.getView().addDependent(this._oDialog);
+			}
+			return this._oDialog;
+		},
+		onRadioSelectLocation: function (oEvent) {
+			var rsel = oEvent.getSource().getSelectedKey();
+			this.getView().byId("idFuselage").setVisible(false);
+			this.getView().byId("idWing").setVisible(false);
+			this.getView().byId("idVertical").setVisible(false);
+			this.getView().byId("idRudder").setVisible(false);
+			this.getView().byId("idHorizontal").setVisible(false);
+			this.getView().byId("idPlyon").setVisible(false);
+			this.getView().byId("idOthers").setVisible(false);
+			switch (rsel) {
 
-    },
-    onClose: function (oEvent) {
-      this.Dialog.close();
-      this.Dialog.destroy();
-    },
+			case "wing":
+				this.getView().byId("idWing").setVisible(true);
+				break;
+			case "vertical":
+				this.getView().byId("idVertical").setVisible(true);
+				break;
+			case "rudder":
+				this.getView().byId("idRudder").setVisible(true);
+				break;
+			case "horiz":
+				this.getView().byId("idHorizontal").setVisible(true);
+				break;
+			case "pylon":
+				this.getView().byId("idPlyon").setVisible(true);
+				break;
+			case "others":
+				this.getView().byId("idOthers").setVisible(true);
+				break;
+			default:
+				this.getView().byId("idFuselage").setVisible(true);
+			}
 
-    handleValueHelp1: function (oEvent) {
-      /*  var oDialog1 = sap.ui.xmlfragment("com.airbus.Zncreport.fragments.disposition",
-          this);
-        oDialog1.open();*/
-      this._getDialog().open();
-    },
-    _getDialog: function () {
-      if (!this._oDialog) {
-        this._oDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.controller.fragments.disposition");
-        this.getView().addDependent(this._oDialog);
-      }
-      return this._oDialog;
-    },
-    onRadioSelectLocation: function (oEvent) {
-      var rsel = oEvent.getSource().getSelectedKey();
-      this.getView().byId("idFuselage").setVisible(false);
-      this.getView().byId("idWing").setVisible(false);
-      this.getView().byId("idVertical").setVisible(false);
-      this.getView().byId("idRudder").setVisible(false);
-      this.getView().byId("idHorizontal").setVisible(false);
-      this.getView().byId("idPlyon").setVisible(false);
-      this.getView().byId("idOthers").setVisible(false);
-      switch (rsel) {
+		}
 
-      case "wing":
-        this.getView().byId("idWing").setVisible(true);
-        break;
-      case "vertical":
-        this.getView().byId("idVertical").setVisible(true);
-        break;
-      case "rudder":
-        this.getView().byId("idRudder").setVisible(true);
-        break;
-      case "horiz":
-        this.getView().byId("idHorizontal").setVisible(true);
-        break;
-      case "pylon":
-        this.getView().byId("idPlyon").setVisible(true);
-        break;
-      case "others":
-        this.getView().byId("idOthers").setVisible(true);
-        break;
-      default:
-        this.getView().byId("idFuselage").setVisible(true);
-      }
+		/**
+		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
+		 * (NOT before the first rendering! onInit() is used for that one!).
+		 * @memberOf com.airbus.ZQM_NCR.view.Ncheader
+		 */
+		//	onBeforeRendering: function() {
+		//
+		//	},
 
-    }
+		/**
+		 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
+		 * This hook is the same one that SAPUI5 controls get after being rendered.
+		 * @memberOf com.airbus.ZQM_NCR.view.Ncheader
+		 */
+		//	onAfterRendering: function() {
+		//
+		//	},
 
-    /**
-     * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
-     * (NOT before the first rendering! onInit() is used for that one!).
-     * @memberOf com.airbus.ZQM_NCR.view.Ncheader
-     */
-    //  onBeforeRendering: function() {
-    //
-    //  },
+		/**
+		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
+		 * @memberOf com.airbus.ZQM_NCR.view.Ncheader
+		 */
+		//	onExit: function() {
+		//
+		//	}
 
-    /**
-     * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
-     * This hook is the same one that SAPUI5 controls get after being rendered.
-     * @memberOf com.airbus.ZQM_NCR.view.Ncheader
-     */
-    //  onAfterRendering: function() {
-    //
-    //  },
-
-    /**
-     * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
-     * @memberOf com.airbus.ZQM_NCR.view.Ncheader
-     */
-    //  onExit: function() {
-    //
-    //  }
-
-  });
+	});
 
 });
