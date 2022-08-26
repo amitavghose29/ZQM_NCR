@@ -77,16 +77,17 @@ sap.ui.define([
 		onSearch: function () {
 			var data1 = sap.ui.getCore().byId("idPartNo").getValue(); //"A220-LP-00";
 			var oFilter = [];
+			var sResponsivePaddingClasses = "sapUiResponsivePadding--header sapUiResponsivePadding--content sapUiResponsivePadding--footer";
 			oFilter.push(new Filter("Matnr", FilterOperator.Contains, data1));
 			//	oFilter.push(new Filter("Matnr", FilterOperator.Contains, "A220-LP-00"));
-
+            var data =[] ;
 			var suboModel = new sap.ui.model.json.JSONModel();
 			//	var oDataModel1 = this.getOwnerComponent().getModel();
 			var oDataModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZQM_NC_MS_SRV", true);
 			oDataModel.read("/Order_DetailsSet?$filter=Matnr eq '" + data1 + "'", {
 				//	filters: [new Filter("Matnr", FilterOperator.Contains, data1)],
 				success: function (oData, oResult) {
-					var data = oData.results;
+					data = oData.results;
 					suboModel.setData(data);
 					sap.ui.getCore().byId("idProductsTable").setModel(suboModel);
 					sap.ui.core.BusyIndicator.hide();
@@ -95,6 +96,30 @@ sap.ui.define([
 					sap.ui.core.BusyIndicator.hide();
 				}
 			});
+			if(data.length==0){
+				MessageBox.warning(
+						"Do you want to specify a Partner Code for this Part?",
+						{
+							icon: MessageBox.Icon.WARNING,
+							title: "No matching order found",
+							actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+							emphasizedAction: MessageBox.Action.OK,
+							initialFocus: MessageBox.Action.CANCEL,
+							styleClass: sResponsivePaddingClasses,
+							onClose: function(sAction)	{
+								if(sAction== MessageBox.Action.OK){
+									var doSomething ="Inside Ok";
+								}
+                                if(sAction== MessageBox.Action.CANCEL){
+                                	var doSomething ="Inside Cancel";
+									
+								}
+								
+							}					
+
+						}
+					);
+			}
 
 		},
 		
