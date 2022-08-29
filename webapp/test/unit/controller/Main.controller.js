@@ -1,7 +1,7 @@
 /*global QUnit*/
 
 sap.ui.define([
-	"comairbus/ZQM_NCR/controller/Main.controller"
+	"com/airbus/ZQM_NCR/controller/Main.controller"
 ], function (Controller) {
 	"use strict";
 

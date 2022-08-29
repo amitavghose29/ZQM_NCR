@@ -7,7 +7,7 @@ sap.ui.define([
 
 	Opa5.extendConfig({
 		arrangements: new Startup(),
-		viewNamespace: "com.airbus.ZQMNCR.view.",
+		viewNamespace: "com.airbus.ZQM_NCR.view.",
 		autoWait: true
 	});
 });

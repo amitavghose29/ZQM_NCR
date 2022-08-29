@@ -51,7 +51,7 @@ sap.ui.define([
 				"adapter": {
 					"config": {
 						"inbounds": {
-							"comairbusZQMNCRzqmncr-display": {
+							"comairbusZQMNCR-display": {
 								"semanticObject": "comairbusZQMNCR",
 								"action": "display",
 								"description": "QM NCR Application",
@@ -61,8 +61,8 @@ sap.ui.define([
 								},
 								"resolutionResult": {
 									"applicationType": "SAPUI5",
-									"additionalInformation": "SAPUI5.Component=com.airbus.ZQMNCR",
-									"url": sap.ui.require.toUrl("com/airbus/ZQMNCR")
+									"additionalInformation": "SAPUI5.Component=com.airbus.ZQM_NCR",
+									"url": sap.ui.require.toUrl("com/airbus/ZQM_NCR")
 								}
 							}
 						}

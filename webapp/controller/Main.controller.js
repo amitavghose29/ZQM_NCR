@@ -11,7 +11,7 @@ sap.ui.define([
 
 			var that = this;
 			var sComponentId = sap.ui.core.Component.getOwnerIdFor(this.getView());
-			var oStartUpParameters = sap.ui.component(sComponentId).getComponentData().startupParameters;
+			/**var oStartUpParameters = sap.ui.component(sComponentId).getComponentData().startupParameters;
 			var oRole=oStartUpParameters.ROLE[0];
 			if((oRole=="Quality") || (oRole=="Quality Administrator") || (oRole=="Production")  ){
 				this.getView().byId("idncr").setSelectedKey("ESTANARD");
@@ -20,7 +20,7 @@ sap.ui.define([
 			}else if(oRole=="Supplier"){
 				this.getView().byId("idncr").setSelectedKey("ESUPPLIER");
 				this.getView().byId("idlinksubc").setSelectedKey("000002");
-			}
+			}**/
 		//	sap.ui.core.BusyIndicator.show();
 			var oModel = new sap.ui.model.json.JSONModel();
 			var oDataModel = this.getOwnerComponent().getModel();
