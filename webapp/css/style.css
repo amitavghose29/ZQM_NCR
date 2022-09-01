@@ -52,7 +52,7 @@
 }
 
 
-[aria-selected="true"] {
+/* [aria-selected="true"] {
     display: inline-block;
     max-width: 100%;
     overflow: hidden;
@@ -61,7 +61,7 @@
     font-weight: bold !important;
     font-color: white;
     background-color: #E2F0FE;
-}
+} */
 
 /*sapMIBar.sapMHeader-CTX {
 &nbsp;&nbsp;&nbsp;
@@ -191,3 +191,8 @@ sapUiFormContainerTitle>.sapUiFormTitleH1,
 /*.sapUiBlockLayoutBackgroundDashboard:not(.sapUiBlockLayoutSizeS) .sapUiBlockLayoutRow:last-of-type .sapUiBlockCellContent {
     background-color: skyblue;
 }*/
+
+.vhdialogstyleclass {
+    min-width: 20rem;
+    width: 600px !important;
+}

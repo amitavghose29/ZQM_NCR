@@ -1,0 +1,18 @@
+<core:FragmentDefinition
+	xmlns="sap.ui.comp.valuehelpdialog"
+	xmlns:core="sap.ui.core" 
+    xmlns:fb="sap.ui.comp.filterbar" 
+    xmlns:m="sap.m">
+	<ValueHelpDialog class="vhdialogstyleclass"
+		title="Serial No"
+		ok=".onValueHelpSNOkPress"
+		cancel=".onValueHelpSNCancelPress"
+		afterClose=".onValueHelpSNAfterClose"
+		key="ProductId" descriptionKey="ProductId" 
+	>
+        <filterBar>
+			<fb:FilterBar advancedMode="true" search="onFilterBarSearch">
+			</fb:FilterBar>
+		</filterBar>
+	</ValueHelpDialog>
+</core:FragmentDefinition>

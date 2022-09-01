@@ -35,8 +35,6 @@
 					</ColumnListItem>
 				</items>
 			</Table>
-			<!--	</f:content>-->
-			<!--</f:DynamicPage>-->
 		</VBox>
 		<endButton>
 			<Button text="Ok" press="onOkUserPopup"/>

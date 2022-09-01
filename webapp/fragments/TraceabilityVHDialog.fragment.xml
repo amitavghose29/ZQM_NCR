@@ -1,0 +1,19 @@
+<core:FragmentDefinition
+	xmlns="sap.ui.comp.valuehelpdialog"
+	xmlns:core="sap.ui.core" 
+    xmlns:fb="sap.ui.comp.filterbar" 
+    xmlns:m="sap.m">
+	<ValueHelpDialog class="vhdialogstyleclass"
+		title="Traceability No"
+		ok=".onValueHelpTNOkPress"
+		cancel=".onValueHelpTNCancelPress"
+		afterClose=".onValueHelpTNAfterClose"
+		key="ProductId"
+		descriptionKey="Name"       
+	>
+        <filterBar>
+			<fb:FilterBar advancedMode="true" search="onFilterBarSearch">
+			</fb:FilterBar>
+		</filterBar>
+	</ValueHelpDialog>
+</core:FragmentDefinition>

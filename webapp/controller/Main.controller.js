@@ -22,19 +22,19 @@ sap.ui.define([
 				this.getView().byId("idlinksubc").setSelectedKey("000002");
 			}**/
 		//	sap.ui.core.BusyIndicator.show();
-			var oModel = new sap.ui.model.json.JSONModel();
-			var oDataModel = this.getOwnerComponent().getModel();
-			oDataModel.read("/Area_SOSet()", {
-				success: function (oData, oResult) {
-					var data = oData.results;
-					oModel.setData(data);
-					that.getView().setModel(oModel, "userdetails");
-					sap.ui.core.BusyIndicator.hide();
-				},
-				error: function (oError) {
-					sap.ui.core.BusyIndicator.hide();
-				}
-			});
+			// var oModel = new sap.ui.model.json.JSONModel();
+			// var oDataModel = this.getOwnerComponent().getModel();
+			// oDataModel.read("/Area_SOSet()", {
+			// 	success: function (oData, oResult) {
+			// 		var data = oData.results;
+			// 		oModel.setData(data);
+			// 		that.getView().setModel(oModel, "userdetails");
+			// 		sap.ui.core.BusyIndicator.hide();
+			// 	},
+			// 	error: function (oError) {
+			// 		sap.ui.core.BusyIndicator.hide();
+			// 	}
+			// });
 		},
 		onRadioSelect: function () {
 			var ncr = this.getView().byId("rbg1").getSelectedButton().getText();

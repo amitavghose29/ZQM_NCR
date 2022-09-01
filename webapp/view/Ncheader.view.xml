@@ -93,6 +93,13 @@
 														<Input value="79000-750-002-29780" width="230px" showValueHelp="true"/>
 														<Label text="Part Description"/>
 														<ObjectStatus text="Hose Assembly" state="Information"/>
+                                                        <Label text="Serial No"/>
+                                                        <MultiInput id="idMNInputSN" showValueHelp="true" valueHelpRequest=".onOpenVHSerNo" placeholder="Component Serial No." width="230px">
+                                                            <!-- <core:Item key="{ProductId}" text="{Name}" /> -->
+                                                        </MultiInput>
+                                                        <Label text="Traceability No"/>
+                                                        <MultiInput id="idMNInputTN" showValueHelp="true" valueHelpRequest=".onOpenVHTrcNo" placeholder="Traceability No." width="230px">
+                                                        </MultiInput>
 														<!--<Label/>-->
 														<!--<Input id="idInputSN" change="onChangeSN" placeholder="Component Serial No."/>-->
 														<!--<Input placeholder="Traceability No."/>-->
@@ -110,17 +117,16 @@
 														<!--</List>-->
 													</f:content>
 												</f:SimpleForm>
-												<FlexBox direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Center">
-													<!--<HBox justifyContent="Center">-->
+												<!-- <FlexBox direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Center">
 													<VBox class="sapUiSizeCompact sapUiTinyMarginBegin sapUiTinyMarginEnd">
-														<!--<List width="auto" id="list" itemPress="onListItemPress" mode="Delete" delete="handleDelete" enableBusyIndicator="true" growing="true" items="{/}">-->
-														<!--	<StandardListItem title="{SN}"/>-->
-														<!--</List>-->
+														<List width="auto" id="list" itemPress="onListItemPress" mode="Delete" delete="handleDelete" enableBusyIndicator="true" growing="true" items="{/}">
+															<StandardListItem title="{SN}"/>
+														</List>
 														<Table id="list" inset="false" width="200px" items="{/}">
 															<headerToolbar>
 																<OverflowToolbar>
 																	<content>
-																		<!--<Title text="Component Serial No." level="H2"/>-->
+																		<Title text="Component Serial No." level="H2"/>
 																		<Input id="idInputSN" valueHelpRequest="helpRequestComponent" showValueHelp="true" change="onChangeSN" placeholder="Component Serial No."/>
 																	</content>
 																</OverflowToolbar>
@@ -148,7 +154,7 @@
 															<headerToolbar>
 																<OverflowToolbar>
 																	<content>
-																		<!--<Title text="Component Serial No." level="H2"/>-->
+																		<Title text="Component Serial No." level="H2"/>
 																		<Input id="idInputSN2" valueHelpRequest="helpRequestComponent" showValueHelp="true" change="onChangeSN" placeholder="Traceability No."/>
 																	</content>
 																</OverflowToolbar>
@@ -170,13 +176,13 @@
 																</ColumnListItem>
 															</items>
 														</Table>
-														<!--	<Input showValueHelp="true" placeholder="Traceability No."/>
+														<Input showValueHelp="true" placeholder="Traceability No."/>
 														<List width="auto" id="list1" mode="Delete" delete="handleDelete" enableBusyIndicator="true" growing="true" items="{/}">
 															<StandardListItem title="Abcd"/>
-														</List>-->
+														</List>
 													</VBox>
-													<!--</HBox>-->
-												</FlexBox>
+													
+												</FlexBox> -->
 												<f:SimpleForm editable="true" labelSpanXL="4" labelSpanL="4" title="Component Location" labelSpanM="12" labelSpanS="12"
 													adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2"
 													singleContainerFullSize="false" class="sapUiSizeCompact" labelMinWidth="1px">

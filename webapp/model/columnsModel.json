@@ -1,0 +1,8 @@
+{
+	"cols": [
+		{
+			"label": "Serial Numbers",
+			"template": "ProductId"
+		}
+	]
+}
