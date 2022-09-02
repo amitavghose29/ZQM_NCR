@@ -7,8 +7,10 @@ sap.ui.define([
     "sap/m/Token",
     "sap/m/SearchField",
     "sap/ui/model/Filter",
-	"sap/ui/model/FilterOperator"
-], function (Controller, Fragment, JSONModel, MessagePopover, MenuItem, Token, SearchField, Filter, FilterOperator) {
+	"sap/ui/model/FilterOperator",
+    "sap/m/Tokenizer",
+    "sap/m/MessageBox"
+], function (Controller, Fragment, JSONModel, MessagePopover, MenuItem, Token, SearchField, Filter, FilterOperator, Tokenizer, MessageBox) {
 	"use strict";
 
 	return Controller.extend("com.airbus.ZQM_NCR.controller.Ncheader", {
@@ -437,7 +439,7 @@ sap.ui.define([
 
 		},
 
-// Added code for initialisation, loading and associated events related to component serial number and traceability multi input fields  - Code Start
+// Added code for initialisation, loading and associated events related to component serial number multi input field  - Code Start
         onOpenVHSerNo: function(){
             var aCols = this.oColModel.getData().cols;
             this._oBasicSearchField = new SearchField({
@@ -529,7 +531,9 @@ sap.ui.define([
 		onValueHelpSNAfterClose: function () {
 			this._oValueHelpDialogSN.destroy();
 		},
+// Added code for initialisation, loading and associated events related to component serial number multi input field  - Code End
 
+// Added code for initialisation, loading and associated events related to traceability multi input field  - Code Start
         onOpenVHTrcNo: function(){
             var aCols = this.oColModel.getData().cols;
             this._oBasicSearchFieldTN = new SearchField({
@@ -577,7 +581,106 @@ sap.ui.define([
 		onValueHelpTNAfterClose: function () {
 			this._oValueHelpDialogTN.destroy();
 		},
-// Added code for initialisation, loading and associated events related to component serial number and traceability multi input fields  - Code End
+// Added code for initialisation, loading and associated events related to traceability multi input field  - Code End
+
+// Added code for Part Number field data validation  - Code Start
+        handleChangePartNo: function(){
+            var oInpPartNo = this.getView().byId("idInpPartNo"),
+                oMulInpSer = this.getView().byId("idMNInputSN"),
+                oMulInpTrc = this.getView().byId("idMNInputTN");
+
+                if(oInpPartNo.getValue() === ""){
+                    oMulInpSer.setEditable(false);
+                    oMulInpTrc.setEditable(false);
+                }else{
+                    oMulInpSer.setEditable(true);
+                    oMulInpTrc.setEditable(true);
+                }
+        },
+
+// Added code for Part Number field data validation  - Code End
+
+// Added code for Serial Number Multi Input token when the tokens aggregation changed due to a user interaction   - Code Start
+        _onTokenUpdateSN: function(oEvent) {
+			var aTokens,
+                sTokensText = "",
+                sNo,
+                i, 
+                j,
+                bFlag = true;
+
+			if (oEvent.getParameter('type') === Tokenizer.TokenUpdateType.Added) {
+				aTokens = oEvent.getParameter('addedTokens');
+
+				sTokensText = "Added tokens: ";
+                for (i = 0; i < aTokens.length; i++) {
+                    sTokensText = aTokens[i].getText();
+                    
+                    for (j = 0; j < this.oProductsModel.getData().ProductCollection.length; j++){
+                        sNo = this.oProductsModel.getData().ProductCollection[j].ProductId;
+                        if (sTokensText === sNo) {
+                            bFlag = true;
+                            break;
+                        }else{
+                            bFlag = false;
+                        }
+                    }
+                }
+
+                if(bFlag === false){
+                    var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
+			                MessageBox.information(
+				                "Serial Number not available in SAP.!",
+				                {
+					                styleClass: bCompact ? "sapUiSizeCompact" : ""
+				                }
+			                );
+                    // sap.m.MessageToast.show("Serial Number not available in SAP");
+                }
+			} 
+		},
+// Added code for Serial Number Multi Input token when the tokens aggregation changed due to a user interaction   - Code End 
+
+// Added code for Traceability Number Multi Input token when the tokens aggregation changed due to a user interaction   - Code Start
+        _onTokenUpdateTN: function(oEvent) {
+            var aTokens,
+                sTokensText = "",
+                sNo,
+                i, 
+                j,
+                bFlag = true;
+
+            if (oEvent.getParameter('type') === Tokenizer.TokenUpdateType.Added) {
+                aTokens = oEvent.getParameter('addedTokens');
+
+                sTokensText = "Added tokens: ";
+                for (i = 0; i < aTokens.length; i++) {
+                    sTokensText = aTokens[i].getText();
+                    
+                    for (j = 0; j < this.oProductsModel.getData().ProductCollection.length; j++){
+                        sNo = this.oProductsModel.getData().ProductCollection[j].ProductId;
+                        if (sTokensText === sNo) {
+                            bFlag = true;
+                            break;
+                        }else{
+                            bFlag = false;
+                        }
+                    }
+
+                    if(bFlag === false){
+                        var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
+			                MessageBox.information(
+				                "Traceability Number not available in SAP.!",
+				                {
+					                styleClass: bCompact ? "sapUiSizeCompact" : ""
+				                }
+			                );
+                        // sap.m.MessageToast.show("Traceability Number not available in SAP");
+                    }
+                }
+            } 
+        },
+// Added code for Traceability Number Multi Input token when the tokens aggregation changed due to a user interaction   - Code End 
 		/**
 		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
 		 * (NOT before the first rendering! onInit() is used for that one!).

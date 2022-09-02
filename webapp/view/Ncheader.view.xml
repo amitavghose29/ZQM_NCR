@@ -90,16 +90,20 @@
 													class="sapUiSizeCompact" labelMinWidth="1px">
 													<f:content>
 														<Label text="Part Number"/>
-														<Input value="79000-750-002-29780" width="230px" showValueHelp="true"/>
-														<Label text="Part Description"/>
+<!-- Added change event to handle the business logic - Code Start  -->                                                          
+														<Input value="79000-750-002-29780" id="idInpPartNo" width="230px" showValueHelp="true" change="handleChangePartNo"/>
+<!-- Added change event to handle the business logic - Code End  -->														
+                                                        <Label text="Part Description"/>
 														<ObjectStatus text="Hose Assembly" state="Information"/>
                                                         <Label text="Serial No"/>
-                                                        <MultiInput id="idMNInputSN" showValueHelp="true" valueHelpRequest=".onOpenVHSerNo" placeholder="Component Serial No." width="230px">
+<!-- Added MultiInput control for serial number and traceability fields  - Code Start  -->                                                       
+                                                        <MultiInput id="idMNInputSN" showValueHelp="true" valueHelpRequest=".onOpenVHSerNo" placeholder="Component Serial No." width="230px" tokenUpdate="_onTokenUpdateSN">
                                                             <!-- <core:Item key="{ProductId}" text="{Name}" /> -->
                                                         </MultiInput>
                                                         <Label text="Traceability No"/>
-                                                        <MultiInput id="idMNInputTN" showValueHelp="true" valueHelpRequest=".onOpenVHTrcNo" placeholder="Traceability No." width="230px">
+                                                        <MultiInput id="idMNInputTN" showValueHelp="true" valueHelpRequest=".onOpenVHTrcNo" placeholder="Traceability No." width="230px" tokenUpdate="_onTokenUpdateTN">
                                                         </MultiInput>
+<!-- Added MultiInput control for serial number and traceability fields  - Code End  -->
 														<!--<Label/>-->
 														<!--<Input id="idInputSN" change="onChangeSN" placeholder="Component Serial No."/>-->
 														<!--<Input placeholder="Traceability No."/>-->
