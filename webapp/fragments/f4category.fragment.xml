@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:layout="sap.ui.layout" xmlns:f="sap.f"
 	xmlns:fb="sap.ui.comp.filterbar">
-	<Dialog id="idUserHelpDialog" title="Production Order Search">
+	<Dialog id="idUserHelpDialog" title="Production Order Search" class="vhdialogPOSearchstyle">
 		<VBox class="sapUiSizeCompact">
 			<!--	<fb:FilterBar id="filterbar" reset="onReset" search="onUserSearch" useToolbar="false" showGoOnFB="true">
 				<fb:filterItems>
@@ -84,7 +84,7 @@
 					</Column>
 				</columns>
 				<items>
-					<ColumnListItem vAlign="Middle" type="Navigation" press="_configValueHelpDialogOrderPartNo">
+					<ColumnListItem vAlign="Middle" type="Active" press="_configValueHelpDialogOrderPartNo">
 						<cells>
 							<Text text="{Plant}"/>
 							<Text text="{OrderNum}"/>

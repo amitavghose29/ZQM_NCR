@@ -2,8 +2,10 @@ sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/m/MessageBox",
 	"sap/ui/model/Filter",
-	"sap/ui/model/FilterOperator"
-], function (Controller, MessageBox, Filter, FilterOperator) {
+	"sap/ui/model/FilterOperator",
+    "sap/ui/core/Fragment",
+    "sap/ui/model/json/JSONModel"
+], function (Controller, MessageBox, Filter, FilterOperator, Fragment, JSONModel) {
 	"use strict";
 
 	return Controller.extend("com.airbus.ZQM_NCR.controller.Main", {
@@ -35,6 +37,7 @@ sap.ui.define([
 			// 		sap.ui.core.BusyIndicator.hide();
 			// 	}
 			// });
+            this.oProductsModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/model/products.json");
 		},
 		onRadioSelect: function () {
 			var ncr = this.getView().byId("rbg1").getSelectedButton().getText();
@@ -107,22 +110,68 @@ sap.ui.define([
 							initialFocus: MessageBox.Action.CANCEL,
 							styleClass: sResponsivePaddingClasses,
 							onClose: function(sAction)	{
+// Added code for opening a fragment in case no matching order is found - Code Start                                 
 								if(sAction== MessageBox.Action.OK){
-									var doSomething ="Inside Ok";
+									if (!this._oDialog) {
+                                        Fragment.load({
+                                            name: "com.airbus.ZQM_NCR.fragments.selectPartnerCode",
+                                            controller: this
+                                        }).then(function(oDialog){
+                                            this._oDialog = oDialog;
+                                            this._oDialog.setModel(this.oProductsModel);
+                                            this._oDialog.open();
+                                        }.bind(this));
+                                    } else {
+                                        this._oDialog.open();
+                                    }
+                                    
 								}
+// Added code for opening a fragment in case no matching order is found - Code End                                
                                 if(sAction== MessageBox.Action.CANCEL){
                                 	var doSomething ="Inside Cancel";
 									
 								}
 								
-							}					
+							}.bind(this)				
 
 						}
 					);
 			}
-
 		},
-		
+
+// Added code for handling search functionality for Select Partner Code dialog - Code Start
+        handleSearchPartnerCode: function(oEvent) {
+			var sValue = oEvent.getParameter("value");
+			var oFilter = new Filter("Name", sap.ui.model.FilterOperator.Contains, sValue);
+			var oBinding = oEvent.getSource().getBinding("items");
+			oBinding.filter([oFilter]);
+		},
+// Added code for handling search functionality for Select Partner Code dialog - Code End
+
+// Added code for handling search selection of line item in Select Partner Code dialog - Code Start
+        handleConfirmPartnerCode: function(oEvent){
+           var oSelContxt = oEvent.getParameters().selectedItem.getBindingContext().getProperty("Name");
+               sap.m.MessageToast.show("The product code chosen is " + oSelContxt);
+            var oData = [];
+                oData.push({
+                    Plant: "X001",
+                    OrderNum: "400156",
+                    Type: "X"
+                });
+           
+            var oModel = new JSONModel(oData);
+            this.Dialog.getContent()[0].getItems()[1].setModel(oModel);
+        },
+// Added code for handling search selection of line item in Select Partner Code dialog - Code End
+
+// Added code to re-bind the items of Select Partner Code - Code Start
+        handleClose: function(oEvent) {
+        // reset the filter
+            var oBinding = oEvent.getSource().getBinding("items");
+            oBinding.filter([]);
+        },
+// Added code to re-bind the items of Select Partner Code - Code End
+
 		onChngSubCat: function(){
 			
 			var oSubCat= this.getView().byId("idlinksubc").getSelectedKey();
@@ -274,9 +323,10 @@ sap.ui.define([
 			}
 
 			oInput.setValue(oSelectedItem);
-			this.Dialog.destroy();
+// Fixed error related to getting open state property of dialog - Code Start            
 			this.Dialog.close();
-
+            this.Dialog.destroy();
+// Fixed error related to getting open state property of dialog - Code End 
 		},
 		onSearchOrder: function (oEvent) {
 			var sValue = oEvent.getParameter("value");
@@ -301,13 +351,21 @@ sap.ui.define([
 		},
 
 		onCloseUserPopup: function () {
-			this.Dialog.destroy();
-			this.Dialog.close();
+// Fixed error related to getting open state property of dialog - Code Start 
+            this.Dialog.close();
+            this.Dialog.destroy();
+// Fixed error related to getting open state property of dialog - Code End
 
+// Re-setting the input field value - Code Start 
+            this.getView().byId("idsubcno").setValue();
+// Re-setting the input field value - Code Start 
 		},
+
 		onCloseUserPopup1: function () {
-			this.Dialog.close();
-			this.Dialog.destroy();
+// Fixed error related to getting open state property of dialog - Code Start 
+            this.Dialog.close();
+            this.Dialog.destroy();
+// Fixed error related to getting open state property of dialog - Code End 
 		},
 		onPressNext: function () {
 			var idsubvalue = this.getView().byId("idsubcno").getValue();

@@ -14,7 +14,6 @@
 .sapUiForm .sapUiFormTitle {
     font-weight: normal;
     color: white !important;
-&nbsp;&nbsp;&nbsp;&nbsp;
 }
 
 .sapUiBlockLayoutSizeXL:not(.sapUiBlockLayoutKeepFontSize) .sapUiBlockCellContent {
@@ -22,7 +21,7 @@
     font-size: 1rem;
 }
 /*.sapUiBlockCellContent {*/
-&nbsp;&nbsp;&nbsp;
+
 /*    background-color: #E2F0FE !important;*/
 /*}*/
 .sapUiBlockLayoutSizeXL:not(.sapUiBlockLayoutKeepFontSize) .sapUiBlockCellContent {
@@ -196,5 +195,10 @@ sapUiFormContainerTitle>.sapUiFormTitleH1,
 .vhdialogstyleclass {
     min-width: 20rem;
     width: 600px !important;
+}
+
+.vhdialogPOSearchstyle {
+    min-width: 40rem;
+    width: 1000px !important;
 }
 /* Added custom class for styling the width of value help dialog opened on click of serial no and traceability multi input fields - Code End*/
