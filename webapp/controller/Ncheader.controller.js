@@ -592,6 +592,11 @@ sap.ui.define([
                 if(oInpPartNo.getValue() === ""){
                     oMulInpSer.setEditable(false);
                     oMulInpTrc.setEditable(false);
+                    if(oMulInpSer.getTokens()){
+                        oMulInpSer.removeAllTokens();
+                    }else if(oMulInpTrc.getTokens()){
+                        oMulInpTrc.removeAllTokens();
+                    }
                 }else{
                     oMulInpSer.setEditable(true);
                     oMulInpTrc.setEditable(true);

@@ -112,17 +112,17 @@ sap.ui.define([
 							onClose: function(sAction)	{
 // Added code for opening a fragment in case no matching order is found - Code Start                                 
 								if(sAction== MessageBox.Action.OK){
-									if (!this._oDialog) {
+									if (!this._oSelPartDialog) {
                                         Fragment.load({
                                             name: "com.airbus.ZQM_NCR.fragments.selectPartnerCode",
                                             controller: this
                                         }).then(function(oDialog){
-                                            this._oDialog = oDialog;
-                                            this._oDialog.setModel(this.oProductsModel);
-                                            this._oDialog.open();
+                                            this._oSelPartDialog = oDialog;
+                                            this._oSelPartDialog.setModel(this.oProductsModel);
+                                            this._oSelPartDialog.open();
                                         }.bind(this));
                                     } else {
-                                        this._oDialog.open();
+                                        this._oSelPartDialog.open();
                                     }
                                     
 								}
