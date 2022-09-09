@@ -1359,35 +1359,35 @@
 													<f:content>
 														<!--<core:Title text=" Purchase Part Information"/>-->
 														<Label text="GR#"/>
-														<Input width="230px"/>
+														<Input width="230px" required = "true" id="idPurInfGrip"/>
 														<Label text="GR Qty"/>
-														<Input width="230px"/>
+														<Input width="230px" required = "true" id="idPurInfGrQtyip"/>
 														<Label text="Purchase Order#"/>
-														<Input width="230px"/>
+														<Input width="230px" required = "true" id="idPurInfPurOrdip"/>
 														<Label text="PO Line Number"/>
-														<Input width="230px"/>
+														<Input width="230px" required = "true" id="idPurInfPolnip"/>
 														<Label text="PO Date"/>
-														<DatePicker width="230px"/>
+														<DatePicker width="230px" required = "true" id="idPurInfPoDtdp"/>
 														<Label text="Supplier Name"/>
-														<Input width="230px"/>
+														<Input width="230px" required = "true" id="idPurInfSupNmip"/>
 														<Label text="Supplier SAP Code"/>
-														<Input width="230px"/>
+														<Input width="230px" required = "true" id="idPurInfSupSCip"/>
 														<Label text="Supplier Part Number"/>
-														<Input width="230px"/>
+														<Input width="230px" required = "true" id="idPurInfSupPnip"/>
 														<Label text="MRP Controller"/>
-														<Input width="230px"/>
+														<Input width="230px" required = "true" id="idPurInfMrpcrip"/>
 														<Label text="MRP Controller Name"/>
-														<Input width="230px"/>
+														<Input width="230px" required = "true" id="idPurInfMrpcrnmip"/>
 														<Label text="Way Bill No."/>
-														<Input width="230px"/>
+														<Input width="230px" required = "true" id="idPurInfWBNip"/>
 														<Label text="Packaging Slip"/>
-														<Input width="230px"/>
+														<Input width="230px" required = "true" id="idPurInfPcgslip"/>
 														<Label text="2nd Drop Shop"/>
 														<CheckBox/>
 														<Label text="Way Bill No."/>
-														<Input width="230px"/>
+														<Input width="230px" required = "true" id="idPurInfWBN2ip"/>
 														<Label text="Packing Slip"/>
-														<Input width="230px"/>
+														<Input width="230px" required = "true" id="idPurInfPcgsl2ip"/>
 													</f:content>
 												</f:SimpleForm>
 											</l:BlockLayoutCell>
@@ -1397,13 +1397,13 @@
 													singleContainerFullSize="false" class="sapUiSizeCompact" labelMinWidth="1px">
 													<f:content>
 														<Label text="PO#"/>
-														<Input width="230px" liveChange="onCssChange"/>
+														<Input width="230px" liveChange="onCssChange" required = "true" id="idPurInfPOip"/>
 														<Label text="Outbound Delivery"/>
-														<Input width="230px" liveChange="onCssChange"/>
+														<Input width="230px" liveChange="onCssChange" required = "true" id="idPurInfOutDelip"/>
 														<Label text="RMA"/>
-														<Input width="230px" liveChange="onCssChange"/>
+														<Input width="230px" liveChange="onCssChange" required = "true" id="idPurInfRMAip"/>
 														<Label text="Release Note"/>
-														<Input width="230px" liveChange="onCssChange"/>
+														<Input width="230px" liveChange="onCssChange" required = "true" id="idPurInfRelNoteip"/>
 													</f:content>
 												</f:SimpleForm>
 											</l:BlockLayoutCell>

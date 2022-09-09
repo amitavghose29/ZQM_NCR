@@ -300,14 +300,144 @@ sap.ui.define([
 		onNcrPressSave: function () {
 
 			//	this.getView().byId("ncrcreatecopy").setVisible(false);
-			this.getView().byId("SimpleFormChange480_12120Dual").setVisible(false);
-			this.getView().byId("idIconTabBarNoIcons").setVisible(true);
-			this.getView().byId("idsave").setVisible(true);
-			this.getView().byId("idcancel").setVisible(true);
-			this.getView().byId("idncrsave").setVisible(false);
-			this.getView().byId("idncrcancel").setVisible(false);
-			this.getView().byId("page").setTitle("NC F721000007");
-			this.getView().byId("idheader").setVisible(true);
+			//this.getView().byId("SimpleFormChange480_12120Dual").setVisible("false");
+			//this.getView().byId("idIconTabBarNoIcons").setVisible(true);
+			//this.getView().byId("idsave").setVisible(true);
+			//this.getView().byId("idcancel").setVisible(true);
+			//this.getView().byId("idncrsave").setVisible(false);
+			//this.getView().byId("idncrcancel").setVisible(false);
+			//this.getView().byId("page").setTitle("NC F721000007");
+			//this.getView().byId("idheader").setVisible(true);
+            
+            //Manadatory Validations for Prchase info input fields - Added by Venkata 09.09.2022
+
+            let Gr = this.getView().byId("idPurInfGrip").getValue();
+            if(Gr==="")
+            {
+                this.getView().byId("idPurInfGrip").setValueState("Error");
+                this.getView().byId("idPurInfGrip").setValueStateText("Please Enetre GR# Value");
+            }
+
+            var GrQty = this.getView().byId("idPurInfGrQtyip").getValue();
+            if(GrQty==="")
+            {
+                this.getView().byId("idPurInfGrQtyip").setValueState("Error");
+                this.getView().byId("idPurInfGrQtyip").setValueStateText("Please Enetre GR Qty Value");
+            }
+
+            var PurchOrd = this.getView().byId("idPurInfPurOrdip").getValue();
+            if(PurchOrd ==="")
+            {
+                this.getView().byId("idPurInfPurOrdip").setValueState("Error");
+                this.getView().byId("idPurInfPurOrdip").setValueStateText("Please enter Purchase Order Value");
+            }
+
+            var PurchOrdLin = this.getView().byId("idPurInfPolnip").getValue();
+            if(PurchOrdLin==="")
+            {
+                this.getView().byId("idPurInfPolnip").setValueState("Error");
+                this.getView().byId("idPurInfPolnip").setValueStateText("Please Enter PO Line Number");
+
+            }
+
+            var Podt = this.getView().byId("idPurInfPoDtdp").getValue();
+            if(Podt==="")
+            {
+                this.getView().byId("idPurInfPoDtdp").setValueState("Error");
+                this.getView().byId("idPurInfPoDtdp").setValueStateText("Please Enter PO Date");
+            }
+
+            var SuppName = this.getView().byId("idPurInfSupNmip").getValue();
+            if(SuppName ==="")
+            {
+                this.getView().byId("idPurInfSupNmip").setValueState("Error");
+                this.getView().byId("idPurInfSupNmip").setValueStateText("Please Enter Supplier Name");
+            }
+
+            var Suppsapcode = this.getView().byId("idPurInfSupSCip").getValue();
+            if(Suppsapcode ==="")
+            {
+                this.getView().byId("idPurInfSupSCip").setValueState("Error");
+                this.getView().byId("idPurInfSupSCip").setValueStateText("Please Enter Supplier SAP Code");
+            }
+
+            var Supppartnum = this.getView().byId("idPurInfSupPnip").getValue();
+            if(Supppartnum==="")
+            {
+                this.getView().byId("idPurInfSupPnip").setValueState("Error");
+                this.getView().byId("idPurInfSupPnip").setValueStateText("Please Enter Supplier Part Number");
+            }
+
+            var MRPController = this.getView().byId("idPurInfMrpcrip").getValue();
+            if(MRPController==="")
+            {
+                this.getView().byId("idPurInfMrpcrip").setValueState("Error");
+                this.getView().byId("idPurInfMrpcrip").setValueStateText("Please Enter MRP Controller");
+            }
+
+            var MRPControllerName = this.getView().byId("idPurInfMrpcrnmip").getValue();
+            if(MRPControllerName==="")
+            {
+                this.getView().byId("idPurInfMrpcrnmip").setValueState("Error");
+                this.getView().byId("idPurInfMrpcrnmip").setValueStateText("Please Enter MRP Controller Name");
+            }
+
+            var WBN = this.getView().byId("idPurInfWBNip").getValue();
+            if(WBN==="")
+            {
+                this.getView().byId("idPurInfWBNip").setValueState("Error");
+                this.getView().byId("idPurInfWBNip").setValueStateText("Please Enter Way Bill No.");
+            }
+
+            var PckgSlp = this.getView().byId("idPurInfPcgslip").getValue();
+            if(PckgSlp==="")
+            {
+                this.getView().byId("idPurInfPcgslip").setValueState("Error");
+                this.getView().byId("idPurInfPcgslip").setValueStateText("Please Enter Packaging Slip Value");
+            }
+
+            var WBN2 = this.getView().byId("idPurInfWBN2ip").getValue();
+            if(WBN2==="")
+            {
+                this.getView().byId("idPurInfWBN2ip").setValueState("Error");
+                this.getView().byId("idPurInfWBN2ip").setValueStateText("Please Enter Way Bill No.");
+            }
+
+            var PckgSlp2 = this.getView().byId("idPurInfPcgsl2ip").getValue();
+            if(PckgSlp2==="")
+            {
+                this.getView().byId("idPurInfPcgsl2ip").setValueState("Error");
+                this.getView().byId("idPurInfPcgsl2ip").setValueStateText("Please Enter Packaging Slip Value");
+            }
+
+            var Po = this.getView().byId("idPurInfPOip").getValue();
+            if(Po==="")
+            {
+                this.getView().byId("idPurInfPOip").setValueState("Error");
+                this.getView().byId("idPurInfPOip").setValueStateText("Please Enter PO# Value");
+            }
+
+            var OutboundDelivery = this.getView().byId("idPurInfOutDelip").getValue();
+            if(OutboundDelivery==="")
+            {
+                this.getView().byId("idPurInfOutDelip").setValueState("Error");
+                this.getView().byId("idPurInfOutDelip").setValueStateText("Please Enter Outbound Delivery Value");
+            }
+
+            var RMA = this.getView().byId("idPurInfRMAip").getValue();
+            if(RMA==="")
+            {
+                this.getView().byId("idPurInfRMAip").setValueState("Error");
+                this.getView().byId("idPurInfRMAip").setValueStateText("Please Enter RMA Value");
+            }
+
+            var RelNot = this.getView().byId("idPurInfRelNoteip").getValue();
+            if(RelNot==="")
+            {
+                this.getView().byId("idPurInfRelNoteip").setValueState("Error");
+                this.getView().byId("idPurInfRelNoteip").setValueStateText("Please Enter Release Note");
+            }
+
 		},
 		onNcrchange: function () {
 			var ncr = this.getView().byId("idncr").getSelectedKey();
