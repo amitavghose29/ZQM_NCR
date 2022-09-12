@@ -114,6 +114,12 @@
 				"settings": {},
 				"preload": false,
 				"uri": "localjson/grdata.json"
+			},
+            "suppsapcode": {
+				"type": "sap.ui.model.json.JSONModel",
+				"settings": {},
+				"preload": false,
+				"uri": "localjson/suppsapcode.json"
 			}
 		},
 		"services": {

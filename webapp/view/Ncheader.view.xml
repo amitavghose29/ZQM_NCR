@@ -1359,19 +1359,25 @@
 													<f:content>
 														<!--<core:Title text=" Purchase Part Information"/>-->
 														<Label text="GR#"/>
-														<Input width="230px" required = "true" id="idPurInfGrip"/>
-														<Label text="GR Qty"/>
+                                      <!-- Added value help for GR Input -Code Start-->                  
+														<Input width="230px" required = "true" id="idPurInfGrip" valueHelpRequest="onGRhelpRequest" showValueHelp="true"/>
+									  <!-- Added value help for GR Input -Code End-->					
+                                                        <Label text="GR Qty"/>
 														<Input width="230px" required = "true" id="idPurInfGrQtyip"/>
 														<Label text="Purchase Order#"/>
-														<Input width="230px" required = "true" id="idPurInfPurOrdip"/>
-														<Label text="PO Line Number"/>
+                                       <!-- Added value help for Purchase Order Input -Code Start--> 
+														<Input width="230px" required = "true" id="idPurInfPurOrdip" valueHelpRequest="onPurchOrdhelpRequest" showValueHelp="true"/>
+										<!-- Added value help for Purchase Order Input -Code End--> 				
+                                                        <Label text="PO Line Number"/>
 														<Input width="230px" required = "true" id="idPurInfPolnip"/>
 														<Label text="PO Date"/>
 														<DatePicker width="230px" required = "true" id="idPurInfPoDtdp"/>
 														<Label text="Supplier Name"/>
 														<Input width="230px" required = "true" id="idPurInfSupNmip"/>
 														<Label text="Supplier SAP Code"/>
-														<Input width="230px" required = "true" id="idPurInfSupSCip"/>
+										<!-- Added value help for Supplier SAP Code -Code Start-->				
+                                                        <Input width="230px" required = "true" id="idPurInfSupSCip" valueHelpRequest="onSuppSAPCodehelpRequest" showValueHelp="true"/>
+                                        <!-- Added value help for Supplier SAP Code -Code Start-->
 														<Label text="Supplier Part Number"/>
 														<Input width="230px" required = "true" id="idPurInfSupPnip"/>
 														<Label text="MRP Controller"/>

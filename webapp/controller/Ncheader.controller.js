@@ -309,7 +309,7 @@ sap.ui.define([
 			//this.getView().byId("page").setTitle("NC F721000007");
 			//this.getView().byId("idheader").setVisible(true);
             
-    //Manadatory Validations for Prchase info input fields - Added by Venkata 09.09.2022
+    //Manadatory Validations for Prchase info input fields - Added by Venkata 09.09.2022- Code Start
 
             let Gr = this.getView().byId("idPurInfGrip").getValue();
             if(Gr==="")
@@ -439,7 +439,7 @@ sap.ui.define([
             }
 
             
-        //Manadatory Validations for Prchase info input fields - Added by Venkata 09.09.2022
+        //Manadatory Validations for Prchase info input fields - Added by Venkata 09.09.2022 - Code End
 
 		},
 		onNcrchange: function () {
@@ -819,6 +819,70 @@ sap.ui.define([
             } 
         },
 // Added code for Traceability Number Multi Input token when the tokens aggregation changed due to a user interaction   - Code End 
+
+//Added Code for Value help for GR , Purchase Order and SAP Supplier CodeFields- Code Start
+onGRhelpRequest:function(oEvent){
+    if(!this._oGRDialog)
+    {
+        this._oGRDialog = sap.ui.xmlfragment("GRfragId","com.airbus.ZQM_NCR.fragments.GrValueHelp", this);
+        this.getView().addDependent(this._oGRDialog);
+    }
+    
+    this._oGRDialog.open();
+},
+onPurchOrdhelpRequest:function(){
+    if(!this._oPODialog)
+    {
+        this._oPODialog = sap.ui.xmlfragment("POfragId","com.airbus.ZQM_NCR.fragments.PoValueHelp", this);
+	    this.getView().addDependent(this._oPODialog);
+    }
+    
+	this._oPODialog.open();
+},
+onSuppSAPCodehelpRequest :function(){
+    if(!this._oSSCDialog)
+    {
+        this._oSSCDialog = sap.ui.xmlfragment("SSCfragId","com.airbus.ZQM_NCR.fragments.SSCValueHelp", this);
+	    this.getView().addDependent(this._oSSCDialog);
+    }
+    
+	this._oSSCDialog.open();
+},
+_confirmGRValueHelpDialog:function(oEvent){
+    var oSelectedItem = oEvent.getParameter("selectedItem"),
+    oInput = this.getView().byId("idPurInfGrip");
+    if (!oSelectedItem) {
+        oInput.resetProperty("value");
+        return;
+    }
+
+    oInput.setValue(oSelectedItem.getTitle());
+    this._oGRDialog.destroy();
+},
+_confirmPOValueHelpDialog:function(oEvent)
+{
+    var oSelectedItem = oEvent.getParameter("selectedItem"),
+    oInput = this.getView().byId("idPurInfPurOrdip");
+    if (!oSelectedItem) {
+        oInput.resetProperty("value");
+        return;
+    }
+
+    oInput.setValue(oSelectedItem.getTitle());
+    this._oPODialog.destroy();
+},
+_confirmSSCValueHelpDialog:function(oEvent){
+    var oSelectedItem = oEvent.getParameter("selectedItem"),
+    oInput = this.getView().byId("idPurInfSupSCip");
+    if (!oSelectedItem) {
+        oInput.resetProperty("value");
+        return;
+    }
+
+    oInput.setValue(oSelectedItem.getTitle());
+    this._oSSCDialog.destroy();
+}
+//Added Code for Value help for GR , Purchase Order and SAP Supplier Code Fields- Code End
 		/**
 		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
 		 * (NOT before the first rendering! onInit() is used for that one!).

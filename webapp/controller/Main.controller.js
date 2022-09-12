@@ -244,17 +244,27 @@ sap.ui.define([
 			} else {
 				
 				  if(oSubCat=="000001"){
-
-                    this._oGRDialog = sap.ui.xmlfragment("GRfragId","com.airbus.ZQM_NCR.fragments.GrValueHelp", this);
-                    this.getView().addDependent(this._oGRDialog);
+    //Added Value Help Code for GR and PO Subcategories - Code Start
+                    if(!this._oGRDialog)
+                    {
+                        this._oGRDialog = sap.ui.xmlfragment("GRfragId","com.airbus.ZQM_NCR.fragments.GrValueHelp", this);
+                        this.getView().addDependent(this._oGRDialog);
+                    }
+                   
                     this._oGRDialog.open();
 				    	
 				    }else if(oSubCat=="000002"){
-                        this._oPODialog = sap.ui.xmlfragment("POfragId","com.airbus.ZQM_NCR.fragments.PoValueHelp", this);
-						this.getView().addDependent(this._oPODialog);
+                        if(!this._oPODialog)
+                        {
+                            this._oPODialog = sap.ui.xmlfragment("POfragId","com.airbus.ZQM_NCR.fragments.PoValueHelp", this);
+                            this.getView().addDependent(this._oPODialog);
+                        }
+                        
 						this._oPODialog.open();
 				    	
-				    }else if(oSubCat=="000003"){
+				    }
+     //Added Value Help Code for GR and PO Subcategories - Code End     
+                    else if(oSubCat=="000003"){
 				    	sap.ui.core.BusyIndicator.show();
 						this.Dialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.f4category", this);
 						this.getView().addDependent(this.oDialog);
@@ -287,58 +297,27 @@ sap.ui.define([
 				
 				
 			}
-		},   
+		}, 
+        
+    //Added Value help code for Bin Area,Aircraft, GR and PO subcategories - Code Start
         onBinhelpRequest : function(){
-
-            this._oBinAreDialog = sap.ui.xmlfragment("BinfragId","com.airbus.ZQM_NCR.fragments.BinAreaValueHelp", this);
-						this.getView().addDependent(this._oBinAreDialog);
-						this._oBinAreDialog.open();
+                if(!this._oBinAreDialog)
+                {
+                    this._oBinAreDialog = sap.ui.xmlfragment("BinfragId","com.airbus.ZQM_NCR.fragments.BinAreaValueHelp", this);
+                    this.getView().addDependent(this._oBinAreDialog);
+                }
+                
+				this._oBinAreDialog.open();
             
         }, 
         onAircrafthelpRequest : function(){
-            this._oAircraftDialog = sap.ui.xmlfragment("AircraftfragId","com.airbus.ZQM_NCR.fragments.AircraftValueHelp", this);
+            if(!this._oAircraftDialog){
+                this._oAircraftDialog = sap.ui.xmlfragment("AircraftfragId","com.airbus.ZQM_NCR.fragments.AircraftValueHelp", this);
 						this.getView().addDependent(this._oAircraftDialog);
-						this._oAircraftDialog.open();
+            }
+            
+			this._oAircraftDialog.open();
         } ,  
-		_configValueHelpDialogOrder: function (oEvent) {
-			var oSelectedItem = oEvent.getParameter("selectedItem"),
-				oInput = sap.ui.getCore().byId("idPartNo");
-			//NC copy conditon
-			if (oInput == undefined) {
-				oInput = this.getView().byId("idncrnumber");
-			}
-
-			if (!oSelectedItem) {
-				oInput.resetProperty("value");
-				return;
-			}
-
-			oInput.setValue(oSelectedItem.getTitle());
-			this._oDialog.destroy();
-
-		},
-		_configValueHelpDialogOrdersubsub: function (oEvent) {
-			var oSelectedItem = oEvent.getParameter("selectedItem"),
-				oInput = this.getView().byId("idsubsubno");
-			if (!oSelectedItem) {
-				oInput.resetProperty("value");
-				return;
-			}
-
-			oInput.setValue(oSelectedItem.getTitle());
-			this._oDialogsub.destroy();
-		},
-		_configValueF4HelpDialog: function (oEvent) {
-			var oSelectedItem = oEvent.getParameter("selectedItem"),
-				oInput = this.getView().byId("idsubcno");
-			if (!oSelectedItem) {
-				oInput.resetProperty("value");
-				return;
-			}
-
-			oInput.setValue(oSelectedItem.getTitle());
-			this._oDialog.destroy();
-		},
         _confirmBinValueHelpDialog : function(oEvent){
             var oSelectedItem = oEvent.getParameter("selectedItem"),
 				oInput = this.getView().byId("idBinLoc");
@@ -384,6 +363,47 @@ sap.ui.define([
             oInput.setValue(oSelectedItem.getTitle());
             this._oPODialog.destroy();
         },
+     //Added Value help code for Bin Area,Aircraft, GR and PO subcategories - Code End
+		_configValueHelpDialogOrder: function (oEvent) {
+			var oSelectedItem = oEvent.getParameter("selectedItem"),
+				oInput = sap.ui.getCore().byId("idPartNo");
+			//NC copy conditon
+			if (oInput == undefined) {
+				oInput = this.getView().byId("idncrnumber");
+			}
+
+			if (!oSelectedItem) {
+				oInput.resetProperty("value");
+				return;
+			}
+
+			oInput.setValue(oSelectedItem.getTitle());
+			this._oDialog.destroy();
+
+		},
+		_configValueHelpDialogOrdersubsub: function (oEvent) {
+			var oSelectedItem = oEvent.getParameter("selectedItem"),
+				oInput = this.getView().byId("idsubsubno");
+			if (!oSelectedItem) {
+				oInput.resetProperty("value");
+				return;
+			}
+
+			oInput.setValue(oSelectedItem.getTitle());
+			this._oDialogsub.destroy();
+		},
+		_configValueF4HelpDialog: function (oEvent) {
+			var oSelectedItem = oEvent.getParameter("selectedItem"),
+				oInput = this.getView().byId("idsubcno");
+			if (!oSelectedItem) {
+				oInput.resetProperty("value");
+				return;
+			}
+
+			oInput.setValue(oSelectedItem.getTitle());
+			this._oDialog.destroy();
+		},
+       
 		handleCloseUserValueHelp: function (oEvent) {
 			var oSelectedItem = oEvent.getParameters().listItem.getCells()[1].getText(); //oEvent.getParameter("selectedItem"),
 			var oInput = this.getView().byId("idsubcno");
