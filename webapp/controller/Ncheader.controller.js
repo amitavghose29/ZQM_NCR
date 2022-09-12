@@ -43,6 +43,8 @@ sap.ui.define([
             this.oColModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/model/columnsModel.json");
 			this.oProductsModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/model/products.json");
 // Added code for multiinput control id initialisation and validator - Code End		
+
+            
         },
 			valueHelpRequestF4: function () {
 			this._oDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.valuehelpf4", this);
@@ -881,7 +883,20 @@ _confirmSSCValueHelpDialog:function(oEvent){
 
     oInput.setValue(oSelectedItem.getTitle());
     this._oSSCDialog.destroy();
-}
+},
+_handleGRValueHelpClose:function()
+{
+    this._oGRDialog.close();
+    this._oGRDialog.destroy();
+},
+_handlePOValueHelpClose:function(){
+    this._oPODialog.close();
+    this._oPODialog.destroy();
+},
+_handleSSCValueHelpClose:function(){
+    this._oSSCDialog.close();
+    this._oSSCDialog.destroy();
+},
 //Added Code for Value help for GR , Purchase Order and SAP Supplier Code Fields- Code End
 		/**
 		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
@@ -897,9 +912,12 @@ _confirmSSCValueHelpDialog:function(oEvent){
 		 * This hook is the same one that SAPUI5 controls get after being rendered.
 		 * @memberOf com.airbus.ZQM_NCR.view.Ncheader
 		 */
-		//	onAfterRendering: function() {
-		//
-		//	},
+	onAfterRendering: function() {
+                var oModel = this.getOwnerComponent().getModel("NCSaveModel");
+                this.getView().setModel(oModel);
+
+                
+	},
 
 		/**
 		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.

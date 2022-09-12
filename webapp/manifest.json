@@ -120,7 +120,13 @@
 				"settings": {},
 				"preload": false,
 				"uri": "localjson/suppsapcode.json"
-			}
+			},            
+            "NCSaveModel" :{
+	                "type": "sap.ui.model.json.JSONModel",
+	                "settings": {},
+	                "preload": false
+	        }
+
 		},
 		"services": {
 			"ShellUIService": {

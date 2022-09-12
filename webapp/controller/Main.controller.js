@@ -4,8 +4,11 @@ sap.ui.define([
 	"sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
     "sap/ui/core/Fragment",
-    "sap/ui/model/json/JSONModel"
-], function (Controller, MessageBox, Filter, FilterOperator, Fragment, JSONModel) {
+    "sap/ui/model/json/JSONModel",
+    "sap/ui/model/type/String",
+    "sap/m/Token",
+    "sap/m/Label"
+], function (Controller, MessageBox, Filter, FilterOperator, Fragment, JSONModel, typeString, Token, Label) {
 	"use strict";
 
 	return Controller.extend("com.airbus.ZQM_NCR.controller.Main", {
@@ -37,6 +40,8 @@ sap.ui.define([
 			// 		sap.ui.core.BusyIndicator.hide();
 			// 	}
 			// });
+            this._oInput = this.getView().byId("idncrnumber");
+            this.oColModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/model/ncrcopycolumns.json");
             this.oProductsModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/model/products.json");
 		},
 		onRadioSelect: function () {
@@ -51,10 +56,76 @@ sap.ui.define([
 			}
 		},
 		ncrCopyRequest: function () {
-			this._oDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.CopyNc", this);
-			this.getView().addDependent(this._oDialog);
-			this._oDialog.open();
+			this._oNCDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.CopyNc", this);
+			this.getView().addDependent(this._oNCDialog);
+            // Added code in NC Value Help Dialog for range support - Code Start
+            this._oNCDialog.setRangeKeyFields([
+                {
+                    label: "Serial Number",
+                    key: "ProductId",
+                    type: "string",
+                    typeInstance: new typeString({}, {
+                        maxLength: 7
+                    })
+                },
+                {
+                    label: "Aircraft",
+                    key: "ProductId",
+                    type: "string",
+                    typeInstance: new typeString({}, {
+                        maxLength: 7
+                    })
+                }
+            ]);
+// Added code in NC Value Help Dialog for range support - Code End
+
+// Added code in NC Value Help Dialog to bind table data - Code Start
+            var aCols = this.oColModel.getData().cols;
+            this._oNCDialog.getTableAsync().then(function (oNCTable) {
+                oNCTable.setModel(this.oProductsModel);
+                oNCTable.setModel(this.oColModel, "columns");
+
+                if (oNCTable.bindRows) {
+                    oNCTable.bindAggregation("rows", "/ProductCollection");
+                }
+
+                if (oNCTable.bindItems) {
+                    oNCTable.bindAggregation("items", "/ProductCollection", function () {
+                        return new ColumnListItem({
+                            cells: aCols.map(function (column) {
+                                return new Label({ text: "{" + column.template + "}" });
+                            })
+                        });
+                    });
+                }
+
+                this._oNCDialog.update();
+            }.bind(this)); 
+// Added code in NC Value Help Dialog to bind table data - Code End 
+ 		 this._oNCDialog.open();
 		},
+
+// Added code on press of line item selection in NC Value Help dialog - Code Start        
+onValueHelpOkNCPress: function (oEvent) {
+    var aTokens = oEvent.getParameter("tokens");
+
+    if (aTokens.length > 0) {
+        this._oInput.setValue(aTokens[0].getKey());
+    }
+    this._oNCDialog.close();
+},
+// Added code on press of line item selection in NC Value Help dialog - Code End
+
+// Added code on press of cancel button and closure of NC Value Help Dialog - Code Start
+    onValueHelpCancelNCPress: function () {
+        this._oNCDialog.close();
+    },
+
+    onValueHelpAfterNCClose: function () {
+        this._oNCDialog.destroy();
+    },
+// Added code on press of cancel button and closure of NC Value Help Dialog - Code End
+
 		helpRequestProduct: function () {
 
 		},
@@ -138,6 +209,14 @@ sap.ui.define([
 					);
 			}
 		},
+
+// Added code for opening value help dialog for NLP field - Code Start
+    _onValueHelpReqNLP: function(){
+        this._oNLPDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.NLP", this);
+        this.getView().addDependent(this._oNLPDialog);
+        this._oNLPDialog.open();
+    },
+// Added code for opening value help dialog for NLP field - Code End
 
 // Added code for handling search functionality for Select Partner Code dialog - Code Start
         handleSearchPartnerCode: function(oEvent) {
@@ -245,20 +324,20 @@ sap.ui.define([
 				
 				  if(oSubCat=="000001"){
     //Added Value Help Code for GR and PO Subcategories - Code Start
-                    if(!this._oGRDialog)
-                    {
+                    //if(!this._oGRDialog)
+                    //{
                         this._oGRDialog = sap.ui.xmlfragment("GRfragId","com.airbus.ZQM_NCR.fragments.GrValueHelp", this);
                         this.getView().addDependent(this._oGRDialog);
-                    }
+                    //}
                    
                     this._oGRDialog.open();
 				    	
 				    }else if(oSubCat=="000002"){
-                        if(!this._oPODialog)
-                        {
+                        //if(!this._oPODialog)
+                        //{
                             this._oPODialog = sap.ui.xmlfragment("POfragId","com.airbus.ZQM_NCR.fragments.PoValueHelp", this);
                             this.getView().addDependent(this._oPODialog);
-                        }
+                        //}
                         
 						this._oPODialog.open();
 				    	
@@ -301,20 +380,20 @@ sap.ui.define([
         
     //Added Value help code for Bin Area,Aircraft, GR and PO subcategories - Code Start
         onBinhelpRequest : function(){
-                if(!this._oBinAreDialog)
-                {
+                //if(!this._oBinAreDialog)
+                //{
                     this._oBinAreDialog = sap.ui.xmlfragment("BinfragId","com.airbus.ZQM_NCR.fragments.BinAreaValueHelp", this);
                     this.getView().addDependent(this._oBinAreDialog);
-                }
+                //}
                 
 				this._oBinAreDialog.open();
             
         }, 
         onAircrafthelpRequest : function(){
-            if(!this._oAircraftDialog){
+            //if(!this._oAircraftDialog){
                 this._oAircraftDialog = sap.ui.xmlfragment("AircraftfragId","com.airbus.ZQM_NCR.fragments.AircraftValueHelp", this);
 						this.getView().addDependent(this._oAircraftDialog);
-            }
+            //}
             
 			this._oAircraftDialog.open();
         } ,  
@@ -363,6 +442,24 @@ sap.ui.define([
             oInput.setValue(oSelectedItem.getTitle());
             this._oPODialog.destroy();
         },
+        _handleAircraftValueHelpClose:function()
+        {
+            this._oAircraftDialog.close();
+            this._oAircraftDialog.destroy();
+        },
+        _handleBinValueHelpClose:function(){
+            this._oBinAreDialog.close();
+            this._oBinAreDialog.destroy();
+        },
+        _handlePOValueHelpClose:function(){
+            this._oPODialog.close();
+            this._oPODialog.destroy();
+        },
+        _handleGRValueHelpClose:function(){
+            this._oGRDialog.close();
+            this._oGRDialog.destroy();
+        },
+
      //Added Value help code for Bin Area,Aircraft, GR and PO subcategories - Code End
 		_configValueHelpDialogOrder: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem"),
@@ -430,10 +527,10 @@ sap.ui.define([
 			var oBinding = oEvent.getParameter("itemsBinding");
 			oBinding.filter([oFilter]);
 		},
-		_handleValueHelpClose: function () {
+		/*_handleValueHelpClose: function () {
 			this._oDialog.destroy();
 			this._oDialog.close();
-		},
+		},*/
 		_handleValueHelpClosesubsub: function () {
 			//	this._oDialogsub.close();
 			this._oDialogsub.destroy();
@@ -479,6 +576,31 @@ sap.ui.define([
 				
 			}
 			// this.getOwnerComponent().getRouter().navTo("Ncheader");
+
+            var saveData = {
+                "NCType": "", //this.getView().byId("idncr").getSelectedItem().getText(),
+                "IWA": "",    //this.getView().byId("idncr").getSelectedItem().getText(),
+                "SubCat":"",  //this.getView().byId("idncr").getSelectedItem().getText(),
+                "GRN":"",
+                "PON":"",
+                "BinLoc":this.getView().byId("idBinLoc").getValue(),
+                "AcNum":this.getView().byId("idAirCraftNum").getValue()
+        };
+        var subCat= this.getView().byId("idlinksubc").getSelectedKey();
+        if (subCat !=="")
+        {
+            if(subCat=="000001"){
+                saveData.GRN = this.getView().byId("idsubcno").getValue();
+            }
+            else if(subCat=="000002"){
+                saveData.PON = this.getView().byId("idsubcno").getValue();
+            }
+        }
+
+        var jsonModel = new sap.ui.model.json.JSONModel();
+        jsonModel.setData(saveData);
+        this.getOwnerComponent().setModel(jsonModel, "NCSaveModel");
+
 
 		},
 		onOkCopy: function (){

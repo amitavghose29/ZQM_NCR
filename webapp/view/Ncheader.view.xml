@@ -1360,13 +1360,13 @@
 														<!--<core:Title text=" Purchase Part Information"/>-->
 														<Label text="GR#"/>
                                       <!-- Added value help for GR Input -Code Start-->                  
-														<Input width="230px" required = "true" id="idPurInfGrip" valueHelpRequest="onGRhelpRequest" showValueHelp="true"/>
+														<Input width="230px" required = "true" id="idPurInfGrip" valueHelpRequest="onGRhelpRequest" showValueHelp="true" value="{NCSaveModel>/GRN}"/>
 									  <!-- Added value help for GR Input -Code End-->					
                                                         <Label text="GR Qty"/>
 														<Input width="230px" required = "true" id="idPurInfGrQtyip"/>
 														<Label text="Purchase Order#"/>
                                        <!-- Added value help for Purchase Order Input -Code Start--> 
-														<Input width="230px" required = "true" id="idPurInfPurOrdip" valueHelpRequest="onPurchOrdhelpRequest" showValueHelp="true"/>
+														<Input width="230px" required = "true" id="idPurInfPurOrdip" valueHelpRequest="onPurchOrdhelpRequest" showValueHelp="true" value="{NCSaveModel>/PON}"/>
 										<!-- Added value help for Purchase Order Input -Code End--> 				
                                                         <Label text="PO Line Number"/>
 														<Input width="230px" required = "true" id="idPurInfPolnip"/>

@@ -44,13 +44,12 @@
 							</Input>
 						</fb:control>
 					</fb:FilterGroupItem>
-					<!--<fb:FilterGroupItem visibleInFilterBar="true" groupName="G2" groupTitle="Group2" name="A2" label="NLP"
-						labelTooltip="Tooltip GroupItem Example">
-						<fb:control>
-							<Input type="Text" valueHelpRequest="helpRequestProduct" showValueHelp="true"/>
-						</fb:control>
-					</fb:FilterGroupItem>-->
-				</fb:filterGroupItems>
+					<fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="C1" label="NLP">
+                        <fb:control>
+                            <Input type="Text" valueHelpRequest="_onValueHelpReqNLP" showValueHelp="true"/>
+                        </fb:control>
+                     </fb:FilterGroupItem>
+				    </fb:filterGroupItems>
 			</fb:FilterBar>
 			<Table id="idProductsTable" inset="false" items="{/}" mode="SingleSelectMaster" selectionChange="handleCloseUserValueHelp"
 				itemPress="handleCloseUserValueHelp">

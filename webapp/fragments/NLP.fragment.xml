@@ -1,0 +1,7 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+    <SelectDialog title="NLP" items="{path : '/ProductCollection'}" 
+                  confirm="_handleConfirmNLP" 
+                  cancel="_handleCancelNLP">
+        <StandardListItem title="{Name}" info="{ProductId}"/>
+    </SelectDialog>
+</core:FragmentDefinition>

@@ -1,0 +1,12 @@
+{
+    "cols": [
+        {
+            "label": "NC Number",
+            "template": "ProductId"
+        },
+        {
+            "label": "NC Description",
+            "template": "Name"
+        }
+    ]
+}
