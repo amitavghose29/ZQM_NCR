@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog  title="Select PO#" items="{podata>/podata}" liveChange="" confirm="_confirmPOValueHelpDialog"
+		cancel="_handlePOValueHelpClose">
+		<StandardListItem highlight="Information" title="{podata>Id}" info="{podata>po}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

@@ -66,9 +66,9 @@
 										</layoutData>
 									</Input>
 									<Label text="Bin Location"/>
-									<Input id="idporder" maxLength="10" width="100px" valueHelpRequest="helpRequest" showValueHelp="true" liveChange="poEnter"/>
+									<Input id="idBinLoc" maxLength="10" width="100px" valueHelpRequest="onBinhelpRequest" showValueHelp="true" liveChange="poEnter"/>
 									<Label text="Aircraft Number"/>
-									<Input id="idworkorder" width="100px" showValueHelp="true"/>
+									<Input id="idAirCraftNum" width="100px" showValueHelp="true" valueHelpRequest="onAircrafthelpRequest"/>
 								</f:content>
 							</f:SimpleForm>
 						</VBox>

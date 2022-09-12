@@ -178,9 +178,15 @@ sap.ui.define([
 			this.getView().byId("idsubsubno").setVisible(true);
 			//this.getView().byId("idsubcno")
 			//this.getView().byId("idsubsubno")
+
+            let oInput1 = this.getView().byId("idsubcno");
+                oInput1.setValue("");
+
 		    if(oSubCat=="000001"){
+                
 		    	
 		    }else if(oSubCat=="000002"){
+                
 		    	
 		    }else if(oSubCat=="000003"){
 		    	
@@ -238,8 +244,15 @@ sap.ui.define([
 			} else {
 				
 				  if(oSubCat=="000001"){
+
+                    this._oGRDialog = sap.ui.xmlfragment("GRfragId","com.airbus.ZQM_NCR.fragments.GrValueHelp", this);
+                    this.getView().addDependent(this._oGRDialog);
+                    this._oGRDialog.open();
 				    	
 				    }else if(oSubCat=="000002"){
+                        this._oPODialog = sap.ui.xmlfragment("POfragId","com.airbus.ZQM_NCR.fragments.PoValueHelp", this);
+						this.getView().addDependent(this._oPODialog);
+						this._oPODialog.open();
 				    	
 				    }else if(oSubCat=="000003"){
 				    	sap.ui.core.BusyIndicator.show();
@@ -274,7 +287,19 @@ sap.ui.define([
 				
 				
 			}
-		},
+		},   
+        onBinhelpRequest : function(){
+
+            this._oBinAreDialog = sap.ui.xmlfragment("BinfragId","com.airbus.ZQM_NCR.fragments.BinAreaValueHelp", this);
+						this.getView().addDependent(this._oBinAreDialog);
+						this._oBinAreDialog.open();
+            
+        }, 
+        onAircrafthelpRequest : function(){
+            this._oAircraftDialog = sap.ui.xmlfragment("AircraftfragId","com.airbus.ZQM_NCR.fragments.AircraftValueHelp", this);
+						this.getView().addDependent(this._oAircraftDialog);
+						this._oAircraftDialog.open();
+        } ,  
 		_configValueHelpDialogOrder: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem"),
 				oInput = sap.ui.getCore().byId("idPartNo");
@@ -314,6 +339,51 @@ sap.ui.define([
 			oInput.setValue(oSelectedItem.getTitle());
 			this._oDialog.destroy();
 		},
+        _confirmBinValueHelpDialog : function(oEvent){
+            var oSelectedItem = oEvent.getParameter("selectedItem"),
+				oInput = this.getView().byId("idBinLoc");
+			if (!oSelectedItem) {
+				oInput.resetProperty("value");
+				return;
+			}
+
+			oInput.setValue(oSelectedItem.getTitle());
+			this._oBinAreDialog.destroy();
+        },
+        _confirmAircraftValueHelpDialog:function(oEvent){
+            var oSelectedItem = oEvent.getParameter("selectedItem"),
+				oInput = this.getView().byId("idAirCraftNum");
+			if (!oSelectedItem) {
+				oInput.resetProperty("value");
+				return;
+			}
+
+			oInput.setValue(oSelectedItem.getTitle());
+			this._oAircraftDialog.destroy();
+        },
+        _confirmGRValueHelpDialog:function(oEvent){
+            var oSelectedItem = oEvent.getParameter("selectedItem"),
+            oInput = this.getView().byId("idsubcno");
+            if (!oSelectedItem) {
+                oInput.resetProperty("value");
+                return;
+            }
+
+            oInput.setValue(oSelectedItem.getTitle());
+            this._oGRDialog.destroy();
+        },
+        _confirmPOValueHelpDialog:function(oEvent)
+        {
+            var oSelectedItem = oEvent.getParameter("selectedItem"),
+            oInput = this.getView().byId("idsubcno");
+            if (!oSelectedItem) {
+                oInput.resetProperty("value");
+                return;
+            }
+
+            oInput.setValue(oSelectedItem.getTitle());
+            this._oPODialog.destroy();
+        },
 		handleCloseUserValueHelp: function (oEvent) {
 			var oSelectedItem = oEvent.getParameters().listItem.getCells()[1].getText(); //oEvent.getParameter("selectedItem"),
 			var oInput = this.getView().byId("idsubcno");

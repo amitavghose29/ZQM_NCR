@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog  title="Select Bin Area" items="{bin>/binlocations}" liveChange="" confirm="_confirmBinValueHelpDialog"
+		cancel="_handleBinValueHelpClose">
+		<StandardListItem highlight="Information" title="{bin>Id}" info="{bin>location}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

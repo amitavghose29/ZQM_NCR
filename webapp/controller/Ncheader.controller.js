@@ -309,7 +309,7 @@ sap.ui.define([
 			//this.getView().byId("page").setTitle("NC F721000007");
 			//this.getView().byId("idheader").setVisible(true);
             
-            //Manadatory Validations for Prchase info input fields - Added by Venkata 09.09.2022
+    //Manadatory Validations for Prchase info input fields - Added by Venkata 09.09.2022
 
             let Gr = this.getView().byId("idPurInfGrip").getValue();
             if(Gr==="")
@@ -437,6 +437,9 @@ sap.ui.define([
                 this.getView().byId("idPurInfRelNoteip").setValueState("Error");
                 this.getView().byId("idPurInfRelNoteip").setValueStateText("Please Enter Release Note");
             }
+
+            
+        //Manadatory Validations for Prchase info input fields - Added by Venkata 09.09.2022
 
 		},
 		onNcrchange: function () {
