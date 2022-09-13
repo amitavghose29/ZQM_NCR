@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
 	<SelectDialog  title="Select SAP Supplier Code" items="{suppsapcode>/suppsapcode}" liveChange="" confirm="_confirmSSCValueHelpDialog"
 		cancel="_handleSSCValueHelpClose">
-		<StandardListItem highlight="Information" title="{suppsapcode>Id}" info="{suppsapcode>supplier}"/>
+		<StandardListItem  title="{suppsapcode>Id}" info="{suppsapcode>supplier}"/>
 	</SelectDialog>
 </core:FragmentDefinition>

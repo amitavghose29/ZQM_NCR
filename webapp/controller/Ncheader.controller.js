@@ -824,29 +824,29 @@ sap.ui.define([
 
 //Added Code for Value help for GR , Purchase Order and SAP Supplier CodeFields- Code Start
 onGRhelpRequest:function(oEvent){
-    if(!this._oGRDialog)
-    {
+   // if(!this._oGRDialog)
+    //{
         this._oGRDialog = sap.ui.xmlfragment("GRfragId","com.airbus.ZQM_NCR.fragments.GrValueHelp", this);
         this.getView().addDependent(this._oGRDialog);
-    }
+    //}
     
     this._oGRDialog.open();
 },
 onPurchOrdhelpRequest:function(){
-    if(!this._oPODialog)
-    {
+    //if(!this._oPODialog)
+    //{
         this._oPODialog = sap.ui.xmlfragment("POfragId","com.airbus.ZQM_NCR.fragments.PoValueHelp", this);
 	    this.getView().addDependent(this._oPODialog);
-    }
+    //}
     
 	this._oPODialog.open();
 },
 onSuppSAPCodehelpRequest :function(){
-    if(!this._oSSCDialog)
-    {
+    //if(!this._oSSCDialog)
+    //{
         this._oSSCDialog = sap.ui.xmlfragment("SSCfragId","com.airbus.ZQM_NCR.fragments.SSCValueHelp", this);
 	    this.getView().addDependent(this._oSSCDialog);
-    }
+    //}
     
 	this._oSSCDialog.open();
 },
@@ -886,15 +886,15 @@ _confirmSSCValueHelpDialog:function(oEvent){
 },
 _handleGRValueHelpClose:function()
 {
-    this._oGRDialog.close();
+    //this._oGRDialog.close();
     this._oGRDialog.destroy();
 },
 _handlePOValueHelpClose:function(){
-    this._oPODialog.close();
+    //this._oPODialog.close();
     this._oPODialog.destroy();
 },
 _handleSSCValueHelpClose:function(){
-    this._oSSCDialog.close();
+    //this._oSSCDialog.close();
     this._oSSCDialog.destroy();
 },
 //Added Code for Value help for GR , Purchase Order and SAP Supplier Code Fields- Code End

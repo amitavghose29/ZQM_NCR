@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
 	<SelectDialog  title="Select GR#" items="{grdata>/grdata}" liveChange="" confirm="_confirmGRValueHelpDialog"
 		cancel="_handleGRValueHelpClose">
-		<StandardListItem highlight="Information" title="{grdata>Id}" info="{grdata>gr}"/>
+		<StandardListItem  title="{grdata>Id}" info="{grdata>gr}"/>
 	</SelectDialog>
 </core:FragmentDefinition>

@@ -444,19 +444,19 @@ onValueHelpOkNCPress: function (oEvent) {
         },
         _handleAircraftValueHelpClose:function()
         {
-            this._oAircraftDialog.close();
+            //this._oAircraftDialog.close();
             this._oAircraftDialog.destroy();
         },
         _handleBinValueHelpClose:function(){
-            this._oBinAreDialog.close();
+            //this._oBinAreDialog.close();
             this._oBinAreDialog.destroy();
         },
         _handlePOValueHelpClose:function(){
-            this._oPODialog.close();
+            //this._oPODialog.close();
             this._oPODialog.destroy();
         },
         _handleGRValueHelpClose:function(){
-            this._oGRDialog.close();
+            //this._oGRDialog.close();
             this._oGRDialog.destroy();
         },
 
