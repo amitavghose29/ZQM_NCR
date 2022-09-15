@@ -9,8 +9,9 @@ sap.ui.define([
     "sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
     "sap/m/Tokenizer",
-    "sap/m/MessageBox"
-], function (Controller, Fragment, JSONModel, MessagePopover, MenuItem, Token, SearchField, Filter, FilterOperator, Tokenizer, MessageBox) {
+    "sap/m/MessageBox",
+    "sap/ui/model/type/String"
+], function (Controller, Fragment, JSONModel, MessagePopover, MenuItem, Token, SearchField, Filter, FilterOperator, Tokenizer, MessageBox, typeString) {
 	"use strict";
 
 	return Controller.extend("com.airbus.ZQM_NCR.controller.Ncheader", {
@@ -22,7 +23,6 @@ sap.ui.define([
 		 */
 		onInit: function () {
 			//this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
-		
 			var oRouter = this.getOwnerComponent().getRouter();
 			oRouter.getRoute("Ncheader").attachMatched(this._onRouteMatched, this);
 // Added code for multiinput control id initialisation and validator - Code Start            
@@ -40,22 +40,21 @@ sap.ui.define([
 				return new Token({key: text, text: text});
 			});
 
-            this.oColModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/model/columnsModel.json");
-			this.oProductsModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/model/products.json");
-// Added code for multiinput control id initialisation and validator - Code End		
-
-            
+            this.oSerNoColModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/model/sernocolumnsModel.json");
+            this.oTrcNoColModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/model/trcnocolumnsModel.json");
+            this.oMultiInputSNModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/model/serialnumber.json");
+            this.oMultiInputTNModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/model/traceabilitynumber.json");
+// Added code for multiinput control id initialisation and validator - Code End		            
         },
-			valueHelpRequestF4: function () {
-			this._oDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.valuehelpf4", this);
-			this.getView().addDependent(this._oDialog);
-			this._oDialog.open();
-		},
 
 		_onRouteMatched: function (oEvent) {
 			var oArgs = oEvent.getParameter("arguments");
 			var fid = oArgs.ID;
-			
+            this.getView().byId("idNCHeaderDataForm").setModel(this.getOwnerComponent().getModel());
+            if(this.getOwnerComponent().getModel("NCSaveModel").getData()){
+                this.getView().byId("idnctypehdr").setSelectedKey(this.getOwnerComponent().getModel("NCSaveModel").getData().NCType);
+                this.getView().byId("idinahdr").setSelectedKey(this.getOwnerComponent().getModel("NCSaveModel").getData().IWA);
+            }
 		},
 
 		onListItemPress: function () {
@@ -443,13 +442,36 @@ sap.ui.define([
             
         //Manadatory Validations for Prchase info input fields - Added by Venkata 09.09.2022 - Code End
 
+            var oNCType = this.getView().byId("idnctypehdr").getSelectedKey();
+                if(oNCType === "ESUPPLIER" && this.getView().byId("idMNInputSN").getTokens().length === 0){
+                    this.getView().byId("idMNInputSN").setValueState("Error");
+                    this.getView().byId("idMNInputSN").setValueStateText("Please Enter Serial Number");
+                }
+                if(oNCType === "ESUPPLIER" && this.getView().byId("idMNInputTN").getTokens().length === 0){
+                    this.getView().byId("idMNInputTN").setValueState("Error");
+                    this.getView().byId("idMNInputTN").setValueStateText("Please Enter Traceability Number");
+                }
+
+            if(this.getOwnerComponent().getModel("NCSaveModel").getData().SubCat === "WORK INSTRUCTIONS"){
+                this.getView().byId("idInpAircraft").setValueState("Error");
+                this.getView().byId("idInpAircraft").setValueStateText("Please Enter Aircraft Number");
+            }
 		},
+
+        handleAircraftChange: function(){
+            var oInput = this.getView().byId("idInpAircraft").getValue();
+                if(oInput !== ""){
+                    this.getView().byId("idInpAircraft").setValueState("None");
+                    this.getView().byId("idInpAircraft").setValueStateText("");
+                }
+        },
+
 		onNcrchange: function () {
-			var ncr = this.getView().byId("idncr").getSelectedKey();
+			var ncr = this.getView().byId("idnctypehdr").getSelectedKey();
 			if (ncr === "standard") {
-				this.getView().byId("idlink").setVisible(true);
+				// this.getView().byId("idlink").setVisible(true);
 			} else {
-				this.getView().byId("idlink").setVisible(false);
+				// this.getView().byId("idlink").setVisible(false);
 			}
 
 		},
@@ -576,24 +598,24 @@ sap.ui.define([
 
 // Added code for initialisation, loading and associated events related to component serial number multi input field  - Code Start
         onOpenVHSerNo: function(){
-            var aCols = this.oColModel.getData().cols;
+            var aCols = this.oSerNoColModel.getData().cols;
             this._oBasicSearchField = new SearchField({
 				showSearchButton: false
 			});
             sap.ui.core.BusyIndicator.show();
 			this._oValueHelpDialogSN = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.SerialNoVHDialog", this);
-			this.getView().addDependent(this.oDialog);
+			this.getView().addDependent(this._oValueHelpDialogSN);
             this._oValueHelpDialogSN.getFilterBar().setBasicSearch(this._oBasicSearchField);
             this._oValueHelpDialogSN.getTableAsync().then(function (oTable) {
-				oTable.setModel(this.oProductsModel);
-				oTable.setModel(this.oColModel, "columns");
+				oTable.setModel(this.oMultiInputSNModel);
+				oTable.setModel(this.oSerNoColModel, "columns");
 
 				if (oTable.bindRows) {
-					oTable.bindAggregation("rows", "/ProductCollection");
+					oTable.bindAggregation("rows", "/serialcollection");
 				}
 
 				if (oTable.bindItems) {
-					oTable.bindAggregation("items", "/ProductCollection", function () {
+					oTable.bindAggregation("items", "/serialcollection", function () {
 						return new ColumnListItem({
 							cells: aCols.map(function (column) {
 								return new Label({ text: "{" + column.template + "}" });
@@ -657,6 +679,10 @@ sap.ui.define([
 			var aTokens = oEvent.getParameter("tokens");
 			this._oMultiInputSN.setTokens(aTokens);
 			this._oValueHelpDialogSN.close();
+            if(aTokens.length > 0 && this.getView().byId("idMNInputSN").getValueState() === "Error"){
+                this.getView().byId("idMNInputSN").setValueState("None");
+                this.getView().byId("idMNInputSN").setValueStateText("");
+            }
 		},
 
 		onValueHelpSNCancelPress: function () {
@@ -666,28 +692,29 @@ sap.ui.define([
 		onValueHelpSNAfterClose: function () {
 			this._oValueHelpDialogSN.destroy();
 		},
+        
 // Added code for initialisation, loading and associated events related to component serial number multi input field  - Code End
 
 // Added code for initialisation, loading and associated events related to traceability multi input field  - Code Start
         onOpenVHTrcNo: function(){
-            var aCols = this.oColModel.getData().cols;
+            var aCols = this.oTrcNoColModel.getData().cols;
             this._oBasicSearchFieldTN = new SearchField({
 				showSearchButton: false
 			});
             sap.ui.core.BusyIndicator.show();
 			this._oValueHelpDialogTN = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.TraceabilityVHDialog", this);
-			this.getView().addDependent(this.oDialog);
+			this.getView().addDependent(this._oValueHelpDialogTN);
             this._oValueHelpDialogTN.getFilterBar().setBasicSearch(this._oBasicSearchFieldTN);
             this._oValueHelpDialogTN.getTableAsync().then(function (oTable) {
-				oTable.setModel(this.oProductsModel);
-				oTable.setModel(this.oColModel, "columns");
+				oTable.setModel(this.oMultiInputTNModel);
+				oTable.setModel(this.oTrcNoColModel, "columns");
 
 				if (oTable.bindRows) {
-					oTable.bindAggregation("rows", "/ProductCollection");
+					oTable.bindAggregation("rows", "/traceabilitycollection");
 				}
 
 				if (oTable.bindItems) {
-					oTable.bindAggregation("items", "/ProductCollection", function () {
+					oTable.bindAggregation("items", "/traceabilitycollection", function () {
 						return new ColumnListItem({
 							cells: aCols.map(function (column) {
 								return new Label({ text: "{" + column.template + "}" });
@@ -698,7 +725,7 @@ sap.ui.define([
 				this._oValueHelpDialogTN.update();
 			}.bind(this));
 
-			this._oValueHelpDialogTN.setTokens(this._oMultiInputSN.getTokens());
+			this._oValueHelpDialogTN.setTokens(this._oMultiInputTN.getTokens());
 			this._oValueHelpDialogTN.open();
 			sap.ui.core.BusyIndicator.hide();
         },
@@ -707,6 +734,10 @@ sap.ui.define([
 			var aTokens = oEvent.getParameter("tokens");
 			this._oMultiInputTN.setTokens(aTokens);
 			this._oValueHelpDialogTN.close();
+            if(aTokens.length > 0 && this.getView().byId("idMNInputTN").getValueState() === "Error"){
+                this.getView().byId("idMNInputTN").setValueState("None");
+                this.getView().byId("idMNInputTN").setValueStateText("");
+            }
 		},
 
 		onValueHelpTNCancelPress: function () {
@@ -715,6 +746,50 @@ sap.ui.define([
 
 		onValueHelpTNAfterClose: function () {
 			this._oValueHelpDialogTN.destroy();
+		},
+
+        onFilterBarSearchTN: function (oEvent) {
+			var sSearchQuery = this._oBasicSearchFieldTN.getValue(),
+				aSelectionSet = oEvent.getParameter("selectionSet");
+			var aFilters = aSelectionSet.reduce(function (aResult, oControl) {
+				if (oControl.getValue()) {
+					aResult.push(new Filter({
+						path: oControl.getName(),
+						operator: FilterOperator.Contains,
+						value1: oControl.getValue()
+					}));
+				}
+
+				return aResult;
+			}, []);
+
+			aFilters.push(new Filter({
+				filters: [
+					new Filter({ path: "Product", operator: FilterOperator.Contains, value1: sSearchQuery })
+				],
+				and: false
+			}));
+
+			this._filterTableTN(new Filter({
+				filters: aFilters,
+				and: true
+			}));
+		},
+
+		_filterTableTN: function (oFilter) {
+			var oValueHelpDialog = this._oValueHelpDialogTN;
+
+			oValueHelpDialog.getTableAsync().then(function (oTable) {
+				if (oTable.bindRows) {
+					oTable.getBinding("rows").filter(oFilter);
+				}
+
+				if (oTable.bindItems) {
+					oTable.getBinding("items").filter(oFilter);
+				}
+
+				oValueHelpDialog.update();
+			});
 		},
 // Added code for initialisation, loading and associated events related to traceability multi input field  - Code End
 
@@ -754,10 +829,12 @@ sap.ui.define([
 
 				sTokensText = "Added tokens: ";
                 for (i = 0; i < aTokens.length; i++) {
+                    this.getView().byId("idMNInputSN").setValueState("None");
+                    this.getView().byId("idMNInputSN").setValueStateText("");
                     sTokensText = aTokens[i].getText();
                     
-                    for (j = 0; j < this.oProductsModel.getData().ProductCollection.length; j++){
-                        sNo = this.oProductsModel.getData().ProductCollection[j].ProductId;
+                    for (j = 0; j < this.oMultiInputSNModel.getData().serialcollection.length; j++){
+                        sNo = this.oMultiInputSNModel.getData().serialcollection[j].ProductId;
                         if (sTokensText === sNo) {
                             bFlag = true;
                             break;
@@ -791,14 +868,16 @@ sap.ui.define([
                 bFlag = true;
 
             if (oEvent.getParameter('type') === Tokenizer.TokenUpdateType.Added) {
+                this.getView().byId("idMNInputTN").setValueState("None");
+                this.getView().byId("idMNInputTN").setValueStateText("");
                 aTokens = oEvent.getParameter('addedTokens');
 
                 sTokensText = "Added tokens: ";
                 for (i = 0; i < aTokens.length; i++) {
                     sTokensText = aTokens[i].getText();
                     
-                    for (j = 0; j < this.oProductsModel.getData().ProductCollection.length; j++){
-                        sNo = this.oProductsModel.getData().ProductCollection[j].ProductId;
+                    for (j = 0; j < this.oMultiInputTNModel.getData().traceabilitycollection.length; j++){
+                        sNo = this.oMultiInputTNModel.getData().traceabilitycollection[j].Product;
                         if (sTokensText === sNo) {
                             bFlag = true;
                             break;
@@ -918,6 +997,344 @@ _handleSSCValueHelpClose:function(){
 
                 
 	},
+
+    // Added code for various VH's in NC Header screen, associated events and other validations - Code Start
+    onVHReqProductCode: function () {
+        this._oProdCodeDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.ProductCodeVH", this);
+        this.getView().addDependent(this._oProdCodeDialog);
+        this._oProdCodeDialog.open();
+    },
+
+    _configProdCodeVHDialog: function(oEvent){
+        var oSelectedItem = oEvent.getParameter("selectedItem"),
+            oInput = this.getView().byId("idInpProdCode");
+        if (!oSelectedItem) {
+            oInput.resetProperty("value");
+            return;
+        }
+
+        oInput.setValue(oSelectedItem.getTitle());
+        this._oProdCodeDialog.destroy();
+    },
+
+    onVHReqWrkIns: function () {
+        this._oWrkInsDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.WorkInstructionVH", this);
+        this.getView().addDependent(this._oWrkInsDialog);
+        this._oWrkInsDialog.open();
+    },
+
+    _configWrkInsVHDialog: function(oEvent){
+        var oSelectedItem = oEvent.getParameter("selectedItem"),
+            oInput = this.getView().byId("idInpWrkIns");
+        if (!oSelectedItem) {
+            oInput.resetProperty("value");
+            return;
+        }
+
+        oInput.setValue(oSelectedItem.getTitle());
+        this._oWrkInsDialog.destroy();
+    },
+
+    onVHReqPrdOrd: function () {
+        this._oPrdOrdDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.ProductionOrderVH", this);
+        this.getView().addDependent(this._oPrdOrdDialog);
+        this._oPrdOrdDialog.open();
+    },
+
+    _configProdOrdVHDialog: function(oEvent){
+        var oSelectedItem = oEvent.getParameter("selectedItem"),
+            oInput = this.getView().byId("idInpPrdOrd");
+        if (!oSelectedItem) {
+            oInput.resetProperty("value");
+            return;
+        }
+
+        oInput.setValue(oSelectedItem.getTitle());
+        this._oPrdOrdDialog.destroy();
+    },
+
+    onVHReqSupNC: function () {
+        this._oSupNCDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.SupersedesNCVH", this);
+        this.getView().addDependent(this._oSupNCDialog);
+        this._oSupNCDialog.open();
+    },
+
+    _configProdOrdVHDialog: function(oEvent){
+        var oSelectedItem = oEvent.getParameter("selectedItem"),
+            oInput = this.getView().byId("idInpSupNC");
+        if (!oSelectedItem) {
+            oInput.resetProperty("value");
+            return;
+        }
+
+        oInput.setValue(oSelectedItem.getTitle());
+        this._oSupNCDialog.destroy();
+    },
+
+    onVHReqSupBy: function () {
+        this._oSupByDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.SupersededByVH", this);
+        this.getView().addDependent(this._oSupByDialog);
+        this._oSupByDialog.open();
+    },
+
+    _configSupByVHDialog: function(oEvent){
+        var oSelectedItem = oEvent.getParameter("selectedItem"),
+            oInput = this.getView().byId("idInpSupBy");
+        if (!oSelectedItem) {
+            oInput.resetProperty("value");
+            return;
+        }
+
+        oInput.setValue(oSelectedItem.getTitle());
+        this._oSupByDialog.destroy();
+    },
+
+    onVHReqRefNC: function () {
+        this._oRefNCDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.ReferenceNCVH", this);
+        this.getView().addDependent(this._oRefNCDialog);
+        this._oRefNCDialog.open();
+    },
+
+    _configRefNCVHDialog: function(oEvent){
+        var oSelectedItem = oEvent.getParameter("selectedItem"),
+            oInput = this.getView().byId("idInpRefNC");
+        if (!oSelectedItem) {
+            oInput.resetProperty("value");
+            return;
+        }
+
+        oInput.setValue(oSelectedItem.getTitle());
+        this._oRefNCDialog.destroy();
+    },
+
+    onVHReqAircraft: function () {
+        this._oAircraftDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.AircraftVH", this);
+        this.getView().addDependent(this._oAircraftDialog);
+        this._oAircraftDialog.open();
+    },
+
+    _configAircraftVHDialog: function(oEvent){
+        var oSelectedItem = oEvent.getParameter("selectedItem"),
+            oInput = this.getView().byId("idInpAircraft");
+        if (!oSelectedItem) {
+            oInput.resetProperty("value");
+            return;
+        }
+
+        oInput.setValue(oSelectedItem.getTitle());
+        this._oAircraftDialog.destroy();
+        if(oInput !== ""){
+            this.getView().byId("idInpAircraft").setValueState("None");
+            this.getView().byId("idInpAircraft").setValueStateText("");
+        }
+    },
+
+    onOpenVHPartNo: function(){
+        this._oPartNoDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.partno", this);
+        this.getView().addDependent(this._oPartNoDialog);
+        this._oPartNoDialog.open();
+        sap.ui.core.BusyIndicator.show();
+        var oModel = new sap.ui.model.json.JSONModel();
+        var oDataModel = this.getOwnerComponent().getModel();
+        oDataModel.read("/Material_NumberSet", {
+            success: function (oData, oResult) {
+                var data = oData.results;
+                oModel.setData(data);
+                this._oPartNoDialog.setModel(oModel);
+                sap.ui.core.BusyIndicator.hide();
+            }.bind(this),
+            error: function (oError) {
+                sap.ui.core.BusyIndicator.hide();
+            }
+        });
+    },
+
+    _configPartNoVHDialog: function(oEvent){
+        var oSelectedItem = oEvent.getParameter("selectedItem"),
+            oInput = sap.ui.getCore().byId("idInpPartNo");
+
+        if (!oSelectedItem) {
+            oInput.resetProperty("value");
+            return;
+        }
+
+        oInput.setValue(oSelectedItem.getTitle());
+        this._oPartNoDialog.destroy();
+    },
+
+    onOpenVHNCCreated: function(){
+        this.oNCCrtColModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/model/nccolumns.json");
+        this.oInputNCCrtModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/model/traceabilitynumber.json");
+        this._oNcCrtInput = this.getView().byId("idInpNCCrtBy");
+        var aCols = this.oNCCrtColModel.getData().cols;
+        sap.ui.core.BusyIndicator.show();
+        this._oValueHelpDialogNCCrt = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.NCCreatedBy", this);
+        this.getView().addDependent(this._oValueHelpDialogNCCrt);
+         
+        this._oValueHelpDialogNCCrt.setRangeKeyFields([
+            {
+                label: "Department",
+                key: "Department",
+                type: "string",
+                typeInstance: new typeString({}, {
+                    maxLength: 12
+                })
+            },
+            {
+                label: "Station",
+                key: "Station",
+                type: "string",
+                typeInstance: new typeString({}, {
+                    maxLength: 12
+                })
+            }
+        ]);
+
+        this._oValueHelpDialogNCCrt.getTableAsync().then(function (oTable) {
+            oTable.setModel(this.oInputNCCrtModel);
+            oTable.setModel(this.oNCCrtColModel, "columns");
+            // oTable.setSelectionMode("Single");
+            if (oTable.bindRows) {
+                oTable.bindAggregation("rows", "/nccomponentcollection");
+            }
+
+            if (oTable.bindItems) {
+                oTable.bindAggregation("items", "/nccomponentcollection", function () {
+                    return new ColumnListItem({
+                        cells: aCols.map(function (column) {
+                            return new Label({ text: "{" + column.template + "}" });
+                        })
+                    });
+                });
+            }
+            this._oValueHelpDialogNCCrt.update();
+        }.bind(this));
+
+        this._oValueHelpDialogNCCrt.setTokens(this._oNcCrtInput.getTokens());
+        this._oValueHelpDialogNCCrt.open();
+        sap.ui.core.BusyIndicator.hide();
+    },
+
+    onValueHelpNCCrtOkPress: function(oEvent){
+        var aTokens = oEvent.getParameter("tokens");
+            this.getView().byId("idInpNCCrtBy").setTokens(aTokens);
+            // if (aTokens.length > 0) {
+            //     this.getView().byId("idInpNCCrtBy").setValue(aTokens[0].getKey());
+            // }
+            this._oValueHelpDialogNCCrt.close();
+    },
+
+    onValueHelpNCCrtCancelPress: function(){
+        this._oValueHelpDialogNCCrt.close();
+    },
+
+    onValueHelpNCCrtAfterClose: function(){
+        this._oValueHelpDialogNCCrt.destroy();
+    },
+
+    onOpenVHNCDetected: function(){
+        this.oNCDetColModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/model/nccolumns.json");
+        this.oInputNCDetModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/model/traceabilitynumber.json");
+        this._oNcDetInput = this.getView().byId("idInpNCDetAt");
+        var aCols = this.oNCDetColModel.getData().cols;
+        sap.ui.core.BusyIndicator.show();
+        this._oValueHelpDialogNCDet = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.NCDetectedAt", this);
+        this.getView().addDependent(this._oValueHelpDialogNCDet);
+         
+        this._oValueHelpDialogNCDet.setRangeKeyFields([
+            {
+                label: "Department",
+                key: "Department",
+                type: "string",
+                typeInstance: new typeString({}, {
+                    maxLength: 12
+                })
+            },
+            {
+                label: "Station",
+                key: "Station",
+                type: "string",
+                typeInstance: new typeString({}, {
+                    maxLength: 12
+                })
+            }
+        ]);
+
+        this._oValueHelpDialogNCDet.getTableAsync().then(function (oTable) {
+            oTable.setModel(this.oInputNCDetModel);
+            oTable.setModel(this.oNCDetColModel, "columns");
+            // oTable.setSelectionMode("Single");
+            if (oTable.bindRows) {
+                oTable.bindAggregation("rows", "/nccomponentcollection");
+            }
+
+            if (oTable.bindItems) {
+                oTable.bindAggregation("items", "/nccomponentcollection", function () {
+                    return new ColumnListItem({
+                        cells: aCols.map(function (column) {
+                            return new Label({ text: "{" + column.template + "}" });
+                        })
+                    });
+                });
+            }
+            this._oValueHelpDialogNCDet.update();
+        }.bind(this));
+
+        this._oValueHelpDialogNCDet.setTokens(this._oNcDetInput.getTokens());
+        this._oValueHelpDialogNCDet.open();
+        sap.ui.core.BusyIndicator.hide();
+    },
+
+    onValueHelpNCDetOkPress: function(oEvent){
+        var aTokens = oEvent.getParameter("tokens");
+            this.getView().byId("idInpNCDetAt").setTokens(aTokens);
+            this._oValueHelpDialogNCDet.close();
+    },
+
+    onValueHelpNCDetCancelPress: function(){
+        this._oValueHelpDialogNCDet.close();
+    },
+
+    onValueHelpNCDetAfterClose: function(){
+        this._oValueHelpDialogNCDet.destroy();
+    },
+
+    onOpenVHBinLoc: function(){
+        this._oBinLocDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.BinAreaValueHelp", this);
+        this.getView().addDependent(this._oBinLocDialog);
+        this._oBinLocDialog.open();
+    },
+
+    _confirmBinValueHelpDialog: function(oEvent){
+        var oSelectedItem = oEvent.getParameter("selectedItem"),
+            oInput = this.getView().byId("idInpBinLoc");
+        if (!oSelectedItem) {
+            oInput.resetProperty("value");
+            return;
+        }
+
+        oInput.setValue(oSelectedItem.getTitle());
+        this._oBinLocDialog.destroy();
+    },
+
+    onOpenVHDrpPt: function(){
+        this._oDrpPtDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.DropPointVH", this);
+        this.getView().addDependent(this._oDrpPtDialog);
+        this._oDrpPtDialog.open();
+    },
+
+    _configDrpPntVHDialog: function(oEvent){
+        var oSelectedItem = oEvent.getParameter("selectedItem"),
+            oInput = this.getView().byId("idInpDrpPt");
+        if (!oSelectedItem) {
+            oInput.resetProperty("value");
+            return;
+        }
+
+        oInput.setValue(oSelectedItem.getTitle());
+        this._oDrpPtDialog.destroy();
+    }
+    // Added code for various VH's in NC Header screen, associated events and other validations - Code End
 
 		/**
 		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.

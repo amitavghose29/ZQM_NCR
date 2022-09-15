@@ -140,9 +140,9 @@ onValueHelpOkNCPress: function (oEvent) {
 				success: function (oData, oResult) {
 					var data = oData.results;
 					oModel.setData(data);
-					sap.ui.getCore().byId("mySelectDialogOrder").setModel(oModel);
+					this._oDialog.setModel(oModel);
 					sap.ui.core.BusyIndicator.hide();
-				},
+				}.bind(this),
 				error: function (oError) {
 					sap.ui.core.BusyIndicator.hide();
 				}
@@ -209,6 +209,55 @@ onValueHelpOkNCPress: function (oEvent) {
 					);
 			}
 		},
+
+        //Added code for GR and PO Filterbar search - Code Start
+        onGRfbSearch: function () {
+            var oGRModel = new JSONModel("../localjson/grdata.json");
+            this.getView().setModel(oGRModel, "grsearch");
+        },
+
+        onPOfbSearch: function () {
+            var oPOModel = new JSONModel("../localjson/podata.json");
+            this.getView().setModel(oPOModel, "posearch");
+        },
+        //Added code for GR and PO  Filterbar search - Code End
+
+        //Added code for PO and GR Valuehelp dialogs - Code Start
+        _handleGRValueHelpClose: function () {
+            //this._oGRDialog.close();
+            this._oGRDialog.destroy();
+        },
+        
+        _handlePOValueHelpClose: function () {
+            this._oPODialog.destroy();
+        },
+        //Added code for PO and GR Valuehelp dialogs - Code End
+
+        //Added code for Slection Change in PO and GR Search Tables - Code Start
+        handleCloseGRUserValueHelp: function (oEvent) {
+            var oSelectedItem = oEvent.getParameters().listItem.getCells()[1].getText();
+            var oInput = this.getView().byId("idsubcno");
+            if (!oSelectedItem) {
+                oInput.resetProperty("value");
+                return;
+            }
+
+            oInput.setValue(oSelectedItem);
+            this._oGRDialog.destroy();
+        },
+
+        handleClosePOUserValueHelp: function (oEvent) {
+            var oSelectedItem = oEvent.getParameters().listItem.getCells()[1].getText();
+            var oInput = this.getView().byId("idsubcno");
+            if (!oSelectedItem) {
+                oInput.resetProperty("value");
+                return;
+            }
+
+            oInput.setValue(oSelectedItem);
+            this._oPODialog.destroy();
+        },
+        //Added code for Slection Change in PO and GR Search Tables - Code End
 
 // Added code for opening value help dialog for NLP field - Code Start
     _onValueHelpReqNLP: function(){
@@ -554,6 +603,7 @@ onValueHelpOkNCPress: function (oEvent) {
             this.Dialog.destroy();
 // Fixed error related to getting open state property of dialog - Code End 
 		},
+
 		onPressNext: function () {
 			var idsubvalue = this.getView().byId("idsubcno").getValue();
 			if (idsubvalue === "") {
@@ -578,9 +628,9 @@ onValueHelpOkNCPress: function (oEvent) {
 			// this.getOwnerComponent().getRouter().navTo("Ncheader");
 
             var saveData = {
-                "NCType": "", //this.getView().byId("idncr").getSelectedItem().getText(),
-                "IWA": "",    //this.getView().byId("idncr").getSelectedItem().getText(),
-                "SubCat":"",  //this.getView().byId("idncr").getSelectedItem().getText(),
+                "NCType": this.getView().byId("idncr").getSelectedKey(), 
+                "IWA": this.getView().byId("idiwa").getSelectedKey(),  
+                "SubCat":this.getView().byId("idlinksubc").getSelectedItem() ? this.getView().byId("idlinksubc").getSelectedItem().getText() : "" ,
                 "GRN":"",
                 "PON":"",
                 "BinLoc":this.getView().byId("idBinLoc").getValue(),

@@ -186,6 +186,10 @@ sapUiFormContainerTitle>.sapUiFormTitleH1,
     color: white;
 }
 
+.sapMLIBHighlightInformation {
+    background: none;
+}
+
 /*block layout color*/
 /*.sapUiBlockLayoutBackgroundDashboard:not(.sapUiBlockLayoutSizeS) .sapUiBlockLayoutRow:last-of-type .sapUiBlockCellContent {
     background-color: skyblue;

@@ -36,18 +36,23 @@
 									<l:BlockLayout background="Light">
 										<l:BlockLayoutRow>
 											<l:BlockLayoutCell backgroundColorShade="ShadeA" backgroundColorSet="ColorSet1" width="100" class="formcolor">
-												<f:SimpleForm editable="true" title="General Info" labelSpanXL="8" labelSpanL="8" labelSpanM="8" labelSpanS="12" adjustLabelSpan="false"
+												<f:SimpleForm id="idNCHeaderDataForm" editable="true" title="General Info" labelSpanXL="8" labelSpanL="8" labelSpanM="8" labelSpanS="12" adjustLabelSpan="false"
 													emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false"
 													maxContainerCols="2" class="sapUiSizeCompact" labelMinWidth="1px">
 													<f:content>
 														<!--<core:Title text="General Info"/>-->
 														<Label text="Nc Type"/>
-														<ComboBox width="230px"/>
+														<ComboBox id="idnctypehdr" width="230px" items="{/NCTYPE_SOSet}" change="onNcrchange">
+										                    <core:Item key="{Nctype}" text="{Nctypedesc}"/>
+									                    </ComboBox>
 														<Label text="Prioity"/>
-														<ComboBox width="230px"/>
+														<ComboBox width="230px" selectedKey="normal">
+                                                            <core:Item key="high" text="High"/>
+                                                            <core:Item key="normal" text="Normal"/>
+                                                        </ComboBox>
 														<Label id="idtype" text="In Which Area"/>
-														<ComboBox id="idin" width="200px" items="{/Area_SOSet}" change="onNcrArea">
-															<core:Item key="{Area_SOSet}" text="{Area}"/>
+														<ComboBox id="idinahdr" width="230px" items="{/Area_SOSet}" change="onNcrArea">
+															<core:Item key="{SequenceArea}" text="{Area}"/>
 														</ComboBox>
 														<Label text="Plant Code"/>
 														<ComboBox width="230px" showSecondaryValues="true">
@@ -56,19 +61,19 @@
 															<core:Item text="8008 Mirabel Warehouse"/>
 														</ComboBox>
 														<Label text="Product Code"/>
-														<Input width="230px" valueHelpRequest="valueHelpRequestF4" showValueHelp="true"/>
+														<Input id="idInpProdCode" width="230px" valueHelpRequest="onVHReqProductCode" showValueHelp="true"/>
 														<Label text="Work Instruction"/>
-														<Input width="230px" valueHelpRequest="valueHelpRequestF4" showValueHelp="true"/>
+														<Input id="idInpWrkIns" width="230px" valueHelpRequest="onVHReqWrkIns" showValueHelp="true"/>
 														<Label text="Prod Order"/>
-														<Input width="230px" valueHelpRequest="valueHelpRequestF4" showValueHelp="true"/>
+														<Input id="idInpPrdOrd" width="230px" valueHelpRequest="onVHReqPrdOrd" showValueHelp="true"/>
 														<!--	<Label text="Last Operation"/>
 														<Input width="230px"/>-->
 														<Label text="Supersedes NC"/>
-														<Input width="230px" valueHelpRequest="valueHelpRequestF4" showValueHelp="true"/>
+														<Input id="idInpSupNC" width="230px" valueHelpRequest="onVHReqSupNC" showValueHelp="true"/>
 														<Label text="Superseded By"/>
-														<Input width="230px" valueHelpRequest="valueHelpRequestF4" showValueHelp="true"/>
+														<Input id="idInpSupBy" width="230px" valueHelpRequest="onVHReqSupBy" showValueHelp="true"/>
 														<Label text="Reference NC"/>
-														<Input width="230px" valueHelpRequest="valueHelpRequestF4" showValueHelp="true"/>
+														<Input id="idInpRefNC" width="230px" valueHelpRequest="onVHReqRefNC" showValueHelp="true"/>
 														<Label text="Create Date"/>
 														<Text text=""/>
 														<Label text="Closed Date"/>
@@ -79,6 +84,14 @@
 															<!--	<FlexItemData growFactor="1"/>-->
 															<!--</layoutData>-->
 														</Switch>
+                                                        <Label text="Link to Aircraft"/>
+														<CheckBox enabled="false"/>
+                                                        <Label text="Aircraft"/>
+														<Input id="idInpAircraft" width="230px" valueHelpRequest="onVHReqAircraft" showValueHelp="true" change="handleAircraftChange"/>
+                                                        <Label text="Supplier Name"/>
+														<Input value="" width="230px"/>
+                                                        <Label text="Supplier SAP"/>
+														<Input value="" width="230px"/>
 													</f:content>
 												</f:SimpleForm>
 											</l:BlockLayoutCell>
@@ -91,7 +104,7 @@
 													<f:content>
 														<Label text="Part Number"/>
 <!-- Added change event to handle the business logic - Code Start  -->                                                          
-														<Input value="79000-750-002-29780" id="idInpPartNo" width="230px" showValueHelp="true" change="handleChangePartNo"/>
+														<Input value="79000-750-002-29780" id="idInpPartNo" width="230px" valueHelpRequest=".onOpenVHPartNo"  showValueHelp="true" change="handleChangePartNo"/>
 <!-- Added change event to handle the business logic - Code End  -->														
                                                         <Label text="Part Description"/>
 														<ObjectStatus text="Hose Assembly" state="Information"/>
@@ -192,14 +205,14 @@
 													singleContainerFullSize="false" class="sapUiSizeCompact" labelMinWidth="1px">
 													<f:content>
 														<!--<core:Title text="Component Location"/>-->
-														<Label text="Responsible"/>
-														<Input width="200px" valueHelpRequest="valueHelpRequestF4" showValueHelp="true"/>
-														<Label text="Detected At"/>
-														<Input width="200px" valueHelpRequest="valueHelpRequestF4" showValueHelp="true"/>
+														<Label text="NC Created By"/>
+														<MultiInput id="idInpNCCrtBy" width="230px" valueHelpRequest=".onOpenVHNCCreated" showValueHelp="true"/>
+														<Label text="NC Detected At"/>
+														<MultiInput id="idInpNCDetAt" width="230px" valueHelpRequest=".onOpenVHNCDetected" showValueHelp="true"/>
 														<Label text="Bin Location"/>
-														<Input width="200px" valueHelpRequest="valueHelpRequestF4" showValueHelp="true"/>
+														<Input id="idInpBinLoc" width="230px" valueHelpRequest=".onOpenVHBinLoc" showValueHelp="true"/>
 														<Label text="Drop Point"/>
-														<Input width="200px" valueHelpRequest="valueHelpRequestF4" showValueHelp="true"/>
+														<Input id="idInpDrpPt" width="230px" valueHelpRequest=".onOpenVHDrpPt" showValueHelp="true"/>
 													</f:content>
 												</f:SimpleForm>
 											</l:BlockLayoutCell>
@@ -816,6 +829,12 @@
 															<Input width="80px"/>
 															<Input width="60px" class="sapUiTinyMarginBegin" placeholder="UOM"/>
 														</HBox>
+                                                        <Label text="Serial No"/>
+                                                        <MultiInput id="idMNInputSNDisc" showValueHelp="true" valueHelpRequest=".onOpenVHSerNoDisc" placeholder="Component Serial No." width="230px" tokenUpdate="_onTokenUpdateSNDisc">
+                                                        </MultiInput>
+                                                        <Label text="Traceability No"/>
+                                                        <MultiInput id="idMNInputTNDisc" showValueHelp="true" valueHelpRequest=".onOpenVHTrcNoDisc" placeholder="Traceability No." width="230px" tokenUpdate="_onTokenUpdateTNDisc">
+                                                        </MultiInput>
 													</f:content>
 												</f:SimpleForm>
 												<!--<HBox justifyContent="Center">
@@ -832,17 +851,12 @@
 														</List>
 													</VBox>
 												</HBox>-->
-												<!--<HBox justifyContent="Center">-->
-												<FlexBox direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Center">
+												<!-- <FlexBox direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Center">
 													<VBox class="sapUiSizeCompact sapUiTinyMarginBegin sapUiTinyMarginEnd">
-														<!--<List width="auto" id="list" itemPress="onListItemPress" mode="Delete" delete="handleDelete" enableBusyIndicator="true" growing="true" items="{/}">-->
-														<!--	<StandardListItem title="{SN}"/>-->
-														<!--</List>-->
 														<Table id="dlist1" inset="false" width="200px" items="{/}">
 															<headerToolbar>
 																<OverflowToolbar>
 																	<content>
-																		<!--<Title text="Component Serial No." level="H2"/>-->
 																		<Input id="idInputSN1" valueHelpRequest="helpRequestComponent" showValueHelp="true" change="onChangeSN" placeholder="Component Serial No."/>
 																	</content>
 																</OverflowToolbar>
@@ -870,7 +884,6 @@
 															<headerToolbar>
 																<OverflowToolbar>
 																	<content>
-																		<!--<Title text="Component Serial No." level="H2"/>-->
 																		<Input id="idInputSN21" valueHelpRequest="helpRequestComponent" showValueHelp="true" change="onChangeSN" placeholder="Traceability No."/>
 																	</content>
 																</OverflowToolbar>
@@ -892,13 +905,8 @@
 																</ColumnListItem>
 															</items>
 														</Table>
-														<!--	<Input showValueHelp="true" placeholder="Traceability No."/>
-														<List width="auto" id="list1" mode="Delete" delete="handleDelete" enableBusyIndicator="true" growing="true" items="{/}">
-															<StandardListItem title="Abcd"/>
-														</List>-->
 													</VBox>
-												</FlexBox>
-												<!--</HBox>-->
+												</FlexBox> -->
 												<f:SimpleForm editable="true" title="Discrepancy Details" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12"
 													adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2"
 													singleContainerFullSize="false" class="sapUiSizeCompact" labelMinWidth="1px">

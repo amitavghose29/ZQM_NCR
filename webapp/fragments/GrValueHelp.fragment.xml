@@ -1,6 +1,52 @@
-<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+<!-- <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
 	<SelectDialog  title="Select GR#" items="{grdata>/grdata}" liveChange="" confirm="_confirmGRValueHelpDialog"
 		cancel="_handleGRValueHelpClose">
 		<StandardListItem  title="{grdata>Id}" info="{grdata>gr}"/>
 	</SelectDialog>
+</core:FragmentDefinition> -->
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:layout="sap.ui.layout" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar">
+    <Dialog id="idGRHelpDialog" title="Goods Receipt Search" class="vhdialogPOSearchstyle">
+        <VBox class="sapUiSizeCompact">
+            <fb:FilterBar reset="onGRfbReset" search="onGRfbSearch" showRestoreButton="true" showClearButton="true">
+                <fb:filterGroupItems>
+                    <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="A1" label="Purchase Order">
+                        <fb:control>
+                            <Input id="idPurchord" type="Text" valueHelpRequest="_onValueHelpReqtPurchOrd" showValueHelp="true" />
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                    <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="B1" label="Inbound delivery">
+                        <fb:control>
+                            <Input id="idInboundDelivery" valueHelpRequest="_onValueHelpReqInboundDelivery" showValueHelp="true" />
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                    <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="C1" label="Part Number">
+                        <fb:control>
+                            <Input type="Text" valueHelpRequest="_onValueHelpReqPartNo" showValueHelp="true" />
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                </fb:filterGroupItems>
+            </fb:FilterBar>
+            <Table id="idGRTable" inset="false" items="{grsearch>/grdata}" mode="SingleSelectMaster" selectionChange="handleCloseGRUserValueHelp" itemPress="handleCloseGRUserValueHelp">
+                <columns>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="GR ID" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="GR Description" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem vAlign="Middle" type="Active">
+                        <cells>
+                            <Text text="{grsearch>Id}" />
+                            <Text text="{grsearch>gr}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </VBox>
+        <endButton>
+            <Button text="Close" press="_handleGRValueHelpClose" />
+        </endButton>
+    </Dialog>
 </core:FragmentDefinition>

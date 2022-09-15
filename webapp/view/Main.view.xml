@@ -30,13 +30,13 @@
 								columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false" class="headercss sapUiSizeCompact" visible="true">
 								<f:content>
                                     <Label text="NC Type"/>
-									<ComboBox id="idncr" width="200px" items="{/NCTYPE_SOSet}" change="onNcrchange">
+									<ComboBox id="idncr" width="200px" items="{/NCTYPE_SOSet}" change="onNCTypeChange">
 										<core:Item key="{Nctype}" text="{Nctypedesc}"/>
 									</ComboBox>
 									<Label text="In Which Area"/>
 									<!--<Input id="idin" width="50%" liveChange="inEnter"/>-->
-									<ComboBox id="idin" width="200px" items="{/Area_SOSet}" change="onNcrArea">
-										<core:Item key="{Area_SOSet}" text="{Area}"/>
+									<ComboBox id="idiwa" width="200px" items="{/Area_SOSet}" change="onNCAreaChange">
+										<core:Item key="{SequenceArea}" text="{Area}"/>
 									</ComboBox>
 									
 									<!--<Input id="idnc" valueHelpRequest="helpRequest" placeholder="Link To" liveChange="poEnter" visible="false">-->

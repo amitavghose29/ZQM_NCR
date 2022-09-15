@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog  title="Superseded By" items="{sample>/supby}" liveChange="onSearchOrder" confirm="_configSupByVHDialog"
+		cancel="_handleSupByVHClose">
+		<StandardListItem title="{sample>Id}" info="{sample>field1}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

@@ -1,0 +1,24 @@
+{
+	"cols": [
+		{
+			"label": "Work Center Category",
+			"template": "WorkCenterCategory"
+		},
+        {
+			"label": "Plant",
+			"template": "Plant"
+		},
+        {
+			"label": "Work Center",
+			"template": "WorkCenter"
+		},
+        {
+			"label": "Short Description",
+			"template": "Description"
+		},
+        {
+			"label": "Language",
+			"template": "Language"
+		}
+	]
+}

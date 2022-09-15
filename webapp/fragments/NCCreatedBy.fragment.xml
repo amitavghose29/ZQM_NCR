@@ -1,0 +1,114 @@
+<core:FragmentDefinition
+	xmlns="sap.ui.comp.valuehelpdialog"
+	xmlns:core="sap.ui.core" 
+    xmlns:fb="sap.ui.comp.filterbar" 
+    xmlns:m="sap.m">
+	<ValueHelpDialog 
+		title="NC Created By"
+		ok=".onValueHelpNCCrtOkPress"
+		cancel=".onValueHelpNCCrtCancelPress"
+		afterClose=".onValueHelpNCCrtAfterClose"
+		key="WorkCenterCategory"
+		descriptionKey="WorkCenter"
+        supportRanges="true"       
+	>
+        <filterBar>
+			<fb:FilterBar advancedMode="true" search="onFilterBarSearchNCCrt">
+                  <fb:filterGroupItems>
+					<fb:FilterGroupItem
+							groupName="__$INTERNAL$"
+							name="WorkCenterCategory"
+							label="Work Center Category"
+							visibleInFilterBar="true"
+						>
+						<fb:control>
+							<m:Input name="WorkCenterCategory" showValueHelp="true"/>
+						</fb:control>
+					</fb:FilterGroupItem>
+
+					<fb:FilterGroupItem
+							groupName="__$INTERNAL$"
+							name="Plant"
+							label="Plant"
+							visibleInFilterBar="true"
+						>
+						<fb:control>
+							<m:Input name="Plant" showValueHelp="true"/>
+						</fb:control>
+					</fb:FilterGroupItem>
+
+
+					<fb:FilterGroupItem
+							groupName="__$INTERNAL$"
+							name="WorkCenter"
+							label="Work Center"
+							visibleInFilterBar="true"
+						>
+						<fb:control>
+							<m:Input name="Work Center" showValueHelp="true"/>
+						</fb:control>
+					</fb:FilterGroupItem>
+
+					<fb:FilterGroupItem
+							groupName="__$INTERNAL$"
+							name="Description"
+							label="Description"
+							visibleInFilterBar="true"
+						>
+						<fb:control>
+							<m:Input name="Description" showValueHelp="true"/>
+						</fb:control>
+					</fb:FilterGroupItem>
+
+					<fb:FilterGroupItem
+							groupName="__$INTERNAL$"
+							name="LanguageKey"
+							label="Language Key"
+							visibleInFilterBar="true"
+						>
+						<fb:control>
+							<m:Input name="LanguageKey" showValueHelp="true"/>
+						</fb:control>
+					</fb:FilterGroupItem>
+				
+				</fb:filterGroupItems>
+			</fb:FilterBar>
+		</filterBar>
+        <!-- <m:Table id="idProductsTable" items="{/}">
+		<m:columns>
+			<m:Column>
+				<m:Text text="Product" />
+			</m:Column>
+			<m:Column>
+				<m:Text text="Supplier" />
+			</m:Column>
+			<m:Column>
+				<m:Text text="Dimensions" />
+			</m:Column>
+			<m:Column>
+				<m:Text text="Weight" />
+			</m:Column>
+			<m:Column>
+				<m:Text text="Price" />
+			</m:Column>
+		</m:columns>
+		<m:items>
+			<m:ColumnListItem vAlign="Middle">
+				<m:cells>
+					<m:ObjectIdentifier
+						title="{Name}"
+						text="{ProductId}"/>
+					<m:Text
+						text="{SupplierName}" />
+                    <m:Text
+						text="{SupplierName}" />
+                    <m:Text
+						text="{SupplierName}" />
+                    <m:Text
+						text="{SupplierName}" />   
+				</m:cells>
+			</m:ColumnListItem>
+		</m:items>
+	    </m:Table> -->
+	</ValueHelpDialog>
+</core:FragmentDefinition>

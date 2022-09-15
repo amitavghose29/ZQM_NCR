@@ -8,11 +8,11 @@
 		ok=".onValueHelpTNOkPress"
 		cancel=".onValueHelpTNCancelPress"
 		afterClose=".onValueHelpTNAfterClose"
-		key="ProductId"
-		descriptionKey="Name"       
+		key="Product"
+		descriptionKey="ProductName"       
 	>
         <filterBar>
-			<fb:FilterBar advancedMode="true" search="onFilterBarSearch">
+			<fb:FilterBar advancedMode="true" search="onFilterBarSearchTN">
 			</fb:FilterBar>
 		</filterBar>
 	</ValueHelpDialog>

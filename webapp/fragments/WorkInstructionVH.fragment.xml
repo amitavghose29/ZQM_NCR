@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog  title="Work Instruction" items="{sample>/workIns}" liveChange="onSearchOrder" confirm="_configWrkInsVHDialog"
+		cancel="_handleWrkInsVHClose">
+		<StandardListItem title="{sample>Id}" info="{sample>field1}"/>
+	</SelectDialog>
+</core:FragmentDefinition>
