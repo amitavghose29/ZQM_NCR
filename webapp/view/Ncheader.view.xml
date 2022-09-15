@@ -55,7 +55,7 @@
 															<core:Item key="{SequenceArea}" text="{Area}"/>
 														</ComboBox>
 														<Label text="Plant Code"/>
-														<ComboBox width="230px" showSecondaryValues="true">
+														<ComboBox id="idPlntCodeHdr" width="230px" showSecondaryValues="true">
 															<core:Item text="8006 Mirabel Distribution"/>
 															<core:Item key="Assembly" text="8007 Mirabel Manufacturing"/>
 															<core:Item text="8008 Mirabel Warehouse"/>

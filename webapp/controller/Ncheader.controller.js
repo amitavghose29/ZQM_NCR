@@ -297,6 +297,22 @@ sap.ui.define([
 				this.getView().byId("idlast").setValue();
 				this.getView().byId("idncr").setValue();*/
 			this.getOwnerComponent().getRouter().navTo("TargetMain");
+            this.getView().byId("idnctypehdr").setValue();
+            this.getView().byId("idinahdr").setValue();
+            this.getView().byId("idPlntCodeHdr").setValue();
+            this.getView().byId("idInpProdCode").setValue();
+            this.getView().byId("idInpWrkIns").setValue();
+            this.getView().byId("idInpPrdOrd").setValue();
+            this.getView().byId("idInpSupNC").setValue();
+            this.getView().byId("idInpSupBy").setValue();
+            this.getView().byId("idInpRefNC").setValue();
+            this.getView().byId("idInpAircraft").setValue();
+            this.getView().byId("idMNInputSN").removeAllTokens();
+            this.getView().byId("idMNInputTN").removeAllTokens();
+            this.getView().byId("idInpNCCrtBy").removeAllTokens();
+            this.getView().byId("idInpNCDetAt").removeAllTokens();
+            this.getView().byId("idInpBinLoc").setValue();
+            this.getView().byId("idInpDrpPt").setValue();
 		},
 		onNcrPressSave: function () {
 
@@ -453,8 +469,13 @@ sap.ui.define([
                 }
 
             if(this.getOwnerComponent().getModel("NCSaveModel").getData().SubCat === "WORK INSTRUCTIONS"){
-                this.getView().byId("idInpAircraft").setValueState("Error");
-                this.getView().byId("idInpAircraft").setValueStateText("Please Enter Aircraft Number");
+                if(this.getView().byId("idInpAircraft").getValue()  !== ""){
+                    this.getView().byId("idInpAircraft").setValueState("None");
+                    this.getView().byId("idInpAircraft").setValueStateText("");
+                }else{
+                    this.getView().byId("idInpAircraft").setValueState("Error");
+                    this.getView().byId("idInpAircraft").setValueStateText("Please Enter Aircraft Number");
+                }       
             }
 		},
 
@@ -977,26 +998,6 @@ _handleSSCValueHelpClose:function(){
     this._oSSCDialog.destroy();
 },
 //Added Code for Value help for GR , Purchase Order and SAP Supplier Code Fields- Code End
-		/**
-		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
-		 * (NOT before the first rendering! onInit() is used for that one!).
-		 * @memberOf com.airbus.ZQM_NCR.view.Ncheader
-		 */
-		//	onBeforeRendering: function() {
-		//
-		//	},
-
-		/**
-		 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
-		 * This hook is the same one that SAPUI5 controls get after being rendered.
-		 * @memberOf com.airbus.ZQM_NCR.view.Ncheader
-		 */
-	onAfterRendering: function() {
-                var oModel = this.getOwnerComponent().getModel("NCSaveModel");
-                this.getView().setModel(oModel);
-
-                
-	},
 
     // Added code for various VH's in NC Header screen, associated events and other validations - Code Start
     onVHReqProductCode: function () {
@@ -1059,7 +1060,7 @@ _handleSSCValueHelpClose:function(){
         this._oSupNCDialog.open();
     },
 
-    _configProdOrdVHDialog: function(oEvent){
+    _configSupNCVHDialog: function(oEvent){
         var oSelectedItem = oEvent.getParameter("selectedItem"),
             oInput = this.getView().byId("idInpSupNC");
         if (!oSelectedItem) {
@@ -1149,9 +1150,9 @@ _handleSSCValueHelpClose:function(){
         });
     },
 
-    _configPartNoVHDialog: function(oEvent){
+    _configValueHelpDialogOrder: function(oEvent){
         var oSelectedItem = oEvent.getParameter("selectedItem"),
-            oInput = sap.ui.getCore().byId("idInpPartNo");
+            oInput = this.getView().byId("idInpPartNo");
 
         if (!oSelectedItem) {
             oInput.resetProperty("value");
@@ -1333,10 +1334,44 @@ _handleSSCValueHelpClose:function(){
 
         oInput.setValue(oSelectedItem.getTitle());
         this._oDrpPtDialog.destroy();
-    }
+    },
+
+    onSearchPartNo: function(oEvent){
+        if(oEvent.getParameter("value").includes("*") === true){
+            var oValue = oEvent.getParameter("value");
+            var oSplitVal = oValue.split("*")[1];
+            var oFilter = new Filter("Matnr", FilterOperator.Contains, oSplitVal);
+			var oBinding = oEvent.getParameter("itemsBinding");
+			oBinding.filter([oFilter]);
+        }else{
+            var oValue = oEvent.getParameter("value");
+            var oFilter = new Filter("Matnr", FilterOperator.Contains, oValue);
+			var oBinding = oEvent.getParameter("itemsBinding");
+			oBinding.filter([oFilter]);
+        }
+    },
     // Added code for various VH's in NC Header screen, associated events and other validations - Code End
+        
+        /**
+		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
+		 * (NOT before the first rendering! onInit() is used for that one!).
+		 * @memberOf com.airbus.ZQM_NCR.view.Ncheader
+		 */
+		//	onBeforeRendering: function() {
+		//
+		//	},
 
 		/**
+		 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
+		 * This hook is the same one that SAPUI5 controls get after being rendered.
+		 * @memberOf com.airbus.ZQM_NCR.view.Ncheader
+		 */
+	onAfterRendering: function() {
+        var oModel = this.getOwnerComponent().getModel("NCSaveModel");
+        this.getView().setModel(oModel);
+    }
+		
+        /**
 		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
 		 * @memberOf com.airbus.ZQM_NCR.view.Ncheader
 		 */

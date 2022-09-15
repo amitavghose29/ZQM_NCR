@@ -32,7 +32,7 @@
 					<fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="A1" label="Product Sequence"
 						labelTooltip="Tooltip GroupItem Example">
 						<fb:control>
-							<Input type="Text" valueHelpRequest="helpRequestProduct" showValueHelp="true"/>
+							<Input type="Text" valueHelpRequest="helpRequestProduct"/>
 						</fb:control>
 					</fb:FilterGroupItem>
 					<fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="B1" label="Part No.">
