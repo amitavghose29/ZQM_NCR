@@ -17,7 +17,7 @@ builder:
           destination: RTM_100
           url: http://hclsdrtm.hcldigilabs.com:8000
         app:
-          name: Z_QM_NCR
+          name: ZQM_NCR
           description: QM NCR Application
           package: Z_AB_FIORI
           transport: RTMK900372

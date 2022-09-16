@@ -110,11 +110,11 @@
 														<ObjectStatus text="Hose Assembly" state="Information"/>
                                                         <Label text="Serial No"/>
 <!-- Added MultiInput control for serial number and traceability fields  - Code Start  -->                                                       
-                                                        <MultiInput id="idMNInputSN" showValueHelp="true" valueHelpRequest=".onOpenVHSerNo" placeholder="Component Serial No." width="230px" tokenUpdate="_onTokenUpdateSN">
-                                                            <!-- <core:Item key="{ProductId}" text="{Name}" /> -->
+                                                        <MultiInput id="idMNInputSN" showValueHelp="true" valueHelpRequest=".onOpenVHSerNo" width="230px" tokenUpdate="_onTokenUpdateSN">
+                                                            <core:Item key="{oSerialModel>ProductId}" text="{oSerialModel>Name} ({oSerialModel>ProductId})" />
                                                         </MultiInput>
                                                         <Label text="Traceability No"/>
-                                                        <MultiInput id="idMNInputTN" showValueHelp="true" valueHelpRequest=".onOpenVHTrcNo" placeholder="Traceability No." width="230px" tokenUpdate="_onTokenUpdateTN">
+                                                        <MultiInput id="idMNInputTN" showValueHelp="true" valueHelpRequest=".onOpenVHTrcNo" width="230px" tokenUpdate="_onTokenUpdateTN">
                                                         </MultiInput>
 <!-- Added MultiInput control for serial number and traceability fields  - Code End  -->
 														<!--<Label/>-->
@@ -830,10 +830,10 @@
 															<Input width="60px" class="sapUiTinyMarginBegin" placeholder="UOM"/>
 														</HBox>
                                                         <Label text="Serial No"/>
-                                                        <MultiInput id="idMNInputSNDisc" showValueHelp="true" valueHelpRequest=".onOpenVHSerNoDisc" placeholder="Component Serial No." width="230px" tokenUpdate="_onTokenUpdateSNDisc">
+                                                        <MultiInput id="idMNInputSNDisc" showValueHelp="true" valueHelpRequest=".onOpenVHSerNoDisc" width="230px" tokenUpdate="_onTokenUpdateSNDisc">
                                                         </MultiInput>
                                                         <Label text="Traceability No"/>
-                                                        <MultiInput id="idMNInputTNDisc" showValueHelp="true" valueHelpRequest=".onOpenVHTrcNoDisc" placeholder="Traceability No." width="230px" tokenUpdate="_onTokenUpdateTNDisc">
+                                                        <MultiInput id="idMNInputTNDisc" showValueHelp="true" valueHelpRequest=".onOpenVHTrcNoDisc" width="230px" tokenUpdate="_onTokenUpdateTNDisc">
                                                         </MultiInput>
 													</f:content>
 												</f:SimpleForm>

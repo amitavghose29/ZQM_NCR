@@ -3,6 +3,10 @@
 		{
 			"label": "Traceability Numbers",
 			"template": "Product"
+		},
+        {
+			"label": "Description",
+			"template": "ProductName"
 		}
 	]
 }

@@ -212,12 +212,12 @@ onValueHelpOkNCPress: function (oEvent) {
 
         //Added code for GR and PO Filterbar search - Code Start
         onGRfbSearch: function () {
-            var oGRModel = new JSONModel("../localjson/grdata.json");
+            var oGRModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/localjson/grdata.json");
             this.getView().setModel(oGRModel, "grsearch");
         },
 
         onPOfbSearch: function () {
-            var oPOModel = new JSONModel("../localjson/podata.json");
+            var oPOModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/localjson/podata.json");
             this.getView().setModel(oPOModel, "posearch");
         },
         //Added code for GR and PO  Filterbar search - Code End
@@ -417,9 +417,10 @@ onValueHelpOkNCPress: function (oEvent) {
 				    	
 				    	
 				    }else if(oSubCat=="000005"){
-				    	this._oDialog = sap.ui.xmlfragment("f4helpfrag","com.airbus.ZQM_NCR.fragments.valuehelpf4", this);
-						this.getView().addDependent(this._oDialog);
-						this._oDialog.open();
+				    	// this._oDialog = sap.ui.xmlfragment("f4helpfrag","com.airbus.ZQM_NCR.fragments.valuehelpf4", this);
+						// this.getView().addDependent(this._oDialog);
+						// this._oDialog.open();
+                        this.helpRequestPartNo();
 						
 				    }
 				
@@ -512,7 +513,14 @@ onValueHelpOkNCPress: function (oEvent) {
      //Added Value help code for Bin Area,Aircraft, GR and PO subcategories - Code End
 		_configValueHelpDialogOrder: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem"),
-				oInput = sap.ui.getCore().byId("idPartNo");
+				oInput;
+                if(this.getView().byId("idlinksubc").getSelectedItem()){
+                    if(this.getView().byId("idlinksubc").getSelectedItem().getText() === "PART NUMBER"){
+                        oInput = this.getView().byId("idsubcno"); 
+                    }else{
+                        oInput = sap.ui.getCore().byId("idPartNo");
+                    }
+                }
 			//NC copy conditon
 			if (oInput == undefined) {
 				oInput = this.getView().byId("idncrnumber");

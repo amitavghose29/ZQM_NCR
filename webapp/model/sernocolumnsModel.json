@@ -3,6 +3,10 @@
 		{
 			"label": "Serial Numbers",
 			"template": "ProductId"
+		},
+        {
+			"label": "Description",
+			"template": "Name"
 		}
 	]
 }
