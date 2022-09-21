@@ -42,38 +42,38 @@
 													<f:content>
 														<!--<core:Title text="General Info"/>-->
 														<Label text="Nc Type"/>
-														<ComboBox id="idnctypehdr" width="230px" items="{/NCTYPE_SOSet}" change="onNcrchange">
+														<ComboBox id="idnctypehdr" items="{/NCTYPE_SOSet}" change="onNcrchange">
 										                    <core:Item key="{Nctype}" text="{Nctypedesc}"/>
 									                    </ComboBox>
 														<Label text="Prioity"/>
-														<ComboBox width="230px" selectedKey="normal">
+														<ComboBox selectedKey="normal">
                                                             <core:Item key="high" text="High"/>
                                                             <core:Item key="normal" text="Normal"/>
                                                         </ComboBox>
 														<Label id="idtype" text="In Which Area"/>
-														<ComboBox id="idinahdr" width="230px" items="{/Area_SOSet}" change="onNcrArea">
+														<ComboBox id="idinahdr" items="{/Area_SOSet}" change="onNcrArea">
 															<core:Item key="{SequenceArea}" text="{Area}"/>
 														</ComboBox>
 														<Label text="Plant Code"/>
-														<ComboBox id="idPlntCodeHdr" width="230px" showSecondaryValues="true">
+														<ComboBox id="idPlntCodeHdr" showSecondaryValues="true">
 															<core:Item text="8006 Mirabel Distribution"/>
 															<core:Item key="Assembly" text="8007 Mirabel Manufacturing"/>
 															<core:Item text="8008 Mirabel Warehouse"/>
 														</ComboBox>
 														<Label text="Product Code"/>
-														<Input id="idInpProdCode" width="230px" valueHelpRequest="onVHReqProductCode" showValueHelp="true"/>
+														<Input id="idInpProdCode" valueHelpRequest="onVHReqProductCode" showValueHelp="true"/>
 														<Label text="Work Instruction"/>
-														<Input id="idInpWrkIns" width="230px" valueHelpRequest="onVHReqWrkIns" showValueHelp="true"/>
+														<Input id="idInpWrkIns" valueHelpRequest="onVHReqWrkIns" showValueHelp="true"/>
 														<Label text="Prod Order"/>
-														<Input id="idInpPrdOrd" width="230px" valueHelpRequest="onVHReqPrdOrd" showValueHelp="true"/>
+														<Input id="idInpPrdOrd" valueHelpRequest="onVHReqPrdOrd" showValueHelp="true"/>
 														<!--	<Label text="Last Operation"/>
 														<Input width="230px"/>-->
 														<Label text="Supersedes NC"/>
-														<Input id="idInpSupNC" width="230px" valueHelpRequest="onVHReqSupNC" showValueHelp="true"/>
+														<Input id="idInpSupNC" valueHelpRequest="onVHReqSupNC" showValueHelp="true"/>
 														<Label text="Superseded By"/>
-														<Input id="idInpSupBy" width="230px" valueHelpRequest="onVHReqSupBy" showValueHelp="true"/>
+														<Input id="idInpSupBy" valueHelpRequest="onVHReqSupBy" showValueHelp="true"/>
 														<Label text="Reference NC"/>
-														<Input id="idInpRefNC" width="230px" valueHelpRequest="onVHReqRefNC" showValueHelp="true"/>
+														<Input id="idInpRefNC" valueHelpRequest="onVHReqRefNC" showValueHelp="true"/>
 														<Label text="Create Date"/>
 														<Text text=""/>
 														<Label text="Closed Date"/>
@@ -87,11 +87,11 @@
                                                         <Label text="Link to Aircraft"/>
 														<CheckBox enabled="false"/>
                                                         <Label text="Aircraft"/>
-														<Input id="idInpAircraft" width="230px" valueHelpRequest="onVHReqAircraft" showValueHelp="true" change="handleAircraftChange"/>
+														<Input id="idInpAircraft" valueHelpRequest="onVHReqAircraft" showValueHelp="true" change="handleAircraftChange"/>
                                                         <Label text="Supplier Name"/>
-														<Input value="" width="230px"/>
+														<Input value=""/>
                                                         <Label text="Supplier SAP"/>
-														<Input value="" width="230px"/>
+														<Input value=""/>
 													</f:content>
 												</f:SimpleForm>
 											</l:BlockLayoutCell>
@@ -104,17 +104,17 @@
 													<f:content>
 														<Label text="Part Number"/>
 <!-- Added change event to handle the business logic - Code Start  -->                                                          
-														<Input value="79000-750-002-29780" id="idInpPartNo" width="230px" valueHelpRequest=".onOpenVHPartNo"  showValueHelp="true" change="handleChangePartNo"/>
+														<Input value="79000-750-002-29780" id="idInpPartNo" valueHelpRequest=".onOpenVHPartNo"  showValueHelp="true" change="handleChangePartNo"/>
 <!-- Added change event to handle the business logic - Code End  -->														
                                                         <Label text="Part Description"/>
 														<ObjectStatus text="Hose Assembly" state="Information"/>
                                                         <Label text="Serial No"/>
 <!-- Added MultiInput control for serial number and traceability fields  - Code Start  -->                                                       
-                                                        <MultiInput id="idMNInputSN" showValueHelp="true" valueHelpRequest=".onOpenVHSerNo" width="230px" tokenUpdate="_onTokenUpdateSN">
-                                                            <core:Item key="{oSerialModel>ProductId}" text="{oSerialModel>Name} ({oSerialModel>ProductId})" />
+                                                        <MultiInput id="idMNInputSN" showValueHelp="true" valueHelpRequest=".onOpenVHSerNo" tokenUpdate="_onTokenUpdateSN">
+                                                            <!-- <core:Item key="{oSerialModel>ProductId}" text="{oSerialModel>Name} ({oSerialModel>ProductId})" /> -->
                                                         </MultiInput>
                                                         <Label text="Traceability No"/>
-                                                        <MultiInput id="idMNInputTN" showValueHelp="true" valueHelpRequest=".onOpenVHTrcNo" width="230px" tokenUpdate="_onTokenUpdateTN">
+                                                        <MultiInput id="idMNInputTN" showValueHelp="true" valueHelpRequest=".onOpenVHTrcNo" tokenUpdate="_onTokenUpdateTN">
                                                         </MultiInput>
 <!-- Added MultiInput control for serial number and traceability fields  - Code End  -->
 														<!--<Label/>-->
@@ -206,13 +206,13 @@
 													<f:content>
 														<!--<core:Title text="Component Location"/>-->
 														<Label text="NC Created By"/>
-														<MultiInput id="idInpNCCrtBy" width="230px" valueHelpRequest=".onOpenVHNCCreated" showValueHelp="true"/>
+														<MultiInput id="idInpNCCrtBy" valueHelpRequest=".onOpenVHNCCreated" showValueHelp="true"/>
 														<Label text="NC Detected At"/>
-														<MultiInput id="idInpNCDetAt" width="230px" valueHelpRequest=".onOpenVHNCDetected" showValueHelp="true"/>
+														<MultiInput id="idInpNCDetAt" valueHelpRequest=".onOpenVHNCDetected" showValueHelp="true"/>
 														<Label text="Bin Location"/>
-														<Input id="idInpBinLoc" width="230px" valueHelpRequest=".onOpenVHBinLoc" showValueHelp="true"/>
+														<Input id="idInpBinLoc" valueHelpRequest=".onOpenVHBinLoc" showValueHelp="true"/>
 														<Label text="Drop Point"/>
-														<Input id="idInpDrpPt" width="230px" valueHelpRequest=".onOpenVHDrpPt" showValueHelp="true"/>
+														<Input id="idInpDrpPt" valueHelpRequest=".onOpenVHDrpPt" showValueHelp="true"/>
 													</f:content>
 												</f:SimpleForm>
 											</l:BlockLayoutCell>

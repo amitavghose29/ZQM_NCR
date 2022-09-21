@@ -206,3 +206,11 @@ sapUiFormContainerTitle>.sapUiFormTitleH1,
     width: 1000px !important;
 }
 /* Added custom class for styling the width of value help dialog opened on click of serial no and traceability multi input fields - Code End*/
+
+.sapMToken {
+    color: #3c4038;
+}
+
+.sapUiSizeCompact .sapMTokenizerIndicator {
+    color: #383c40;
+}
