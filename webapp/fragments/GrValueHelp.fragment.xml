@@ -21,12 +21,12 @@
                     </fb:FilterGroupItem>
                     <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="C1" label="Part Number">
                         <fb:control>
-                            <Input type="Text" valueHelpRequest="_onValueHelpReqPartNo" showValueHelp="true" />
+                            <Input id="idFlBarGrVhPartNo" type="Text" valueHelpRequest="_onValueHelpReqPartNo" showValueHelp="true" />
                         </fb:control>
                     </fb:FilterGroupItem>
                 </fb:filterGroupItems>
             </fb:FilterBar>
-            <Table id="idGRTable" inset="false" items="{grsearch>/grdata}" mode="SingleSelectMaster" selectionChange="handleCloseGRUserValueHelp" itemPress="handleCloseGRUserValueHelp">
+            <Table id="idGRTable" inset="false" items="{oGRModel>/}" mode="SingleSelectMaster" selectionChange="handleCloseGRUserValueHelp" itemPress="handleCloseGRUserValueHelp">
                 <columns>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="GR ID" />
@@ -38,8 +38,8 @@
                 <items>
                     <ColumnListItem vAlign="Middle" type="Active">
                         <cells>
-                            <Text text="{grsearch>Id}" />
-                            <Text text="{grsearch>gr}" />
+                            <Text text="{oGRModel>Value}" />
+                            <Text text="{}" />
                         </cells>
                     </ColumnListItem>
                 </items>

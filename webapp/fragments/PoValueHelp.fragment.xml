@@ -21,7 +21,7 @@
                     </fb:FilterGroupItem>
                     <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="C1" label="Part Number">
                         <fb:control>
-                            <Input type="Text" valueHelpRequest="_onValueHelpReqPartNo" showValueHelp="true" />
+                            <Input id="idFlBarPOVhPartNo" type="Text" valueHelpRequest="_onValueHelpReqPartNo" showValueHelp="true" />
                         </fb:control>
                     </fb:FilterGroupItem>
                     <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="D1" label="NC Number">
@@ -41,7 +41,7 @@
                     </fb:FilterGroupItem>
                 </fb:filterGroupItems>
             </fb:FilterBar>
-            <Table id="idPOTable" inset="false" items="{posearch>/podata}" mode="SingleSelectMaster" selectionChange="handleClosePOUserValueHelp" itemPress="handleClosePOUserValueHelp">
+            <Table id="idPurOrdTable" inset="false" items="{oPrModel>/}" mode="SingleSelectMaster" selectionChange="handleClosePOUserValueHelp" itemPress="handleClosePOUserValueHelp">
                 <columns>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="PO ID" />
@@ -53,8 +53,8 @@
                 <items>
                     <ColumnListItem vAlign="Middle" type="Active">
                         <cells>
-                            <Text text="{posearch>Id}" />
-                            <Text text="{posearch>po}" />
+                            <Text text="{oPrModel>Value}" />
+                            <Text text="{}" />
                         </cells>
                     </ColumnListItem>
                 </items>

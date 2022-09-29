@@ -37,7 +37,7 @@
 					</fb:FilterGroupItem>
 					<fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="B1" label="Part No.">
 						<fb:control>
-							<Input id="idPartNo" showSuggestion="true" suggestionItems="{/}" valueHelpRequest="helpRequestPartNo" showValueHelp="true">
+							<Input id="idFlBarPrOrdVhPartNo" showSuggestion="true" suggestionItems="{/Material_NumberSet}" valueHelpRequest="_onValueHelpReqPartNo" showValueHelp="true">
 								<suggestionItems>
 									<core:Item text="{Matnr}"/>
 								</suggestionItems>
@@ -51,7 +51,7 @@
                      </fb:FilterGroupItem>
 				    </fb:filterGroupItems>
 			</fb:FilterBar>
-			<Table id="idProductsTable" inset="false" items="{/}" mode="SingleSelectMaster" selectionChange="handleCloseUserValueHelp"
+			<Table id="idProdOrderTable" inset="false" items="{oPOModel>/}" mode="SingleSelectMaster" selectionChange="handleCloseUserValueHelp"
 				itemPress="handleCloseUserValueHelp">
 				<columns>
 					<Column minScreenWidth="Tablet" demandPopin="true">
@@ -85,13 +85,13 @@
 				<items>
 					<ColumnListItem vAlign="Middle" type="Active" press="_configValueHelpDialogOrderPartNo">
 						<cells>
-							<Text text="{Plant}"/>
-							<Text text="{OrderNum}"/>
+							<Text text="{}"/>
+							<Text text="{}"/>
 							<Text text=""/>
-							<Text text="{Type}"/>
-							<Text text="{Parent}"/>
+							<Text text="{}"/>
+							<Text text="{}"/>
 							<Text text=""/>
-							<Text text="{Gstrp}"/>
+							<Text text="{}"/>
 							<Text text=""/>
 							<Text text=""/>
 						</cells>

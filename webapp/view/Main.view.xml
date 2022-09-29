@@ -31,12 +31,12 @@
 								<f:content>
                                     <Label text="NC Type"/>
 									<ComboBox id="idncr" width="200px" items="{/NCTYPE_SOSet}" change="onNCTypeChange">
-										<core:Item key="{Nctype}" text="{Nctypedesc}"/>
+										<core:Item key="{Nctype}" text="{NctypeDesc}"/>
 									</ComboBox>
 									<Label text="In Which Area"/>
 									<!--<Input id="idin" width="50%" liveChange="inEnter"/>-->
-									<ComboBox id="idiwa" width="200px" items="{/Area_SOSet}" change="onNCAreaChange">
-										<core:Item key="{SequenceArea}" text="{Area}"/>
+									<ComboBox id="idiwa" width="200px" items="{/Area_soSet}" change="onNCAreaChange">
+										<core:Item key="{Sequencearea}" text="{Area}"/>
 									</ComboBox>
 									
 									<!--<Input id="idnc" valueHelpRequest="helpRequest" placeholder="Link To" liveChange="poEnter" visible="false">-->
@@ -47,7 +47,7 @@
 									<!--</Input>-->
 									<!--<Text/>-->
 									<Label text="Sub Category"></Label>
-									<ComboBox id="idlinksubc" items="{/Subcat_SOSet}" change="onChngSubCat">
+									<ComboBox id="idlinksubc" items="{/Subcat_SoSet}" change="onChngSubCat">
 										<core:Item key="{SequenceCat}" text="{Subcat}"/>
 										<layoutData>
 											<l:GridData span="XL1 L2 M8 S8"/>

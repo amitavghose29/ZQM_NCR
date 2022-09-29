@@ -14,8 +14,8 @@
 			"version": "0.0.0"
 		},
 		"dataSources": {
-			"ZQM_NC_MS_SRV": {
-				"uri": "/sap/opu/odata/sap/ZQM_NC_MS_SRV/",
+			"ZQM_NCMS_SRV": {
+				"uri": "/sap/opu/odata/sap/ZQM_NCMS_SRV/",
 				"type": "OData",
 				"settings": {
 					"localUri": "localService/metadata.xml"
@@ -77,7 +77,7 @@
 					"defaultBindingMode": "OneWay",
 					"defaultCountMode": "Request"
 				},
-				"dataSource": "ZQM_NC_MS_SRV",
+				"dataSource": "ZQM_NCMS_SRV",
 				"preload": true
 			},
 			"json": {
@@ -108,12 +108,6 @@
 				"settings": {},
 				"preload": false,
 				"uri": "localjson/podata.json"
-			},
-            "grdata": {
-				"type": "sap.ui.model.json.JSONModel",
-				"settings": {},
-				"preload": false,
-				"uri": "localjson/grdata.json"
 			},
             "suppsapcode": {
 				"type": "sap.ui.model.json.JSONModel",

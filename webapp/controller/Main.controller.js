@@ -211,10 +211,10 @@ onValueHelpOkNCPress: function (oEvent) {
 		},
 
         //Added code for GR and PO Filterbar search - Code Start
-        onGRfbSearch: function () {
-            var oGRModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/localjson/grdata.json");
-            this.getView().setModel(oGRModel, "grsearch");
-        },
+        // onGRfbSearch: function () {
+        //     var oGRModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/localjson/grdata.json");
+        //     this.getView().setModel(oGRModel, "grsearch");
+        // },
 
         onPOfbSearch: function () {
             var oPOModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/localjson/podata.json");
@@ -310,18 +310,18 @@ onValueHelpOkNCPress: function (oEvent) {
             let oInput1 = this.getView().byId("idsubcno");
                 oInput1.setValue("");
 
-		    if(oSubCat=="000001"){
+		    if(Number(oSubCat) == "0001"){
                 
 		    	
-		    }else if(oSubCat=="000002"){
+		    }else if(Number(oSubCat) == "0002"){
                 
 		    	
-		    }else if(oSubCat=="000003"){
+		    }else if(Number(oSubCat) == "0003"){
 		    	
-		    }else if(oSubCat=="000004"){
+		    }else if(Number(oSubCat) == "0004"){
 		    	this.getView().byId("idsubsubno").setVisible(false);
 		    	
-		    }else if(oSubCat=="000005"){
+		    }else if(Number(oSubCat) == "0005"){
 		    	this.getView().byId("idsubsubno").setVisible(false);
 		    }
 			
@@ -366,67 +366,103 @@ onValueHelpOkNCPress: function (oEvent) {
 		helpRequest: function () {
 		//	var sc = this.getView().byId("idlinksubc").getSelectedKey();
 			var oSubCat= this.getView().byId("idlinksubc").getSelectedKey();
-			
+            			
 			if (oSubCat === "") {
 				sap.m.MessageBox.alert("Please Select Sub Category");
 			} else {
-				
-				  if(oSubCat=="000001"){
-    //Added Value Help Code for GR and PO Subcategories - Code Start
-                    //if(!this._oGRDialog)
-                    //{
-                        this._oGRDialog = sap.ui.xmlfragment("GRfragId","com.airbus.ZQM_NCR.fragments.GrValueHelp", this);
-                        this.getView().addDependent(this._oGRDialog);
-                    //}
-                   
-                    this._oGRDialog.open();
-				    	
-				    }else if(oSubCat=="000002"){
-                        //if(!this._oPODialog)
-                        //{
-                            this._oPODialog = sap.ui.xmlfragment("POfragId","com.airbus.ZQM_NCR.fragments.PoValueHelp", this);
-                            this.getView().addDependent(this._oPODialog);
-                        //}
-                        
-						this._oPODialog.open();
-				    	
-				    }
-     //Added Value Help Code for GR and PO Subcategories - Code End     
-                    else if(oSubCat=="000003"){
-				    	sap.ui.core.BusyIndicator.show();
-						this.Dialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.f4category", this);
-						this.getView().addDependent(this.oDialog);
-						this.Dialog.open();
-						sap.ui.core.BusyIndicator.show();
+				  if(Number(oSubCat) == "0001"){
+    //Value Help Code for Production Order(001)           
+                        this._oPODialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.f4category", this);
+                        this.getView().addDependent(this._oPODialog);
+                        this._oPODialog.open();	
+                        this._oPODialog.setModel(this.getOwnerComponent().getModel());
+                        sap.ui.core.BusyIndicator.show();
 						var oModel = new sap.ui.model.json.JSONModel();
 						var oDataModel = this.getOwnerComponent().getModel();
-						oDataModel.read("/Material_NumberSet", {
+                        var oFilter = [];          
+                            oFilter.push(new Filter("Key", FilterOperator.Contains, "PR"));
+                        var sPath = "/f4_genericSet"
+						oDataModel.read(sPath, {
+                            filters : oFilter,
 							success: function (oData, oResult) {
-								var data = oData.results;
-								oModel.setData(data);
-								sap.ui.getCore().byId("idPartNo").setModel(oModel);
 								sap.ui.core.BusyIndicator.hide();
-							},
+                                var data = oData.results;
+								oModel.setData(data);
+                                sap.ui.getCore().byId("idProdOrderTable").setModel(oModel, "oPOModel");
+							}.bind(this),
+							error: function (oError) {
+								sap.ui.core.BusyIndicator.hide();
+							}
+						});			    	
+				    }else if(Number(oSubCat) == "000002"){
+    //Value Help Code for Work Instruction(002) 
+                        this._oWIDialog = sap.ui.xmlfragment("WIfragId","com.airbus.ZQM_NCR.fragments.WorkInstructionVH", this);
+                        this.getView().addDependent(this._oWIDialog);
+						this._oWIDialog.open();				    	
+				    }
+                    else if(Number(oSubCat) == "000003"){
+	//Value Help Code for GR Number(003)			    	
+						this._oGRDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.GrValueHelp", this);
+						this.getView().addDependent(this._oGRDialog);
+						this._oGRDialog.open();
+                        sap.ui.core.BusyIndicator.show();
+						var oModel = new sap.ui.model.json.JSONModel();
+						var oDataModel = this.getOwnerComponent().getModel();
+                        var oFilter = [];          
+                            oFilter.push(new Filter("Key", FilterOperator.Contains, "MD"));
+                        var sPath = "/f4_genericSet"
+						oDataModel.read(sPath, {
+                            filters : oFilter,
+							success: function (oData, oResult) {
+								sap.ui.core.BusyIndicator.hide();
+                                var data = oData.results;
+								oModel.setData(data);
+                                sap.ui.getCore().byId("idGRTable").setModel(oModel, "oGRModel");
+							}.bind(this),
+							error: function (oError) {
+								sap.ui.core.BusyIndicator.hide();
+							}
+						});				    	
+				    }else if(Number(oSubCat) == "000004"){
+	//Value Help Code for Purchase Order(004)			    	
+                        this._oPrOrdDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.PoValueHelp", this);
+                        this.getView().addDependent(this._oPrOrdDialog);
+                        this._oPrOrdDialog.open();
+                        sap.ui.core.BusyIndicator.show();
+						var oModel = new sap.ui.model.json.JSONModel();
+						var oDataModel = this.getOwnerComponent().getModel();
+                        var oFilter = [];          
+                            oFilter.push(new Filter("Key", FilterOperator.Contains, "PO"));
+                        var sPath = "/f4_genericSet"
+						oDataModel.read(sPath, {
+                            filters : oFilter,
+							success: function (oData, oResult) {
+								sap.ui.core.BusyIndicator.hide();
+                                var data = oData.results;
+								oModel.setData(data);
+                                sap.ui.getCore().byId("idPurOrdTable").setModel(oModel, "oPrModel");
+							}.bind(this),
 							error: function (oError) {
 								sap.ui.core.BusyIndicator.hide();
 							}
 						});
-						sap.ui.core.BusyIndicator.hide();
-				    	
-				    }else if(oSubCat=="000004"){
-				    	
-				    	
-				    }else if(oSubCat=="000005"){
-				    	// this._oDialog = sap.ui.xmlfragment("f4helpfrag","com.airbus.ZQM_NCR.fragments.valuehelpf4", this);
-						// this.getView().addDependent(this._oDialog);
-						// this._oDialog.open();
-                        this.helpRequestPartNo();
-						
-				    }
-				
-				
+				    }else if(Number(oSubCat) == "000005"){
+    //Value Help Code for Part Number(005)
+				    	this._oPrtNoDialog = sap.ui.xmlfragment("f4helpfrag","com.airbus.ZQM_NCR.fragments.partno", this);
+						this.getView().addDependent(this._oPrtNoDialog);
+						this._oPrtNoDialog.open();
+                        this._oPrtNoDialog.setModel(this.getOwnerComponent().getModel());
+                        // this.helpRequestPartNo();						
+				    }				
 			}
 		}, 
+
+        _onValueHelpReqPartNo: function(){
+            this._oPrtNoDialog = sap.ui.xmlfragment("f4helpfrag","com.airbus.ZQM_NCR.fragments.partno", this);
+			this.getView().addDependent(this._oPrtNoDialog);
+			this._oPrtNoDialog.open();
+            this._oPrtNoDialog.setModel(this.getOwnerComponent().getModel());
+        },
         
     //Added Value help code for Bin Area,Aircraft, GR and PO subcategories - Code Start
         onBinhelpRequest : function(){
@@ -502,8 +538,8 @@ onValueHelpOkNCPress: function (oEvent) {
             this._oBinAreDialog.destroy();
         },
         _handlePOValueHelpClose:function(){
-            //this._oPODialog.close();
-            this._oPODialog.destroy();
+            this._oPrOrdDialog.close();
+            this._oPrOrdDialog.destroy();
         },
         _handleGRValueHelpClose:function(){
             //this._oGRDialog.close();
@@ -515,16 +551,20 @@ onValueHelpOkNCPress: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem"),
 				oInput;
                 if(this.getView().byId("idlinksubc").getSelectedItem()){
-                    if(this.getView().byId("idlinksubc").getSelectedItem().getText() === "PART NUMBER"){
+                    if(Number(this.getView().byId("idlinksubc").getSelectedKey()) == "0005"){
                         oInput = this.getView().byId("idsubcno"); 
-                    }else{
-                        oInput = sap.ui.getCore().byId("idPartNo");
+                    }else if(Number(this.getView().byId("idlinksubc").getSelectedKey()) == "0003"){
+                        oInput = sap.ui.getCore().byId("idFlBarGrVhPartNo"); 
+                    }else if(Number(this.getView().byId("idlinksubc").getSelectedKey()) == "0001"){
+                        oInput = sap.ui.getCore().byId("idFlBarPrOrdVhPartNo"); 
+                    }else if(Number(this.getView().byId("idlinksubc").getSelectedKey()) == "0004"){
+                        oInput = sap.ui.getCore().byId("idFlBarPOVhPartNo"); 
                     }
                 }
 			//NC copy conditon
-			if (oInput == undefined) {
-				oInput = this.getView().byId("idncrnumber");
-			}
+			// if (oInput == undefined) {
+			// 	oInput = this.getView().byId("idncrnumber");
+			// }
 
 			if (!oSelectedItem) {
 				oInput.resetProperty("value");
@@ -532,7 +572,7 @@ onValueHelpOkNCPress: function (oEvent) {
 			}
 
 			oInput.setValue(oSelectedItem.getTitle());
-			this._oDialog.destroy();
+			// this._oPODialog.destroy();
 
 		},
 		_configValueHelpDialogOrdersubsub: function (oEvent) {
@@ -596,8 +636,8 @@ onValueHelpOkNCPress: function (oEvent) {
 
 		onCloseUserPopup: function () {
 // Fixed error related to getting open state property of dialog - Code Start 
-            this.Dialog.close();
-            this.Dialog.destroy();
+            this._oPODialog.close();
+            this._oPODialog.destroy();
 // Fixed error related to getting open state property of dialog - Code End
 
 // Re-setting the input field value - Code Start 
