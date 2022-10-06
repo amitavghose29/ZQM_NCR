@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog title="Purchase Order Number" items="{oPurOrdFBModel>/}" liveChange="onSearchPurOrdFB" confirm="_configValueHelpDialogPurOrdFB"
+		cancel="_handleValueHelpPurOrdFB" search="onSearchPurOrdFB">
+		<StandardListItem title="{oPurOrdFBModel>Value}" info="{oPurOrdFBModel>Key}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

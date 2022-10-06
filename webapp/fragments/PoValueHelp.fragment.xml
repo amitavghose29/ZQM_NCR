@@ -11,12 +11,12 @@
                 <fb:filterGroupItems>
                     <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="A1" label="ASN number">
                         <fb:control>
-                            <Input id="idASNNo" type="Text" valueHelpRequest="_onValueHelpReqtASNNumber" showValueHelp="true" />
+                            <Input id="idFBASNNo" type="Text" valueHelpRequest="_onValueHelpReqtASNNumber" showValueHelp="true" />
                         </fb:control>
                     </fb:FilterGroupItem>
                     <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="B1" label="Inbound delivery">
                         <fb:control>
-                            <Input id="idInboundDelivery" valueHelpRequest="_onValueHelpReqInboundDelivery" showValueHelp="true" />
+                            <Input id="idFBPOInboundDelivery" valueHelpRequest="_onValueHelpReqInboundDelivery" showValueHelp="true" />
                         </fb:control>
                     </fb:FilterGroupItem>
                     <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="C1" label="Part Number">
@@ -26,17 +26,17 @@
                     </fb:FilterGroupItem>
                     <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="D1" label="NC Number">
                         <fb:control>
-                            <Input type="Text" valueHelpRequest="_onValueHelpReqNCNo" showValueHelp="true" />
+                            <Input id="idFBNCNumber" type="Text" valueHelpRequest="_onValueHelpReqNCNo" showValueHelp="true" />
                         </fb:control>
                     </fb:FilterGroupItem>
                     <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="E1" label="Discrepancy Number">
                         <fb:control>
-                            <Input type="Text" valueHelpRequest="_onValueHelpReqDiscrepancyNo" showValueHelp="true" />
+                            <Input id="idFBDiscrpNo" type="Text" valueHelpRequest="_onValueHelpReqDiscrepancyNo" showValueHelp="true" />
                         </fb:control>
                     </fb:FilterGroupItem>
                     <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="F1" label="RMA number">
                         <fb:control>
-                            <Input type="Text" valueHelpRequest="_onValueHelpReqRMANo" showValueHelp="true" />
+                            <Input id="idFBRMANo" type="Text" valueHelpRequest="_onValueHelpReqRMANo" showValueHelp="true" />
                         </fb:control>
                     </fb:FilterGroupItem>
                 </fb:filterGroupItems>

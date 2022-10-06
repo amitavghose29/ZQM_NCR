@@ -11,12 +11,12 @@
                 <fb:filterGroupItems>
                     <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="A1" label="Purchase Order">
                         <fb:control>
-                            <Input id="idPurchord" type="Text" valueHelpRequest="_onValueHelpReqtPurchOrd" showValueHelp="true" />
+                            <Input id="idFBPurchord" type="Text" valueHelpRequest="_onValueHelpReqtPurchOrd" showValueHelp="true" />
                         </fb:control>
                     </fb:FilterGroupItem>
                     <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="B1" label="Inbound delivery">
                         <fb:control>
-                            <Input id="idInboundDelivery" valueHelpRequest="_onValueHelpReqInboundDelivery" showValueHelp="true" />
+                            <Input id="idFBInboundDelivery" valueHelpRequest="_onValueHelpReqInboundDelivery" showValueHelp="true" />
                         </fb:control>
                     </fb:FilterGroupItem>
                     <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="C1" label="Part Number">
