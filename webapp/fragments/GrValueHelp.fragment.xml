@@ -11,17 +11,29 @@
                 <fb:filterGroupItems>
                     <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="A1" label="Purchase Order">
                         <fb:control>
-                            <Input id="idFBPurchord" type="Text" valueHelpRequest="_onValueHelpReqtPurchOrd" showValueHelp="true" />
+                            <Input id="idFBPurchord" type="Text" valueHelpRequest="_onValueHelpReqtPurchOrd" showValueHelp="true" showSuggestion="true" suggestionItems="{oGRPurSuggestionModel>/}">
+			                <suggestionItems>
+			            	<core:Item text="{oGRPurSuggestionModel>Value}" />
+			                </suggestionItems>
+		                    </Input>
                         </fb:control>
                     </fb:FilterGroupItem>
                     <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="B1" label="Inbound delivery">
                         <fb:control>
-                            <Input id="idFBInboundDelivery" valueHelpRequest="_onValueHelpReqInboundDelivery" showValueHelp="true" />
+                            <Input id="idFBInboundDelivery" valueHelpRequest="_onValueHelpReqInboundDelivery" showValueHelp="true" showSuggestion="true" suggestionItems="{oGRInbSuggestionModel>/}">
+			                <suggestionItems>
+			            	<core:Item text="{oGRInbSuggestionModel>Value}" />
+			                </suggestionItems>
+		                    </Input>
                         </fb:control>
                     </fb:FilterGroupItem>
                     <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="C1" label="Part Number">
                         <fb:control>
-                            <Input id="idFlBarGrVhPartNo" type="Text" valueHelpRequest="_onValueHelpReqPartNo" showValueHelp="true" />
+                            <Input id="idFlBarGrVhPartNo" type="Text" valueHelpRequest="_onValueHelpReqPartNo" showValueHelp="true" showSuggestion="true" suggestionItems="{oGRPartSuggestionModel>/}">
+			                <suggestionItems>
+			            	<core:Item text="{oGRPartSuggestionModel>Value}" />
+			                </suggestionItems>
+		                    </Input>
                         </fb:control>
                     </fb:FilterGroupItem>
                 </fb:filterGroupItems>

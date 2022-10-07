@@ -11,32 +11,56 @@
                 <fb:filterGroupItems>
                     <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="A1" label="ASN number">
                         <fb:control>
-                            <Input id="idFBASNNo" type="Text" valueHelpRequest="_onValueHelpReqtASNNumber" showValueHelp="true" />
+                            <Input id="idFBASNNo" type="Text" valueHelpRequest="_onValueHelpReqtASNNumber" showValueHelp="true"  showSuggestion="true" suggestionItems="{oPOASNSuggestionModel>/}">
+			                <suggestionItems>
+			            	<core:Item text="{oPOASNSuggestionModel>Value}" />
+			                </suggestionItems>
+		                    </Input>
                         </fb:control>
                     </fb:FilterGroupItem>
                     <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="B1" label="Inbound delivery">
                         <fb:control>
-                            <Input id="idFBPOInboundDelivery" valueHelpRequest="_onValueHelpReqInboundDelivery" showValueHelp="true" />
+                            <Input id="idFBPOInboundDelivery" valueHelpRequest="_onValueHelpReqInboundDelivery" showValueHelp="true"  showSuggestion="true" suggestionItems="{oPOInbDevSuggestionModel>/}">
+			                <suggestionItems>
+			            	<core:Item text="{oPOInbDevSuggestionModel>Value}" />
+			                </suggestionItems>
+		                    </Input>
                         </fb:control>
                     </fb:FilterGroupItem>
                     <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="C1" label="Part Number">
                         <fb:control>
-                            <Input id="idFlBarPOVhPartNo" type="Text" valueHelpRequest="_onValueHelpReqPartNo" showValueHelp="true" />
+                            <Input id="idFlBarPOVhPartNo" type="Text" valueHelpRequest="_onValueHelpReqPartNo" showValueHelp="true"  showSuggestion="true" suggestionItems="{oPOPartNoSuggestionModel>/}">
+			                <suggestionItems>
+			            	<core:Item text="{oPOPartNoSuggestionModel>Value}" />
+			                </suggestionItems>
+		                    </Input>
                         </fb:control>
                     </fb:FilterGroupItem>
                     <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="D1" label="NC Number">
                         <fb:control>
-                            <Input id="idFBNCNumber" type="Text" valueHelpRequest="_onValueHelpReqNCNo" showValueHelp="true" />
+                            <Input id="idFBNCNumber" type="Text" valueHelpRequest="_onValueHelpReqNCNo" showValueHelp="true"  showSuggestion="true" suggestionItems="{oPONcNoSuggestionModel>/}">
+			                <suggestionItems>
+			            	<core:Item text="{oPONcNoSuggestionModel>Value}" />
+			                </suggestionItems>
+		                    </Input>
                         </fb:control>
                     </fb:FilterGroupItem>
                     <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="E1" label="Discrepancy Number">
                         <fb:control>
-                            <Input id="idFBDiscrpNo" type="Text" valueHelpRequest="_onValueHelpReqDiscrepancyNo" showValueHelp="true" />
+                            <Input id="idFBDiscrpNo" type="Text" valueHelpRequest="_onValueHelpReqDiscrepancyNo" showValueHelp="true"  showSuggestion="true" suggestionItems="{oPODisNoSuggestionModel>/}">
+			                <suggestionItems>
+			            	<core:Item text="{oPODisNoSuggestionModel>Value}" />
+			                </suggestionItems>
+		                    </Input>
                         </fb:control>
                     </fb:FilterGroupItem>
                     <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="F1" label="RMA number">
                         <fb:control>
-                            <Input id="idFBRMANo" type="Text" valueHelpRequest="_onValueHelpReqRMANo" showValueHelp="true" />
+                            <Input id="idFBRMANo" type="Text" valueHelpRequest="_onValueHelpReqRMANo" showValueHelp="true"  showSuggestion="true" suggestionItems="{oPORMANoSuggestionModel>/}">
+			                <suggestionItems>
+			            	<core:Item text="{oPORMANoSuggestionModel>Value}" />
+			                </suggestionItems>
+		                    </Input>
                         </fb:control>
                     </fb:FilterGroupItem>
                 </fb:filterGroupItems>

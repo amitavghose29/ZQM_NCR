@@ -73,7 +73,7 @@
 							</f:SimpleForm>
 						</VBox>
 					</content>
-					<footer class="sapUiSizeCompact">
+					<footer>
 						<Toolbar>
 							<ToolbarSpacer/>
 							<Button text="{i18n>Save}" id="idsave" type="Emphasized" press="onPressNext"/>
