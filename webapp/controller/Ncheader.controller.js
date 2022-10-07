@@ -1446,7 +1446,9 @@ sap.ui.define([
 		 */
         onAfterRendering: function () {
             var oModel = this.getOwnerComponent().getModel("NCSaveModel");
-            this.getView().setModel(oModel);
+            this.getView().setModel(oModel,"NCSaveModel");
+
+            
             // var oModel = new sap.ui.model.json.JSONModel();
             //     oModel.setData(this.oMultiInputSNModel.oData);
             this._oMultiInputSN.setModel(this.oMultiInputSNModel, "oSerialModel");
