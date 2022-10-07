@@ -7,7 +7,7 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:layout="sap.ui.layout" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar">
     <Dialog id="idGRHelpDialog" title="Goods Receipt Search" class="vhdialogPOSearchstyle">
         <VBox class="sapUiSizeCompact">
-            <fb:FilterBar reset="onGRfbReset" search="onGRfbSearch" showRestoreButton="true" showClearButton="true">
+            <fb:FilterBar reset="onGRfbReset" search="_onGRSearchGo" showRestoreButton="true" showClearButton="true">
                 <fb:filterGroupItems>
                     <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="A1" label="Purchase Order">
                         <fb:control>
@@ -50,8 +50,8 @@
                 <items>
                     <ColumnListItem vAlign="Middle" type="Active">
                         <cells>
-                            <Text text="{oGRModel>Value}" />
-                            <Text text="{}" />
+                            <Text text="{oGRModel>GoodsReceiptNum}" />
+                            <Text text="{oGRModel>GoodsReceiptNum}" />
                         </cells>
                     </ColumnListItem>
                 </items>

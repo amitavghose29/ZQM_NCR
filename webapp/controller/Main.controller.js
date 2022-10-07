@@ -211,15 +211,106 @@ sap.ui.define([
         },
 
         //Added code for GR and PO Filterbar search - Code Start
+
+        //GR search go s
+        _onGRSearchGo: function () {
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new sap.ui.model.json.JSONModel();
+            oModel.setSizeLimit(10000);
+            var oDataModel = this.getOwnerComponent().getModel();
+            var purOrd = sap.ui.getCore().byId("idFBPurchord").getValue();
+            var inbDel = sap.ui.getCore().byId("idFBInboundDelivery").getValue();
+            var partNo = sap.ui.getCore().byId("idFlBarGrVhPartNo").getValue();
+            
+            var oFilter = [];
+               oFilter.push(new Filter("Key", FilterOperator.EQ, "GR"));
+            if(purOrd != ""){
+                oFilter.push(new Filter("PurchaseOrder", FilterOperator.EQ, purOrd));
+            }
+            if(inbDel != ""){
+                oFilter.push(new Filter("InboundDelivery", FilterOperator.EQ, inbDel));
+            }
+            if(partNo != ""){
+                oFilter.push(new Filter("PartNumber", FilterOperator.EQ, partNo));
+            }
+                    
+            var sPath = "/GoodsReceiptSet"
+            oDataModel.read(sPath, {
+                filters: oFilter,
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.results;
+                    oModel.setData(data);
+                    sap.ui.getCore().byId("idGRTable").setModel(oModel, "oGRModel");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+         },
+         // Purchase Order search go s
+         _onPoSearchGo: function () {
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new sap.ui.model.json.JSONModel();
+            oModel.setSizeLimit(10000);
+            var oDataModel = this.getOwnerComponent().getModel();
+            var asnNo = sap.ui.getCore().byId("idFBASNNo").getValue();
+            var inbDel = sap.ui.getCore().byId("idFBPOInboundDelivery").getValue();
+            var partNo = sap.ui.getCore().byId("idFlBarPOVhPartNo").getValue();
+            var ncNo = sap.ui.getCore().byId("idFBNCNumber").getValue();
+            var disNo = sap.ui.getCore().byId("idFBDiscrpNo").getValue();
+            var rmaNo = sap.ui.getCore().byId("idFBRMANo").getValue();
+            
+            var oFilter = [];
+            oFilter.push(new Filter("Key", FilterOperator.EQ, "GR"));
+            if(asnNo != ""){
+                oFilter.push(new Filter("AsnNumber", FilterOperator.EQ, asnNo));
+            }
+            if(inbDel != ""){
+                oFilter.push(new Filter("InboundDelivery", FilterOperator.EQ, inbDel));
+            }
+            if(partNo != ""){
+                oFilter.push(new Filter("PartNumber", FilterOperator.EQ, partNo));
+            }
+            if(ncNo != ""){
+                oFilter.push(new Filter("NCNumber", FilterOperator.EQ, ncNo));
+            }
+            if(disNo != ""){
+                oFilter.push(new Filter("DiscrepancyNumber", FilterOperator.EQ, disNo));
+            }
+            if(rmaNo != ""){
+                oFilter.push(new Filter("RMANumber", FilterOperator.EQ, rmaNo));
+            }
+           
+            var sPath = "/PurchaseOrderSet"
+            oDataModel.read(sPath, {
+                filters: oFilter,
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.results;
+                    oModel.setData(data);
+                    sap.ui.getCore().byId("idPurOrdTable").setModel(oModel, "oPrModel");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+         },
+
+
         // onGRfbSearch: function () {
         //     var oGRModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/localjson/grdata.json");
         //     this.getView().setModel(oGRModel, "grsearch");
         // },
 
-        onPOfbSearch: function () {
-            var oPOModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/localjson/podata.json");
-            this.getView().setModel(oPOModel, "posearch");
-        },
+        // onPOfbSearch: function () {
+        //     var oPOModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/localjson/podata.json");
+        //     this.getView().setModel(oPOModel, "posearch");
+        // },
         //Added code for GR and PO  Filterbar search - Code End
 
         //Added code for PO and GR Valuehelp dialogs - Code Start
@@ -235,7 +326,7 @@ sap.ui.define([
 
         //Added code for Slection Change in PO and GR Search Tables - Code Start
         handleCloseGRUserValueHelp: function (oEvent) {
-            var oSelectedItem = oEvent.getParameters().listItem.getCells()[1].getText();
+            var oSelectedItem = oEvent.getParameters().listItem.getCells()[0].getText();
             var oInput = this.getView().byId("idsubcno");
             if (!oSelectedItem) {
                 oInput.resetProperty("value");
@@ -247,7 +338,7 @@ sap.ui.define([
         },
 
         handleClosePOUserValueHelp: function (oEvent) {
-            var oSelectedItem = oEvent.getParameters().listItem.getCells()[1].getText();
+            var oSelectedItem = oEvent.getParameters().listItem.getCells()[0].getText();
             var oInput = this.getView().byId("idsubcno");
             if (!oSelectedItem) {
                 oInput.resetProperty("value");
@@ -255,7 +346,7 @@ sap.ui.define([
             }
 
             oInput.setValue(oSelectedItem);
-            this._oPODialog.destroy();
+            this._oPrOrdDialog.destroy();
         },
         //Added code for Slection Change in PO and GR Search Tables - Code End
 
@@ -359,6 +450,9 @@ sap.ui.define([
                 },
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+
                 }
             });
 
@@ -422,6 +516,9 @@ sap.ui.define([
                         }.bind(this),
                         error: function (oError) {
                             sap.ui.core.BusyIndicator.hide();
+                            var msg = JSON.parse(oError.responseText).error.message.value;
+                            MessageBox.error(msg);
+        
                         }
                     });
                     //Inbound devilery ShowSuggestion s
@@ -439,6 +536,9 @@ sap.ui.define([
                         }.bind(this),
                         error: function (oError) {
                             sap.ui.core.BusyIndicator.hide();
+                            var msg = JSON.parse(oError.responseText).error.message.value;
+                            MessageBox.error(msg);
+        
                         }
                     });
                     //Part Number ShowSuggestion s
@@ -456,6 +556,9 @@ sap.ui.define([
                         }.bind(this),
                         error: function (oError) {
                             sap.ui.core.BusyIndicator.hide();
+                            var msg = JSON.parse(oError.responseText).error.message.value;
+                            MessageBox.error(msg);
+        
                         }
                     });
 
@@ -499,6 +602,9 @@ sap.ui.define([
                         }.bind(this),
                         error: function (oError) {
                             sap.ui.core.BusyIndicator.hide();
+                            var msg = JSON.parse(oError.responseText).error.message.value;
+                            MessageBox.error(msg);
+        
                         }
                     });
                     //Inbound delivery ShowSuggestion s
@@ -515,6 +621,9 @@ sap.ui.define([
                         }.bind(this),
                         error: function (oError) {
                             sap.ui.core.BusyIndicator.hide();
+                            var msg = JSON.parse(oError.responseText).error.message.value;
+                            MessageBox.error(msg);
+        
                         }
                     });
                     //Part Number ShowSuggestion s
@@ -531,6 +640,9 @@ sap.ui.define([
                         }.bind(this),
                         error: function (oError) {
                             sap.ui.core.BusyIndicator.hide();
+                            var msg = JSON.parse(oError.responseText).error.message.value;
+                            MessageBox.error(msg);
+        
                         }
                     });
 
@@ -548,6 +660,9 @@ sap.ui.define([
                         }.bind(this),
                         error: function (oError) {
                             sap.ui.core.BusyIndicator.hide();
+                            var msg = JSON.parse(oError.responseText).error.message.value;
+                            MessageBox.error(msg);
+        
                         }
                     });
                     //Discrepancy Number ShowSuggestion s
@@ -564,6 +679,9 @@ sap.ui.define([
                         }.bind(this),
                         error: function (oError) {
                             sap.ui.core.BusyIndicator.hide();
+                            var msg = JSON.parse(oError.responseText).error.message.value;
+                            MessageBox.error(msg);
+        
                         }
                     });
 
@@ -581,6 +699,9 @@ sap.ui.define([
                         }.bind(this),
                         error: function (oError) {
                             sap.ui.core.BusyIndicator.hide();
+                            var msg = JSON.parse(oError.responseText).error.message.value;
+                            MessageBox.error(msg);
+        
                         }
                     });
 
@@ -642,6 +763,9 @@ sap.ui.define([
                 }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+
                 }
             });
         },
@@ -691,6 +815,9 @@ sap.ui.define([
                 }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+
                 }
             });
         },
@@ -739,6 +866,9 @@ sap.ui.define([
                 }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+
                 }
             });
         },
@@ -790,6 +920,9 @@ sap.ui.define([
                 }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+
                 }
             });
         },
@@ -834,6 +967,8 @@ sap.ui.define([
                 }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
                 }
             });
         },
@@ -878,7 +1013,9 @@ sap.ui.define([
                 }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
-                }
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                     }
             });
         },
 
@@ -922,6 +1059,8 @@ sap.ui.define([
                 }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
                 }
             });
         },
@@ -980,6 +1119,8 @@ sap.ui.define([
                 }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
                 }
             });
 

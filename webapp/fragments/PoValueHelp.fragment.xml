@@ -7,7 +7,7 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:layout="sap.ui.layout" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar">
     <Dialog id="idPOHelpDialog" title="Purchase Order Search" class="vhdialogPOSearchstyle">
         <VBox class="sapUiSizeCompact">
-            <fb:FilterBar reset="onPOfbReset" search="onPOfbSearch" showRestoreButton="true" showClearButton="true">
+            <fb:FilterBar reset="onPOfbReset" search="_onPoSearchGo" showRestoreButton="true" showClearButton="true">
                 <fb:filterGroupItems>
                     <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="A1" label="ASN number">
                         <fb:control>
@@ -77,8 +77,8 @@
                 <items>
                     <ColumnListItem vAlign="Middle" type="Active">
                         <cells>
-                            <Text text="{oPrModel>Value}" />
-                            <Text text="{}" />
+                            <Text text="{oPrModel>PurchaseOrderNum}" />
+                            <Text text="{oPrModel>PurchaseOrderNum}" />
                         </cells>
                     </ColumnListItem>
                 </items>
