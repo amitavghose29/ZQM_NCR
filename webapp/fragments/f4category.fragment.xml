@@ -27,32 +27,51 @@
 			<!--</f:header>-->
 			<!-- DynamicPage Content -->
 			<!--<f:content>-->
-			<fb:FilterBar reset="onReset" search="onSearch" showRestoreButton="true" showClearButton="true">
+            <!-- onsearch   onsearch replaced -->
+			<fb:FilterBar reset="onReset" search="_onProdOrdSearchGo" showRestoreButton="true" showClearButton="true">
 				<fb:filterGroupItems>
 					<fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="A1" label="Product Sequence"
 						labelTooltip="Tooltip GroupItem Example">
 						<fb:control>
-							<Input id="idFlBarPrOrdVhPrdseq" type="Text" valueHelpRequest="helpRequestProduct"/>
+							<Input id="idFlBarPrOrdVhPrdseq" type="Text" showSuggestion="true" suggestionItems="{/Rep_ProdOrdSearchSet}" valueHelpRequest="helpRequestProduct">
+                            <suggestionItems>
+									<core:Item text="{ProductSequence}"/>
+								</suggestionItems>
+							</Input>
 						</fb:control>
 					</fb:FilterGroupItem>
 					<fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="B1" label="Part No.">
 						<fb:control>
-							<Input id="idFlBarPrOrdVhPartNo" showSuggestion="true" suggestionItems="{/Material_NumberSet}" valueHelpRequest="_onValueHelpReqPartNo" showValueHelp="true">
+                        <!-- suggestionItems="{ path : '/f4_genericSet',
+                            filters : [{   
+                                 path : 'Key',                        
+                                 operator : 'EQ',
+                                 value1 : 'PEFF'
+                            }]
+                        }"
+                        suggest="onHandleSuggestPartNo"  -->
+							<Input id="idFlBarPrOrdVhPartNo" showSuggestion="true" 
+                                    suggestionItems="{oProdOrdPartSuggModel>/}" 
+                                    valueHelpRequest="_onValueHelpReqPartNo" showValueHelp="true">
 								<suggestionItems>
-									<core:Item text="{Matnr}"/>
+									<core:Item text="{oProdOrdPartSuggModel>Value}" />
 								</suggestionItems>
 							</Input>
 						</fb:control>
 					</fb:FilterGroupItem>
 					<fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="C1" label="NLP">
                         <fb:control>
-                            <Input id ="idFlBarPrOrdVhnlp" type="Text" valueHelpRequest="_onValueHelpReqNLP" showValueHelp="true"/>
+                            <Input id ="idFlBarPrOrdVhnlp" type="Text" showSuggestion="true" suggestionItems="{oProdOrdNLPSuggModel>/}" valueHelpRequest="_onValueHelpReqNLP" showValueHelp="true">
+								<suggestionItems>
+									<core:Item text="{oProdOrdNLPSuggModel>Value}" />
+								</suggestionItems>
+							</Input>
                         </fb:control>
                      </fb:FilterGroupItem>
 				    </fb:filterGroupItems>
 			</fb:FilterBar>
-			<Table id="idProdOrderTable" inset="false" items="{oPOModel>/}" mode="SingleSelectMaster" selectionChange="handleCloseUserValueHelp"
-				itemPress="handleCloseUserValueHelp">
+			<Table id="idProdOrderTable" inset="false" items="{oPOModel>/}" mode="SingleSelectMaster" selectionChange="handleCloseUserValueHelpProdOrd"
+				itemPress="handleCloseUserValueHelpProdOrd">
 				<columns>
 					<Column minScreenWidth="Tablet" demandPopin="true">
 						<Text text="Plant"/>
@@ -67,7 +86,7 @@
 						<Text text="Type"/>
 					</Column>
 					<Column minScreenWidth="Tablet" demandPopin="true">
-						<Text text="Parent"/>
+						<Text text="Part No."/>
 					</Column>
 					<Column minScreenWidth="Tablet" demandPopin="true">
 						<Text text="NLP"/>
@@ -85,15 +104,15 @@
 				<items>
 					<ColumnListItem vAlign="Middle" type="Active" press="_configValueHelpDialogOrderPartNo">
 						<cells>
-							<Text text="{}"/>
-							<Text text="{}"/>
-							<Text text=""/>
-							<Text text="{}"/>
-							<Text text="{}"/>
-							<Text text=""/>
-							<Text text="{}"/>
-							<Text text=""/>
-							<Text text=""/>
+							<Text text="{oPOModel>Plant}"/>
+							<Text text="{oPOModel>Order}"/>
+							<Text text="{oPOModel>ProductSequence}"/>
+							<Text text="{oPOModel>Type}"/>
+							<Text text="{oPOModel>PartNumber}"/>
+							<Text text="{oPOModel>NLP}"/>
+							<Text text="{oPOModel>StartDate}"/>
+							<Text text="{oPOModel>EndDate}"/>
+							<Text text="{oPOModel>IssueQty}"/>
 						</cells>
 					</ColumnListItem>
 				</items>
