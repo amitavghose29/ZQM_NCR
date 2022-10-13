@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-	<SelectDialog title="Part No" items="{/Material_NumberSet}" liveChange="onSearchOrder" confirm="_configValueHelpDialogOrder"
+	<SelectDialog title="Part No" items="{PartNumModel>/}" liveChange="onSearchOrder" confirm="_configValueHelpDialogOrder"
 		cancel="_handleValueHelpClose" search="onSearchOrder">
-		<StandardListItem title="{Matnr}" info="{MaterialDescr}"/>
+		<StandardListItem title="{PartNumModel>Value}"/>
 	</SelectDialog>
 </core:FragmentDefinition>

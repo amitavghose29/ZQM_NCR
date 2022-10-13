@@ -5,7 +5,7 @@
 	</SelectDialog>
 </core:FragmentDefinition> -->
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:layout="sap.ui.layout" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar">
-    <Dialog id="idGRHelpDialog" title="Goods Receipt Search" class="vhdialogPOSearchstyle">
+    <Dialog id="idGRHelpDialog" title="Goods Receipt Search" class="vhdialogGRSearchstyle">
         <VBox class="sapUiSizeCompact">
             <fb:FilterBar reset="onGRfbReset" search="_onGRSearchGo" showRestoreButton="true" showClearButton="true">
                 <fb:filterGroupItems>
@@ -44,14 +44,14 @@
                         <Text text="GR ID" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="GR Description" />
+                        <Text text="GR Item" />
                     </Column>
                 </columns>
                 <items>
                     <ColumnListItem vAlign="Middle" type="Active">
                         <cells>
                             <Text text="{oGRModel>GoodsReceiptNum}" />
-                            <Text text="{oGRModel>GoodsReceiptNum}" />
+                            <Text text="{oGRModel>GoodsRecpItem}" />
                         </cells>
                     </ColumnListItem>
                 </items>

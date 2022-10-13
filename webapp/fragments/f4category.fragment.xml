@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:layout="sap.ui.layout" xmlns:f="sap.f"
 	xmlns:fb="sap.ui.comp.filterbar">
-	<Dialog id="idUserHelpDialog" title="Production Order Search" class="vhdialogPOSearchstyle">
+	<Dialog  title="Production Order Search" class="vhdialogPOSearchstyle">
 		<VBox class="sapUiSizeCompact">
 			<!--	<fb:FilterBar id="filterbar" reset="onReset" search="onUserSearch" useToolbar="false" showGoOnFB="true">
 				<fb:filterItems>
@@ -30,17 +30,16 @@
             <!-- onsearch   onsearch replaced -->
 			<fb:FilterBar reset="onReset" search="_onProdOrdSearchGo" showRestoreButton="true" showClearButton="true">
 				<fb:filterGroupItems>
-					<fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="A1" label="Product Sequence"
-						labelTooltip="Tooltip GroupItem Example">
+					<fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="A1" label="Product Sequence">
 						<fb:control>
-							<Input id="idFlBarPrOrdVhPrdseq" type="Text" showSuggestion="true" suggestionItems="{/Rep_ProdOrdSearchSet}" valueHelpRequest="helpRequestProduct">
+							<Input id="idFlBarPrOrdVhPrdseq" type="Text" showSuggestion="true" suggestionItems="{oAircrafttNoModel>/}" valueHelpRequest="helpRequestProduct">
                             <suggestionItems>
-									<core:Item text="{ProductSequence}"/>
+									<core:Item text="{oAircrafttNoModel>Value}"/>
 								</suggestionItems>
 							</Input>
 						</fb:control>
 					</fb:FilterGroupItem>
-					<fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="B1" label="Part No.">
+					<fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="B1" label="Part No. Affected">
 						<fb:control>
                         <!-- suggestionItems="{ path : '/f4_genericSet',
                             filters : [{   
@@ -68,6 +67,20 @@
 							</Input>
                         </fb:control>
                      </fb:FilterGroupItem>
+                     <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="D1" label="Work Instruction">
+						<fb:control>
+							<Input id="idFlBarPrOrdVhWrkIns" type="Text" showSuggestion="true" showValueHelp="true" suggestionItems="{oProdOrdWISuggModel>/}" valueHelpRequest="_onValueHelpReqWorkIns">
+                                <suggestionItems>
+									<core:Item text="{oProdOrdWISuggModel>Value}" />
+								</suggestionItems>
+							</Input>
+						</fb:control>
+					</fb:FilterGroupItem>
+                    <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="E1" label="Closed Orders">
+						<fb:control>
+							<CheckBox id="idFlBarPrdOrdVhClsOrd"/>
+						</fb:control>
+					</fb:FilterGroupItem>
 				    </fb:filterGroupItems>
 			</fb:FilterBar>
 			<Table id="idProdOrderTable" inset="false" items="{oPOModel>/}" mode="SingleSelectMaster" selectionChange="handleCloseUserValueHelpProdOrd"
@@ -82,11 +95,14 @@
 					<Column minScreenWidth="Tablet" demandPopin="true">
 						<Text text="Prod Seq."/>
 					</Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+						<Text text="Prod Order Item"/>
+					</Column>
 					<Column minScreenWidth="Tablet" demandPopin="true">
 						<Text text="Type"/>
 					</Column>
 					<Column minScreenWidth="Tablet" demandPopin="true">
-						<Text text="Part No."/>
+						<Text text="Parent"/>
 					</Column>
 					<Column minScreenWidth="Tablet" demandPopin="true">
 						<Text text="NLP"/>
@@ -107,6 +123,7 @@
 							<Text text="{oPOModel>Plant}"/>
 							<Text text="{oPOModel>Order}"/>
 							<Text text="{oPOModel>ProductSequence}"/>
+                            <Text text="{oPOModel>ProdOrdItem}"/>
 							<Text text="{oPOModel>Type}"/>
 							<Text text="{oPOModel>PartNumber}"/>
 							<Text text="{oPOModel>NLP}"/>

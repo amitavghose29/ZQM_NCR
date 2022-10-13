@@ -8,14 +8,15 @@
 		confirm="handleConfirmPartnerCode"
 		cancel="handleClosePartnerCode"
 		items="{
-			path : '/ProductCollection'
+			path : '/ProdOrderPartIdSet'
 		}">
 		<ColumnListItem type="Active">
 			<cells>
-				<ObjectIdentifier title="{Name}" text="{ProductId}" />
-				<ObjectIdentifier title="{MainCategory}" text="{Category}" />
-				<Text/>
-                <Text/>
+				<Text text="{ProductCode}" />
+				<Text text="{PartnerCode}" />
+				<Text text="{ParentPartNumber}" />
+                <Text text="{ProductSeqFrom}" />
+                <Text text="{ProductSeqTo}" />
 			</cells>
 		</ColumnListItem>
 		<columns>
@@ -31,12 +32,17 @@
 			</Column>
 			<Column>
 				<header>
-					<Text text="Parent Part" />
+					<Text text="Parent Part No" />
 				</header>
 			</Column>
 			<Column>
 				<header>
 					<Text text="Product Sequence From" />
+				</header>
+			</Column>
+            <Column>
+				<header>
+					<Text text="Product Sequence To" />
 				</header>
 			</Column>
 		</columns>

@@ -59,10 +59,10 @@
 											<!--<f:ColumnElementData cellsSmall="2" cellsLarge="2"/>-->
 										</layoutData>
 									</Input>
-									<Input id="idsubsubno" showValueHelp="true" visible="true" valueHelpRequest="helpRequestSubsub">
+									<Input id="idsubsubno" showValueHelp="false" visible="true" >
+                                    <!-- valueHelpRequest="helpRequestSubsub" -->
 										<layoutData>
 											<l:GridData span="XL1 L1 M8 S8"/>
-											<!--<f:ColumnElementData cellsSmall="2" cellsLarge="2"/>-->
 										</layoutData>
 									</Input>
 									<Label text="Bin Location"/>
