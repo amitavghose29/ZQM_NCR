@@ -221,19 +221,19 @@ sap.ui.define([
             var purOrd = sap.ui.getCore().byId("idFBPurchord").getValue();
             var inbDel = sap.ui.getCore().byId("idFBInboundDelivery").getValue();
             var partNo = sap.ui.getCore().byId("idFlBarGrVhPartNo").getValue();
-            
+
             var oFilter = [];
-               oFilter.push(new Filter("Key", FilterOperator.EQ, "GR"));
-            if(purOrd != ""){
+            oFilter.push(new Filter("Key", FilterOperator.EQ, "GR"));
+            if (purOrd != "") {
                 oFilter.push(new Filter("PurchaseOrder", FilterOperator.EQ, purOrd));
             }
-            if(inbDel != ""){
+            if (inbDel != "") {
                 oFilter.push(new Filter("InboundDelivery", FilterOperator.EQ, inbDel));
             }
-            if(partNo != ""){
+            if (partNo != "") {
                 oFilter.push(new Filter("PartNumber", FilterOperator.EQ, partNo));
             }
-                    
+
             var sPath = "/GoodsReceiptSet"
             oDataModel.read(sPath, {
                 filters: oFilter,
@@ -249,7 +249,7 @@ sap.ui.define([
                     MessageBox.error(msg);
                 }
             });
-         },
+        },
 
         // production order search go s
         _onProdOrdSearchGo: function () {
@@ -263,36 +263,36 @@ sap.ui.define([
             var workIns = sap.ui.getCore().byId("idFlBarPrOrdVhWrkIns").getValue();
             var clsOrd = sap.ui.getCore().byId("idFlBarPrdOrdVhClsOrd").getSelected();
             var oFilter = [];
-               oFilter.push(new Filter("Key", FilterOperator.EQ, "PRO"));
-            if(prodseq != ""){
+            oFilter.push(new Filter("Key", FilterOperator.EQ, "PRO"));
+            if (prodseq != "") {
                 oFilter.push(new Filter("ProductSequence", FilterOperator.EQ, prodseq));
             }
-            if(partNo != ""){
+            if (partNo != "") {
                 oFilter.push(new Filter("PartNumber", FilterOperator.EQ, partNo));
             }
-            if(nlp != ""){
+            if (nlp != "") {
                 oFilter.push(new Filter("NLP", FilterOperator.EQ, nlp));
             }
-            if(workIns != ""){
+            if (workIns != "") {
                 oFilter.push(new Filter("WorkInstruction", FilterOperator.EQ, workIns));
             }
-            if(clsOrd === true){
+            if (clsOrd === true) {
                 oFilter.push(new Filter("ClosedOrders", FilterOperator.EQ, "X"));
-            }else{
+            } else {
                 oFilter.push(new Filter("ClosedOrders", FilterOperator.EQ, ""));
             }
-                    
+
             var sPath = "/Rep_ProdOrdSearchSet"
             oDataModel.read(sPath, {
                 filters: oFilter,
                 success: function (oData, oResult) {
                     sap.ui.core.BusyIndicator.hide();
                     var data = oData.results;
-                    if(data.length === 0 
-                        && sap.ui.getCore().byId("idFlBarPrOrdVhPrdseq").getValue() === "" 
-                        && sap.ui.getCore().byId("idFlBarPrOrdVhPartNo").getValue() === "" 
+                    if (data.length === 0
+                        && sap.ui.getCore().byId("idFlBarPrOrdVhPrdseq").getValue() === ""
+                        && sap.ui.getCore().byId("idFlBarPrOrdVhPartNo").getValue() === ""
                         && sap.ui.getCore().byId("idFlBarPrOrdVhnlp").getValue() === ""
-                        && sap.ui.getCore().byId("idFlBarPrOrdVhWrkIns").getValue() === ""){
+                        && sap.ui.getCore().byId("idFlBarPrOrdVhWrkIns").getValue() === "") {
                         MessageBox.warning(
                             "No data found.! Please try to search using filter bar fields provided.!",
                             {
@@ -303,14 +303,14 @@ sap.ui.define([
                                 initialFocus: MessageBox.Action.OK,
                                 onClose: function (sAction) {
                                     if (sAction == MessageBox.Action.OK) {
-                                    }       
-                                }.bind(this)       
+                                    }
+                                }.bind(this)
                             }
                         );
-                    }else if(data.length === 0 
-                            && (sap.ui.getCore().byId("idFlBarPrOrdVhPrdseq").getValue() !== "" || sap.ui.getCore().byId("idFlBarPrOrdVhPartNo").getValue() !== "" ||
-                                sap.ui.getCore().byId("idFlBarPrOrdVhnlp").getValue() !== "" ||
-                                sap.ui.getCore().byId("idFlBarPrOrdVhWrkIns").getValue() !== "")){
+                    } else if (data.length === 0
+                        && (sap.ui.getCore().byId("idFlBarPrOrdVhPrdseq").getValue() !== "" || sap.ui.getCore().byId("idFlBarPrOrdVhPartNo").getValue() !== "" ||
+                            sap.ui.getCore().byId("idFlBarPrOrdVhnlp").getValue() !== "" ||
+                            sap.ui.getCore().byId("idFlBarPrOrdVhWrkIns").getValue() !== "")) {
                         MessageBox.warning(
                             "Do you want to specify a Partner Code for this Part?",
                             {
@@ -332,9 +332,9 @@ sap.ui.define([
                                             }.bind(this));
                                         } else {
                                             this._oSelPartDialog.open();
-                                        }       
-                                    }      
-                                }.bind(this)       
+                                        }
+                                    }
+                                }.bind(this)
                             }
                         );
                     }
@@ -347,10 +347,10 @@ sap.ui.define([
                     MessageBox.error(msg);
                 }
             });
-         },
+        },
 
-         // Purchase Order search go s
-         _onPoSearchGo: function () {
+        // Purchase Order search go s
+        _onPoSearchGo: function () {
             sap.ui.core.BusyIndicator.show();
             var oModel = new sap.ui.model.json.JSONModel();
             oModel.setSizeLimit(10000);
@@ -361,28 +361,28 @@ sap.ui.define([
             var ncNo = sap.ui.getCore().byId("idFBNCNumber").getValue();
             var disNo = sap.ui.getCore().byId("idFBDiscrpNo").getValue();
             var rmaNo = sap.ui.getCore().byId("idFBRMANo").getValue();
-            
+
             var oFilter = [];
             oFilter.push(new Filter("Key", FilterOperator.EQ, "GR"));
-            if(asnNo != ""){
+            if (asnNo != "") {
                 oFilter.push(new Filter("AsnNumber", FilterOperator.EQ, asnNo));
             }
-            if(inbDel != ""){
+            if (inbDel != "") {
                 oFilter.push(new Filter("InboundDelivery", FilterOperator.EQ, inbDel));
             }
-            if(partNo != ""){
+            if (partNo != "") {
                 oFilter.push(new Filter("PartNumber", FilterOperator.EQ, partNo));
             }
-            if(ncNo != ""){
+            if (ncNo != "") {
                 oFilter.push(new Filter("NCNumber", FilterOperator.EQ, ncNo));
             }
-            if(disNo != ""){
+            if (disNo != "") {
                 oFilter.push(new Filter("DiscrepancyNumber", FilterOperator.EQ, disNo));
             }
-            if(rmaNo != ""){
+            if (rmaNo != "") {
                 oFilter.push(new Filter("RMANumber", FilterOperator.EQ, rmaNo));
             }
-           
+
             var sPath = "/PurchaseOrderSet"
             oDataModel.read(sPath, {
                 filters: oFilter,
@@ -398,7 +398,7 @@ sap.ui.define([
                     MessageBox.error(msg);
                 }
             });
-         },
+        },
 
 
         // onGRfbSearch: function () {
@@ -480,20 +480,20 @@ sap.ui.define([
 
                 }
             });
-     
+
         },
         //NLP Value
-        _handleConfirmNLP:function(oEvent){
+        _handleConfirmNLP: function (oEvent) {
             var oSelectedItem = oEvent.getParameter("selectedItem"),
-            oInput;
-        oInput = sap.ui.getCore().byId("idFlBarPrOrdVhnlp");
+                oInput;
+            oInput = sap.ui.getCore().byId("idFlBarPrOrdVhnlp");
 
-        if (!oSelectedItem) {
-            oInput.resetProperty("value");
-            return;
-        }
-        oInput.setValue(oSelectedItem.getTitle());
-        this._oNLPDialog.destroy();
+            if (!oSelectedItem) {
+                oInput.resetProperty("value");
+                return;
+            }
+            oInput.setValue(oSelectedItem.getTitle());
+            this._oNLPDialog.destroy();
 
         },
         // Added code for opening value help dialog for NLP field - Code End
@@ -501,25 +501,46 @@ sap.ui.define([
         // Added code for handling search functionality for Select Partner Code dialog - Code Start
         handleSearchPartnerCode: function (oEvent) {
             var sValue = oEvent.getParameter("value");
-            var oFilter = new Filter("Name", sap.ui.model.FilterOperator.Contains, sValue);
+            var oFilter = [];
+            oFilter.push(new Filter("ProductCode", sap.ui.model.FilterOperator.Contains, sValue));
+            oFilter.push(new Filter("PartnerCode", sap.ui.model.FilterOperator.Contains, sValue));
+            oFilter.push(new Filter("ParentPartNumber", sap.ui.model.FilterOperator.Contains, sValue));
             var oBinding = oEvent.getSource().getBinding("items");
-            oBinding.filter([oFilter]);
+            oBinding.filter(oFilter);
         },
         // Added code for handling search functionality for Select Partner Code dialog - Code End
 
         // Added code for handling search selection of line item in Select Partner Code dialog - Code Start
         handleConfirmPartnerCode: function (oEvent) {
-            var oSelContxt = oEvent.getParameters().selectedItem.getBindingContext().getProperty("PartnerCode");
-            sap.m.MessageToast.show("The partner code chosen is " + oSelContxt);
-            var oData = [];
-            oData.push({
-                Plant: "X001",
-                OrderNum: "400156",
-                Type: "X"
-            });
+            var oSelProdCode = oEvent.getParameters().selectedItem.getBindingContext().getProperty("PartnerCode");
+            // sap.m.MessageToast.show("The partner code chosen is " + oSelContxt);
+            if (oSelProdCode !== "") {
+                sap.ui.core.BusyIndicator.show();
+                var oModel = new sap.ui.model.json.JSONModel();
+                oModel.setSizeLimit(10000);
+                var oDataModel = this.getOwnerComponent().getModel();
+                var oFilter = [];
+                oFilter.push(new Filter("Key", FilterOperator.EQ, "PRO"));
+                oFilter.push(new Filter("PartNumber", FilterOperator.EQ, oSelProdCode));
+                var sPath = "/Rep_ProdOrdSearchSet"
+                oDataModel.read(sPath, {
+                    filters: oFilter,
+                    success: function (oData, oResult) {
+                        sap.ui.core.BusyIndicator.hide();
+                        var data = oData.results;
+                        oModel.setData(data);
+                        sap.ui.getCore().byId("idProdOrderTable").setModel(oModel, "oPOModel");
+                    }.bind(this),
+                    error: function (oError) {
+                        sap.ui.core.BusyIndicator.hide();
+                        var msg = JSON.parse(oError.responseText).error.message.value;
+                        MessageBox.error(msg);
+                    }
+                });
+            } else {
+                sap.m.MessageToast.show("The product code is not found against selected line item");
+            }
 
-            var oModel = new JSONModel(oData);
-            this._oPODialog.getContent()[0].getItems()[1].setModel(oModel);
         },
         // Added code for handling search selection of line item in Select Partner Code dialog - Code End
 
@@ -537,8 +558,8 @@ sap.ui.define([
             this.getView().byId("idsubsubno").setVisible(true);
 
             var oInputSub = this.getView().byId("idsubcno");
-                oInputSub.setValue("");
-                this.getView().byId("idsubsubno").setValue("");
+            oInputSub.setValue("");
+            this.getView().byId("idsubsubno").setValue("");
 
             if (Number(oSubCat) == "0001") {
 
@@ -596,12 +617,12 @@ sap.ui.define([
             });
 
         },
-        onHandleSuggestPartNo:function(oEvent){
-          //  var sTerm = oEvent.getParameter("suggestValue");
+        onHandleSuggestPartNo: function (oEvent) {
+            //  var sTerm = oEvent.getParameter("suggestValue");
             var aFilters = [];
-          //  if (sTerm) {
-                aFilters.push(new Filter("Key", sap.ui.model.FilterOperator.EQ, "PEFF"));
-          //  }
+            //  if (sTerm) {
+            aFilters.push(new Filter("Key", sap.ui.model.FilterOperator.EQ, "PEFF"));
+            //  }
             oEvent.getSource().getBinding("suggestionItems").filter(aFilters);
 
         },
@@ -617,74 +638,74 @@ sap.ui.define([
                     this._oPODialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.f4category", this);
                     this.getView().addDependent(this._oPODialog);
                     this._oPODialog.open();
-                 // this._oPODialog.setModel(this.getOwnerComponent().getModel());
+                    // this._oPODialog.setModel(this.getOwnerComponent().getModel());
 
-                 sap.ui.core.BusyIndicator.show();
-                 var oProdOrdPartSuggModel = new sap.ui.model.json.JSONModel();
-                 var oDataModel = this.getOwnerComponent().getModel();
-                 var oFilterProdOrd = [];
-                 oFilterProdOrd.push(new Filter("Key", FilterOperator.EQ, "PEFF"));
-                 var sPath = "/f4_genericSet"
-                 oDataModel.read(sPath, {
-                     filters: oFilterProdOrd,
-                     success: function (oData, oResult) {
-                         sap.ui.core.BusyIndicator.hide();
-                         var dataprod = oData.results;
-                         oProdOrdPartSuggModel.setData(dataprod);
-                         sap.ui.getCore().byId("idFlBarPrOrdVhPartNo").setModel(oProdOrdPartSuggModel, "oProdOrdPartSuggModel");
-                     }.bind(this),
-                     error: function (oError) {
-                         sap.ui.core.BusyIndicator.hide();
-                         var msg = JSON.parse(oError.responseText).error.message.value;
-                         MessageBox.error(msg);
-                     }
-                 });
-                 var oProdOrdNLPSuggModel = new sap.ui.model.json.JSONModel();
-                 var oFilterNLP = [];
-                 oFilterNLP.push(new Filter("Key", FilterOperator.EQ, "NLP"));
-                 var sPath = "/f4_genericSet"
-                 oDataModel.read(sPath, {
-                     filters: oFilterNLP,
-                     success: function (oData, oResult) {
-                         sap.ui.core.BusyIndicator.hide();
-                         var datanlp = oData.results;
-                         oProdOrdNLPSuggModel.setData(datanlp);
-                         sap.ui.getCore().byId("idFlBarPrOrdVhnlp").setModel(oProdOrdNLPSuggModel, "oProdOrdNLPSuggModel");
-                     }.bind(this),
-                     error: function (oError) {
-                         sap.ui.core.BusyIndicator.hide();
-                         var msg = JSON.parse(oError.responseText).error.message.value;
-                         MessageBox.error(msg);
-                     }
-                 });
+                    sap.ui.core.BusyIndicator.show();
+                    var oProdOrdPartSuggModel = new sap.ui.model.json.JSONModel();
+                    var oDataModel = this.getOwnerComponent().getModel();
+                    var oFilterProdOrd = [];
+                    oFilterProdOrd.push(new Filter("Key", FilterOperator.EQ, "PEFF"));
+                    var sPath = "/f4_genericSet"
+                    oDataModel.read(sPath, {
+                        filters: oFilterProdOrd,
+                        success: function (oData, oResult) {
+                            sap.ui.core.BusyIndicator.hide();
+                            var dataprod = oData.results;
+                            oProdOrdPartSuggModel.setData(dataprod);
+                            sap.ui.getCore().byId("idFlBarPrOrdVhPartNo").setModel(oProdOrdPartSuggModel, "oProdOrdPartSuggModel");
+                        }.bind(this),
+                        error: function (oError) {
+                            sap.ui.core.BusyIndicator.hide();
+                            var msg = JSON.parse(oError.responseText).error.message.value;
+                            MessageBox.error(msg);
+                        }
+                    });
+                    var oProdOrdNLPSuggModel = new sap.ui.model.json.JSONModel();
+                    var oFilterNLP = [];
+                    oFilterNLP.push(new Filter("Key", FilterOperator.EQ, "NLP"));
+                    var sPath = "/f4_genericSet"
+                    oDataModel.read(sPath, {
+                        filters: oFilterNLP,
+                        success: function (oData, oResult) {
+                            sap.ui.core.BusyIndicator.hide();
+                            var datanlp = oData.results;
+                            oProdOrdNLPSuggModel.setData(datanlp);
+                            sap.ui.getCore().byId("idFlBarPrOrdVhnlp").setModel(oProdOrdNLPSuggModel, "oProdOrdNLPSuggModel");
+                        }.bind(this),
+                        error: function (oError) {
+                            sap.ui.core.BusyIndicator.hide();
+                            var msg = JSON.parse(oError.responseText).error.message.value;
+                            MessageBox.error(msg);
+                        }
+                    });
 
-                 var oProdOrdWISuggModel = new sap.ui.model.json.JSONModel();
-                 var oFilterWI = [];
-                 oFilterWI.push(new Filter("Key", FilterOperator.EQ, "WINS"));
-                 var sPath = "/f4_genericSet"
-                 oDataModel.read(sPath, {
-                     filters: oFilterWI,
-                     success: function (oData, oResult) {
-                         sap.ui.core.BusyIndicator.hide();
-                         var datawi = oData.results;
-                         oProdOrdWISuggModel.setData(datawi);
-                         sap.ui.getCore().byId("idFlBarPrOrdVhWrkIns").setModel(oProdOrdWISuggModel, "oProdOrdWISuggModel");
-                     }.bind(this),
-                     error: function (oError) {
-                         sap.ui.core.BusyIndicator.hide();
-                         var msg = JSON.parse(oError.responseText).error.message.value;
-                         MessageBox.error(msg);
-                     }
-                 });
+                    var oProdOrdWISuggModel = new sap.ui.model.json.JSONModel();
+                    var oFilterWI = [];
+                    oFilterWI.push(new Filter("Key", FilterOperator.EQ, "WINS"));
+                    var sPath = "/f4_genericSet"
+                    oDataModel.read(sPath, {
+                        filters: oFilterWI,
+                        success: function (oData, oResult) {
+                            sap.ui.core.BusyIndicator.hide();
+                            var datawi = oData.results;
+                            oProdOrdWISuggModel.setData(datawi);
+                            sap.ui.getCore().byId("idFlBarPrOrdVhWrkIns").setModel(oProdOrdWISuggModel, "oProdOrdWISuggModel");
+                        }.bind(this),
+                        error: function (oError) {
+                            sap.ui.core.BusyIndicator.hide();
+                            var msg = JSON.parse(oError.responseText).error.message.value;
+                            MessageBox.error(msg);
+                        }
+                    });
 
-                 //F4 Aircraft No s 
-                sap.ui.core.BusyIndicator.show();
-                var oModel = new sap.ui.model.json.JSONModel();
+                    //F4 Aircraft No s 
+                    sap.ui.core.BusyIndicator.show();
+                    var oModel = new sap.ui.model.json.JSONModel();
                     oModel.setSizeLimit(10000);
-                var oDataModel = this.getOwnerComponent().getModel();
-                var oFilter = [];
+                    var oDataModel = this.getOwnerComponent().getModel();
+                    var oFilter = [];
                     oFilter.push(new Filter("Key", FilterOperator.EQ, "AIR"));
-                var sPath = "/f4_genericSet"
+                    var sPath = "/f4_genericSet"
                     oDataModel.read(sPath, {
                         filters: oFilter,
                         success: function (oData, oResult) {
@@ -697,9 +718,9 @@ sap.ui.define([
                             sap.ui.core.BusyIndicator.hide();
                             var msg = JSON.parse(oError.responseText).error.message.value;
                             MessageBox.error(msg);
-                       }
+                        }
                     });
-                   // sap.ui.getCore().byId("idFlBarPrOrdVhPartNo").setModel(this.getOwnerComponent().getModel());
+                    // sap.ui.getCore().byId("idFlBarPrOrdVhPartNo").setModel(this.getOwnerComponent().getModel());
                     /*    sap.ui.core.BusyIndicator.show();
                         var oModel = new sap.ui.model.json.JSONModel();
                         var oDataModel = this.getOwnerComponent().getModel();
@@ -728,7 +749,7 @@ sap.ui.define([
                     //Work Inst Showsuggestion s
                     var oWRSugModel = new sap.ui.model.json.JSONModel();
                     var oFilterWrInst = [];
-                    oFilterWrInst.push(new Filter("Key", FilterOperator.EQ, "WINS"));
+                    oFilterWrInst.push(new Filter("Key", FilterOperator.EQ, "WRKINS"));
                     var sPath = "/f4_genericSet"
                     oDataModel.read(sPath, {
                         filters: oFilterWrInst,
@@ -742,7 +763,7 @@ sap.ui.define([
                             sap.ui.core.BusyIndicator.hide();
                             var msg = JSON.parse(oError.responseText).error.message.value;
                             MessageBox.error(msg);
-        
+
                         }
                     });
                 }
@@ -770,7 +791,7 @@ sap.ui.define([
                             sap.ui.core.BusyIndicator.hide();
                             var msg = JSON.parse(oError.responseText).error.message.value;
                             MessageBox.error(msg);
-        
+
                         }
                     });
                     //Inbound devilery ShowSuggestion s
@@ -790,7 +811,7 @@ sap.ui.define([
                             sap.ui.core.BusyIndicator.hide();
                             var msg = JSON.parse(oError.responseText).error.message.value;
                             MessageBox.error(msg);
-        
+
                         }
                     });
                     //Part Number ShowSuggestion s
@@ -810,7 +831,7 @@ sap.ui.define([
                             sap.ui.core.BusyIndicator.hide();
                             var msg = JSON.parse(oError.responseText).error.message.value;
                             MessageBox.error(msg);
-        
+
                         }
                     });
 
@@ -856,7 +877,7 @@ sap.ui.define([
                             sap.ui.core.BusyIndicator.hide();
                             var msg = JSON.parse(oError.responseText).error.message.value;
                             MessageBox.error(msg);
-        
+
                         }
                     });
                     //Inbound delivery ShowSuggestion s
@@ -875,7 +896,7 @@ sap.ui.define([
                             sap.ui.core.BusyIndicator.hide();
                             var msg = JSON.parse(oError.responseText).error.message.value;
                             MessageBox.error(msg);
-        
+
                         }
                     });
                     //Part Number ShowSuggestion s
@@ -894,7 +915,7 @@ sap.ui.define([
                             sap.ui.core.BusyIndicator.hide();
                             var msg = JSON.parse(oError.responseText).error.message.value;
                             MessageBox.error(msg);
-        
+
                         }
                     });
 
@@ -914,7 +935,7 @@ sap.ui.define([
                             sap.ui.core.BusyIndicator.hide();
                             var msg = JSON.parse(oError.responseText).error.message.value;
                             MessageBox.error(msg);
-        
+
                         }
                     });
                     //Discrepancy Number ShowSuggestion s
@@ -933,7 +954,7 @@ sap.ui.define([
                             sap.ui.core.BusyIndicator.hide();
                             var msg = JSON.parse(oError.responseText).error.message.value;
                             MessageBox.error(msg);
-        
+
                         }
                     });
 
@@ -953,7 +974,7 @@ sap.ui.define([
                             sap.ui.core.BusyIndicator.hide();
                             var msg = JSON.parse(oError.responseText).error.message.value;
                             MessageBox.error(msg);
-        
+
                         }
                     });
 
@@ -987,15 +1008,26 @@ sap.ui.define([
                     if (area === null || area === '' || area === "") {
                         MessageBox.alert("Please enter a value in In Which Area");
                     } else {
-                        this._oPrtNoDialog = sap.ui.xmlfragment(this.getView().getId(), "com.airbus.ZQM_NCR.fragments.partno", this);
-                        this.getView().addDependent(this._oPrtNoDialog);
-                        var key = "PWINS";
+
                         var value1 = area.getText();
+                        var key = "PART";
                         var aFilter = [];
                         var oFilter1 = new Filter("Key", "EQ", key);
                         var oFilter2 = new Filter("Value1", "EQ", value1);
-                            aFilter.push(oFilter1);
-                            aFilter.push(oFilter2);
+                        aFilter.push(oFilter1);
+                        aFilter.push(oFilter2);
+
+                        if (!this._oPrtNoDialog) {
+                            this._oPrtNoDialog = sap.ui.xmlfragment(this.getView().getId(), "com.airbus.ZQM_NCR.fragments.partno", this);
+                            this.getView().addDependent(this._oPrtNoDialog);
+                        }
+
+                        if (value1 === "LOST") {
+                            this.getView().byId("idFBLotNum").setVisible(true);
+
+                        }
+
+
                         var oModel = this.getOwnerComponent().getModel();
                         var oJSONMOdel = new sap.ui.model.json.JSONModel();
 
@@ -1014,13 +1046,14 @@ sap.ui.define([
                             }
                         });
                         this._oPrtNoDialog.open();
+
                         //this._oPrtNoDialog.setModel(this.getOwnerComponent().getModel());
                     }
                 }
             }
         },
 
-        _onValueHelpReqWorkIns: function(){
+        _onValueHelpReqWorkIns: function () {
             this._oWIDialog = sap.ui.xmlfragment("WIfragId", "com.airbus.ZQM_NCR.fragments.WorkInstructionVH", this);
             this.getView().addDependent(this._oWIDialog);
             this._oWIDialog.open();
@@ -1029,23 +1062,23 @@ sap.ui.define([
             //Work Inst Showsuggestion s
             var oWRSugModel = new sap.ui.model.json.JSONModel();
             var oFilterWrInst = [];
-                oFilterWrInst.push(new Filter("Key", FilterOperator.EQ, "WINS"));
+            oFilterWrInst.push(new Filter("Key", FilterOperator.EQ, "WINS"));
             var sPath = "/f4_genericSet"
-                oDataModel.read(sPath, {
-                    filters: oFilterWrInst,
-                        success: function (oData, oResult) {
-                            sap.ui.core.BusyIndicator.hide();
-                            var data = oData.results;
-                            oWRSugModel.setData(data);
-                            this._oWIDialog.setModel(oWRSugModel, "oWRSuggestionModel");
-                        }.bind(this),
-                        error: function (oError) {
-                            sap.ui.core.BusyIndicator.hide();
-                            var msg = JSON.parse(oError.responseText).error.message.value;
-                            MessageBox.error(msg);
-        
-                        }
-                    });
+            oDataModel.read(sPath, {
+                filters: oFilterWrInst,
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.results;
+                    oWRSugModel.setData(data);
+                    this._oWIDialog.setModel(oWRSugModel, "oWRSuggestionModel");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+
+                }
+            });
         },
 
         _onValueHelpReqPartNo: function () {
@@ -1064,7 +1097,7 @@ sap.ui.define([
                 oFilter.push(new Filter("Key", FilterOperator.EQ, "GPN"));
             } else if (Number(this.getView().byId("idlinksubc").getSelectedKey()) == "0004") {
                 oFilter.push(new Filter("Key", FilterOperator.EQ, "PN"));
-            }else if (Number(this.getView().byId("idlinksubc").getSelectedKey()) == "0001") {
+            } else if (Number(this.getView().byId("idlinksubc").getSelectedKey()) == "0001") {
                 oFilter.push(new Filter("Key", FilterOperator.EQ, "PEFF"));
             }
             var sPath = "/f4_genericSet"
@@ -1093,7 +1126,7 @@ sap.ui.define([
                     oInput = sap.ui.getCore().byId("idFlBarGrVhPartNo");
                 } else if (Number(this.getView().byId("idlinksubc").getSelectedKey()) == "0004") {
                     oInput = sap.ui.getCore().byId("idFlBarPOVhPartNo");
-                }else if (Number(this.getView().byId("idlinksubc").getSelectedKey()) == "0001") {
+                } else if (Number(this.getView().byId("idlinksubc").getSelectedKey()) == "0001") {
                     oInput = sap.ui.getCore().byId("idFlBarPrOrdVhPartNo");
                 }
             }
@@ -1104,30 +1137,42 @@ sap.ui.define([
             oInput.setValue(oSelectedItem.getTitle());
             this._oPrtNoFBDialog.destroy();
         },
-            //work instruction confirm
-            _configWrkInsVHDialog: function (oEvent) {
-                var oSelectedItem = oEvent.getParameter("selectedItem"),
-                    oInput;
-                    if (Number(this.getView().byId("idlinksubc").getSelectedKey()) == "0002") {
-                        oInput = this.getView().byId("idsubcno");       
-                    } else if (Number(this.getView().byId("idlinksubc").getSelectedKey()) == "0001") {
-                        oInput = sap.ui.getCore().byId("idFlBarPrOrdVhWrkIns");
-                    }
-    
-                if (!oSelectedItem) {
-                    oInput.resetProperty("value");
-                    return;
-                }
-                oInput.setValue(oSelectedItem.getTitle());
-                this._oWIDialog.destroy();
-            },
+        //work instruction confirm
+        _configWrkInsVHDialog: function (oEvent) {
+            var oSelectedItem = oEvent.getParameter("selectedItem"),
+                oInput;
+            if (Number(this.getView().byId("idlinksubc").getSelectedKey()) == "0002") {
+                oInput = this.getView().byId("idsubcno");
+            } else if (Number(this.getView().byId("idlinksubc").getSelectedKey()) == "0001") {
+                oInput = sap.ui.getCore().byId("idFlBarPrOrdVhWrkIns");
+            }
+
+            if (!oSelectedItem) {
+                oInput.resetProperty("value");
+                return;
+            }
+            oInput.setValue(oSelectedItem.getTitle());
+            this._oWIDialog.destroy();
+        },
         onSearchPartNoFB: function (oEvent) {
             var sValue = oEvent.getParameter("value");
             var oFilter = new Filter("Value", FilterOperator.Contains, sValue);
             var oBinding = oEvent.getParameter("itemsBinding");
             oBinding.filter([oFilter]);
         },
+        onSearchPartNumTab: function (oEvent) {
+            var sValue = oEvent.getSource().getValue();
+            var oFilter = new Filter("Value", FilterOperator.Contains, sValue);
+            var oTab = this.getView().byId("idPartnumTab");
+            var oBinding = oTab.getBinding("items");
+            oBinding.filter([oFilter]);
 
+        },
+        onSelectPartnum: function (oEvent) {
+            var partnum = oEvent.getParameters("selectedItem").listItem.getBindingContext("PartNumModel").getProperty("Value");
+            this.getView().byId("idsubcno").setValue(partnum);
+            this._oPrtNoDialog.close();
+        },
         _onValueHelpReqtPurchOrd: function () {
             this._oPurOrdFBDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.PurOrdFBValueHelp", this);
             this.getView().addDependent(this._oPurOrdFBDialog);
@@ -1348,7 +1393,7 @@ sap.ui.define([
                     sap.ui.core.BusyIndicator.hide();
                     var msg = JSON.parse(oError.responseText).error.message.value;
                     MessageBox.error(msg);
-                     }
+                }
             });
         },
 
@@ -1425,6 +1470,96 @@ sap.ui.define([
                 this.getView().addDependent(this._oBinAreDialog);
             }
             this._oBinAreDialog.open();
+        },
+        onLotNumHelpRequest: function () {
+            if (!this._oLotnumVHDialog) {
+                this._oLotnumVHDialog = sap.ui.xmlfragment(this.getView().getId(), "com.airbus.ZQM_NCR.fragments.LotnumVH", this);
+                this.getView().addDependent(this._oLotnumVHDialog);
+            }
+            this._oLotnumVHDialog.open();
+
+            var aFilter = [];
+            var oFilter = new Filter("Key", "EQ", "LOTNR");
+
+            aFilter.push(oFilter);
+            var oModel = this.getOwnerComponent().getModel();
+            var oJSONMOdel = new sap.ui.model.json.JSONModel();
+
+            oModel.read("/f4_genericSet", {
+                filters: aFilter,
+                success: function (data) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var lotnumdata = data.results;
+                    oJSONMOdel.setData(lotnumdata);
+                    this.getView().setModel(oJSONMOdel, "LotNumModel");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+
+        },
+        _onConfirmLotNumVH: function (oEvent) {
+
+            var oSelectedItem = oEvent.getParameter("selectedItem"),
+                oInput = this.getView().byId("idFlBarPartNumVHLotNo");
+            if (!oSelectedItem) {
+                oInput.resetProperty("value");
+                return;
+            }
+
+            oInput.setValue(oSelectedItem.getTitle());
+            this._oLotnumVHDialog.close();
+
+        },
+        _onPartSearchWithLotNum: function () {
+            var oTab = this.getView().byId("idPartnumTab");
+            var OBinding = oTab.getBinding("items");
+            var lotnum = this.getView().byId("idFlBarPartNumVHLotNo").getValue();
+
+
+            if (lotnum) {
+                var aFilter = [];
+                var oFilter1 = new Filter("Key", "EQ", "PART");
+                var oFilter2 = new Filter("Value1", "EQ", "LOST");
+                var oFilter3 = new Filter("Value", "EQ", lotnum);
+                aFilter.push(oFilter1);
+                aFilter.push(oFilter2);
+                aFilter.push(oFilter3);
+                
+                var oModel = this.getOwnerComponent().getModel();
+                var oJSONMOdel = new sap.ui.model.json.JSONModel();
+
+                oModel.read("/f4_genericSet", {
+                    filters: aFilter,
+                    success: function (data) {
+                        sap.ui.core.BusyIndicator.hide();
+                        var partnumdata = data.results;
+                        oJSONMOdel.setData(partnumdata);
+                        this.getView().setModel(oJSONMOdel, "PartNumModel");
+                    }.bind(this),
+                    error: function (oError) {
+                        sap.ui.core.BusyIndicator.hide();
+                        var msg = JSON.parse(oError.responseText).error.message.value;
+                        MessageBox.error(msg);
+                    }
+                });
+            }
+
+        },
+        onCloseLotNumberDialog: function () {
+            var lotnum = this.getView().byId("idInpLotNo").getValue();
+            if (lotnum) {
+                this.helpRequest();
+                this._oLotNumDialog.close();
+            } else {
+                MessageBox.error("Please select Lot Number to continue!!");
+            }
+        },
+        onClosePartNumDialog: function () {
+            this._oPrtNoDialog.close();
         },
         onAircrafthelpRequest: function () {
             //if(!this._oAircraftDialog){
@@ -1572,7 +1707,7 @@ sap.ui.define([
             this._oDialog.destroy();
         },
         handleCloseUserValueHelpProdOrd: function (oEvent) {
-            var oSelectedItem = oEvent.getParameters("selectedItem").listItem.getBindingContext("oPOModel").getProperty("Order");   
+            var oSelectedItem = oEvent.getParameters("selectedItem").listItem.getBindingContext("oPOModel").getProperty("Order");
             var oSelectedItemSub = oEvent.getParameters("selectedItem").listItem.getBindingContext("oPOModel").getProperty("ProdOrdItem");
             var oInput = this.getView().byId("idsubcno");
             var oInputSub = this.getView().byId("idsubsubno");
@@ -1586,7 +1721,7 @@ sap.ui.define([
             oInputSub.setValue(oSelectedItemSub);
             this._oPODialog.close();
             this._oPODialog.destroy();
-            
+
         },
         handleCloseUserValueHelp: function (oEvent) {
             var oSelectedItem = oEvent.getParameters().listItem.getCells()[1].getText(); //oEvent.getParameter("selectedItem"),
@@ -1603,7 +1738,7 @@ sap.ui.define([
             // Fixed error related to getting open state property of dialog - Code End 
         },
         //work instruction live search s
-        onSearchOrderWorkInst:function (oEvent) {
+        onSearchOrderWorkInst: function (oEvent) {
             var sValue = oEvent.getParameter("value");
             var oFilter = new Filter("Value", FilterOperator.Contains, sValue);
             var oBinding = oEvent.getParameter("itemsBinding");
@@ -1629,6 +1764,56 @@ sap.ui.define([
         _handleValueHelpClosesubsub: function () {
             //	this._oDialogsub.close();
             this._oDialogsub.destroy();
+
+        },
+        onChangeWI: function () {
+
+            var subcatSelected = this.getView().byId("idlinksubc").getSelectedItem();
+            if (subcatSelected && subcatSelected.getText() === "WORK INSTRUCTION") {
+                var WIvalue = this.getView().byId("idsubcno").getValue();
+
+                var aFilters = [];
+
+                var oFilter = new Filter("Key", "EQ", "WRKINS");
+                aFilters.push(oFilter);
+
+                var oModel = this.getOwnerComponent().getModel();
+                oModel.read("/f4_genericSet", {
+                    filters: aFilters,
+                    success: function (data) {
+                        sap.ui.core.BusyIndicator.hide();
+
+                        var workinstdata = data.results;
+
+                        if (workinstdata.length > 0) {
+
+                            var WIvaluflag = false;
+                            for (var i = 0; i < workinstdata.length; i++) {
+                                if (workinstdata[i].Value === WIvalue) {
+                                    MessageBox.success("Entered Value exists for Work Instruction");
+                                    WIvaluflag = true;
+                                    break;
+                                }
+                            }
+                            if (!WIvaluflag) {
+                                MessageBox.error("Entered Value does not exist for Work Instruction");
+                            }
+                        }
+                        else {
+                            MessageBox.error("Entered Value does not exist for Work Instruction");
+                        }
+
+                    }.bind(this),
+                    error: function (oError) {
+                        sap.ui.core.BusyIndicator.hide();
+                        var msg = JSON.parse(oError.responseText).error.message.value;
+                        MessageBox.error(msg);
+                    }
+                });
+
+
+            }
+
 
         },
 

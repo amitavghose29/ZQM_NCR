@@ -53,7 +53,7 @@
 											<l:GridData span="XL1 L2 M8 S8"/>
 										</layoutData>
 									</ComboBox>
-									<Input id="idsubcno" valueHelpRequest="helpRequest" visible="true" showValueHelp="true" liveChange="poEnter">
+									<Input id="idsubcno" valueHelpRequest="helpRequest" visible="true" showValueHelp="true" liveChange="poEnter" change="onChangeWI">
 										<layoutData>
 											<l:GridData span="XL1 L2 M8 S8"/>
 											<!--<f:ColumnElementData cellsSmall="2" cellsLarge="2"/>-->

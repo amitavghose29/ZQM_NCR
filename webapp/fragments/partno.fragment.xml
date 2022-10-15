@@ -1,6 +1,42 @@
-<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-	<SelectDialog title="Part No" items="{PartNumModel>/}" liveChange="onSearchOrder" confirm="_configValueHelpDialogOrder"
-		cancel="_handleValueHelpClose" search="onSearchOrder">
-		<StandardListItem title="{PartNumModel>Value}"/>
-	</SelectDialog>
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:fb="sap.ui.comp.filterbar">
+    <Dialog title="Select Part Number" class="vhdialogPOSearchstyle">
+    <VBox class="sapUiSizeCompact">
+        <fb:FilterBar id="idFBLotNum" visible="false" reset="onReset" search="_onPartSearchWithLotNum" showRestoreButton="true" showClearButton="true">
+            <fb:filterGroupItems>
+                <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="C1" label="Lot Number">
+                    <fb:control>
+                        <Input id="idFlBarPartNumVHLotNo" type="Text" showSuggestion="true" suggestionItems="{LotNumModel>/}" valueHelpRequest="onLotNumHelpRequest" showValueHelp="true">
+                            <suggestionItems>
+                                <core:Item text="{LotNumModel>Value}" />
+                            </suggestionItems>
+                        </Input>
+                    </fb:control>
+                </fb:FilterGroupItem>
+            </fb:filterGroupItems>
+        </fb:FilterBar>
+        <SearchField liveChange="onSearchPartNumTab" width="100%" class="sapUiTinyMarginBottom" />
+        <Table id="idPartnumTab" items="{PartNumModel>/}" mode="SingleSelectMaster" selectionChange="onSelectPartnum">
+            <columns>
+                <Column>
+                    <Text text="Part No" />
+                </Column>
+            </columns>
+            <items>
+                <ColumnListItem>
+                    <cells>
+                        <Text text="{PartNumModel>Value}" />
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+        </VBox>
+        <endButton>
+            <Button text="Close" press="onClosePartNumDialog" />
+        </endButton>
+    </Dialog>
 </core:FragmentDefinition>
+<!--<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+    <SelectDialog title="Part No" items="{PartNumModel>/}" liveChange="onSearchOrder" confirm="_configValueHelpDialogOrder" cancel="_handleValueHelpClose" search="onSearchOrder">
+        <StandardListItem title="{PartNumModel>Value}" />
+    </SelectDialog>
+</core:FragmentDefinition>-->
