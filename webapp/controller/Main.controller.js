@@ -1022,9 +1022,11 @@ sap.ui.define([
                             this.getView().addDependent(this._oPrtNoDialog);
                         }
 
-                        if (value1 === "LOST") {
+                        if (value1 == "LOST") {
                             this.getView().byId("idFBLotNum").setVisible(true);
 
+                        } else {
+                            this.getView().byId("idFBLotNum").setVisible(false);
                         }
 
 
@@ -1472,10 +1474,10 @@ sap.ui.define([
             this._oBinAreDialog.open();
         },
         onLotNumHelpRequest: function () {
-            if (!this._oLotnumVHDialog) {
-                this._oLotnumVHDialog = sap.ui.xmlfragment(this.getView().getId(), "com.airbus.ZQM_NCR.fragments.LotnumVH", this);
-                this.getView().addDependent(this._oLotnumVHDialog);
-            }
+
+            this._oLotnumVHDialog = sap.ui.xmlfragment(this.getView().getId(), "com.airbus.ZQM_NCR.fragments.LotnumVH", this);
+            this.getView().addDependent(this._oLotnumVHDialog);
+
             this._oLotnumVHDialog.open();
 
             var aFilter = [];
@@ -1511,7 +1513,7 @@ sap.ui.define([
             }
 
             oInput.setValue(oSelectedItem.getTitle());
-            this._oLotnumVHDialog.close();
+            this._oLotnumVHDialog.destroy();
 
         },
         _onPartSearchWithLotNum: function () {
@@ -1528,7 +1530,7 @@ sap.ui.define([
                 aFilter.push(oFilter1);
                 aFilter.push(oFilter2);
                 aFilter.push(oFilter3);
-                
+
                 var oModel = this.getOwnerComponent().getModel();
                 var oJSONMOdel = new sap.ui.model.json.JSONModel();
 
@@ -1559,6 +1561,7 @@ sap.ui.define([
             }
         },
         onClosePartNumDialog: function () {
+            this.getView().byId("idFlBarPartNumVHLotNo").setValue("");
             this._oPrtNoDialog.close();
         },
         onAircrafthelpRequest: function () {
@@ -1756,6 +1759,13 @@ sap.ui.define([
             var oFilter = new Filter("ResultRet", FilterOperator.Contains, sValue);
             var oBinding = oEvent.getParameter("itemsBinding");
             oBinding.filter([oFilter]);
+        },
+        onNCAreaChange:function()
+        {
+            this.getView().byId("idsubcno").setValue("");
+        },
+        _onLotNumVHClose:function(){
+            this._oLotnumVHDialog.destroy();
         },
 		/*_handleValueHelpClose: function () {
 			this._oDialog.destroy();
