@@ -1,53 +1,51 @@
-<core:FragmentDefinition  xmlns:m="sap.m" xmlns:core="sap.ui.core" xmlns="sap.ui.comp.valuehelpdialog" xmlns:fb="sap.ui.comp.filterbar">
+<core:FragmentDefinition  xmlns="sap.m" xmlns:core="sap.ui.core"  xmlns:fb="sap.ui.comp.filterbar">
 	<!--<SelectDialog title="Copy NC" items="{sample>/tablelist}" liveChange="onSearchOrder" confirm="_configValueHelpDialogOrder"
 		cancel="_handleValueHelpClose">
 		<StandardListItem highlight="Information" title="{sample>Id}" info="{Ktext}"/>
 	</SelectDialog>-->
-    <ValueHelpDialog
-        title="Copy NC"
-        ok=".onValueHelpOkNCPress"
-        cancel=".onValueHelpCancelNCPress"
-        afterClose=".onValueHelpAfterNCClose"
-        supportMultiselect="false"
-        supportRanges="true"
-        key="ProductId"
-        descriptionKey="Name"
-    >
-        <filterBar>
-            <fb:FilterBar advancedMode="true" search="onFilterBarSearch">
+    <!-- ok=".onValueHelpOkNCPress" cancel=".onValueHelpCancelNCPress" afterClose=".onValueHelpAfterNCClose" supportMultiselect="false" key="ProductId" descriptionKey="Name"  -->
+    <Dialog title="Copy NC" class="vhdialogGRSearchstyle">
+        <VBox class="sapUiSizeCompact">
+			<fb:FilterBar search="onFilterBarSearchCopyNC" showRestoreButton="false">
                 <fb:filterGroupItems>
-                    <fb:FilterGroupItem
-                        groupName="__$INTERNAL$"
-                        name="ProductId"
-                        label="NC Number"
-                        visibleInFilterBar="true"
-                    >
+                    <fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="Notification" label="NC Number" visibleInFilterBar="true">
                         <fb:control>
-                            <m:Input name="ProductId" />
+                            <Input id="idFBNcNum" valueHelpRequest="onNCNoFBVHRequest" showValueHelp="true"/>
                         </fb:control>
                     </fb:FilterGroupItem>
-                    <fb:FilterGroupItem
-                        groupName="__$INTERNAL$"
-                        name="Serial Number"
-                        label="Serial Number"
-                        visibleInFilterBar="true"
-                    >
+                        <fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="SerialNumber" label="Serial Number" visibleInFilterBar="true">
+                            <fb:control>
+                                <Input id="idFBSerNo" valueHelpRequest="onSerNoFBVHRequest" showValueHelp="true"/>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+                    <fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="Aircraft" label="Aircraft" visibleInFilterBar="true">
                         <fb:control>
-                            <m:Input name="Serial Number" />
-                        </fb:control>
-                    </fb:FilterGroupItem>
-                    <fb:FilterGroupItem
-                        groupName="__$INTERNAL$"
-                        name="Aircraft"
-                        label="Aircraft"
-                        visibleInFilterBar="true"
-                    >
-                        <fb:control>
-                            <m:Input name="Aircraft" />
+                            <Input id="idFBAircraft" valueHelpRequest="onAircrafthelpRequest" showValueHelp="true"/>
                         </fb:control>
                     </fb:FilterGroupItem>
                 </fb:filterGroupItems>
             </fb:FilterBar>
-        </filterBar>
-    </ValueHelpDialog>
+            <Table id="idCopyNCTable" inset="false" items="{oNcCopyModel>/}" mode="SingleSelectMaster">
+                <columns>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="NC Number" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="NC Description" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem vAlign="Middle" type="Active">
+                        <cells>
+                            <Text text="{oNcCopyModel>Notification}" />
+                            <Text text="{oNcCopyModel>}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </VBox>
+        <endButton>
+            <Button text="Close" press="_handleNCCopyVHClose" />
+        </endButton>
+    </Dialog>
 </core:FragmentDefinition>

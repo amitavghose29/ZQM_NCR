@@ -58,51 +58,133 @@ sap.ui.define([
         ncrCopyRequest: function () {
             this._oNCDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.CopyNc", this);
             this.getView().addDependent(this._oNCDialog);
-            // Added code in NC Value Help Dialog for range support - Code Start
-            this._oNCDialog.setRangeKeyFields([
-                {
-                    label: "Serial Number",
-                    key: "ProductId",
-                    type: "string",
-                    typeInstance: new typeString({}, {
-                        maxLength: 7
-                    })
-                },
-                {
-                    label: "Aircraft",
-                    key: "ProductId",
-                    type: "string",
-                    typeInstance: new typeString({}, {
-                        maxLength: 7
-                    })
-                }
-            ]);
-            // Added code in NC Value Help Dialog for range support - Code End
-
-            // Added code in NC Value Help Dialog to bind table data - Code Start
-            var aCols = this.oColModel.getData().cols;
-            this._oNCDialog.getTableAsync().then(function (oNCTable) {
-                oNCTable.setModel(this.oProductsModel);
-                oNCTable.setModel(this.oColModel, "columns");
-
-                if (oNCTable.bindRows) {
-                    oNCTable.bindAggregation("rows", "/ProductCollection");
-                }
-
-                if (oNCTable.bindItems) {
-                    oNCTable.bindAggregation("items", "/ProductCollection", function () {
-                        return new ColumnListItem({
-                            cells: aCols.map(function (column) {
-                                return new Label({ text: "{" + column.template + "}" });
-                            })
-                        });
-                    });
-                }
-
-                this._oNCDialog.update();
-            }.bind(this));
-            // Added code in NC Value Help Dialog to bind table data - Code End 
             this._oNCDialog.open();
+        },
+
+        _handleNCCopyVHClose: function(){
+            this._oNCDialog.close();
+            this._oNCDialog.destroy();
+        },
+
+        onSerNoFBVHRequest: function (oEvent) {
+            this._oSerNoFBVHDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.SerNumFBVH", this);
+            this.getView().addDependent(this._oSerNoFBVHDialog);
+            this._oSerNoFBVHDialog.open();
+            this.oInputSerNoFB = oEvent.getSource();
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new sap.ui.model.json.JSONModel();
+            oModel.setSizeLimit(10000);
+            var oDataModel = this.getOwnerComponent().getModel();
+            var oFilter = [];
+            oFilter.push(new Filter("Key", FilterOperator.EQ, "SERNR’"));
+            var sPath = "/f4_genericSet"
+            oDataModel.read(sPath, {
+                filters: oFilter,
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.results;
+                    oModel.setData(data);
+                    this._oSerNoFBVHDialog.setModel(oModel, "oSerNoFBModel");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+        },
+
+        onSerNoFBLiveSearch: function (oEvent) {
+            var sValue = oEvent.getParameter("value");
+            var oFilter = new Filter("Value", FilterOperator.Contains, sValue);
+            var oBinding = oEvent.getParameter("itemsBinding");
+            oBinding.filter([oFilter]);
+        },
+
+        _confirmSerNoFBValueHelpDialog: function (oEvent) {
+            var oSelectedItem = oEvent.getParameter("selectedItem"),
+                oInput = this.oInputSerNoFB;
+            if (!oSelectedItem) {
+                oInput.resetProperty("value");
+                return;
+            }
+            oInput.setValue(oSelectedItem.getTitle());
+            this._oSerNoFBVHDialog.destroy();
+        },
+
+        onNCNoFBVHRequest: function (oEvent) {
+            this._oNCNoFBVHDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.NcNumFBVH", this);
+            this.getView().addDependent(this._oNCNoFBVHDialog);
+            this._oNCNoFBVHDialog.open();
+            this.oInputNcNoFB = oEvent.getSource();
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new sap.ui.model.json.JSONModel();
+            oModel.setSizeLimit(10000);
+            var oDataModel = this.getOwnerComponent().getModel();
+            var oFilter = [];
+            oFilter.push(new Filter("Key", FilterOperator.EQ, "NOTIF"));
+            var sPath = "/f4_genericSet"
+            oDataModel.read(sPath, {
+                filters: oFilter,
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.results;
+                    oModel.setData(data);
+                    this._oNCNoFBVHDialog.setModel(oModel, "oNcNumFBModel");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+        },
+
+        onNcNoFBLiveSearch: function (oEvent) {
+            var sValue = oEvent.getParameter("value");
+            var oFilter = new Filter("Value", FilterOperator.Contains, sValue);
+            var oBinding = oEvent.getParameter("itemsBinding");
+            oBinding.filter([oFilter]);
+        },
+
+        _confirmNcNoFBValueHelpDialog: function (oEvent) {
+            var oSelectedItem = oEvent.getParameter("selectedItem"),
+                oInput = this.oInputNcNoFB;
+            if (!oSelectedItem) {
+                oInput.resetProperty("value");
+                return;
+            }
+            oInput.setValue(oSelectedItem.getTitle());
+            this._oNCNoFBVHDialog.destroy();
+        },
+
+        onFilterBarSearchCopyNC: function(){
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new sap.ui.model.json.JSONModel();
+                oModel.setSizeLimit(10000);
+            var oDataModel = this.getOwnerComponent().getModel();
+            var sValNotif = sap.ui.getCore().byId("idFBNcNum").getValue(),
+                sValSerNo = sap.ui.getCore().byId("idFBNcNum").getValue(),
+                sValAircraft = sap.ui.getCore().byId("idFBNcNum").getValue();
+            var oFilter = [];
+                oFilter.push(new Filter("Notification", sap.ui.model.FilterOperator.Contains, sValNotif));
+                oFilter.push(new Filter("SerialNumber", sap.ui.model.FilterOperator.Contains, sValSerNo));
+                oFilter.push(new Filter("Aircraft", sap.ui.model.FilterOperator.Contains, sValAircraft));
+            var sPath = "/NCSearchSet"
+            oDataModel.read(sPath, {
+                filters: oFilter,
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.results;
+                    oModel.setData(data);
+                    sap.ui.getCore().byId("idCopyNCTable").setModel(oModel, "oNcCopyModel");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
         },
 
         // Added code on press of line item selection in NC Value Help dialog - Code Start        
@@ -1564,14 +1646,11 @@ sap.ui.define([
             this.getView().byId("idFlBarPartNumVHLotNo").setValue("");
             this._oPrtNoDialog.close();
         },
-        onAircrafthelpRequest: function () {
-            //if(!this._oAircraftDialog){
+        onAircrafthelpRequest: function (oEvent) {
             this._oAircraftDialog = sap.ui.xmlfragment("AircraftfragId", "com.airbus.ZQM_NCR.fragments.AircraftValueHelp", this);
             this.getView().addDependent(this._oAircraftDialog);
-            //}
-
             this._oAircraftDialog.open();
-
+            this.oAirCraftInput = oEvent.getSource();
             //F4 Aircraft No s 
             sap.ui.core.BusyIndicator.show();
             var oModel = new sap.ui.model.json.JSONModel();
@@ -1594,7 +1673,6 @@ sap.ui.define([
                     MessageBox.error(msg);
                 }
             });
-
         },
         //live search for aircraft number s
         onAircraftliveSearch: function (oEvent) {
@@ -1611,12 +1689,11 @@ sap.ui.define([
         },
         _confirmAircraftValueHelpDialog: function (oEvent) {
             var oSelectedItem = oEvent.getParameter("selectedItem"),
-                oInput = this.getView().byId("idAirCraftNum");
+                oInput = this.oAirCraftInput;
             if (!oSelectedItem) {
                 oInput.resetProperty("value");
                 return;
             }
-
             oInput.setValue(oSelectedItem.getTitle());
             this._oAircraftDialog.destroy();
         },
@@ -1879,9 +1956,6 @@ sap.ui.define([
                     saveData.PON = this.getView().byId("idsubcno").getValue();
                 }
             }
-
-
-
 
             var oModel = this.getOwnerComponent().getModel();
             oModel.create("/CreateNotificationSet", payload, {

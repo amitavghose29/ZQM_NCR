@@ -28,7 +28,7 @@
 			<!-- DynamicPage Content -->
 			<!--<f:content>-->
             <!-- onsearch   onsearch replaced -->
-			<fb:FilterBar reset="onReset" search="_onProdOrdSearchGo" showRestoreButton="true" showClearButton="true">
+			<fb:FilterBar search="_onProdOrdSearchGo" showRestoreButton="false">
 				<fb:filterGroupItems>
 					<fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="A1" label="Product Sequence">
 						<fb:control>
