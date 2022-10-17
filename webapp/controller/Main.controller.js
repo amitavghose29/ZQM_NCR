@@ -59,6 +59,9 @@ sap.ui.define([
             this._oNCDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.CopyNc", this);
             this.getView().addDependent(this._oNCDialog);
             this._oNCDialog.open();
+      //    this._oNCDialog.setModel(new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZQM_NC_MS_SRV", true));
+            this._oNCDialog.setModel(this.getOwnerComponent().getModel());
+
         },
 
         _handleNCCopyVHClose: function(){
@@ -76,7 +79,7 @@ sap.ui.define([
             oModel.setSizeLimit(10000);
             var oDataModel = this.getOwnerComponent().getModel();
             var oFilter = [];
-            oFilter.push(new Filter("Key", FilterOperator.EQ, "SERNR’"));
+            oFilter.push(new Filter("Key", FilterOperator.EQ, "SERNR"));
             var sPath = "/f4_genericSet"
             oDataModel.read(sPath, {
                 filters: oFilter,
@@ -1786,6 +1789,19 @@ sap.ui.define([
             oInput.setValue(oSelectedItem.getTitle());
             this._oDialog.destroy();
         },
+        handleCloseUserValueHelpNCcopy:function(oEvent){
+            var oSelectedItem = oEvent.getParameters().listItem.getCells()[0].getText(); //oEvent.getParameter("selectedItem"),
+            var oInput = this.getView().byId("idncrnumber");
+            if (!oSelectedItem) {
+                oInput.resetProperty("value");
+                return;
+            }
+
+            oInput.setValue(oSelectedItem);
+            this._oNCDialog.close();
+            this._oNCDialog.destroy();
+  
+        },
         handleCloseUserValueHelpProdOrd: function (oEvent) {
             var oSelectedItem = oEvent.getParameters("selectedItem").listItem.getBindingContext("oPOModel").getProperty("Order");
             var oSelectedItemSub = oEvent.getParameters("selectedItem").listItem.getBindingContext("oPOModel").getProperty("ProdOrdItem");
@@ -1926,14 +1942,14 @@ sap.ui.define([
 
             // this.getOwnerComponent().getRouter().navTo("Ncheader");
 
+            var rbtNc = this.getView().byId("rbg1").getSelectedIndex();
+            if(rbtNc == 0){
             var nctype = this.getView().byId("idncr").getSelectedKey();
             var iwa = this.getView().byId("idiwa").getSelectedKey();
             var subcat = this.getView().byId("idlinksubc").getSelectedItem() ? this.getView().byId("idlinksubc").getSelectedItem().getText() : "";
             var binloc = this.getView().byId("idInpBinLoc").getValue();
             var acnum = this.getView().byId("idAirCraftNum").getValue();
-
-
-
+          
             var payload = {
                 NcType: nctype,
                 Area: iwa,
@@ -1956,9 +1972,17 @@ sap.ui.define([
                     saveData.PON = this.getView().byId("idsubcno").getValue();
                 }
             }
-
+            var entityset ="/CreateNotificationSet";
+        }else{
+            var ncCopy = this.getView().byId("idncrnumber").getValue();
+            var payload = {
+                Notification:ncCopy,
+                "Message": ""
+            };
+            var entityset ="/CopyNotificationSet";
+        }
             var oModel = this.getOwnerComponent().getModel();
-            oModel.create("/CreateNotificationSet", payload, {
+            oModel.create(entityset, payload, {
                 success: function (data) {
                     MessageBox.success(data.Message, {
                         onClose: function () {

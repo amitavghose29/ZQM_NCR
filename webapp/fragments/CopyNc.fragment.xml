@@ -10,22 +10,60 @@
                 <fb:filterGroupItems>
                     <fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="Notification" label="NC Number" visibleInFilterBar="true">
                         <fb:control>
-                            <Input id="idFBNcNum" valueHelpRequest="onNCNoFBVHRequest" showValueHelp="true"/>
+                            <Input id="idFBNcNum" valueHelpRequest="onNCNoFBVHRequest" showValueHelp="true" 
+                            showSuggestion="true" 
+                            suggestionItems="{ path : '/f4_genericSet',
+                                filters : [{   
+                                 path : 'Key',                        
+                                 operator : 'EQ',
+                                 value1 : 'NOTIF'
+                                    }]
+                                }" >
+                                <suggestionItems>
+									<core:Item text="{Value}" />
+								</suggestionItems>
+							</Input>
                         </fb:control>
                     </fb:FilterGroupItem>
                         <fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="SerialNumber" label="Serial Number" visibleInFilterBar="true">
                             <fb:control>
-                                <Input id="idFBSerNo" valueHelpRequest="onSerNoFBVHRequest" showValueHelp="true"/>
+                                <Input id="idFBSerNo" valueHelpRequest="onSerNoFBVHRequest" showValueHelp="true"
+                                showSuggestion="true" 
+                                suggestionItems="{ path : '/f4_genericSet',
+                                    filters : [{   
+                                     path : 'Key',                        
+                                     operator : 'EQ',
+                                     value1 : 'SERNR'
+                                        }]
+                                    }" >
+                                    <suggestionItems>
+									<core:Item text="{Value}" />
+								</suggestionItems>
+							</Input>
                             </fb:control>
                         </fb:FilterGroupItem>
                     <fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="Aircraft" label="Aircraft" visibleInFilterBar="true">
                         <fb:control>
-                            <Input id="idFBAircraft" valueHelpRequest="onAircrafthelpRequest" showValueHelp="true"/>
+                            <Input id="idFBAircraft" valueHelpRequest="onAircrafthelpRequest" showValueHelp="true"
+                             showSuggestion="true" 
+                             suggestionItems="{ path : '/f4_genericSet',
+                            filters : [{   
+                                 path : 'Key',                        
+                                 operator : 'EQ',
+                                 value1 : 'AIR'
+                                    }]
+                                }" >
+                                    <suggestionItems>
+									<core:Item text="{Value}" />
+								</suggestionItems>
+							</Input>
                         </fb:control>
                     </fb:FilterGroupItem>
                 </fb:filterGroupItems>
             </fb:FilterBar>
-            <Table id="idCopyNCTable" inset="false" items="{oNcCopyModel>/}" mode="SingleSelectMaster">
+            <Table id="idCopyNCTable" inset="false" items="{oNcCopyModel>/}" mode="SingleSelectMaster"
+            selectionChange="handleCloseUserValueHelpNCcopy"
+				itemPress="handleCloseUserValueHelpNCcopy">
                 <columns>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="NC Number" />
@@ -38,7 +76,7 @@
                     <ColumnListItem vAlign="Middle" type="Active">
                         <cells>
                             <Text text="{oNcCopyModel>Notification}" />
-                            <Text text="{oNcCopyModel>}" />
+                            <Text text="{oNcCopyModel>Description}" />
                         </cells>
                     </ColumnListItem>
                 </items>
