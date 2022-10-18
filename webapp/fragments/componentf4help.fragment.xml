@@ -37,8 +37,10 @@
 			</Table>
 		</VBox>
 		<endButton>
-			<Button text="Ok" press="onOkUserPopup"/>
-			<Button text="Close" press="onCloseUserPopup"/>
+		    <Button text="Close" press="onCloseUserPopup"/>
 		</endButton>
+        <beginButton>
+        	<Button text="Ok" press="onOkUserPopup"/>
+        </beginButton>
 	</Dialog>
 </core:FragmentDefinition>

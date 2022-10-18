@@ -14,26 +14,26 @@
 								columnsL="2" columnsM="2" singleContainerFullSize="false" class="sapUiSizeCompact" >
 								<f:content>
 									<Label text="NC Create / Copy"/>
-									<RadioButtonGroup id="rbg1" columns="2" width="100%" class="sapUiMediumMarginBottom" select="onRadioSelect">
+									<RadioButtonGroup id="rbgNcCrtCpy" columns="2" width="100%" class="sapUiMediumMarginBottom" select="onRBNcCrtCpySelect">
 										<RadioButton id="RB1-1" text="Create"/>
 										<RadioButton id="RB1-2" text="Copy"/>
 									</RadioButtonGroup>
-									<Label text="NC Number"/>
+									<Label text="NC Number" required="true"/>
 									
-									<Input id="idncrnumber" placeholder="NC Number" valueHelpRequest="ncrCopyRequest" visible="false" showValueHelp="true"/>
+									<Input id="idncrnumber" placeholder="NC Number" valueHelpRequest="onValueHelpNcCopyRequest" visible="false" showValueHelp="true"/>
 								</f:content>
 							</f:SimpleForm>
 						</VBox>
 						<VBox class="sapUiSmallMargin">
-							<f:SimpleForm  id="SimpleFormChange480_12120Dual" editable="true" layout="ResponsiveGridLayout" title="NC Create" labelSpanXL="2"
+							<f:SimpleForm  id="SimpleFormNcCreate" editable="true" layout="ResponsiveGridLayout" title="NC Create" labelSpanXL="2"
 								labelSpanL="2" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0"
 								columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false" class="headercss sapUiSizeCompact" visible="true">
 								<f:content>
-                                    <Label text="NC Type"/>
+                                    <Label text="NC Type" required="true"/>
 									<ComboBox id="idncr" width="200px" items="{/NCTYPE_SOSet}" change="onNCTypeChange">
 										<core:Item key="{Nctype}" text="{NctypeDesc}"/>
 									</ComboBox>
-									<Label text="In Which Area"/>
+									<Label text="In Which Area" required="true"/>
 									<!--<Input id="idin" width="50%" liveChange="inEnter"/>-->
 									<ComboBox id="idiwa" width="200px" items="{/Area_soSet}" change="onNCAreaChange">
 										<core:Item key="{Sequencearea}" text="{Area}"/>
@@ -46,7 +46,7 @@
 									<!--	</layoutData>-->
 									<!--</Input>-->
 									<!--<Text/>-->
-									<Label text="Sub Category"></Label>
+									<Label text="Sub Category" required="true"></Label>
 									<ComboBox id="idlinksubc" items="{/Subcat_SoSet}" change="onChngSubCat">
 										<core:Item key="{SequenceCat}" text="{Subcat}"/>
 										<layoutData>
@@ -65,7 +65,7 @@
 											<l:GridData span="XL1 L1 M8 S8"/>
 										</layoutData>
 									</Input>
-									<Label text="Bin Location"/>
+									<Label text="Bin Location" required="true"/>
 									<Input id="idInpBinLoc" maxLength="10" width="150px" valueHelpRequest="onBinhelpRequest" showValueHelp="true" liveChange="poEnter"/>
 									<Label text="Aircraft Number"/>
 									<Input id="idAirCraftNum" width="150px" showValueHelp="true" valueHelpRequest="onAircrafthelpRequest"/>
