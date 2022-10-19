@@ -356,7 +356,7 @@ sap.ui.define([
 			var rmaNo = sap.ui.getCore().byId("idFBRMANo").getValue();
 
 			var oFilter = [];
-			oFilter.push(new Filter("Key", FilterOperator.EQ, "GR"));
+			oFilter.push(new Filter("Key", FilterOperator.EQ, "PO"));
 			if (asnNo != "") {
 				oFilter.push(new Filter("AsnNumber", FilterOperator.EQ, asnNo));
 			}
@@ -437,14 +437,19 @@ sap.ui.define([
         * @param {sap.ui.base.Event} oEvent object of pressed item
         */
        handlePurOrdItemSelection: function (oEvent) {
-			var oSelectedItem = oEvent.getParameters().listItem.getCells()[0].getText();
+			var oSelectedItem = oEvent.getParameters("selectedItem").listItem.getBindingContext("oPrModel").getProperty("PurchaseOrderNum");
+            var oSelectedItemSub = oEvent.getParameters("selectedItem").listItem.getBindingContext("oPrModel").getProperty("PurchaseItem");
 			var oInput = this.getView().byId("idsubcno");
-			if (!oSelectedItem) {
+            var oInputSub = this.getView().byId("idsubsubno");
+			if (!oSelectedItem && !oSelectedItemSub) {
 				oInput.resetProperty("value");
+				oInputSub.resetProperty("value");
 				return;
 			}
 
 			oInput.setValue(oSelectedItem);
+			oInputSub.setValue(oSelectedItemSub);
+            this._oPrOrdDialog.close();
 			this._oPrOrdDialog.destroy();
 		},
         
@@ -561,9 +566,9 @@ sap.ui.define([
 			var oInputSub = this.getView().byId("idsubcno");
 			oInputSub.setValue("");
 			this.getView().byId("idsubsubno").setValue("");
-			if (Number(oSubCat) == "0004") {
+			if (Number(oSubCat) == "0005") {
 				this.getView().byId("idsubsubno").setVisible(false);
-			} else if (Number(oSubCat) == "0005") {
+			} else if (Number(oSubCat) == "0002") {
 				this.getView().byId("idsubsubno").setVisible(false);
 			}
 
@@ -1058,7 +1063,7 @@ sap.ui.define([
 			var oBinding = oEvent.getParameter("itemsBinding");
 			oBinding.filter([oFilter]);
 		},
-        
+
 		onSearchPartNumTab: function (oEvent) {
 			var sValue = oEvent.getSource().getValue();
 			var oFilter = new Filter("Value", FilterOperator.Contains, sValue);

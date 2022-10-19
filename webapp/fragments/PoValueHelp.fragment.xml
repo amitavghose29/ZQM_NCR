@@ -71,14 +71,14 @@
                         <Text text="PO ID" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="PO Description" />
+                        <Text text="PO Item" />
                     </Column>
                 </columns>
                 <items>
                     <ColumnListItem vAlign="Middle" type="Active">
                         <cells>
                             <Text text="{oPrModel>PurchaseOrderNum}" />
-                            <Text text="{oPrModel>PurchaseOrderNum}" />
+                            <Text text="{oPrModel>PurchaseItem}" />
                         </cells>
                     </ColumnListItem>
                 </items>
