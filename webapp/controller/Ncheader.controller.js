@@ -1005,7 +1005,7 @@ sap.ui.define([
         //Added code for GR and PO  Filterbar search - Code End
 
         //Added code for Slection Change in PO and GR Search Tables - Code Start
-        handleCloseGRUserValueHelp: function (oEvent) {
+        handleGRItemSelection: function (oEvent) {
             var oSelectedItem = oEvent.getParameters().listItem.getCells()[1].getText();
             var oInput = this.getView().byId("idPurInfGrip");
             if (!oSelectedItem) {
@@ -1017,7 +1017,7 @@ sap.ui.define([
             this._oGRDialog.destroy();
         },
 
-        handleClosePOUserValueHelp: function (oEvent) {
+        handlePurOrdItemSelection: function (oEvent) {
             var oSelectedItem = oEvent.getParameters().listItem.getCells()[1].getText();
             var oInput = this.getView().byId("idPurInfPurOrdip");
             if (!oSelectedItem) {

@@ -65,7 +65,7 @@
                     </fb:FilterGroupItem>
                 </fb:filterGroupItems>
             </fb:FilterBar>
-            <Table id="idPurOrdTable" inset="false" items="{oPrModel>/}" mode="SingleSelectMaster" selectionChange="handleClosePOUserValueHelp" itemPress="handleClosePOUserValueHelp">
+            <Table id="idPurOrdTable" inset="false" items="{oPrModel>/}" mode="SingleSelectMaster" itemPress="handlePurOrdItemSelection">
                 <columns>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="PO ID" />

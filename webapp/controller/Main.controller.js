@@ -11,6 +11,10 @@ sap.ui.define([
 	return Controller.extend("com.airbus.ZQM_NCR.controller.Main", {
 		onInit: function () {},
 
+        /**
+        * Function is triggered when the user makes a change on the radio button - NC Create/Copy
+        * @function
+        */
 		onRBNcCrtCpySelect: function () {
 			var ncr = this.getView().byId("rbgNcCrtCpy").getSelectedButton().getText();
 			if (ncr === "Copy") {
@@ -21,19 +25,32 @@ sap.ui.define([
 				this.getView().byId("idncrnumber").setVisible(false);
 			}
 		},
-
+        
+        /**
+        * Function is triggered when the value help indicator for NC Copy is clicked
+        * @function
+        */
 		onValueHelpNcCopyRequest: function () {
 			this._oNCDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.CopyNc", this);
 			this.getView().addDependent(this._oNCDialog);
 			this._oNCDialog.open();
 			this._oNCDialog.setModel(this.getOwnerComponent().getModel());
 		},
-
+        
+        /**
+        * Function is triggered when the NC Copy Dialog is closed
+        * @function
+        */
 		_handleNCCopyVHClose: function () {
 			this._oNCDialog.close();
 			this._oNCDialog.destroy();
 		},
-
+        
+        /**
+        * Function is triggered when the value help indicator for Serial Number as in filter bar field of NC Number Value Help is clicked
+        * @function
+        * @param {sap.ui.base.Event} oEvent source of the input
+        */
 		onSerNoFBVHRequest: function (oEvent) {
 			this._oSerNoFBVHDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.SerNumFBVH", this);
 			this.getView().addDependent(this._oSerNoFBVHDialog);
@@ -61,14 +78,24 @@ sap.ui.define([
 				}
 			});
 		},
-
+        
+        /**
+        * Function is fired when the value of the input is changed - e.g. at each keypress for Serial Number as in filter bar field of NC Number Value Help
+        * @function
+        * @param {sap.ui.base.Event} oEvent object of the user input
+        */
 		onSerNoFBLiveSearch: function (oEvent) {
 			var sValue = oEvent.getParameter("value");
 			var oFilter = new Filter("Value", FilterOperator.Contains, sValue);
 			var oBinding = oEvent.getParameter("itemsBinding");
 			oBinding.filter([oFilter]);
 		},
-
+        
+        /**
+        * Function is fired when the serial number as in filter bar field of NC Number Value Help dialog is confirmed by selecting an item 
+        * @function
+        * @param {sap.ui.base.Event} oEvent item being selected is returned 
+        */
 		_confirmSerNoFBValueHelpDialog: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem"),
 				oInput = this.oInputSerNoFB;
@@ -79,7 +106,12 @@ sap.ui.define([
 			oInput.setValue(oSelectedItem.getTitle());
 			this._oSerNoFBVHDialog.destroy();
 		},
-
+        
+        /**
+        * Function is fired when the value help indicator for notification number as in filter bar field of NC Number Value Help dialog is clicked 
+        * @function
+        * @param {sap.ui.base.Event} oEvent source of the input 
+        */
 		onNCNoFBVHRequest: function (oEvent) {
 			this._oNCNoFBVHDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.NcNumFBVH", this);
 			this.getView().addDependent(this._oNCNoFBVHDialog);
@@ -107,14 +139,24 @@ sap.ui.define([
 				}
 			});
 		},
-
+        
+        /**
+        * Function is fired when the value of the input is changed - e.g. at each keypress for Notification Number as in filter bar field of NC Number Value Help
+        * @function
+        * @param {sap.ui.base.Event} oEvent object of the user input
+        */
 		onNcNoFBLiveSearch: function (oEvent) {
 			var sValue = oEvent.getParameter("value");
 			var oFilter = new Filter("Value", FilterOperator.Contains, sValue);
 			var oBinding = oEvent.getParameter("itemsBinding");
 			oBinding.filter([oFilter]);
 		},
-
+        
+        /**
+        * Function is fired when the notification number as in filter bar field of NC Number Value Help dialog is confirmed by selecting an item 
+        * @function
+        * @param {sap.ui.base.Event} oEvent item being selected is returned 
+        */
 		_confirmNcNoFBValueHelpDialog: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem"),
 				oInput = this.oInputNcNoFB;
@@ -125,7 +167,11 @@ sap.ui.define([
 			oInput.setValue(oSelectedItem.getTitle());
 			this._oNCNoFBVHDialog.destroy();
 		},
-
+        
+        /**
+        * Function is triggered when the go button in filter bar of NC Number Value Help dialog is clicked
+        * @function
+        */
 		onFilterBarSearchCopyNC: function () {
 			sap.ui.core.BusyIndicator.show();
 			var oModel = new JSONModel();
@@ -155,9 +201,10 @@ sap.ui.define([
 			});
 		},
 
-		//Added code for GR and PO Filterbar search - Code Start
-
-		//GR search go s
+		/**
+        * Function is triggered when the go button in filter bar of Goods Receipt Number Value Help dialog is clicked
+        * @function
+        */
 		_onGRSearchGo: function () {
 			sap.ui.core.BusyIndicator.show();
 			var oModel = new JSONModel();
@@ -196,7 +243,10 @@ sap.ui.define([
 			});
 		},
 
-		// production order search go s
+		/**
+        * Function is triggered when the go button in filter bar of Production Order Value Help dialog is clicked
+        * @function
+        */
 		_onProdOrdSearchGo: function () {
 			sap.ui.core.BusyIndicator.show();
 			var oModel = new JSONModel();
@@ -289,7 +339,10 @@ sap.ui.define([
 			});
 		},
 
-		// Purchase Order search go s
+		/**
+        * Function is triggered when the go button in filter bar of Purchase Order Value Help dialog is clicked
+        * @function
+        */
 		_onPoSearchGo: function () {
 			sap.ui.core.BusyIndicator.show();
 			var oModel = new JSONModel();
@@ -339,20 +392,29 @@ sap.ui.define([
 				}
 			});
 		},
-
-		//Added code for PO and GR Valuehelp dialogs - Code Start
+        
+        /**
+        * Function is triggered when the Goods Receipt value help is closed
+        * @function
+        */
 		_handleGRValueHelpClose: function () {
-			//this._oGRDialog.close();
 			this._oGRDialog.destroy();
 		},
 
+        /**
+        * Function is triggered when the Production Order value help is closed
+        * @function
+        */
 		_handlePOValueHelpClose: function () {
 			this._oPODialog.destroy();
 		},
-		//Added code for PO and GR Valuehelp dialogs - Code End
-
-		//Added code for Slection Change in PO and GR Search Tables - Code Start
-		handleCloseGRUserValueHelp: function (oEvent) {
+        
+        /**
+        * Function is triggered when the Goods Receipt value help line item is pressed
+        * @function
+        * @param {sap.ui.base.Event} oEvent object of pressed item
+        */
+		handleGRItemSelection: function (oEvent) {
 			var oSelectedItem = oEvent.getParameters("selectedItem").listItem.getBindingContext("oGRModel").getProperty("GoodsReceiptNum"); // oEvent.getParameters().listItem.getCells()[0].getText();
 			var oSelectedItemSub = oEvent.getParameters("selectedItem").listItem.getBindingContext("oGRModel").getProperty("GoodsRecpItem");
 			var oInput = this.getView().byId("idsubcno");
@@ -368,8 +430,13 @@ sap.ui.define([
 			this._oGRDialog.close();
 			this._oGRDialog.destroy();
 		},
-
-		handleClosePOUserValueHelp: function (oEvent) {
+        
+        /**
+        * Function is triggered when the Purchase Order value help line item is pressed
+        * @function
+        * @param {sap.ui.base.Event} oEvent object of pressed item
+        */
+       handlePurOrdItemSelection: function (oEvent) {
 			var oSelectedItem = oEvent.getParameters().listItem.getCells()[0].getText();
 			var oInput = this.getView().byId("idsubcno");
 			if (!oSelectedItem) {
@@ -380,9 +447,11 @@ sap.ui.define([
 			oInput.setValue(oSelectedItem);
 			this._oPrOrdDialog.destroy();
 		},
-		//Added code for Slection Change in PO and GR Search Tables - Code End
-
-		// Added code for opening value help dialog for NLP field - Code Start
+        
+        /**
+        * Function is triggered when the value help indicator for NLP as in filter bar field of Production Order Value Help is clicked
+        * @function
+        */
 		_onValueHelpReqNLP: function () {
 			this._oNLPDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.NLP", this);
 			this.getView().addDependent(this._oNLPDialog);
@@ -410,7 +479,12 @@ sap.ui.define([
 			});
 
 		},
-		//NLP Value
+
+        /**
+        * Function is fired when the NLP as in filter bar field of Production Order value help dialog is confirmed by selecting an item 
+        * @function
+        * @param {sap.ui.base.Event} oEvent item being selected is returned 
+        */
 		_handleConfirmNLP: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem"),
 				oInput;
@@ -424,9 +498,12 @@ sap.ui.define([
 			this._oNLPDialog.destroy();
 
 		},
-		// Added code for opening value help dialog for NLP field - Code End
-
-		// Added code for handling search functionality for Select Partner Code dialog - Code Start
+        
+        /**
+        * Function is executed when the search is triggered in Select Partner Code dialog 
+        * @function
+        * @param {sap.ui.base.Event} oEvent object of the user input
+        */
 		handleSearchPartnerCode: function (oEvent) {
 			var sValue = oEvent.getParameter("value");
 			var oFilter = [];
@@ -436,9 +513,12 @@ sap.ui.define([
 			var oBinding = oEvent.getSource().getBinding("items");
 			oBinding.filter(oFilter);
 		},
-		// Added code for handling search functionality for Select Partner Code dialog - Code End
-
-		// Added code for handling search selection of line item in Select Partner Code dialog - Code Start
+        
+        /**
+        * Function is fired when the Partner Code is confirmed by selecting an item 
+        * @function
+        * @param {sap.ui.base.Event} oEvent item being selected is returned 
+        */
 		handleConfirmPartnerCode: function (oEvent) {
 			var oSelProdCode = oEvent.getParameters().selectedItem.getBindingContext().getProperty("PartnerCode");
 			// sap.m.MessageToast.show("The partner code chosen is " + oSelContxt);
@@ -470,36 +550,30 @@ sap.ui.define([
 			}
 
 		},
-		// Added code for handling search selection of line item in Select Partner Code dialog - Code End
 
-		onChngSubCat: function () {
-
+		/**
+        * Function is fired when the value in the text input field is changed for Sub Category 
+        * @function
+        */
+        onChngSubCat: function () {
 			var oSubCat = this.getView().byId("idlinksubc").getSelectedKey();
 			this.getView().byId("idsubsubno").setVisible(true);
-
 			var oInputSub = this.getView().byId("idsubcno");
 			oInputSub.setValue("");
 			this.getView().byId("idsubsubno").setValue("");
-
 			if (Number(oSubCat) == "0004") {
 				this.getView().byId("idsubsubno").setVisible(false);
-
 			} else if (Number(oSubCat) == "0005") {
 				this.getView().byId("idsubsubno").setVisible(false);
 			}
 
 		},
 
-		onHandleSuggestPartNo: function (oEvent) {
-			//  var sTerm = oEvent.getParameter("suggestValue");
-			var aFilters = [];
-			//  if (sTerm) {
-			aFilters.push(new Filter("Key", sap.ui.model.FilterOperator.EQ, "PEFF"));
-			//  }
-			oEvent.getSource().getBinding("suggestionItems").filter(aFilters);
-
-		},
-		helpRequest: function () {
+        /**
+        * Function is triggered when the value help indicator for sub category is clicked
+        * @function
+        */
+		_onVHReqSubCategory: function () {
 			var oDataModel = this.getOwnerComponent().getModel();
 			var oSubCat = this.getView().byId("idlinksubc").getSelectedKey();
 
@@ -862,7 +936,11 @@ sap.ui.define([
 			}
 		},
 
-		_onValueHelpReqWorkIns: function () {
+		/**
+        * Function is triggered when the value help indicator for Work Instruction as in filter bar field of Production Order Value Help is clicked
+        * @function
+        */
+        _onValueHelpReqWorkIns: function () {
 			this._oWIDialog = sap.ui.xmlfragment("WIfragId", "com.airbus.ZQM_NCR.fragments.WorkInstructionVH", this);
 			this.getView().addDependent(this._oWIDialog);
 			this._oWIDialog.open();
@@ -890,8 +968,12 @@ sap.ui.define([
 			});
 		},
 
+        /**
+        * Function is triggered when the value help indicator for Part Number as in filter bar field of Production Order, Purchase Order and Goods Receipt Value Help is clicked
+        * @function
+        */
 		_onValueHelpReqPartNo: function () {
-			this._oPrtNoFBDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.PartNoFBValueHelp", this);
+		this._oPrtNoFBDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.PartNoFBValueHelp", this);
 			this.getView().addDependent(this._oPrtNoFBDialog);
 			this._oPrtNoFBDialog.open();
 			sap.ui.core.BusyIndicator.show();
@@ -922,7 +1004,12 @@ sap.ui.define([
 				}
 			});
 		},
-
+        
+        /**
+        * Function is fired when the Part Number as in filter bar field of Production Order, Purchase Order and Goods Receipt Value Help dialog is confirmed by selecting an item 
+        * @function
+        * @param {sap.ui.base.Event} oEvent item being selected is returned 
+        */
 		_configValueHelpDialogPartNoFB: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem"),
 				oInput;
@@ -942,7 +1029,12 @@ sap.ui.define([
 			oInput.setValue(oSelectedItem.getTitle());
 			this._oPrtNoFBDialog.destroy();
 		},
-		//work instruction confirm
+
+		/**
+        * Function is fired when the work instruction as in filter bar field of Goods Receipt and Work Instruction Value Help dialog is confirmed by selecting an item 
+        * @function
+        * @param {sap.ui.base.Event} oEvent item being selected is returned 
+        */
 		_configWrkInsVHDialog: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem"),
 				oInput;
@@ -959,12 +1051,14 @@ sap.ui.define([
 			oInput.setValue(oSelectedItem.getTitle());
 			this._oWIDialog.destroy();
 		},
+
 		onSearchPartNoFB: function (oEvent) {
 			var sValue = oEvent.getParameter("value");
 			var oFilter = new Filter("Value", FilterOperator.Contains, sValue);
 			var oBinding = oEvent.getParameter("itemsBinding");
 			oBinding.filter([oFilter]);
 		},
+        
 		onSearchPartNumTab: function (oEvent) {
 			var sValue = oEvent.getSource().getValue();
 			var oFilter = new Filter("Value", FilterOperator.Contains, sValue);
@@ -1356,7 +1450,7 @@ sap.ui.define([
 		onCloseLotNumberDialog: function () {
 			var lotnum = this.getView().byId("idInpLotNo").getValue();
 			if (lotnum) {
-				this.helpRequest();
+				this._onVHReqSubCategory();
 				this._oLotNumDialog.close();
 			} else {
 				MessageBox.error("Please select Lot Number to continue!!");
@@ -1632,7 +1726,7 @@ sap.ui.define([
 				var subcat = this.getView().byId("idlinksubc").getSelectedItem() ? this.getView().byId("idlinksubc").getSelectedItem().getText() :
 					"";
 				var binloc = this.getView().byId("idInpBinLoc").getValue();
-				var acnum = this.getView().byId("idAirCraftNum").getValue();
+				var subItemNo = this.getView().byId("idsubcno").getValue();
 
 				var payload = {
 					NcType: nctype,
@@ -1647,17 +1741,17 @@ sap.ui.define([
 				//     NotifNo: ""
 				// };
 
-				var subCat = this.getView().byId("idlinksubc").getSelectedKey();
-				if (subCat !== "") {
-					if (subCat == "000001") {
-						saveData.GRN = this.getView().byId("idsubcno").getValue();
-					} else if (subCat == "000002") {
-						saveData.PON = this.getView().byId("idsubcno").getValue();
-					}
-				}
+				// var subCat = this.getView().byId("idlinksubc").getSelectedKey();
+				// if (subCat !== "") {
+				// 	if (subCat == "000001") {
+				// 		saveData.GRN = this.getView().byId("idsubcno").getValue();
+				// 	} else if (subCat == "000002") {
+				// 		saveData.PON = this.getView().byId("idsubcno").getValue();
+				// 	}
+				// }
 				var entityset = "/CreateNotificationSet";
 
-				if (payload.NcType == "" && payload.Area == "" && payload.SubCategory == "" && payload.BinLocation == "") {
+               if (payload.NcType == "" || payload.Area == "" || payload.SubCategory == "" || payload.BinLocation == "" || subItemNo == "") {
 					var temp = "";
 				} else {
 					temp = "X";
