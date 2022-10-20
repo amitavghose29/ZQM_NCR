@@ -61,8 +61,7 @@
                     </fb:FilterGroupItem>
                 </fb:filterGroupItems>
             </fb:FilterBar>
-            <Table id="idCopyNCTable" inset="false" items="{oNcCopyModel>/}" mode="SingleSelectMaster"
-            selectionChange="handleCloseUserValueHelpNCcopy"
+            <Table id="idCopyNCTable" inset="false" items="{oNcCopyModel>/}" mode="SingleSelectMaster" 
 				itemPress="handleCloseUserValueHelpNCcopy">
                 <columns>
                     <Column minScreenWidth="Tablet" demandPopin="true">

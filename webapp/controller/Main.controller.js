@@ -1056,7 +1056,12 @@ sap.ui.define([
 			oInput.setValue(oSelectedItem.getTitle());
 			this._oWIDialog.destroy();
 		},
-
+       
+        /**
+        * Function is executed when the search for part number as in filter bar field for different sub categories is triggered
+        * @function
+        * @param {sap.ui.base.Event} oEvent object of the user input
+        */
 		onSearchPartNoFB: function (oEvent) {
 			var sValue = oEvent.getParameter("value");
 			var oFilter = new Filter("Value", FilterOperator.Contains, sValue);
@@ -1064,19 +1069,34 @@ sap.ui.define([
 			oBinding.filter([oFilter]);
 		},
 
+        /**
+        * Function is executed when the search for part number as in filter bar field for different sub categories is triggered
+        * @function
+        * @param {sap.ui.base.Event} oEvent object of the user input
+        */
 		onSearchPartNumTab: function (oEvent) {
 			var sValue = oEvent.getSource().getValue();
 			var oFilter = new Filter("Value", FilterOperator.Contains, sValue);
 			var oTab = this.getView().byId("idPartnumTab");
 			var oBinding = oTab.getBinding("items");
 			oBinding.filter([oFilter]);
-
 		},
+        
+        /**
+        * Function is triggered when part number selection is changed via user interaction inside the control
+        * @function
+        * @param {sap.ui.base.Event} oEvent item being selected is returned 
+        */
 		onSelectPartnum: function (oEvent) {
 			var partnum = oEvent.getParameters("selectedItem").listItem.getBindingContext("PartNumModel").getProperty("Value");
 			this.getView().byId("idsubcno").setValue(partnum);
 			this._oPrtNoDialog.close();
 		},
+
+        /**
+        * Function is triggered when the value help indicator for Purchase Order is clicked
+        * @function
+        */
 		_onValueHelpReqtPurchOrd: function () {
 			this._oPurOrdFBDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.PurOrdFBValueHelp", this);
 			this.getView().addDependent(this._oPurOrdFBDialog);
@@ -1103,7 +1123,12 @@ sap.ui.define([
 				}
 			});
 		},
-
+        
+        /**
+        * Function is fired when the Purchase Order is confirmed by selecting an item 
+        * @function
+        * @param {sap.ui.base.Event} oEvent item being selected is returned 
+        */
 		_configValueHelpDialogPurOrdFB: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem"),
 				oInput;
@@ -1116,14 +1141,23 @@ sap.ui.define([
 			oInput.setValue(oSelectedItem.getTitle());
 			this._oPurOrdFBDialog.destroy();
 		},
-
+        
+        /**
+        * Function is executed when the search for Purchase Order is triggered
+        * @function
+        * @param {sap.ui.base.Event} oEvent object of the user input    
+        */
 		onSearchPurOrdFB: function (oEvent) {
 			var sValue = oEvent.getParameter("value");
 			var oFilter = new Filter("Value", FilterOperator.Contains, sValue);
 			var oBinding = oEvent.getParameter("itemsBinding");
 			oBinding.filter([oFilter]);
 		},
-
+        
+        /**
+        * Function is triggered when the value help indicator for Inbound Delivery as in filter bar field of Goods Receipt and Purchase Order value help is clicked
+        * @function
+        */
 		_onValueHelpReqInboundDelivery: function () {
 			this._oInbDelFBDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.InbDelFBValueHelp", this);
 			this.getView().addDependent(this._oInbDelFBDialog);
@@ -1155,6 +1189,11 @@ sap.ui.define([
 			});
 		},
 
+        /**
+        * Function is fired when the Inbound Delivery as in filter bar field of Goods Receipt and Purchase Order value help is confirmed by selecting an item 
+        * @function
+        * @param {sap.ui.base.Event} oEvent item being selected is returned 
+        */
 		_configValueHelpDialogInbDelFB: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem"),
 				oInput;
@@ -1174,14 +1213,23 @@ sap.ui.define([
 			oInput.setValue(oSelectedItem.getTitle());
 			this._oInbDelFBDialog.destroy();
 		},
-
+        
+        /**
+        * Function is executed when the search for Inbound Delivery as in filter bar field of Goods Receipt and Purchase Order value help is triggered
+        * @function
+        * @param {sap.ui.base.Event} oEvent object of the user input    
+        */
 		onSearchInbDelFB: function (oEvent) {
 			var sValue = oEvent.getParameter("value");
 			var oFilter = new Filter("Value", FilterOperator.Contains, sValue);
 			var oBinding = oEvent.getParameter("itemsBinding");
 			oBinding.filter([oFilter]);
 		},
-
+        
+        /**
+        * Function is triggered when the value help indicator for ASN Number as in filter bar field of Purchase Order value help is clicked
+        * @function
+        */
 		_onValueHelpReqtASNNumber: function () {
 			this._oASNNoFBDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.ASNNoFBValueHelp", this);
 			this.getView().addDependent(this._oASNNoFBDialog);
@@ -1208,7 +1256,12 @@ sap.ui.define([
 				}
 			});
 		},
-
+        
+        /**
+        * Function is fired when the ASN Number as in filter bar field of Purchase Order value help is confirmed by selecting an item 
+        * @function
+        * @param {sap.ui.base.Event} oEvent item being selected is returned 
+        */
 		_configValueHelpDialogASNNoFB: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem"),
 				oInput;
@@ -1221,14 +1274,23 @@ sap.ui.define([
 			oInput.setValue(oSelectedItem.getTitle());
 			this._oASNNoFBDialog.destroy();
 		},
-
+        
+        /**
+        * Function is executed when the search for ASN Number as in filter bar field of Purchase Order value help is triggered
+        * @function
+        * @param {sap.ui.base.Event} oEvent object of the user input    
+        */
 		onSearchASNNoFB: function (oEvent) {
 			var sValue = oEvent.getParameter("value");
 			var oFilter = new Filter("Value", FilterOperator.Contains, sValue);
 			var oBinding = oEvent.getParameter("itemsBinding");
 			oBinding.filter([oFilter]);
 		},
-
+        
+        /**
+        * Function is triggered when the value help indicator for NC Number is clicked
+        * @function
+        */
 		_onValueHelpReqNCNo: function () {
 			this._oNcNoFBDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.NcNoFBValueHelp", this);
 			this.getView().addDependent(this._oNcNoFBDialog);
@@ -1254,7 +1316,12 @@ sap.ui.define([
 				}
 			});
 		},
-
+        
+        /**
+        * Function is fired when the NC Number is confirmed by selecting an item 
+        * @function
+        * @param {sap.ui.base.Event} oEvent item being selected is returned 
+        */
 		_configValueHelpDialogNcNoFB: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem"),
 				oInput;
@@ -1267,7 +1334,12 @@ sap.ui.define([
 			oInput.setValue(oSelectedItem.getTitle());
 			this._oNcNoFBDialog.destroy();
 		},
-
+        
+        /**
+        * Function is executed when the search for ASN Number as in filter bar field of Purchase Order value help is triggered
+        * @function
+        * @param {sap.ui.base.Event} oEvent object of the user input    
+        */
 		onSearchNcNoFB: function (oEvent) {
 			var sValue = oEvent.getParameter("value");
 			var oFilter = new Filter("Value", FilterOperator.Contains, sValue);
@@ -1275,7 +1347,11 @@ sap.ui.define([
 			oBinding.filter([oFilter]);
 		},
 
-		_onValueHelpReqDiscrepancyNo: function () {
+		/**
+        * Function is triggered when the value help indicator for Discrepancy Number is clicked
+        * @function
+        */
+        _onValueHelpReqDiscrepancyNo: function () {
 			this._oDiscNoFBDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.DiscrepNoFBValueHelp", this);
 			this.getView().addDependent(this._oDiscNoFBDialog);
 			this._oDiscNoFBDialog.open();
@@ -1301,6 +1377,11 @@ sap.ui.define([
 			});
 		},
 
+        /**
+        * Function is fired when the Discrepancy Number is confirmed by selecting an item 
+        * @function
+        * @param {sap.ui.base.Event} oEvent item being selected is returned 
+        */
 		_configValueHelpDialogDiscNoFB: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem"),
 				oInput;
@@ -1314,13 +1395,22 @@ sap.ui.define([
 			this._oDiscNoFBDialog.destroy();
 		},
 
-		onSearchDiscNoFB: function (oEvent) {
+		/**
+        * Function is executed when the search for Discrepancy Number is triggered
+        * @function
+        * @param {sap.ui.base.Event} oEvent object of the user input    
+        */
+        onSearchDiscNoFB: function (oEvent) {
 			var sValue = oEvent.getParameter("value");
 			var oFilter = new Filter("Value", FilterOperator.Contains, sValue);
 			var oBinding = oEvent.getParameter("itemsBinding");
 			oBinding.filter([oFilter]);
 		},
 
+        /**
+        * Function is triggered when the value help indicator for RMA Number is clicked
+        * @function
+        */
 		_onValueHelpReqRMANo: function () {
 			this._oRMANoFBDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.RMANoFBValueHelp", this);
 			this.getView().addDependent(this._oRMANoFBDialog);
@@ -1347,7 +1437,12 @@ sap.ui.define([
 			});
 		},
 
-		_configValueHelpDialogRMANoFB: function (oEvent) {
+		/**
+        * Function is fired when the RMA Number is confirmed by selecting an item 
+        * @function
+        * @param {sap.ui.base.Event} oEvent item being selected is returned 
+        */
+        _configValueHelpDialogRMANoFB: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem"),
 				oInput;
 			oInput = sap.ui.getCore().byId("idFBRMANo");
@@ -1360,14 +1455,22 @@ sap.ui.define([
 			this._oRMANoFBDialog.destroy();
 		},
 
-		onSearchRMANoFB: function (oEvent) {
+		/**
+        * Function is executed when the search for RMA Number is triggered
+        * @function
+        * @param {sap.ui.base.Event} oEvent object of the user input    
+        */
+        onSearchRMANoFB: function (oEvent) {
 			var sValue = oEvent.getParameter("value");
 			var oFilter = new Filter("Value", FilterOperator.Contains, sValue);
 			var oBinding = oEvent.getParameter("itemsBinding");
 			oBinding.filter([oFilter]);
 		},
 
-		//Added Value help code for Bin Area,Aircraft, GR and PO subcategories - Code Start
+		/**
+        * Function is triggered when the value help indicator for Bin Area is clicked
+        * @function
+        */
 		onBinhelpRequest: function () {
 			if (!this._oBinAreDialog) {
 				this._oBinAreDialog = sap.ui.xmlfragment(this.getView().getId(), "com.airbus.ZQM_NCR.fragments.BinAreaValueHelp", this);
@@ -1375,20 +1478,20 @@ sap.ui.define([
 			}
 			this._oBinAreDialog.open();
 		},
-		onLotNumHelpRequest: function () {
 
+        /**
+        * Function is triggered when the value help indicator for Lot Number is clicked
+        * @function
+        */
+		onLotNumHelpRequest: function () {
 			this._oLotnumVHDialog = sap.ui.xmlfragment(this.getView().getId(), "com.airbus.ZQM_NCR.fragments.LotnumVH", this);
 			this.getView().addDependent(this._oLotnumVHDialog);
-
 			this._oLotnumVHDialog.open();
-
 			var aFilter = [];
 			var oFilter = new Filter("Key", "EQ", "LOTNR");
-
 			aFilter.push(oFilter);
 			var oModel = this.getOwnerComponent().getModel();
 			var oJSONMOdel = new JSONModel();
-
 			oModel.read("/f4_genericSet", {
 				filters: aFilter,
 				success: function (data) {
@@ -1403,22 +1506,29 @@ sap.ui.define([
 					MessageBox.error(msg);
 				}
 			});
-
 		},
+        
+        /**
+        * Function is executed when the search for Lot Number is triggered
+        * @function
+        * @param {sap.ui.base.Event} oEvent object of the user input    
+        */
 		_onConfirmLotNumVH: function (oEvent) {
-
 			var oSelectedItem = oEvent.getParameter("selectedItem"),
 				oInput = this.getView().byId("idFlBarPartNumVHLotNo");
 			if (!oSelectedItem) {
 				oInput.resetProperty("value");
 				return;
 			}
-
 			oInput.setValue(oSelectedItem.getTitle());
 			this._oLotnumVHDialog.destroy();
-
 		},
-		_onPartSearchWithLotNum: function () {
+
+		/**
+        * Function is executed when the search for Part number along with Lot Number is triggered
+        * @function
+        */
+        _onPartSearchWithLotNum: function () {
 			var oTab = this.getView().byId("idPartnumTab");
 			var OBinding = oTab.getBinding("items");
 			var lotnum = this.getView().byId("idFlBarPartNumVHLotNo").getValue();
@@ -1452,6 +1562,11 @@ sap.ui.define([
 			}
 
 		},
+
+        /**
+        * Function is triggered when the Lot Number value help is closed
+        * @function
+        */
 		onCloseLotNumberDialog: function () {
 			var lotnum = this.getView().byId("idInpLotNo").getValue();
 			if (lotnum) {
@@ -1461,10 +1576,21 @@ sap.ui.define([
 				MessageBox.error("Please select Lot Number to continue!!");
 			}
 		},
+
+        /**
+        * Function is triggered when the Part Number value help is closed
+        * @function
+        */
 		onClosePartNumDialog: function () {
 			this.getView().byId("idFlBarPartNumVHLotNo").setValue("");
 			this._oPrtNoDialog.close();
 		},
+
+        /**
+        * Function is triggered when the value help indicator for Aircraft Number is clicked
+        * @function
+        * @param {sap.ui.base.Event} oEvent source of input
+        */
 		onAircrafthelpRequest: function (oEvent) {
 			this._oAircraftDialog = sap.ui.xmlfragment("AircraftfragId", "com.airbus.ZQM_NCR.fragments.AircraftValueHelp", this);
 			this.getView().addDependent(this._oAircraftDialog);
@@ -1493,7 +1619,12 @@ sap.ui.define([
 				}
 			});
 		},
-		//live search for aircraft number s
+
+		/**
+        * Function is executed when the live search for Aircraft Number is triggered
+        * @function
+        * @param {sap.ui.base.Event} oEvent object of the user input    
+        */
 		onAircraftliveSearch: function (oEvent) {
 			var sValue = oEvent.getParameter("value");
 			var oFilter = new Filter("Value", FilterOperator.Contains, sValue);
@@ -1501,11 +1632,22 @@ sap.ui.define([
 			oBinding.filter([oFilter]);
 		},
 
-		onSelectBinArea: function (oEvent) {
+		/**
+        * Function is executed when the Bin Area is selected
+        * @function
+        * @param {sap.ui.base.Event} oEvent object of selected line item    
+        */
+        onSelectBinArea: function (oEvent) {
 			var binarea = oEvent.getParameter("listItem").getBindingContext().getProperty("BinLocation");
 			this.getView().byId("idInpBinLoc").setValue(binarea);
 			this._oBinAreDialog.close();
 		},
+        
+        /**
+        * Function is executed when the search for Aircraft Number is triggered
+        * @function
+        * @param {sap.ui.base.Event} oEvent object of the user input    
+        */
 		_confirmAircraftValueHelpDialog: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem"),
 				oInput = this.oAirCraftInput;
@@ -1516,6 +1658,12 @@ sap.ui.define([
 			oInput.setValue(oSelectedItem.getTitle());
 			this._oAircraftDialog.destroy();
 		},
+
+        /**
+        * Function is executed when the search for Goods Receipt is triggered
+        * @function
+        * @param {sap.ui.base.Event} oEvent object of the user input    
+        */
 		_confirmGRValueHelpDialog: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem"),
 				oInput = this.getView().byId("idsubcno");
@@ -1527,6 +1675,12 @@ sap.ui.define([
 			oInput.setValue(oSelectedItem.getTitle());
 			this._oGRDialog.destroy();
 		},
+
+        /**
+        * Function is executed when the search for Production Order is triggered
+        * @function
+        * @param {sap.ui.base.Event} oEvent object of the user input    
+        */
 		_confirmPOValueHelpDialog: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem"),
 				oInput = this.getView().byId("idsubcno");
@@ -1538,23 +1692,44 @@ sap.ui.define([
 			oInput.setValue(oSelectedItem.getTitle());
 			this._oPODialog.destroy();
 		},
+
+        /**
+        * Function is executed when the Aircraft Number value help is closed
+        * @function
+        */
 		_handleAircraftValueHelpClose: function () {
-			//this._oAircraftDialog.close();
 			this._oAircraftDialog.destroy();
 		},
+
+        /**
+        * Function is executed when the Bin Area value help is closed
+        * @function
+        */
 		onCloseBinAreaDialog: function () {
 			this._oBinAreDialog.close();
 		},
+
+        /**
+        * Function is executed when the Production Order value help is closed
+        * @function
+        */
 		_handlePOValueHelpClose: function () {
-			this._oPrOrdDialog.close();
 			this._oPrOrdDialog.destroy();
 		},
+
+        /**
+        * Function is executed when the Goods Receipt value help is closed
+        * @function
+        */
 		_handleGRValueHelpClose: function () {
-			//this._oGRDialog.close();
 			this._oGRDialog.destroy();
 		},
 
-		//Added Value help code for Bin Area,Aircraft, GR and PO subcategories - Code End
+        /**
+        * Function is executed when the search for Part Number is triggered
+        * @function
+        * @param {sap.ui.base.Event} oEvent object of the user input    
+        */
 		_configValueHelpDialogOrder: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem"),
 				oInput;
@@ -1575,31 +1750,14 @@ sap.ui.define([
 			}
 			oInput.setValue(oSelectedItem.getTitle());
 		},
-
-		_configValueHelpDialogOrdersubsub: function (oEvent) {
-			var oSelectedItem = oEvent.getParameter("selectedItem"),
-				oInput = this.getView().byId("idsubsubno");
-			if (!oSelectedItem) {
-				oInput.resetProperty("value");
-				return;
-			}
-			oInput.setValue(oSelectedItem.getTitle());
-			this._oDialogsub.destroy();
-		},
-
-		_configValueF4HelpDialog: function (oEvent) {
-			var oSelectedItem = oEvent.getParameter("selectedItem"),
-				oInput = this.getView().byId("idsubcno");
-			if (!oSelectedItem) {
-				oInput.resetProperty("value");
-				return;
-			}
-			oInput.setValue(oSelectedItem.getTitle());
-			this._oDialog.destroy();
-		},
-
+        
+        /**
+        * Function is triggered when nc number selection is changed via user interaction inside the control
+        * @function
+        * @param {sap.ui.base.Event} oEvent item being selected is returned 
+        */
 		handleCloseUserValueHelpNCcopy: function (oEvent) {
-			var oSelectedItem = oEvent.getParameters().listItem.getCells()[0].getText(); //oEvent.getParameter("selectedItem"),
+			var oSelectedItem = oEvent.getParameters("selectedItem").listItem.getBindingContext("oNcCopyModel").getProperty("Notification");
 			var oInput = this.getView().byId("idncrnumber");
 			if (!oSelectedItem) {
 				oInput.resetProperty("value");
@@ -1609,7 +1767,12 @@ sap.ui.define([
 			this._oNCDialog.close();
 			this._oNCDialog.destroy();
 		},
-
+        
+        /**
+        * Function is triggered when production order selection is changed via user interaction inside the control
+        * @function
+        * @param {sap.ui.base.Event} oEvent item being selected is returned 
+        */
 		handleCloseUserValueHelpProdOrd: function (oEvent) {
 			var oSelectedItem = oEvent.getParameters("selectedItem").listItem.getBindingContext("oPOModel").getProperty("Order");
 			var oSelectedItemSub = oEvent.getParameters("selectedItem").listItem.getBindingContext("oPOModel").getProperty("ProdOrdItem");
@@ -1626,19 +1789,11 @@ sap.ui.define([
 			this._oPODialog.destroy();
 		},
 
-		handleCloseUserValueHelp: function (oEvent) {
-			var oSelectedItem = oEvent.getParameters().listItem.getCells()[1].getText(); //oEvent.getParameter("selectedItem"),
-			var oInput = this.getView().byId("idsubcno");
-			if (!oSelectedItem) {
-				oInput.resetProperty("value");
-				return;
-			}
-			oInput.setValue(oSelectedItem);
-			this.Dialog.close();
-			this.Dialog.destroy();
-		},
-
-		//work instruction live search s
+		/**
+        * Function is executed when the search for work instruction is triggered
+        * @function
+        * @param {sap.ui.base.Event} oEvent object of the user input    
+        */
 		onSearchOrderWorkInst: function (oEvent) {
 			var sValue = oEvent.getParameter("value");
 			var oFilter = new Filter("Value", FilterOperator.Contains, sValue);
@@ -1646,33 +1801,38 @@ sap.ui.define([
 			oBinding.filter([oFilter]);
 		},
 
-		onSearchOrder: function (oEvent) {
+        /**
+        * Function is executed when the search for Aircraft is triggered
+        * @function
+        * @param {sap.ui.base.Event} oEvent object of the user input    
+        */
+       onSearchAircraft: function (oEvent) {
 			var sValue = oEvent.getParameter("value");
 			var oFilter = new Filter("Value", FilterOperator.Contains, sValue);
 			var oBinding = oEvent.getParameter("itemsBinding");
 			oBinding.filter([oFilter]);
 		},
 
-		onSearchOrdersubsub: function (oEvent) {
-			var sValue = oEvent.getParameter("value");
-			var oFilter = new Filter("ResultRet", FilterOperator.Contains, sValue);
-			var oBinding = oEvent.getParameter("itemsBinding");
-			oBinding.filter([oFilter]);
-		},
-
-		onNCAreaChange: function () {
+		/**
+        * Function is executed when the value of In Which Area input field is changed
+        * @function
+        */
+        onNCAreaChange: function () {
 			this.getView().byId("idsubcno").setValue("");
 		},
 
+        /**
+        * Function is executed when the lot number value help is closed
+        * @function
+        */
 		_onLotNumVHClose: function () {
 			this._oLotnumVHDialog.destroy();
 		},
 
-		_handleValueHelpClosesubsub: function () {
-			//	this._oDialogsub.close();
-			this._oDialogsub.destroy();
-		},
-
+        /**
+        * Function is executed when the value of Work Instruction input field is changed
+        * @function
+        */
 		onChangeWI: function () {
 			var subcatSelected = this.getView().byId("idlinksubc").getSelectedItem();
 			if (subcatSelected && subcatSelected.getText() === "WORK INSTRUCTION") {
@@ -1712,96 +1872,140 @@ sap.ui.define([
 			}
 		},
 
-		onCloseUserPopup: function () {
+        /**
+        * Function is triggered when the close button in Production Order value help is pressed to close
+        * @function
+        */
+		onCloseProdOrdPopup: function () {
 			this._oPODialog.close();
 			this._oPODialog.destroy();
 			this.getView().byId("idsubcno").setValue();
 		},
+       
+        /**
+        * Function is triggered when the value of NC Type input field is changed
+        * @function
+        */
+        onNCTypeChange:function(){
+            var ncType = this.getView().byId("idncr").getSelectedKey();
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new JSONModel();
+            oModel.setSizeLimit(10000);
+            var oDataModel = this.getOwnerComponent().getModel();
+            var oFilter = [];
+            oFilter.push(new Filter("NcType", FilterOperator.EQ, ncType));
+            var sPath = "/Area_soSet"
+            oDataModel.read(sPath, {
+                filters: oFilter,
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.results;
+                    oModel.setData(data);
+                    this.getView().setModel(oModel, "inWhichAreaModel");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
 
-		onCloseUserPopup1: function () {
-			this.Dialog.close();
-			this.Dialog.destroy();
-		},
+        },
+        
+        /**
+        * Function is triggered when the save button in footer is pressed to create notification number
+        * @function
+        */
+        onPressSave: function () {
+            var rbtNc = this.getView().byId("rbgNcCrtCpy").getSelectedIndex();
+            if (rbtNc == 0) {
+                var nctype = this.getView().byId("idncr").getSelectedKey();
+                var iwa = this.getView().byId("idiwa").getSelectedKey();
+                var category = this.getView().byId("idlinksubc").getSelectedKey();
+                var subCatergory = this.getView().byId("idsubcno").getValue();
+                if( category == "0002" || category == "0005"){
+                var subCatergoryItem = "";  
+                }else{
+                var subCatergoryItem = this.getView().byId("idsubsubno").getValue();
+                }
+                var binloc = this.getView().byId("idInpBinLoc").getValue();
+                var aircraftNo = this.getView().byId("idAirCraftNum").getValue();
 
-		onPressNext: function () {
-			var rbtNc = this.getView().byId("rbgNcCrtCpy").getSelectedIndex();
-			if (rbtNc == 0) {
-				var nctype = this.getView().byId("idncr").getSelectedKey();
-				var iwa = this.getView().byId("idiwa").getSelectedKey();
-				var subcat = this.getView().byId("idlinksubc").getSelectedItem() ? this.getView().byId("idlinksubc").getSelectedItem().getText() :
-					"";
-				var binloc = this.getView().byId("idInpBinLoc").getValue();
-				var subItemNo = this.getView().byId("idsubcno").getValue();
+                var payload = {
+                    NcType: nctype,
+                    Area: iwa,
+                    Category:category,
+                    SubCategory:subCatergory,
+                    SubCategoryItem:subCatergoryItem,
+                    BinLocation: binloc,
+                    Aircraft: aircraftNo
+                };
+                var saveData = {};
+                // var saveData = {
+                //     GRN: "",
+                //     PON: "",
+                //     NotifNo: ""
+                // };
 
-				var payload = {
-					NcType: nctype,
-					Area: iwa,
-					SubCategory: subcat,
-					BinLocation: binloc
-				};
-				var saveData = {};
-				// var saveData = {
-				//     GRN: "",
-				//     PON: "",
-				//     NotifNo: ""
-				// };
+                // var subCat = this.getView().byId("idlinksubc").getSelectedKey();
+                // if (subCat !== "") {
+                //  if (subCat == "000001") {
+                //      saveData.GRN = this.getView().byId("idsubcno").getValue();
+                //  } else if (subCat == "000002") {
+                //      saveData.PON = this.getView().byId("idsubcno").getValue();
+                //  }
+                // }
+                var entityset = "/CreateNotificationSet";
 
-				// var subCat = this.getView().byId("idlinksubc").getSelectedKey();
-				// if (subCat !== "") {
-				// 	if (subCat == "000001") {
-				// 		saveData.GRN = this.getView().byId("idsubcno").getValue();
-				// 	} else if (subCat == "000002") {
-				// 		saveData.PON = this.getView().byId("idsubcno").getValue();
-				// 	}
-				// }
-				var entityset = "/CreateNotificationSet";
+               if (payload.NcType == "" || payload.Area == "" || 
+                    payload.Category == "" || payload.SubCategory == "" ||
+                    payload.BinLocation == "" || payload.Aircraft == "")
+                {
+                    var temp = "";
+                } else {
+                    temp = "X";
+                }
+            } else {
+                var ncCopy = this.getView().byId("idncrnumber").getValue();
+                var payload = {
+                    Notification: ncCopy,
+                    "Message": ""
+                };
+                var entityset = "/CopyNotificationSet";
+                if (ncCopy == "") {
+                    var temp = "";
+                } else {
+                    temp = "X"
+                }
+            }
 
-               if (payload.NcType == "" || payload.Area == "" || payload.SubCategory == "" || payload.BinLocation == "" || subItemNo == "") {
-					var temp = "";
-				} else {
-					temp = "X";
-				}
-			} else {
-				var ncCopy = this.getView().byId("idncrnumber").getValue();
-				var payload = {
-					Notification: ncCopy,
-					"Message": ""
-				};
-				var entityset = "/CopyNotificationSet";
-				if (ncCopy == "") {
-					var temp = "";
-				} else {
-					temp = "X"
-				}
-			}
+            if (temp == "") {
+                MessageBox.warning("Please Select Mandtory Fields")
+            } else {
+                var oModel = this.getOwnerComponent().getModel();
+                oModel.create(entityset, payload, {
+                    success: function (data) {
+                        MessageBox.success(data.Message, {
+                            onClose: function () {
+                                saveData = payload;
+                                saveData.NotifNo = data.Notification;
+                                var jsonModel = new JSONModel();
+                                jsonModel.setData(saveData);
+                                this.getOwnerComponent().setModel(jsonModel, "NCSaveModel");
 
-			if (temp == "") {
-				MessageBox.warning("Please Select Mandtory Fields")
-			} else {
-				var oModel = this.getOwnerComponent().getModel();
-				oModel.create(entityset, payload, {
-					success: function (data) {
-						MessageBox.success(data.Message, {
-							onClose: function () {
-								saveData = payload;
-								saveData.NotifNo = data.Notification;
-								var jsonModel = new JSONModel();
-								jsonModel.setData(saveData);
-								this.getOwnerComponent().setModel(jsonModel, "NCSaveModel");
+                                this.getOwnerComponent().getRouter().navTo("Ncheader", {
+                                    ID: data.Notification
+                                });
 
-								this.getOwnerComponent().getRouter().navTo("Ncheader", {
-									ID: data.Notification
-								});
-
-							}.bind(this)
-						});
-					}.bind(this),
-					error: function (oError) {
-						var msg = JSON.parse(oError.responseText).error.message.value;
-						MessageBox.error(msg);
-					}
-				});
-			}
+                            }.bind(this)
+                        });
+                    }.bind(this),
+                    error: function (oError) {
+                        var msg = JSON.parse(oError.responseText).error.message.value;
+                        MessageBox.error(msg);
+                    }
+                });
+            }
 		}
 	});
 });

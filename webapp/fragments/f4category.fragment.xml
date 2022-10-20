@@ -138,7 +138,7 @@
 			<!--</f:DynamicPage>-->
 		</VBox>
 		<endButton>
-			<Button text="Close" press="onCloseUserPopup"/>
+			<Button text="Close" press="onCloseProdOrdPopup"/>
 		</endButton>
 	</Dialog>
 </core:FragmentDefinition>
