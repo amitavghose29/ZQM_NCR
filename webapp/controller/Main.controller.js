@@ -1959,7 +1959,7 @@ sap.ui.define([
 
                if (payload.NcType == "" || payload.Area == "" || 
                     payload.Category == "" || payload.SubCategory == "" ||
-                    payload.BinLocation == "" || payload.Aircraft == "")
+                    payload.BinLocation == "" )
                 {
                     var temp = "";
                 } else {
