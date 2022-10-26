@@ -2000,13 +2000,9 @@ sap.ui.define([
                 // }
                 var entityset = "/CreateNotificationSet";
 
-<<<<<<< HEAD
-               if (payload.NcType == "" || payload.Area == "" || payload.Category == "" || payload.SubCategory == "" || payload.BinLocation == "")
-=======
                if (payload.NcType == "" || payload.Area == "" || 
                     payload.Category == "" || payload.SubCategory == "" ||
                     payload.BinLocation == "" )
->>>>>>> 09bbf77df8266311aebc4094c570348e01210e2d
                 {
                     var temp = "";
                 } else {
