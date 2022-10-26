@@ -1472,11 +1472,54 @@ sap.ui.define([
         * @function
         */
 		onBinhelpRequest: function () {
-			if (!this._oBinAreDialog) {
-				this._oBinAreDialog = sap.ui.xmlfragment(this.getView().getId(), "com.airbus.ZQM_NCR.fragments.BinAreaValueHelp", this);
-				this.getView().addDependent(this._oBinAreDialog);
+			this._oBinAreaDialog = sap.ui.xmlfragment(this.getView().getId(), "com.airbus.ZQM_NCR.fragments.BinAreaValueHelp", this);
+			this.getView().addDependent(this._oBinAreaDialog);
+			this._oBinAreaDialog.open();
+            sap.ui.core.BusyIndicator.show();
+			var oModel = new JSONModel();
+			var oDataModel = this.getOwnerComponent().getModel();
+			var sPath = "/BinlocationSet"
+			oDataModel.read(sPath, {
+				success: function (oData, oResult) {
+					sap.ui.core.BusyIndicator.hide();
+					var data = oData.results;
+					oModel.setData(data);
+					this._oBinAreaDialog.setModel(oModel, "BinAreaModel");
+				}.bind(this),
+				error: function (oError) {
+					sap.ui.core.BusyIndicator.hide();
+					var msg = JSON.parse(oError.responseText).error.message.value;
+					MessageBox.error(msg);
+				}
+			});
+		},
+
+        /**
+        * Function is executed when the search for Bin Area VH is triggered
+        * @function
+        * @param {sap.ui.base.Event} oEvent object of the user input    
+        */
+       _confirmBinAreaVHDialog: function (oEvent) {
+			var oSelectedItem = oEvent.getParameter("selectedItem"),
+				oInput = this.getView().byId("idInpBinLoc");
+			if (!oSelectedItem) {
+				oInput.resetProperty("value");
+				return;
 			}
-			this._oBinAreDialog.open();
+			oInput.setValue(oSelectedItem.getTitle());
+			this._oBinAreaDialog.destroy();
+		},
+
+        /**
+        * Function is executed when the live search for Bin Area VH is triggered
+        * @function
+        * @param {sap.ui.base.Event} oEvent object of the user input    
+        */
+        onBinArealiveSearch: function (oEvent) {
+			var sValue = oEvent.getParameter("value");
+			var oFilter = new Filter("BinLocation", FilterOperator.Contains, sValue);
+			var oBinding = oEvent.getParameter("itemsBinding");
+			oBinding.filter([oFilter]);
 		},
 
         /**
@@ -1640,7 +1683,7 @@ sap.ui.define([
         onSelectBinArea: function (oEvent) {
 			var binarea = oEvent.getParameter("listItem").getBindingContext().getProperty("BinLocation");
 			this.getView().byId("idInpBinLoc").setValue(binarea);
-			this._oBinAreDialog.close();
+			this._oBinAreaDialog.close();
 		},
         
         /**
@@ -1706,7 +1749,7 @@ sap.ui.define([
         * @function
         */
 		onCloseBinAreaDialog: function () {
-			this._oBinAreDialog.close();
+			this._oBinAreaDialog.close();
 		},
 
         /**
@@ -1957,9 +2000,7 @@ sap.ui.define([
                 // }
                 var entityset = "/CreateNotificationSet";
 
-               if (payload.NcType == "" || payload.Area == "" || 
-                    payload.Category == "" || payload.SubCategory == "" ||
-                    payload.BinLocation == "" || payload.Aircraft == "")
+               if (payload.NcType == "" || payload.Area == "" || payload.Category == "" || payload.SubCategory == "" || payload.BinLocation == "")
                 {
                     var temp = "";
                 } else {

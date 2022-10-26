@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-    <Dialog title="Select Bin Area" contentHeight="250px" contentWidth="400px">
+    <!-- <Dialog title="Select Bin Area" contentHeight="250px" contentWidth="400px">
         <Table id="idBinAreaTab" items="{/BinlocationSet}" mode="SingleSelectMaster" selectionChange="onSelectBinArea">
             <columns>
                 <Column>
@@ -17,5 +17,9 @@
         <endButton>
             <Button text="Close" press="onCloseBinAreaDialog" />
         </endButton>
-    </Dialog>
+    </Dialog> -->
+    <SelectDialog   title="Select Bin Area" items="{BinAreaModel>/}" liveChange="onBinArealiveSearch" confirm="_confirmBinAreaVHDialog"
+		cancel="_handleBinAreaVHClose">
+		<StandardListItem  title="{BinAreaModel>BinLocation}" />
+	</SelectDialog>
 </core:FragmentDefinition>

@@ -1,9 +1,9 @@
 <mvc:View controllerName="com.airbus.ZQM_NCR.controller.Ncheader" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc"
 	xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:upload="sap.m.upload" xmlns:f="sap.ui.layout.form"
-	xmlns:blockcolor="sap.uxap.sample.SharedBlocks" displayBlock="true" xmlns="sap.m">
+	displayBlock="true" xmlns="sap.m">
 	<App>
 		<pages>
-			<Page title="NC" titleAlignment="Center">
+			<Page title="NC">
 				<headerContent>
 					<Text id="idworkgroup" text="Work Group1" class="sapUiLargeMarginTopBottom layoutcss"/>
 					<Image src="./image/airbus.png" height="20px" width="50px"/>
@@ -42,23 +42,20 @@
 													<f:content>
 														<!--<core:Title text="General Info"/>-->
 														<Label text="Nc Type"/>
-														<ComboBox id="idnctypehdr" items="{/NCTYPE_SOSet}" change="onNcrchange">
-										                    <core:Item key="{Nctype}" text="{Nctypedesc}"/>
+														<ComboBox id="idCombNcType" items="{/NCTYPE_SOSet}" change="onNcrchange">
+										                    <core:Item key="{Nctype}" text="{NctypeDesc}"/>
 									                    </ComboBox>
-														<Label text="Prioity"/>
-														<ComboBox selectedKey="normal">
-                                                            <core:Item key="high" text="High"/>
-                                                            <core:Item key="normal" text="Normal"/>
+														<Label text="Prioity" />
+														<ComboBox id="idComBoxPriority" selectedKey="normal" showSecondaryValues="true" items="{oPriorityModel>/}">
+                                                            <core:ListItem key="{oPriorityModel>Key}" text="{oPriorityModel>Value}" additionalText="{oPriorityModel>Description}"/>
                                                         </ComboBox>
 														<Label id="idtype" text="In Which Area"/>
-														<ComboBox id="idinahdr" items="{/Area_SOSet}" change="onNcrArea">
-															<core:Item key="{SequenceArea}" text="{Area}"/>
+														<ComboBox id="idCombInWhArea" items="{AreaModel>/}" change="onNcrArea">
+															<core:Item key="{AreaModel>Sequencearea}" text="{AreaModel>Area}"/>
 														</ComboBox>
 														<Label text="Plant Code"/>
-														<ComboBox id="idPlntCodeHdr" showSecondaryValues="true">
-															<core:Item text="8006 Mirabel Distribution"/>
-															<core:Item key="Assembly" text="8007 Mirabel Manufacturing"/>
-															<core:Item text="8008 Mirabel Warehouse"/>
+														<ComboBox id="idPlntCodeHdr" showSecondaryValues="true" items="{oPlantCodeModel>/}">
+                                                            <core:ListItem key="{oPlantCodeModel>Key}" text="{oPlantCodeModel>Value}" additionalText="{oPlantCodeModel>Description}"/>
 														</ComboBox>
 														<Label text="Product Code"/>
 														<Input id="idInpProdCode" valueHelpRequest="onVHReqProductCode" showValueHelp="true"/>
@@ -104,7 +101,7 @@
 													<f:content>
 														<Label text="Part Number"/>
 <!-- Added change event to handle the business logic - Code Start  -->                                                          
-														<Input value="79000-750-002-29780" id="idInpPartNo" valueHelpRequest=".onOpenVHPartNo"  showValueHelp="true" change="handleChangePartNo"/>
+														<Input id="idInpPartNo" valueHelpRequest=".onOpenVHPartNo"  showValueHelp="true" change="handleChangePartNo"/>
 <!-- Added change event to handle the business logic - Code End  -->														
                                                         <Label text="Part Description"/>
 														<ObjectStatus text="Hose Assembly" state="Information"/>
@@ -1337,7 +1334,7 @@
 									<TextArea value="" maxLength="40" placeholder="Text" width="100%"/>
 									<upload:UploadSet id="UploadSet" instantUpload="true" showIcons="true" uploadEnabled="true" terminationEnabled="true"
 										fileTypes="txt,doc,png" maxFileNameLength="30" maxFileSize="200" mediaTypes="text/plain,application/msword,image/jpeg"
-										uploadUrl="../../../../upload" uploadButtonInvisible="false" items="{path: '/items', templateShareable: false}">
+										uploadUrl="../../../../upload" items="{path: '/items', templateShareable: false}">
 										<upload:items>
 											<upload:UploadSetItem fileName="{fileName}" mediaType="{mediaType}" url="{url}" thumbnailUrl="{thumbnailUrl}"
 												attributes="{path: 'attributes', templateShareable: false}" markers="{path: 'markers', templateShareable: false}"

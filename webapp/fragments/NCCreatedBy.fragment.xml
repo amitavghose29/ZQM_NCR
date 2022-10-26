@@ -1,19 +1,10 @@
 <core:FragmentDefinition
-	xmlns="sap.ui.comp.valuehelpdialog"
 	xmlns:core="sap.ui.core" 
     xmlns:fb="sap.ui.comp.filterbar" 
-    xmlns:m="sap.m">
-	<ValueHelpDialog 
-		title="NC Created By"
-		ok=".onValueHelpNCCrtOkPress"
-		cancel=".onValueHelpNCCrtCancelPress"
-		afterClose=".onValueHelpNCCrtAfterClose"
-		key="WorkCenterCategory"
-		descriptionKey="WorkCenter"
-        supportRanges="true"       
-	>
-        <filterBar>
-			<fb:FilterBar advancedMode="true" search="onFilterBarSearchNCCrt">
+    xmlns="sap.m">
+	<Dialog title="NC Created By">
+        <VBox class="sapUiSizeCompact">
+			<fb:FilterBar showRestoreButton="false" search="onFilterBarSearchNCCrt">
                   <fb:filterGroupItems>
 					<fb:FilterGroupItem
 							groupName="__$INTERNAL$"
@@ -22,7 +13,7 @@
 							visibleInFilterBar="true"
 						>
 						<fb:control>
-							<m:Input name="WorkCenterCategory" showValueHelp="true"/>
+							<Input name="WorkCenterCategory" showValueHelp="true"/>
 						</fb:control>
 					</fb:FilterGroupItem>
 
@@ -33,7 +24,7 @@
 							visibleInFilterBar="true"
 						>
 						<fb:control>
-							<m:Input name="Plant" showValueHelp="true"/>
+							<Input name="Plant" showValueHelp="true"/>
 						</fb:control>
 					</fb:FilterGroupItem>
 
@@ -45,7 +36,7 @@
 							visibleInFilterBar="true"
 						>
 						<fb:control>
-							<m:Input name="Work Center" showValueHelp="true"/>
+							<Input name="Work Center" showValueHelp="true"/>
 						</fb:control>
 					</fb:FilterGroupItem>
 
@@ -56,10 +47,9 @@
 							visibleInFilterBar="true"
 						>
 						<fb:control>
-							<m:Input name="Description" showValueHelp="true"/>
+							<Input name="Description" showValueHelp="true"/>
 						</fb:control>
 					</fb:FilterGroupItem>
-
 					<fb:FilterGroupItem
 							groupName="__$INTERNAL$"
 							name="LanguageKey"
@@ -67,48 +57,67 @@
 							visibleInFilterBar="true"
 						>
 						<fb:control>
-							<m:Input name="LanguageKey" showValueHelp="true"/>
+							<Input name="LanguageKey" showValueHelp="true"/>
+						</fb:control>
+					</fb:FilterGroupItem>
+
+                    <fb:FilterGroupItem
+							groupName="Group 2"
+							name="Department"
+							label="Department"
+							visibleInFilterBar="false"
+						>
+						<fb:control>
+							<Input name="Department" showValueHelp="true"/>
+						</fb:control>
+					</fb:FilterGroupItem>
+
+                    <fb:FilterGroupItem
+							groupName="Group 2"
+							name="Station"
+							label="Station"
+							visibleInFilterBar="false"
+						>
+						<fb:control>
+							<Input name="Station" showValueHelp="true"/>
 						</fb:control>
 					</fb:FilterGroupItem>
 				
 				</fb:filterGroupItems>
 			</fb:FilterBar>
-		</filterBar>
-        <!-- <m:Table id="idProductsTable" items="{/}">
-		<m:columns>
-			<m:Column>
-				<m:Text text="Product" />
-			</m:Column>
-			<m:Column>
-				<m:Text text="Supplier" />
-			</m:Column>
-			<m:Column>
-				<m:Text text="Dimensions" />
-			</m:Column>
-			<m:Column>
-				<m:Text text="Weight" />
-			</m:Column>
-			<m:Column>
-				<m:Text text="Price" />
-			</m:Column>
-		</m:columns>
-		<m:items>
-			<m:ColumnListItem vAlign="Middle">
-				<m:cells>
-					<m:ObjectIdentifier
-						title="{Name}"
-						text="{ProductId}"/>
-					<m:Text
-						text="{SupplierName}" />
-                    <m:Text
-						text="{SupplierName}" />
-                    <m:Text
-						text="{SupplierName}" />
-                    <m:Text
-						text="{SupplierName}" />   
-				</m:cells>
-			</m:ColumnListItem>
-		</m:items>
-	    </m:Table> -->
-	</ValueHelpDialog>
+            <Table id="idTableNCCreatedBy" items="{ path: '/f4_genericSet', filters: [{path: 'Key', operator: 'EQ', value1: 'ERNAM'}]}">
+		        <columns>
+			        <Column>
+				        <Text text="Work Center Category" />
+			        </Column>
+			        <Column>
+				        <Text text="Plant" />
+			        </Column>
+                    <Column>
+				        <Text text="Work Center" />
+			        </Column>
+                    <Column>
+				        <Text text="Short Description" />
+			        </Column>
+                    <Column>
+				        <Text text="Language" />
+			        </Column>
+		        </columns>
+		        <items>
+			        <ColumnListItem vAlign="Middle">
+				        <cells>
+					        <Text text="{Value}" /> 
+                            <Text text="{Description}" />
+                            <Text text=""/>
+                            <Text text=""/>
+                            <Text text=""/>   
+				        </cells>
+			        </ColumnListItem>
+		        </items>
+	        </Table>
+        </VBox>
+        <endButton>
+            <Button text="Close" press="_handleNCCrtdAtClose" />
+        </endButton>
+	</Dialog>
 </core:FragmentDefinition>
