@@ -56,7 +56,7 @@
 									</Input>
 									<Label text="Bin Location" required="true"/>
 									<Input id="idInpBinLoc" maxLength="10" width="150px" valueHelpRequest="onBinhelpRequest" showValueHelp="true" liveChange="poEnter"/>
-									<Label text="Aircraft Number"/>
+									<Label text="Aircraft Number" />
 									<Input id="idAirCraftNum" width="150px" showValueHelp="true" valueHelpRequest="onAircrafthelpRequest"/>
 								</f:content>
 							</f:SimpleForm>
