@@ -1592,7 +1592,7 @@ sap.ui.define([
         * Function is triggered when the value help indicator for Bin Area is clicked
         * @function
         */
-		onBinhelpRequest: function () {
+       onOpenVHBinLoc: function () {
 			this._oBinAreaDialog = sap.ui.xmlfragment(this.getView().getId(), "com.airbus.ZQM_NCR.fragments.BinAreaValueHelp", this);
 			this.getView().addDependent(this._oBinAreaDialog);
 			this._oBinAreaDialog.open();
