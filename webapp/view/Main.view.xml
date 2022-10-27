@@ -1,77 +1,111 @@
-<mvc:View controllerName="com.airbus.ZQM_NCR.controller.Main" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m"
-	xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns:smartForm="sap.ui.comp.smartform">
-	<!--<Shell id="shell">-->
-		<App id="app">
-			<pages>
-				<Page title="{i18n>title}">
-					<headerContent>
-						<Image src="./image/airbus.png" height="20px" width="50px"/>
-					</headerContent>
-					<content>
-						<VBox class="sapUiSmallMargin">
-							<f:SimpleForm id="ncrcreatecopy" editable="true" title="NC Creation /Copy" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4"
-								labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2"
-								columnsL="2" columnsM="2" singleContainerFullSize="false" class="sapUiSizeCompact" >
-								<f:content>
-									<Label text="NC Create / Copy"/>
-									<RadioButtonGroup id="rbgNcCrtCpy" columns="2" width="100%" class="sapUiMediumMarginBottom" select="onRBNcCrtCpySelect">
-										<RadioButton id="RB1-1" text="Create"/>
-										<RadioButton id="RB1-2" text="Copy"/>
-									</RadioButtonGroup>
-									<Label text="NC Number" required="true"/>
-									
-									<Input id="idncrnumber" placeholder="NC Number" valueHelpRequest="onValueHelpNcCopyRequest" visible="false" showValueHelp="true"/>
-								</f:content>
-							</f:SimpleForm>
-						</VBox>
-						<VBox class="sapUiSmallMargin">
-							<f:SimpleForm  id="SimpleFormNcCreate" editable="true" layout="ResponsiveGridLayout" title="NC Create" labelSpanXL="2"
-								labelSpanL="2" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0"
-								columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false" class="headercss sapUiSizeCompact" visible="true">
-								<f:content>
-                                    <Label text="NC Type" required="true"/>
-									<ComboBox id="idncr" width="200px" items="{/NCTYPE_SOSet}" change="onNCTypeChange">
-										<core:Item key="{Nctype}" text="{NctypeDesc}"/>
-									</ComboBox>
-									<Label text="In Which Area" required="true"/>
-									<ComboBox id="idiwa" width="200px" items="{inWhichAreaModel>/}" change="onNCAreaChange">
-										<core:Item key="{inWhichAreaModel>Sequencearea}" text="{inWhichAreaModel>Area}"/>
-									</ComboBox>
-									<Label text="Sub Category" required="true"></Label>
-									<ComboBox id="idlinksubc" items="{/Subcat_SoSet}" change="onChngSubCat">
-										<core:Item key="{SequenceCat}" text="{Subcat}"/>
-										<layoutData>
-											<l:GridData span="XL1 L2 M8 S8"/>
-										</layoutData>
-									</ComboBox>
-									<Input id="idsubcno" valueHelpRequest="_onVHReqSubCategory" visible="true" showValueHelp="true" liveChange="poEnter" change="onChangeWI">
-										<layoutData>
-											<l:GridData span="XL1 L2 M8 S8"/>
-										</layoutData>
-									</Input>
-									<Input id="idsubsubno" showValueHelp="false" visible="true" >
-										<layoutData>
-											<l:GridData span="XL1 L1 M8 S8"/>
-										</layoutData>
-									</Input>
-									<Label text="Bin Location" required="true"/>
-									<Input id="idInpBinLoc" maxLength="10" width="150px" valueHelpRequest="onBinhelpRequest" showValueHelp="true" liveChange="poEnter"/>
-									<Label text="Aircraft Number" />
-									<Input id="idAirCraftNum" width="150px" showValueHelp="true" valueHelpRequest="onAircrafthelpRequest"/>
-								</f:content>
-							</f:SimpleForm>
-						</VBox>
-					</content>
-					<footer>
-						<Toolbar>
-							<ToolbarSpacer/>
-							<Button text="{i18n>Save}" id="idsave" type="Emphasized" press="onPressSave"/>
-							<Button text="{i18n>Cancel}" id="idcancel" type="Emphasized" press="onPressCancel"/>
-							<!--<Image src="./image/airbus.png" height="20px" width="40px"/>-->
-						</Toolbar>
-					</footer>
-				</Page>
-			</pages>
-		</App>
-	<!--</Shell>-->
+<mvc:View controllerName="com.airbus.ZQM_NCR.controller.Main" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns:smartForm="sap.ui.comp.smartform">
+    <!--<Shell id="shell">-->
+    <App id="app">
+        <pages>
+            <Page title="{i18n>title}">
+                <headerContent>
+                    <Image src="./image/airbus.png" height="20px" width="50px" />
+                </headerContent>
+                <content>
+                    <VBox class="sapUiSmallMargin">
+                        <f:SimpleForm
+                            id="ncrcreatecopy"
+                            editable="true"
+                            title="NC Creation /Copy"
+                            layout="ResponsiveGridLayout"
+                            labelSpanXL="4"
+                            labelSpanL="4"
+                            labelSpanM="12"
+                            labelSpanS="12"
+                            adjustLabelSpan="false"
+                            emptySpanXL="0"
+                            emptySpanL="0"
+                            emptySpanM="0"
+                            emptySpanS="0"
+                            columnsXL="2"
+                            columnsL="2"
+                            columnsM="2"
+                            singleContainerFullSize="false"
+                            class="sapUiSizeCompact"
+                        >
+                            <f:content>
+                                <Label text="NC Create / Copy" />
+                                <RadioButtonGroup id="rbgNcCrtCpy" columns="2" width="100%" class="sapUiMediumMarginBottom" select="onRBNcCrtCpySelect">
+                                    <RadioButton id="RB1-1" text="Create" />
+                                    <RadioButton id="RB1-2" text="Copy" />
+                                </RadioButtonGroup>
+                                <Label text="NC Number" required="true" />
+
+                                <Input id="idncrnumber" placeholder="NC Number" valueHelpRequest="onValueHelpNcCopyRequest" visible="false" showValueHelp="true" />
+                            </f:content>
+                        </f:SimpleForm>
+                    </VBox>
+                    <VBox class="sapUiSmallMargin">
+                        <f:SimpleForm
+                            id="SimpleFormNcCreate"
+                            editable="true"
+                            layout="ResponsiveGridLayout"
+                            title="NC Create"
+                            labelSpanXL="2"
+                            labelSpanL="2"
+                            labelSpanM="12"
+                            labelSpanS="12"
+                            adjustLabelSpan="false"
+                            emptySpanXL="4"
+                            emptySpanL="4"
+                            emptySpanM="4"
+                            emptySpanS="0"
+                            columnsXL="1"
+                            columnsL="1"
+                            columnsM="1"
+                            singleContainerFullSize="false"
+                            class="headercss sapUiSizeCompact"
+                            visible="true"
+                        >
+                            <f:content>
+                                <Label text="NC Type" required="true" />
+                                <ComboBox id="idncr" width="200px" items="{/NCTYPE_SOSet}" change="onNCTypeChange">
+                                    <core:Item key="{Nctype}" text="{NctypeDesc}" />
+                                </ComboBox>
+                                <Label text="In Which Area" required="true" />
+                                <ComboBox id="idiwa" width="200px" items="{inWhichAreaModel>/}" change="onNCAreaChange">
+                                    <core:Item key="{inWhichAreaModel>Sequencearea}" text="{inWhichAreaModel>Area}" />
+                                </ComboBox>
+                                <Label text="Sub Category" required="true" />
+                                <ComboBox id="idlinksubc" items="{/Subcat_SoSet}" change="onChngSubCat">
+                                    <core:Item key="{SequenceCat}" text="{Subcat}" />
+                                    <layoutData>
+                                        <l:GridData span="XL1 L2 M8 S8" />
+                                    </layoutData>
+                                </ComboBox>
+                                <Input id="idsubcno" valueHelpRequest="_onVHReqSubCategory" visible="true" showValueHelp="true" liveChange="poEnter" change="onChangeWI">
+                                    <layoutData>
+                                        <l:GridData span="XL1 L2 M8 S8" />
+                                    </layoutData>
+                                </Input>
+                                <Input id="idsubsubno" showValueHelp="false" visible="true">
+                                    <layoutData>
+                                        <l:GridData span="XL1 L1 M8 S8" />
+                                    </layoutData>
+                                </Input>
+                                <Label text="Bin Location" />
+                                <Input id="idInpBinLoc" maxLength="10" width="150px" valueHelpRequest="onBinhelpRequest" showValueHelp="true" liveChange="poEnter" />
+                                <Label text="Aircraft Number" />
+                                <Input id="idAirCraftNum" width="150px" showValueHelp="true" valueHelpRequest="onAircrafthelpRequest" />
+                            </f:content>
+                        </f:SimpleForm>
+                    </VBox>
+                </content>
+                <footer>
+                    <Toolbar>
+                        <ToolbarSpacer />
+                        <Button text="{i18n>Save}" id="idsave" type="Emphasized" press="onPressSave" />
+                        <Button text="{i18n>Cancel}" id="idcancel" type="Emphasized" press="onPressCancel" />
+                        <!--<Image src="./image/airbus.png" height="20px" width="40px"/>-->
+                    </Toolbar>
+                </footer>
+            </Page>
+        </pages>
+    </App>
+    <!--</Shell>-->
 </mvc:View>

@@ -30,7 +30,7 @@
             <!-- onsearch   onsearch replaced -->
 			<fb:FilterBar search="_onProdOrdSearchGo" showRestoreButton="false">
 				<fb:filterGroupItems>
-					<fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="A1" label="Product Sequence">
+					<fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="A1" label="{i18n>Aircraft}">
 						<fb:control>
 							<Input id="idFlBarPrOrdVhPrdseq" type="Text" showSuggestion="true" suggestionItems="{oAircrafttNoModel>/}" valueHelpRequest="helpRequestProduct">
                             <suggestionItems>
@@ -58,7 +58,7 @@
 							</Input>
 						</fb:control>
 					</fb:FilterGroupItem>
-					<fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="C1" label="NLP">
+					<fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="C1" label="{i18n>NLP}">
                         <fb:control>
                             <Input id ="idFlBarPrOrdVhnlp" type="Text" showSuggestion="true" suggestionItems="{oProdOrdNLPSuggModel>/}" valueHelpRequest="_onValueHelpReqNLP" showValueHelp="true">
 								<suggestionItems>

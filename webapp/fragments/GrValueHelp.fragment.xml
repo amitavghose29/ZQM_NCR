@@ -46,12 +46,24 @@
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="GR Item" />
                     </Column>
+                     <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="Purchase Order" />
+                    </Column>
+                     <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="Inbound Delivery" />
+                    </Column>
+                     <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="Part Number" />
+                    </Column>
                 </columns>
                 <items>
                     <ColumnListItem vAlign="Middle" type="Active">
                         <cells>
                             <Text text="{oGRModel>GoodsReceiptNum}" />
                             <Text text="{oGRModel>GoodsRecpItem}" />
+                             <Text text="{oGRModel>PurchaseOrder}" />
+                              <Text text="{oGRModel>InboundDelivery}" />
+                               <Text text="{oGRModel>PartNumber}" />
                         </cells>
                     </ColumnListItem>
                 </items>
