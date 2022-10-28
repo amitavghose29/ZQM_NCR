@@ -127,9 +127,14 @@
 							<Text text="{oPOModel>Type}"/>
 							<Text text="{oPOModel>PartNumber}"/>
 							<Text text="{oPOModel>NLP}"/>
-							<Text text="{oPOModel>StartDate}"/>
-							<Text text="{oPOModel>EndDate}"/>
-							<Text text="{oPOModel>IssueQty}"/>
+							<Text text="{path:'oPOModel>StartDate', formatter: '.formatter.prdordDate'}"/>
+							<!-- <Text text="{path:'oPOModel>EndDate', 
+                            type: 'sap.ui.model.type.DateTime',
+                            formatOptions: { 
+                            pattern: 'yyyy MMMM dd - hh:mm aaa' 
+                            } "/>  -->
+                            <Text text="{path:'oPOModel>EndDate', formatter: '.formatter.prdordDate'}"/>
+                            <Text text="{oPOModel>IssueQty}"/>
 						</cells>
 					</ColumnListItem>
 				</items>

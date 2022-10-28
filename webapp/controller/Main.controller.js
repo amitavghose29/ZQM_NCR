@@ -4,11 +4,13 @@ sap.ui.define([
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/ui/core/Fragment",
-    "sap/ui/model/json/JSONModel"
-], function (Controller, MessageBox, Filter, FilterOperator, Fragment, JSONModel) {
+    "sap/ui/model/json/JSONModel",
+    "../model/formatter"
+], function (Controller, MessageBox, Filter, FilterOperator, Fragment, JSONModel,formatter) {
     "use strict";
 
     return Controller.extend("com.airbus.ZQM_NCR.controller.Main", {
+        formatter: formatter,
         onInit: function () { },
         onAfterRendering: function () {
 
@@ -566,7 +568,7 @@ sap.ui.define([
         * @param {sap.ui.base.Event} oEvent item being selected is returned 
         */
         handleConfirmPartnerCode: function (oEvent) {
-            var oSelProdCode = oEvent.getParameters().selectedItem.getBindingContext().getProperty("PartnerCode");
+            var oSelProdCode = oEvent.getParameters().selectedItem.getBindingContext().getProperty("ParentPartNumber");
             // sap.m.MessageToast.show("The partner code chosen is " + oSelContxt);
             if (oSelProdCode !== "") {
                 sap.ui.core.BusyIndicator.show();
