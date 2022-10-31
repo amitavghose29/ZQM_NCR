@@ -943,6 +943,7 @@ sap.ui.define([
                     var area = this.getView().byId("idiwa").getSelectedItem();
                     if (area === null || area === '' || area === "") {
                         MessageBox.alert("Please enter a value in In Which Area");
+                        sap.ui.core.BusyIndicator.hide();
                     } else {
 
                         var value1 = area.getText();

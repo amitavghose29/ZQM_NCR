@@ -20,11 +20,15 @@
                 <Column>
                     <Text text="Part No" />
                 </Column>
+                <Column>
+                    <Text text="Part Description" />
+                </Column>
             </columns>
             <items>
                 <ColumnListItem>
                     <cells>
                         <Text text="{PartNumModel>Value}" />
+                        <Text text="{PartNumModel>Description}" />
                     </cells>
                 </ColumnListItem>
             </items>
