@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
 	<SelectDialog title="NC Number" items="{oNcNoFBModel>/}" liveChange="onSearchNcNoFB" confirm="_configValueHelpDialogNcNoFB"
 		cancel="_handleValueHelpNcNNoFB" search="onSearchNcNoFB">
-		<StandardListItem title="{oNcNoFBModel>Value}" info="{oNcNoFBModel>Key}"/>
+		<StandardListItem title="{oNcNoFBModel>Value}" info="{oNcNoFBModel>Value1}"/>
 	</SelectDialog>
 </core:FragmentDefinition>

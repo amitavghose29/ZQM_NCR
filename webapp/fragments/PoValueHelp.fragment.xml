@@ -73,12 +73,40 @@
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="PO Item" />
                     </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="ASN Number" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="Inbound Delivery" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="Part Number" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="Part Name" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="NC Number" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="Discrepancy Number" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="RMA Number" />
+                    </Column>
                 </columns>
                 <items>
                     <ColumnListItem vAlign="Middle" type="Active">
                         <cells>
                             <Text text="{oPrModel>PurchaseOrderNum}" />
                             <Text text="{oPrModel>PurchaseItem}" />
+                             <Text text="{oPrModel>AsnNumber}" />
+                              <Text text="{oPrModel>InboundDelivery}" />
+                               <Text text="{oPrModel>PartNumber}" />
+                                <Text text="{oPrModel>PartName}" />
+                                 <Text text="{oPrModel>NCNumber}" />
+                                  <Text text="{oPrModel>DiscrepancyNumber}" />
+                                   <Text text="{oPrModel>RMANumber}" />
                         </cells>
                     </ColumnListItem>
                 </items>
