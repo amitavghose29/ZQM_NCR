@@ -12,7 +12,7 @@
 					<Toolbar id="idheader" visible="true">
 						<Label id="idstatus" text="Status" design="Bold" wrapping="true" class="sapUiSmallMarginCenter"/>
 						<!--<Text text="open" class="status"/>-->
-						<ObjectStatus class="sapUiSmallMarginCenter" text="Open" icon="sap-icon://sys-enter-2" state="Success"/>
+						<ObjectStatus class="sapUiSmallMarginCenter" text="{NCStatus}" icon="sap-icon://sys-enter-2" state="Success"/>
 						<ToolbarSpacer/>
 						<Text text="" id="headertext" class="icontabtext font"/>
 						<ToolbarSpacer/>
@@ -58,25 +58,25 @@
                                                             <core:ListItem key="{oPlantCodeModel>Key}" text="{oPlantCodeModel>Value}" additionalText="{oPlantCodeModel>Description}"/>
 														</ComboBox>
 														<Label text="Product Code"/>
-														<Input id="idInpProdCode" valueHelpRequest="onVHReqProductCode" showValueHelp="true"/>
+														<Input id="idInpProdCode" value="{ProductCode}" valueHelpRequest="onVHReqProductCode" showValueHelp="true"/>
 														<Label text="Work Instruction"/>
-														<Input id="idInpWrkIns" valueHelpRequest="onVHReqWrkIns" showValueHelp="true"/>
+														<Input id="idInpWrkIns" value="{WorkInstruction}" valueHelpRequest="onVHReqWrkIns" showValueHelp="true"/>
 														<Label text="Prod Order"/>
-														<Input id="idInpPrdOrd" valueHelpRequest="onVHReqPrdOrd" showValueHelp="true"/>
+														<Input id="idInpPrdOrd" value="{ProdOrder}" valueHelpRequest="onVHReqPrdOrd" showValueHelp="true"/>
 														<!--	<Label text="Last Operation"/>
 														<Input width="230px"/>-->
 														<Label text="Supersedes NC"/>
-														<Input id="idInpSupNC" valueHelpRequest="onVHReqSupNC" showValueHelp="true"/>
+														<Input id="idInpSupNC" value="{SupercedesNC}" valueHelpRequest="onVHReqSupNC" showValueHelp="true"/>
 														<Label text="Superseded By"/>
-														<Input id="idInpSupBy" valueHelpRequest="onVHReqSupBy" showValueHelp="true"/>
+														<Input id="idInpSupBy" value="{SupercededByNC}" valueHelpRequest="onVHReqSupBy" showValueHelp="true"/>
 														<Label text="Reference NC"/>
-														<Input id="idInpRefNC" valueHelpRequest="onVHReqRefNC" showValueHelp="true"/>
+														<Input id="idInpRefNC" value="{ReferenceNC}" valueHelpRequest="onVHReqRefNC" showValueHelp="true"/>
 														<Label text="Create Date"/>
-														<Text text=""/>
+														<DatePicker value="{path:'CreateDate', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'medium', strictParsing: true}}" editable="false"/>
 														<Label text="Closed Date"/>
-														<Text text=""/>
+														<Text text="{CloseDate}"/>
 														<Label text="Existing ATS"/>
-														<Switch state="true" customTextOn="Yes" customTextOff="No">
+														<Switch state="{ExistingATS}" customTextOn="Yes" customTextOff="No">
 															<!--<layoutData>-->
 															<!--	<FlexItemData growFactor="1"/>-->
 															<!--</layoutData>-->
@@ -84,7 +84,7 @@
                                                         <Label text="Link to Aircraft"/>
 														<CheckBox enabled="false"/>
                                                         <Label text="Aircraft"/>
-														<Input id="idInpAircraft" valueHelpRequest="onVHReqAircraft" showValueHelp="true" change="handleAircraftChange"/>
+														<Input id="idInpAircraft" value="{Aircraftno}" valueHelpRequest="onVHReqAircraft" showValueHelp="true" change="handleAircraftChange" required="true"/>
                                                         <Label text="Supplier Name"/>
 														<Input value=""/>
                                                         <Label text="Supplier SAP"/>
@@ -101,10 +101,10 @@
 													<f:content>
 														<Label text="Part Number"/>
 <!-- Added change event to handle the business logic - Code Start  -->                                                          
-														<Input id="idInpPartNo" valueHelpRequest=".onOpenVHPartNo"  showValueHelp="true" change="handleChangePartNo"/>
+														<Input id="idInpPartNo" value="{PartNumber}" valueHelpRequest=".onOpenVHPartNo"  showValueHelp="true" change="handleChangePartNo"/>
 <!-- Added change event to handle the business logic - Code End  -->														
                                                         <Label text="Part Description"/>
-														<ObjectStatus text="Hose Assembly" state="Information"/>
+														<ObjectStatus text="{PartDescription}" state="Information"/>
                                                         <Label text="Serial No"/>
 <!-- Added MultiInput control for serial number and traceability fields  - Code Start  -->                                                       
                                                         <MultiInput id="idMNInputSN" showValueHelp="true" valueHelpRequest=".onOpenVHSerNo" tokenUpdate="_onTokenUpdateSN">
@@ -203,13 +203,13 @@
 													<f:content>
 														<!--<core:Title text="Component Location"/>-->
 														<Label text="NC Created By"/>
-														<MultiInput id="idInpNCCrtBy" valueHelpRequest=".onOpenVHNCCreated" showValueHelp="true"/>
+														<MultiInput id="idInpNCCrtBy" value="{NCCreatedBy}" valueHelpRequest=".onOpenVHNCCreated" showValueHelp="true"/>
 														<Label text="NC Detected At"/>
-														<MultiInput id="idInpNCDetAt" valueHelpRequest=".onOpenVHNCDetected" showValueHelp="true"/>
+														<MultiInput id="idInpNCDetAt" value="{NCDetectedAt}" valueHelpRequest=".onOpenVHNCDetected" showValueHelp="true"/>
 														<Label text="Bin Location"/>
-														<Input id="idInpBinLoc" valueHelpRequest=".onOpenVHBinLoc" showValueHelp="true"/>
+														<Input id="idInpBinLoc" value="{Binlocation}" valueHelpRequest=".onOpenVHBinLoc" showValueHelp="true"/>
 														<Label text="Drop Point"/>
-														<Input id="idInpDrpPt" valueHelpRequest=".onOpenVHDrpPt" showValueHelp="true"/>
+														<Input id="idInpDrpPt" value="{DropPoint}" valueHelpRequest=".onOpenVHDrpPt" showValueHelp="true"/>
 													</f:content>
 												</f:SimpleForm>
 											</l:BlockLayoutCell>

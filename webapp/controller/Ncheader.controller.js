@@ -42,15 +42,22 @@ sap.ui.define([
 
             this.oSerNoColModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/model/sernocolumnsModel.json");
             this.oTrcNoColModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/model/trcnocolumnsModel.json");
-            this.oMultiInputSNModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/model/serialnumber.json");
+            // this.oMultiInputSNModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/model/serialnumber.json");
             this.oMultiInputTNModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/model/traceabilitynumber.json");
             // this._oMultiInputSN.setModel(this.oMultiInputSNModel, "oSerialModel");
             // Added code for multiinput control id initialisation and validator - Code End		            
         },
 
         _onRouteMatched: function (oEvent) {
-            var oArgs = oEvent.getParameter("arguments");
-            var fid = oArgs.ID;
+            // var oArgs = oEvent.getParameter("arguments");
+            // var fid = oArgs.ID;
+            var sObjectId =  oEvent.getParameter("arguments").ID;
+			this.getOwnerComponent().getModel().metadataLoaded().then( function() {
+				var sObjectPath = this.getOwnerComponent().getModel().createKey("CreateNotificationHeaderSet", {
+					NotificationNo :  sObjectId
+				});
+			this._bindView("/" + sObjectPath);
+			}.bind(this));
             this.getView().byId("idNCHeaderDataForm").setModel(this.getOwnerComponent().getModel());
             if (this.getOwnerComponent().getModel("NCSaveModel").getData()) {
                 if(this.getOwnerComponent().getModel("NCSaveModel").getData().NcType){
@@ -61,6 +68,28 @@ sap.ui.define([
             }
             this.bindHeaderData();
         },
+
+		_bindView : function (sObjectPath) {
+			this.getView().bindElement({
+				path: sObjectPath,
+                events: {
+					dataReceived: function (dataRec) {
+                        if(dataRec.getParameters().data){
+                           var data = dataRec.getParameters().data,
+                               oNCType = data.NCType,
+                               oPlantCode = data.PlantCode,
+                               oNCPriority = data.NCPriority,
+                               oNCArea = data.NCArea;
+
+                            this.getView().byId("idCombNcType").setValue(oNCType);
+                            this.getView().byId("idPlntCodeHdr").setValue(oPlantCode);
+                            this.getView().byId("idComBoxPriority").setValue(oNCPriority);
+                            this.getView().byId("idCombInWhArea").setValue(oNCArea);
+                        }
+					}.bind(this)
+				}
+			});
+		},
 
         bindHeaderData: function(){
             this.bindPriority();
@@ -749,28 +778,46 @@ sap.ui.define([
             this.getView().addDependent(this._oValueHelpDialogSN);
             this._oValueHelpDialogSN.getFilterBar().setBasicSearch(this._oBasicSearchField);
             this._oValueHelpDialogSN.getTableAsync().then(function (oTable) {
-                oTable.setModel(this.oMultiInputSNModel);
-                oTable.setModel(this.oSerNoColModel, "columns");
+                sap.ui.core.BusyIndicator.show();
+                var oModel = new sap.ui.model.json.JSONModel();
+                var oDataModel = this.getOwnerComponent().getModel();
+                var oFilter = [];
+			        oFilter.push(new Filter("Key", FilterOperator.EQ, "PRT"));
+                var sPath = "/f4_genericSet";
+                    oDataModel.read(sPath, {
+				        filters: oFilter,
+				        success: function (oData, oResult) {
+					        sap.ui.core.BusyIndicator.hide();
+					        var data = oData.results;
+					        oModel.setData(data);
+                            oTable.setModel(oModel);
+                            oTable.setModel(this.oSerNoColModel, "columns");
 
-                if (oTable.bindRows) {
-                    oTable.bindAggregation("rows", "/serialcollection");
-                }
-
-                if (oTable.bindItems) {
-                    oTable.bindAggregation("items", "/serialcollection", function () {
-                        return new ColumnListItem({
-                            cells: aCols.map(function (column) {
-                                return new Label({ text: "{" + column.template + "}" });
-                            })
-                        });
-                    });
-                }
-                this._oValueHelpDialogSN.update();
-            }.bind(this));
-
-            this._oValueHelpDialogSN.setTokens(this._oMultiInputSN.getTokens());
-            this._oValueHelpDialogSN.open();
-            sap.ui.core.BusyIndicator.hide();
+                            if (oTable.bindRows) {
+                                oTable.bindAggregation("rows", "/");
+                            }
+ 
+                            if (oTable.bindItems) {
+                                oTable.bindAggregation("items", "/", function () {
+                                    return new ColumnListItem({
+                                        cells: aCols.map(function (column) {
+                                            return new Label({ text: "{" + column.template + "}" });
+                                        })
+                                    });
+                                });
+                            }
+                            this._oValueHelpDialogSN.update();
+				        }.bind(this),
+				        error: function (oError) {
+					        sap.ui.core.BusyIndicator.hide();
+					        var msg = JSON.parse(oError.responseText).error.message.value;
+					        MessageBox.error(msg);
+				        }
+			        });
+                }.bind(this));
+                this._oValueHelpDialogSN.setTokens(this._oMultiInputSN.getTokens());
+                this._oValueHelpDialogSN.open();
+                sap.ui.core.BusyIndicator.hide();
         },
 
         onFilterBarSearch: function (oEvent) {
@@ -784,13 +831,12 @@ sap.ui.define([
                         value1: oControl.getValue()
                     }));
                 }
-
                 return aResult;
             }, []);
 
             aFilters.push(new Filter({
                 filters: [
-                    new Filter({ path: "ProductId", operator: FilterOperator.Contains, value1: sSearchQuery })
+                    new Filter({ path: "Value", operator: FilterOperator.Contains, value1: sSearchQuery })
                 ],
                 and: false
             }));
@@ -803,16 +849,13 @@ sap.ui.define([
 
         _filterTable: function (oFilter) {
             var oValueHelpDialog = this._oValueHelpDialogSN;
-
             oValueHelpDialog.getTableAsync().then(function (oTable) {
                 if (oTable.bindRows) {
                     oTable.getBinding("rows").filter(oFilter);
                 }
-
                 if (oTable.bindItems) {
                     oTable.getBinding("items").filter(oFilter);
                 }
-
                 oValueHelpDialog.update();
             });
         },

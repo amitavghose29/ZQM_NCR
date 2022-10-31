@@ -11,39 +11,45 @@ sap.ui.define([
 
     return Controller.extend("com.airbus.ZQM_NCR.controller.Main", {
         formatter: formatter,
-        onInit: function () { },
-        onAfterRendering: function () {
+        
+        /**
+		 * Called when a controller is instantiated and its View controls (if available) are already created.
+		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
+		 * @memberOf com.airbus.ZQM_NCR.view.Main
+		 */
+        onInit: function () { 
 
+        },
+
+        /**
+		* Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
+		* This hook is the same one that SAPUI5 controls get after being rendered.
+		* @memberOf com.airbus.ZQM_NCR.view.Main
+		*/
+        onAfterRendering: function () {
             sap.ui.core.BusyIndicator.show();
             var oModel = new JSONModel();
             oModel.setSizeLimit(10000);
             var oDataModel = this.getOwnerComponent().getModel();
-
             var sPath = "/DefaultScreenSet";
-
             oDataModel.read(sPath, {
                 success: function (data) {
                     sap.ui.core.BusyIndicator.hide();
-
                     if (data.results[0]) {
                         var nctypekey = data.results[0].NcType;
                         var areakey = data.results[0].SequenceArea;
                         var subcatkey = data.results[0].SequenceCat
-
                         if (nctypekey) {
                             this.getView().byId("idncr").setSelectedKey(nctypekey);
                         }
-
                         if (areakey) {
                             this.onNCTypeChange();
                             this.getView().byId("idiwa").setSelectedKey(areakey);
                         }
-
                         if (subcatkey) {
                             this.getView().byId("idlinksubc").setSelectedKey(subcatkey);
                         }
                     }
-
                 }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
@@ -51,7 +57,6 @@ sap.ui.define([
                     MessageBox.error(msg);
                 }
             });
-
         },
 
         /**

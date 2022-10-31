@@ -2,11 +2,11 @@
 	"cols": [
 		{
 			"label": "Serial Numbers",
-			"template": "ProductId"
+			"template": "Value"
 		},
         {
 			"label": "Description",
-			"template": "Name"
+			"template": "Description"
 		}
 	]
 }
