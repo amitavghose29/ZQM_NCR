@@ -5,7 +5,7 @@
 		<pages>
 			<Page title="NC">
 				<headerContent>
-					<Text id="idworkgroup" text="Work Group1" class="sapUiLargeMarginTopBottom layoutcss"/>
+					<Text id="idworkgroup" text="" class="workgroupncheader"/>
 					<Image src="./image/airbus.png" height="20px" width="50px"/>
 				</headerContent>
 				<subHeader>
@@ -16,14 +16,14 @@
 						<ToolbarSpacer/>
 						<Text text="" id="headertext" class="icontabtext font"/>
 						<ToolbarSpacer/>
-						<Button id="button" press="onNotesChange" icon="sap-icon://group-2"/>
+						<Button id="button" press="handleSwitchWorkGroup" icon="sap-icon://group-2" tooltip="Switch Workgroup" />
 						<!--<Button icon="sap-icon://group-2" class="sapUiSmallMargin" press=".onButtonPress" ariaHasPopup="Menu">-->
 						<!--	<dependents>-->
 						<!--		<core:Fragment fragmentName="com.airbus.ZQM_NCR.fragments.notespopup" type="XML"/>-->
 						<!--	</dependents>-->
 						<!--</Button>-->
 						<Button icon="sap-icon://cancel"/>
-						<Button icon="sap-icon://print" press="onPressPrint"/>
+						<!-- <Button icon="sap-icon://print" press="onPressPrint"/> -->
 					</Toolbar>
 				</subHeader>
 				<content>

@@ -68,7 +68,6 @@ sap.ui.define([
                 } 
             }
             this.bindHeaderData();
-            this.handleMandatFields();
         },
 
 		_bindView : function (sObjectPath) {
@@ -94,6 +93,8 @@ sap.ui.define([
 		},
 
         bindHeaderData: function(){
+            this.handleMandatFields();
+            this.bindDefaultWorkGroup();
             this.bindPriority();
             this.bindPlantCode();
         },
@@ -172,11 +173,42 @@ sap.ui.define([
         },
 
         handleMandatFields: function(){
-            if (this.getOwnerComponent().getModel("NCSaveModel").getData().Category == "002") {
-                this.getView().byId("idInpAircraft").setRequired(true);
-            }else{
-                this.getView().byId("idInpAircraft").setRequired(false);
-            }           
+            if (this.getOwnerComponent().getModel("NCSaveModel").getData()) {
+                if(Number(this.getOwnerComponent().getModel("NCSaveModel").getData().Category) == "002"){
+                    this.getView().byId("idInpAircraft").setRequired(true);
+                }else{
+                    this.getView().byId("idInpAircraft").setRequired(false);
+                }  
+            }       
+        },
+
+        bindDefaultWorkGroup: function(){
+            sap.ui.core.BusyIndicator.show();
+			var oModel = new JSONModel();
+			oModel.setSizeLimit(10000);
+			var oDataModel = this.getOwnerComponent().getModel();
+			var sPath = "/UserWorkGroupS";
+			oDataModel.read(sPath, {
+				success: function (oData, oResult) {
+                    debugger;
+					sap.ui.core.BusyIndicator.hide();
+                    if(oData.results.length > 0){
+                        for(var i=0; i<oData.results.length; i++){
+                            var oDefaultFlag = oData.results[i].Default;
+                            var oDefaultWrkGrp = oData.results[i].WorkGroup;
+                            if(oDefaultFlag === true){
+                                this.getView().byId("idworkgroup").setText(oDefaultWrkGrp);
+                                break;
+                            }
+                        }
+                    }
+				}.bind(this),
+				error: function (oError) {
+					sap.ui.core.BusyIndicator.hide();
+					var msg = JSON.parse(oError.responseText).error.message.value;
+					MessageBox.error(msg);
+				}
+			});
         },
 
         onListItemPress: function () {
@@ -236,38 +268,60 @@ sap.ui.define([
             window.print();
 
         },
-        onNotesChange: function () {
+
+        handleSwitchWorkGroup: function () {
             var oView = this.getView(),
                 oButton = oView.byId("button");
-
             if (!this._oMenuFragment) {
                 this._oMenuFragment = Fragment.load({
                     id: oView.getId(),
-                    name: "com.airbus.ZQM_NCR.fragments.notespopup",
+                    name: "com.airbus.ZQM_NCR.fragments.Workgroup",
                     controller: this
                 }).then(function (oMenu) {
+                    this.configWorkGroupMenu();
                     oMenu.openBy(oButton);
                     this._oMenuFragment = oMenu;
                     return this._oMenuFragment;
                 }.bind(this));
-            } else {
+            }else {
                 this._oMenuFragment.openBy(oButton);
-            }
+            }        
         },
+
+        configWorkGroupMenu: function(){
+            sap.ui.core.BusyIndicator.show();
+			var oModel = new JSONModel();
+			oModel.setSizeLimit(10000);
+			var oDataModel = this.getOwnerComponent().getModel();
+			var sPath = "/UserWorkGroupS";
+			oDataModel.read(sPath, {
+				success: function (oData, oResult) {
+                    debugger;
+					sap.ui.core.BusyIndicator.hide();
+                    var data = oData.results;
+					oModel.setData(data);
+					this._oMenuFragment.setModel(oModel, "WrkGrpModel");
+				}.bind(this),
+				error: function (oError) {
+					sap.ui.core.BusyIndicator.hide();
+					var msg = JSON.parse(oError.responseText).error.message.value;
+					MessageBox.error(msg);
+				}
+			});
+        },
+
         onMenuAction: function (oEvent) {
             var oItem = oEvent.getParameter("item"),
                 sItemPath = "";
-
             while (oItem instanceof MenuItem) {
                 sItemPath = oItem.getText() + " > " + sItemPath;
                 oItem = oItem.getParent();
             }
-
             sItemPath = sItemPath.substr(0, sItemPath.lastIndexOf(" > "));
-
-            sap.m.MessageToast.show("Action triggered on item: " + sItemPath);
+            // sap.m.MessageToast.show("The selected Workgroup is " + sItemPath);
             this.getView().byId("idworkgroup").setText(sItemPath);
         },
+
         onNotesChange1: function (oEvent) {
             // var oCtx = oEvent.getSource().getBindingContext(),
             var oCtx = oEvent.getParameters()._userInputValue,
@@ -624,38 +678,92 @@ sap.ui.define([
                     this.getView().byId("idMNInputTN").setValueStateText("Please Enter Traceability Number");
                 }
     
-                if (this.getOwnerComponent().getModel("NCSaveModel").getData().Category == "002") {
-                    if (this.getView().byId("idInpAircraft").getValue() !== "") {
-                        this.getView().byId("idInpAircraft").setValueState("None");
-                        this.getView().byId("idInpAircraft").setValueStateText("");
-                    } else {
-                        this.getView().byId("idInpAircraft").setValueState("Error");
-                        this.getView().byId("idInpAircraft").setValueStateText("Please Enter Aircraft Number");
-                    }
+                if (this.getOwnerComponent().getModel("NCSaveModel").getData()) {
+                    if(Number(this.getOwnerComponent().getModel("NCSaveModel").getData().Category) == "002"){
+                        if (this.getView().byId("idInpAircraft").getValue() !== "") {
+                            this.getView().byId("idInpAircraft").setValueState("None");
+                            this.getView().byId("idInpAircraft").setValueStateText("");
+                        } else {
+                            this.getView().byId("idInpAircraft").setValueState("Error");
+                            this.getView().byId("idInpAircraft").setValueStateText("Please Enter Aircraft Number");
+                        }
+                    }else{
+                        this.updateHeaderData();
+                    }            
                 }
-                var oNotifNo = sObjectId;
-                var oNcStatus = this.getView().byId("idObjNCStatus").getText();
-                var oNcType = this.getView().byId("idCombNcType").getValue();
-                var oNcPriority = this.getView().byId("idComBoxPriority").getValue();
-                var oNcArea = this.getView().byId("idCombInWhArea").getValue();
-                var oPlantCode = this.getView().byId("idPlntCodeHdr").getValue();
-                var oProductCode = this.getView().byId("idInpProdCode").getValue();
-                var oWorkInst = this.getView().byId("idInpWrkIns").getValue();
-                var oProdOrder = this.getView().byId("idInpPrdOrd").getValue();
-                var oSupercedesNC = this.getView().byId("idInpSupNC").getValue();
-                var oSupercededByNC = this.getView().byId("idInpSupBy").getValue();
-                var oReferenceNC = this.getView().byId("idInpRefNC").getValue();
-                var oExistingATS = this.getView().byId("idSwitchExstATS").getState();
-                var oAircraftNo = this.getView().byId("idInpAircraft").getValue();
-                var oNCCreatedBy = this.getView().byId("idInpNCCrtBy").getValue();
-                var oNCDetectedAt = this.getView().byId("idInpNCDetAt").getValue();
-                var oBinLocation = this.getView().byId("idInpBinLoc").getValue();
-                var oDropPoint = this.getView().byId("idInpDrpPt").getValue();
-                var oPartNum = this.getView().byId("idInpPartNo").getValue();
-                var oPartDesc = this.getView().byId("idObjStatPartDesc").getText();
-                if(this.getView().byId("idMNInputSN").getTokens().length === 1){
-                    var oSerialNo = this.getView().byId("idMNInputSN").getTokens()[0].getKey();
-                    var payLoadHdrData = {
+            }
+        },
+
+        updateHeaderData: function(){
+            var oNotifNo = sObjectId;
+            var oNcStatus = this.getView().byId("idObjNCStatus").getText();
+            var oNcType = this.getView().byId("idCombNcType").getValue();
+            var oNcPriority = this.getView().byId("idComBoxPriority").getValue();
+            var oNcArea = this.getView().byId("idCombInWhArea").getValue();
+            var oPlantCode = this.getView().byId("idPlntCodeHdr").getValue();
+            var oProductCode = this.getView().byId("idInpProdCode").getValue();
+            var oWorkInst = this.getView().byId("idInpWrkIns").getValue();
+            var oProdOrder = this.getView().byId("idInpPrdOrd").getValue();
+            var oSupercedesNC = this.getView().byId("idInpSupNC").getValue();
+            var oSupercededByNC = this.getView().byId("idInpSupBy").getValue();
+            var oReferenceNC = this.getView().byId("idInpRefNC").getValue();
+            var oExistingATS = this.getView().byId("idSwitchExstATS").getState();
+            var oAircraftNo = this.getView().byId("idInpAircraft").getValue();
+            var oNCCreatedBy = this.getView().byId("idInpNCCrtBy").getValue();
+            var oNCDetectedAt = this.getView().byId("idInpNCDetAt").getValue();
+            var oBinLocation = this.getView().byId("idInpBinLoc").getValue();
+            var oDropPoint = this.getView().byId("idInpDrpPt").getValue();
+            var oPartNum = this.getView().byId("idInpPartNo").getValue();
+            var oPartDesc = this.getView().byId("idObjStatPartDesc").getText();
+            var oInpSerNo = this.getView().byId("idMNInputSN");
+            var oInpTrcNo = this.getView().byId("idMNInputTN");
+            if(oInpSerNo.getTokens().length === 1 && oInpTrcNo.getTokens().length === 1){
+                sap.ui.core.BusyIndicator.show();
+                var oSerialNo = oInpSerNo.getTokens()[0].getKey();
+                var oTraceabilityNo = oInpTrcNo.getTokens()[0].getKey();
+                var payLoadHdrData = {
+                    "NCStatus" : oNcStatus,
+                    "NCType" : oNcType,
+                    "NCPriority" : oNcPriority,
+                    "NCArea" : oNcArea,
+                    "PlantCode": oPlantCode,
+                    "ProductCode" : oProductCode,
+                    "WorkInstruction" : oWorkInst,
+                    "ProdOrder" : oProdOrder,
+                    "SupercedesNC" : oSupercedesNC,
+                    "SupercededByNC" : oSupercededByNC,
+                    "ReferenceNC" : oReferenceNC,
+                    "ExistingATS" : oExistingATS,
+                    "Aircraftno" : oAircraftNo,
+                    "NCCreatedBy" : oNCCreatedBy,
+                    "NCDetectedAt" : oNCDetectedAt,
+                    "Binlocation" : oBinLocation,
+                    "DropPoint" : oDropPoint,
+                    "PartNumber" : oPartNum,
+                    "PartDescription" : oPartDesc,
+                    "SerialNo" : oSerialNo,
+                    "TraceabilityNo" : oTraceabilityNo 
+                }
+                this.getOwnerComponent().getModel().update("/CreateNotificationHeaderSet('" + oNotifNo + "')", payLoadHdrData, {
+                    method: "PUT",
+                    success: function(odata, Response){
+                        sap.ui.core.BusyIndicator.hide();
+                    },
+                    error: function(oError){
+                        sap.ui.core.BusyIndicator.hide();
+                        var msg = JSON.parse(oError.responseText).error.message.value;
+                        MessageBox.error(msg);
+                    }
+                });
+            }else if((oInpSerNo.getTokens().length > 1 && oInpTrcNo.getTokens().length === 1) || (oInpSerNo.getTokens().length > 1 && oInpTrcNo.getTokens().length === 0)){
+                sap.ui.core.BusyIndicator.show();
+                this.getOwnerComponent().getModel().setUseBatch(true);
+                this.getOwnerComponent().getModel().setDeferredGroups(this.getOwnerComponent().getModel().getDeferredGroups().concat(["batchUpdate"]));
+                var mParameters = {groupId: "batchUpdate"};
+                var oTraceabilityNo = oInpTrcNo.getTokens().length === 1 ? oInpTrcNo.getTokens()[0].getKey() : "";
+                var payLoadHdrData = {};
+                for(var i=0; i<oInpSerNo.getTokens().length; i++){
+                    payLoadHdrData = {
                         "NCStatus" : oNcStatus,
                         "NCType" : oNcType,
                         "NCPriority" : oNcPriority,
@@ -675,23 +783,66 @@ sap.ui.define([
                         "DropPoint" : oDropPoint,
                         "PartNumber" : oPartNum,
                         "PartDescription" : oPartDesc,
-                        "SerialNo" : oSerialNo 
+                        "SerialNo" : oInpSerNo.getTokens()[i].getKey(),
+                        "TraceabilityNo" : oTraceabilityNo 
                     }
-                    sap.ui.core.BusyIndicator.show();
-                    this.getOwnerComponent().getModel().update("/CreateNotificationHeaderSet('" + oNotifNo + "')", payLoadHdrData, {
-                        method: "PUT",
+                    this.getOwnerComponent().getModel().update("/CreateNotificationHeaderSet('" + oNotifNo + "')", payLoadHdrData, mParameters);
+                }    
+                this.getOwnerComponent().getModel().submitChanges({
+                    groupId:"batchUpdate",
                         success: function(odata, Response){
-                            debugger;
                             sap.ui.core.BusyIndicator.hide();
-                        },
+                        }.bind(this),
                         error: function(oError){
-                            debugger;
                             sap.ui.core.BusyIndicator.hide();
                             var msg = JSON.parse(oError.responseText).error.message.value;
                             MessageBox.error(msg);
-                        }
-                    });
-                }
+                        }.bind(this)
+                })
+            }else if((oInpTrcNo.getTokens().length > 1 && oInpSerNo.getTokens().length === 1) || (oInpTrcNo.getTokens().length > 1 && oInpSerNo.getTokens().length === 0)){
+                sap.ui.core.BusyIndicator.show();
+                this.getOwnerComponent().getModel().setUseBatch(true);
+                this.getOwnerComponent().getModel().setDeferredGroups(this.getOwnerComponent().getModel().getDeferredGroups().concat(["batchUpdate"]));
+                var mParameters = {groupId: "batchUpdate"};
+                var oInpSerNo = oInpSerNo.getTokens().length === 1 ? oInpSerNo.getTokens()[0].getKey() : "";
+                var payLoadHdrData = {};
+                for(var j=0; i<oInpTrcNo.getTokens().length; j++){
+                    payLoadHdrData = {
+                        "NCStatus" : oNcStatus,
+                        "NCType" : oNcType,
+                        "NCPriority" : oNcPriority,
+                        "NCArea" : oNcArea,
+                        "PlantCode": oPlantCode,
+                        "ProductCode" : oProductCode,
+                        "WorkInstruction" : oWorkInst,
+                        "ProdOrder" : oProdOrder,
+                        "SupercedesNC" : oSupercedesNC,
+                        "SupercededByNC" : oSupercededByNC,
+                        "ReferenceNC" : oReferenceNC,
+                        "ExistingATS" : oExistingATS,
+                        "Aircraftno" : oAircraftNo,
+                        "NCCreatedBy" : oNCCreatedBy,
+                        "NCDetectedAt" : oNCDetectedAt,
+                        "Binlocation" : oBinLocation,
+                        "DropPoint" : oDropPoint,
+                        "PartNumber" : oPartNum,
+                        "PartDescription" : oPartDesc,
+                        "SerialNo" : oInpSerNo,
+                        "TraceabilityNo" : oTraceabilityNo.getTokens()[j].getKey() 
+                    }
+                    this.getOwnerComponent().getModel().update("/CreateNotificationHeaderSet('" + oNotifNo + "')", payLoadHdrData, mParameters);
+                }    
+                this.getOwnerComponent().getModel().submitChanges({
+                    groupId:"batchUpdate",
+                        success: function(odata, Response){
+                            sap.ui.core.BusyIndicator.hide();
+                        }.bind(this),
+                        error: function(oError){
+                            sap.ui.core.BusyIndicator.hide();
+                            var msg = JSON.parse(oError.responseText).error.message.value;
+                            MessageBox.error(msg);
+                        }.bind(this)
+                })
             }
         },
 
