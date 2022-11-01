@@ -13,6 +13,7 @@ sap.ui.define([
     "sap/ui/model/type/String"
 ], function (Controller, Fragment, JSONModel, MessagePopover, MenuItem, Token, SearchField, Filter, FilterOperator, Tokenizer, MessageBox, typeString) {
     "use strict";
+    var sObjectId;
 
     return Controller.extend("com.airbus.ZQM_NCR.controller.Ncheader", {
 
@@ -51,7 +52,7 @@ sap.ui.define([
         _onRouteMatched: function (oEvent) {
             // var oArgs = oEvent.getParameter("arguments");
             // var fid = oArgs.ID;
-            var sObjectId =  oEvent.getParameter("arguments").ID;
+            sObjectId =  oEvent.getParameter("arguments").ID;
 			this.getOwnerComponent().getModel().metadataLoaded().then( function() {
 				var sObjectPath = this.getOwnerComponent().getModel().createKey("CreateNotificationHeaderSet", {
 					NotificationNo :  sObjectId
@@ -67,6 +68,7 @@ sap.ui.define([
                 } 
             }
             this.bindHeaderData();
+            this.handleMandatFields();
         },
 
 		_bindView : function (sObjectPath) {
@@ -169,6 +171,14 @@ sap.ui.define([
 			});
         },
 
+        handleMandatFields: function(){
+            if (this.getOwnerComponent().getModel("NCSaveModel").getData().Category == "002") {
+                this.getView().byId("idInpAircraft").setRequired(true);
+            }else{
+                this.getView().byId("idInpAircraft").setRequired(false);
+            }           
+        },
+
         onListItemPress: function () {
 
         },
@@ -193,7 +203,7 @@ sap.ui.define([
             this.Dialog.destroy();
         },
         handleIconbarSelect: function (oEvent) {
-            var htext = this.getView().byId("idIconTabBarNoIcons");
+            var htext = this.getView().byId("idIconTabBarHeader");
             var key = oEvent.getParameters().selectedItem.getKey();
 
             //	var bold = oEvent.getParameters().selectedItem.getText().bold();
@@ -321,7 +331,7 @@ sap.ui.define([
         },
 
         onDiscrepancy: function () {
-            this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Discre");
+            this.getView().byId("idIconTabBarHeader").setSelectedKey("Discre");
 
         },
         onCopyDiscrepancy: function () {
@@ -389,7 +399,7 @@ sap.ui.define([
         onPressCancel: function () {
             //	this.getView().byId("ncrcreatecopy").setVisible(true);
             this.getView().byId("SimpleFormChange480_12120Dual").setVisible(true);
-            this.getView().byId("idIconTabBarNoIcons").setVisible(false);
+            this.getView().byId("idIconTabBarHeader").setVisible(false);
             this.getView().byId("idsave").setVisible(false);
             this.getView().byId("idcancel").setVisible(false);
             this.getView().byId("idncrsave").setVisible(true);
@@ -425,206 +435,262 @@ sap.ui.define([
             this.getView().byId("idInpBinLoc").setValue();
             this.getView().byId("idInpDrpPt").setValue();
         },
-        onNcrPressSave: function () {
 
-            //	this.getView().byId("ncrcreatecopy").setVisible(false);
+        onNcrPressSave: function () {
+            //this.getView().byId("ncrcreatecopy").setVisible(false);
             //this.getView().byId("SimpleFormChange480_12120Dual").setVisible("false");
-            //this.getView().byId("idIconTabBarNoIcons").setVisible(true);
+            //this.getView().byId("idIconTabBarHeader").setVisible(true);
             //this.getView().byId("idsave").setVisible(true);
             //this.getView().byId("idcancel").setVisible(true);
             //this.getView().byId("idncrsave").setVisible(false);
             //this.getView().byId("idncrcancel").setVisible(false);
             //this.getView().byId("page").setTitle("NC F721000007");
             //this.getView().byId("idheader").setVisible(true);
-
+            
             //Manadatory Validations for Prchase info input fields - Added by Venkata 09.09.2022- Code Start
+            // var Gr = this.getView().byId("idPurInfGrip").getValue();
+            // if (Gr === "") {
+            //     this.getView().byId("idPurInfGrip").setValueState("Error");
+            //     this.getView().byId("idPurInfGrip").setValueStateText("Please Enetre GR# Value");
+            // }
+            // else {
+            //     this.getView().byId("idPurInfGrip").setValueState("None");
+            //     this.getView().byId("idPurInfGrip").setValueStateText();
+            // }
+            // var GrQty = this.getView().byId("idPurInfGrQtyip").getValue();
+            // if (GrQty === "") {
+            //     this.getView().byId("idPurInfGrQtyip").setValueState("Error");
+            //     this.getView().byId("idPurInfGrQtyip").setValueStateText("Please Enetre GR Qty Value");
+            // }
+            // else {
+            //     this.getView().byId("idPurInfGrQtyip").setValueState("None");
+            //     this.getView().byId("idPurInfGrQtyip").setValueStateText();
+            // }
 
-            var Gr = this.getView().byId("idPurInfGrip").getValue();
-            if (Gr === "") {
-                this.getView().byId("idPurInfGrip").setValueState("Error");
-                this.getView().byId("idPurInfGrip").setValueStateText("Please Enetre GR# Value");
-            }
-            else {
-                this.getView().byId("idPurInfGrip").setValueState("None");
-                this.getView().byId("idPurInfGrip").setValueStateText();
-            }
+            // var PurchOrd = this.getView().byId("idPurInfPurOrdip").getValue();
+            // if (PurchOrd === "") {
+            //     this.getView().byId("idPurInfPurOrdip").setValueState("Error");
+            //     this.getView().byId("idPurInfPurOrdip").setValueStateText("Please enter Purchase Order Value");
+            // } else {
+            //     this.getView().byId("idPurInfPurOrdip").setValueState("None");
+            //     this.getView().byId("idPurInfPurOrdip").setValueStateText();
+            // }
 
+            // var PurchOrdLin = this.getView().byId("idPurInfPolnip").getValue();
+            // if (PurchOrdLin === "") {
+            //     this.getView().byId("idPurInfPolnip").setValueState("Error");
+            //     this.getView().byId("idPurInfPolnip").setValueStateText("Please Enter PO Line Number");
 
-            var GrQty = this.getView().byId("idPurInfGrQtyip").getValue();
-            if (GrQty === "") {
-                this.getView().byId("idPurInfGrQtyip").setValueState("Error");
-                this.getView().byId("idPurInfGrQtyip").setValueStateText("Please Enetre GR Qty Value");
-            }
-            else {
-                this.getView().byId("idPurInfGrQtyip").setValueState("None");
-                this.getView().byId("idPurInfGrQtyip").setValueStateText();
-            }
+            // } else {
+            //     this.getView().byId("idPurInfPolnip").setValueState("None");
+            //     this.getView().byId("idPurInfPolnip").setValueStateText();
+            // }
 
-            var PurchOrd = this.getView().byId("idPurInfPurOrdip").getValue();
-            if (PurchOrd === "") {
-                this.getView().byId("idPurInfPurOrdip").setValueState("Error");
-                this.getView().byId("idPurInfPurOrdip").setValueStateText("Please enter Purchase Order Value");
-            } else {
-                this.getView().byId("idPurInfPurOrdip").setValueState("None");
-                this.getView().byId("idPurInfPurOrdip").setValueStateText();
-            }
+            // var Podt = this.getView().byId("idPurInfPoDtdp").getValue();
+            // if (Podt === "") {
+            //     this.getView().byId("idPurInfPoDtdp").setValueState("Error");
+            //     this.getView().byId("idPurInfPoDtdp").setValueStateText("Please Enter PO Date");
+            // } else {
+            //     this.getView().byId("idPurInfPoDtdp").setValueState("None");
+            //     this.getView().byId("idPurInfPoDtdp").setValueStateText();
+            // }
 
-            var PurchOrdLin = this.getView().byId("idPurInfPolnip").getValue();
-            if (PurchOrdLin === "") {
-                this.getView().byId("idPurInfPolnip").setValueState("Error");
-                this.getView().byId("idPurInfPolnip").setValueStateText("Please Enter PO Line Number");
+            // var SuppName = this.getView().byId("idPurInfSupNmip").getValue();
+            // if (SuppName === "") {
+            //     this.getView().byId("idPurInfSupNmip").setValueState("Error");
+            //     this.getView().byId("idPurInfSupNmip").setValueStateText("Please Enter Supplier Name");
+            // } else {
+            //     this.getView().byId("idPurInfSupNmip").setValueState("None");
+            //     this.getView().byId("idPurInfSupNmip").setValueStateText();
+            // }
 
-            } else {
-                this.getView().byId("idPurInfPolnip").setValueState("None");
-                this.getView().byId("idPurInfPolnip").setValueStateText();
+            // var Suppsapcode = this.getView().byId("idPurInfSupSCip").getValue();
+            // if (Suppsapcode === "") {
+            //     this.getView().byId("idPurInfSupSCip").setValueState("Error");
+            //     this.getView().byId("idPurInfSupSCip").setValueStateText("Please Enter Supplier SAP Code");
+            // } else {
+            //     this.getView().byId("idPurInfSupSCip").setValueState("None");
+            //     this.getView().byId("idPurInfSupSCip").setValueStateText();
+            // }
 
-            }
+            // var Supppartnum = this.getView().byId("idPurInfSupPnip").getValue();
+            // if (Supppartnum === "") {
+            //     this.getView().byId("idPurInfSupPnip").setValueState("Error");
+            //     this.getView().byId("idPurInfSupPnip").setValueStateText("Please Enter Supplier Part Number");
+            // } else {
+            //     this.getView().byId("idPurInfSupPnip").setValueState("None");
+            //     this.getView().byId("idPurInfSupPnip").setValueStateText();
+            // }
 
-            var Podt = this.getView().byId("idPurInfPoDtdp").getValue();
-            if (Podt === "") {
-                this.getView().byId("idPurInfPoDtdp").setValueState("Error");
-                this.getView().byId("idPurInfPoDtdp").setValueStateText("Please Enter PO Date");
-            } else {
-                this.getView().byId("idPurInfPoDtdp").setValueState("None");
-                this.getView().byId("idPurInfPoDtdp").setValueStateText();
-            }
+            // var MRPController = this.getView().byId("idPurInfMrpcrip").getValue();
+            // if (MRPController === "") {
+            //     this.getView().byId("idPurInfMrpcrip").setValueState("Error");
+            //     this.getView().byId("idPurInfMrpcrip").setValueStateText("Please Enter MRP Controller");
+            // } else {
+            //     this.getView().byId("idPurInfMrpcrip").setValueState("None");
+            //     this.getView().byId("idPurInfMrpcrip").setValueStateText();
+            // }
 
-            var SuppName = this.getView().byId("idPurInfSupNmip").getValue();
-            if (SuppName === "") {
-                this.getView().byId("idPurInfSupNmip").setValueState("Error");
-                this.getView().byId("idPurInfSupNmip").setValueStateText("Please Enter Supplier Name");
-            } else {
-                this.getView().byId("idPurInfSupNmip").setValueState("None");
-                this.getView().byId("idPurInfSupNmip").setValueStateText();
-            }
+            // var MRPControllerName = this.getView().byId("idPurInfMrpcrnmip").getValue();
+            // if (MRPControllerName === "") {
+            //     this.getView().byId("idPurInfMrpcrnmip").setValueState("Error");
+            //     this.getView().byId("idPurInfMrpcrnmip").setValueStateText("Please Enter MRP Controller Name");
+            // } else {
+            //     this.getView().byId("idPurInfMrpcrnmip").setValueState("None");
+            //     this.getView().byId("idPurInfMrpcrnmip").setValueStateText();
+            // }
 
-            var Suppsapcode = this.getView().byId("idPurInfSupSCip").getValue();
-            if (Suppsapcode === "") {
-                this.getView().byId("idPurInfSupSCip").setValueState("Error");
-                this.getView().byId("idPurInfSupSCip").setValueStateText("Please Enter Supplier SAP Code");
-            } else {
-                this.getView().byId("idPurInfSupSCip").setValueState("None");
-                this.getView().byId("idPurInfSupSCip").setValueStateText();
-            }
+            // var WBN = this.getView().byId("idPurInfWBNip").getValue();
+            // if (WBN === "") {
+            //     this.getView().byId("idPurInfWBNip").setValueState("Error");
+            //     this.getView().byId("idPurInfWBNip").setValueStateText("Please Enter Way Bill No.");
+            // } else {
+            //     this.getView().byId("idPurInfWBNip").setValueState("None");
+            //     this.getView().byId("idPurInfWBNip").setValueStateText();
+            // }
 
-            var Supppartnum = this.getView().byId("idPurInfSupPnip").getValue();
-            if (Supppartnum === "") {
-                this.getView().byId("idPurInfSupPnip").setValueState("Error");
-                this.getView().byId("idPurInfSupPnip").setValueStateText("Please Enter Supplier Part Number");
-            } else {
-                this.getView().byId("idPurInfSupPnip").setValueState("None");
-                this.getView().byId("idPurInfSupPnip").setValueStateText();
-            }
+            // var PckgSlp = this.getView().byId("idPurInfPcgslip").getValue();
+            // if (PckgSlp === "") {
+            //     this.getView().byId("idPurInfPcgslip").setValueState("Error");
+            //     this.getView().byId("idPurInfPcgslip").setValueStateText("Please Enter Packaging Slip Value");
+            // } else {
+            //     this.getView().byId("idPurInfPcgslip").setValueState("None");
+            //     this.getView().byId("idPurInfPcgslip").setValueStateText();
+            // }
 
-            var MRPController = this.getView().byId("idPurInfMrpcrip").getValue();
-            if (MRPController === "") {
-                this.getView().byId("idPurInfMrpcrip").setValueState("Error");
-                this.getView().byId("idPurInfMrpcrip").setValueStateText("Please Enter MRP Controller");
-            } else {
-                this.getView().byId("idPurInfMrpcrip").setValueState("None");
-                this.getView().byId("idPurInfMrpcrip").setValueStateText();
-            }
+            // var WBN2 = this.getView().byId("idPurInfWBN2ip").getValue();
+            // if (WBN2 === "") {
+            //     this.getView().byId("idPurInfWBN2ip").setValueState("Error");
+            //     this.getView().byId("idPurInfWBN2ip").setValueStateText("Please Enter Way Bill No.");
+            // } else {
+            //     this.getView().byId("idPurInfWBN2ip").setValueState("None");
+            //     this.getView().byId("idPurInfWBN2ip").setValueStateText();
+            // }
 
-            var MRPControllerName = this.getView().byId("idPurInfMrpcrnmip").getValue();
-            if (MRPControllerName === "") {
-                this.getView().byId("idPurInfMrpcrnmip").setValueState("Error");
-                this.getView().byId("idPurInfMrpcrnmip").setValueStateText("Please Enter MRP Controller Name");
-            } else {
-                this.getView().byId("idPurInfMrpcrnmip").setValueState("None");
-                this.getView().byId("idPurInfMrpcrnmip").setValueStateText();
-            }
+            // var PckgSlp2 = this.getView().byId("idPurInfPcgsl2ip").getValue();
+            // if (PckgSlp2 === "") {
+            //     this.getView().byId("idPurInfPcgsl2ip").setValueState("Error");
+            //     this.getView().byId("idPurInfPcgsl2ip").setValueStateText("Please Enter Packaging Slip Value");
+            // } else {
+            //     this.getView().byId("idPurInfPcgsl2ip").setValueState("None");
+            //     this.getView().byId("idPurInfPcgsl2ip").setValueStateText();
+            // }
 
-            var WBN = this.getView().byId("idPurInfWBNip").getValue();
-            if (WBN === "") {
-                this.getView().byId("idPurInfWBNip").setValueState("Error");
-                this.getView().byId("idPurInfWBNip").setValueStateText("Please Enter Way Bill No.");
-            } else {
-                this.getView().byId("idPurInfWBNip").setValueState("None");
-                this.getView().byId("idPurInfWBNip").setValueStateText();
-            }
+            // var Po = this.getView().byId("idPurInfPOip").getValue();
+            // if (Po === "") {
+            //     this.getView().byId("idPurInfPOip").setValueState("Error");
+            //     this.getView().byId("idPurInfPOip").setValueStateText("Please Enter PO# Value");
+            // } else {
+            //     this.getView().byId("idPurInfPOip").setValueState("None");
+            //     this.getView().byId("idPurInfPOip").setValueStateText();
+            // }
 
-            var PckgSlp = this.getView().byId("idPurInfPcgslip").getValue();
-            if (PckgSlp === "") {
-                this.getView().byId("idPurInfPcgslip").setValueState("Error");
-                this.getView().byId("idPurInfPcgslip").setValueStateText("Please Enter Packaging Slip Value");
-            } else {
-                this.getView().byId("idPurInfPcgslip").setValueState("None");
-                this.getView().byId("idPurInfPcgslip").setValueStateText();
-            }
+            // var OutboundDelivery = this.getView().byId("idPurInfOutDelip").getValue();
+            // if (OutboundDelivery === "") {
+            //     this.getView().byId("idPurInfOutDelip").setValueState("Error");
+            //     this.getView().byId("idPurInfOutDelip").setValueStateText("Please Enter Outbound Delivery Value");
+            // } else {
+            //     this.getView().byId("idPurInfOutDelip").setValueState("None");
+            //     this.getView().byId("idPurInfOutDelip").setValueStateText();
+            // }
 
-            var WBN2 = this.getView().byId("idPurInfWBN2ip").getValue();
-            if (WBN2 === "") {
-                this.getView().byId("idPurInfWBN2ip").setValueState("Error");
-                this.getView().byId("idPurInfWBN2ip").setValueStateText("Please Enter Way Bill No.");
-            } else {
-                this.getView().byId("idPurInfWBN2ip").setValueState("None");
-                this.getView().byId("idPurInfWBN2ip").setValueStateText();
-            }
+            // var RMA = this.getView().byId("idPurInfRMAip").getValue();
+            // if (RMA === "") {
+            //     this.getView().byId("idPurInfRMAip").setValueState("Error");
+            //     this.getView().byId("idPurInfRMAip").setValueStateText("Please Enter RMA Value");
+            // } else {
+            //     this.getView().byId("idPurInfRMAip").setValueState("None");
+            //     this.getView().byId("idPurInfRMAip").setValueStateText();
+            // }
 
-            var PckgSlp2 = this.getView().byId("idPurInfPcgsl2ip").getValue();
-            if (PckgSlp2 === "") {
-                this.getView().byId("idPurInfPcgsl2ip").setValueState("Error");
-                this.getView().byId("idPurInfPcgsl2ip").setValueStateText("Please Enter Packaging Slip Value");
-            } else {
-                this.getView().byId("idPurInfPcgsl2ip").setValueState("None");
-                this.getView().byId("idPurInfPcgsl2ip").setValueStateText();
-            }
-
-            var Po = this.getView().byId("idPurInfPOip").getValue();
-            if (Po === "") {
-                this.getView().byId("idPurInfPOip").setValueState("Error");
-                this.getView().byId("idPurInfPOip").setValueStateText("Please Enter PO# Value");
-            } else {
-                this.getView().byId("idPurInfPOip").setValueState("None");
-                this.getView().byId("idPurInfPOip").setValueStateText();
-            }
-
-            var OutboundDelivery = this.getView().byId("idPurInfOutDelip").getValue();
-            if (OutboundDelivery === "") {
-                this.getView().byId("idPurInfOutDelip").setValueState("Error");
-                this.getView().byId("idPurInfOutDelip").setValueStateText("Please Enter Outbound Delivery Value");
-            } else {
-                this.getView().byId("idPurInfOutDelip").setValueState("None");
-                this.getView().byId("idPurInfOutDelip").setValueStateText();
-            }
-
-            var RMA = this.getView().byId("idPurInfRMAip").getValue();
-            if (RMA === "") {
-                this.getView().byId("idPurInfRMAip").setValueState("Error");
-                this.getView().byId("idPurInfRMAip").setValueStateText("Please Enter RMA Value");
-            } else {
-                this.getView().byId("idPurInfRMAip").setValueState("None");
-                this.getView().byId("idPurInfRMAip").setValueStateText();
-            }
-
-            var RelNot = this.getView().byId("idPurInfRelNoteip").getValue();
-            if (RelNot === "") {
-                this.getView().byId("idPurInfRelNoteip").setValueState("Error");
-                this.getView().byId("idPurInfRelNoteip").setValueStateText("Please Enter Release Note");
-            } else {
-                this.getView().byId("idPurInfRelNoteip").setValueState("None");
-                this.getView().byId("idPurInfRelNoteip").setValueStateText();
-            }
-
+            // var RelNot = this.getView().byId("idPurInfRelNoteip").getValue();
+            // if (RelNot === "") {
+            //     this.getView().byId("idPurInfRelNoteip").setValueState("Error");
+            //     this.getView().byId("idPurInfRelNoteip").setValueStateText("Please Enter Release Note");
+            // } else {
+            //     this.getView().byId("idPurInfRelNoteip").setValueState("None");
+            //     this.getView().byId("idPurInfRelNoteip").setValueStateText();
+            // }
             //Manadatory Validations for Prchase info input fields - Added by Venkata 09.09.2022 - Code End
 
-            var oNCType = this.getView().byId("idCombNcType").getSelectedKey();
-            if (oNCType === "ESUPPLIER" && this.getView().byId("idMNInputSN").getTokens().length === 0) {
-                this.getView().byId("idMNInputSN").setValueState("Error");
-                this.getView().byId("idMNInputSN").setValueStateText("Please Enter Serial Number");
-            }
-            if (oNCType === "ESUPPLIER" && this.getView().byId("idMNInputTN").getTokens().length === 0) {
-                this.getView().byId("idMNInputTN").setValueState("Error");
-                this.getView().byId("idMNInputTN").setValueStateText("Please Enter Traceability Number");
-            }
-
-            if (this.getOwnerComponent().getModel("NCSaveModel").getData().NcType === "WORK INSTRUCTIONS") {
-                if (this.getView().byId("idInpAircraft").getValue() !== "") {
-                    this.getView().byId("idInpAircraft").setValueState("None");
-                    this.getView().byId("idInpAircraft").setValueStateText("");
-                } else {
-                    this.getView().byId("idInpAircraft").setValueState("Error");
-                    this.getView().byId("idInpAircraft").setValueStateText("Please Enter Aircraft Number");
+            if(this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata"){
+                var oNCType = this.getView().byId("idCombNcType").getSelectedKey();
+                if (oNCType == "SUPPLIER" && this.getView().byId("idMNInputSN").getTokens().length === 0) {
+                    this.getView().byId("idMNInputSN").setValueState("Error");
+                    this.getView().byId("idMNInputSN").setValueStateText("Please Enter Serial Number");
+                }
+                if (oNCType == "SUPPLIER" && this.getView().byId("idMNInputTN").getTokens().length === 0) {
+                    this.getView().byId("idMNInputTN").setValueState("Error");
+                    this.getView().byId("idMNInputTN").setValueStateText("Please Enter Traceability Number");
+                }
+    
+                if (this.getOwnerComponent().getModel("NCSaveModel").getData().Category == "002") {
+                    if (this.getView().byId("idInpAircraft").getValue() !== "") {
+                        this.getView().byId("idInpAircraft").setValueState("None");
+                        this.getView().byId("idInpAircraft").setValueStateText("");
+                    } else {
+                        this.getView().byId("idInpAircraft").setValueState("Error");
+                        this.getView().byId("idInpAircraft").setValueStateText("Please Enter Aircraft Number");
+                    }
+                }
+                var oNotifNo = sObjectId;
+                var oNcStatus = this.getView().byId("idObjNCStatus").getText();
+                var oNcType = this.getView().byId("idCombNcType").getValue();
+                var oNcPriority = this.getView().byId("idComBoxPriority").getValue();
+                var oNcArea = this.getView().byId("idCombInWhArea").getValue();
+                var oPlantCode = this.getView().byId("idPlntCodeHdr").getValue();
+                var oProductCode = this.getView().byId("idInpProdCode").getValue();
+                var oWorkInst = this.getView().byId("idInpWrkIns").getValue();
+                var oProdOrder = this.getView().byId("idInpPrdOrd").getValue();
+                var oSupercedesNC = this.getView().byId("idInpSupNC").getValue();
+                var oSupercededByNC = this.getView().byId("idInpSupBy").getValue();
+                var oReferenceNC = this.getView().byId("idInpRefNC").getValue();
+                var oExistingATS = this.getView().byId("idSwitchExstATS").getState();
+                var oAircraftNo = this.getView().byId("idInpAircraft").getValue();
+                var oNCCreatedBy = this.getView().byId("idInpNCCrtBy").getValue();
+                var oNCDetectedAt = this.getView().byId("idInpNCDetAt").getValue();
+                var oBinLocation = this.getView().byId("idInpBinLoc").getValue();
+                var oDropPoint = this.getView().byId("idInpDrpPt").getValue();
+                var oPartNum = this.getView().byId("idInpPartNo").getValue();
+                var oPartDesc = this.getView().byId("idObjStatPartDesc").getText();
+                if(this.getView().byId("idMNInputSN").getTokens().length === 1){
+                    var oSerialNo = this.getView().byId("idMNInputSN").getTokens()[0].getKey();
+                    var payLoadHdrData = {
+                        "NCStatus" : oNcStatus,
+                        "NCType" : oNcType,
+                        "NCPriority" : oNcPriority,
+                        "NCArea" : oNcArea,
+                        "PlantCode": oPlantCode,
+                        "ProductCode" : oProductCode,
+                        "WorkInstruction" : oWorkInst,
+                        "ProdOrder" : oProdOrder,
+                        "SupercedesNC" : oSupercedesNC,
+                        "SupercededByNC" : oSupercededByNC,
+                        "ReferenceNC" : oReferenceNC,
+                        "ExistingATS" : oExistingATS,
+                        "Aircraftno" : oAircraftNo,
+                        "NCCreatedBy" : oNCCreatedBy,
+                        "NCDetectedAt" : oNCDetectedAt,
+                        "Binlocation" : oBinLocation,
+                        "DropPoint" : oDropPoint,
+                        "PartNumber" : oPartNum,
+                        "PartDescription" : oPartDesc,
+                        "SerialNo" : oSerialNo 
+                    }
+                    sap.ui.core.BusyIndicator.show();
+                    this.getOwnerComponent().getModel().update("/CreateNotificationHeaderSet('" + oNotifNo + "')", payLoadHdrData, {
+                        method: "PUT",
+                        success: function(odata, Response){
+                            debugger;
+                            sap.ui.core.BusyIndicator.hide();
+                        },
+                        error: function(oError){
+                            debugger;
+                            sap.ui.core.BusyIndicator.hide();
+                            var msg = JSON.parse(oError.responseText).error.message.value;
+                            MessageBox.error(msg);
+                        }
+                    });
                 }
             }
         },
@@ -677,7 +743,7 @@ sap.ui.define([
             }
         },
         onCreate: function () {
-            var ic = this.getView().byId("idIconTabBarNoIcons");
+            var ic = this.getView().byId("idIconTabBarHeader");
 
 			/*	var ncr = this.getView().byId("idncr").getSelected();
 				var snag = this.getView().byId("idsnag").getSelected();

@@ -12,7 +12,7 @@
 					<Toolbar id="idheader" visible="true">
 						<Label id="idstatus" text="Status" design="Bold" wrapping="true" class="sapUiSmallMarginCenter"/>
 						<!--<Text text="open" class="status"/>-->
-						<ObjectStatus class="sapUiSmallMarginCenter" text="{NCStatus}" icon="sap-icon://sys-enter-2" state="Success"/>
+						<ObjectStatus id="idObjNCStatus" class="sapUiSmallMarginCenter" text="{NCStatus}" icon="sap-icon://sys-enter-2" state="Success"/>
 						<ToolbarSpacer/>
 						<Text text="" id="headertext" class="icontabtext font"/>
 						<ToolbarSpacer/>
@@ -28,7 +28,7 @@
 				</subHeader>
 				<content>
 					<IconTabBar headerMode="Standard" stretchContentHeight="true" backgroundDesign="Transparent" applyContentPadding="false" visible="true"
-						id="idIconTabBarNoIcons" expandable="false" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding"
+						id="idIconTabBarHeader" expandable="false" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding"
 						select="handleIconbarSelect">
 						<items>
 							<IconTabFilter id="idheaderdata" text="Header Data" key="Hdata">
@@ -76,15 +76,15 @@
 														<Label text="Closed Date"/>
 														<Text text="{CloseDate}"/>
 														<Label text="Existing ATS"/>
-														<Switch state="{ExistingATS}" customTextOn="Yes" customTextOff="No">
+														<Switch id="idSwitchExstATS" state="{ExistingATS}" customTextOn="Yes" customTextOff="No">
 															<!--<layoutData>-->
 															<!--	<FlexItemData growFactor="1"/>-->
 															<!--</layoutData>-->
 														</Switch>
                                                         <Label text="Link to Aircraft"/>
-														<CheckBox enabled="false"/>
+														<CheckBox id="idChkBoxLinkAircraft" enabled="false"/>
                                                         <Label text="Aircraft"/>
-														<Input id="idInpAircraft" value="{Aircraftno}" valueHelpRequest="onVHReqAircraft" showValueHelp="true" change="handleAircraftChange" required="true"/>
+														<Input id="idInpAircraft" value="{Aircraftno}" valueHelpRequest="onVHReqAircraft" showValueHelp="true" change="handleAircraftChange"/>
                                                         <Label text="Supplier Name"/>
 														<Input value=""/>
                                                         <Label text="Supplier SAP"/>
@@ -104,7 +104,7 @@
 														<Input id="idInpPartNo" value="{PartNumber}" valueHelpRequest=".onOpenVHPartNo"  showValueHelp="true" change="handleChangePartNo"/>
 <!-- Added change event to handle the business logic - Code End  -->														
                                                         <Label text="Part Description"/>
-														<ObjectStatus text="{PartDescription}" state="Information"/>
+														<ObjectStatus id="idObjStatPartDesc" text="{PartDescription}" state="Information"/>
                                                         <Label text="Serial No"/>
 <!-- Added MultiInput control for serial number and traceability fields  - Code Start  -->                                                       
                                                         <MultiInput id="idMNInputSN" showValueHelp="true" valueHelpRequest=".onOpenVHSerNo" tokenUpdate="_onTokenUpdateSN">
@@ -1365,44 +1365,44 @@
 														<!--<core:Title text=" Purchase Part Information"/>-->
 														<Label text="GR#"/>
                                       <!-- Added value help for GR Input -Code Start-->                  
-														<Input width="230px" required = "true" id="idPurInfGrip" valueHelpRequest="onGRhelpRequest" showValueHelp="true" value="{NCSaveModel>/GRN}"/>
+														<Input width="230px" id="idPurInfGrip" valueHelpRequest="onGRhelpRequest" showValueHelp="true" value="{NCSaveModel>/GRN}"/>
 									  <!-- Added value help for GR Input -Code End-->					
                                                         <Label text="GR Qty"/>
-														<Input width="230px" required = "true" id="idPurInfGrQtyip"/>
+														<Input width="230px" id="idPurInfGrQtyip"/>
 														<Label text="Purchase Order#"/>
                                        <!-- Added value help for Purchase Order Input -Code Start--> 
-														<Input width="230px" required = "true" id="idPurInfPurOrdip" valueHelpRequest="onPurchOrdhelpRequest" showValueHelp="true" value="{NCSaveModel>/PON}"/>
+														<Input width="230px" id="idPurInfPurOrdip" valueHelpRequest="onPurchOrdhelpRequest" showValueHelp="true" value="{NCSaveModel>/PON}"/>
 										<!-- Added value help for Purchase Order Input -Code End--> 				
                                                         <Label text="PO Line Number"/>
-														<Input width="230px" required = "true" id="idPurInfPolnip"/>
+														<Input width="230px" id="idPurInfPolnip"/>
 														<Label text="PO Date"/>
-														<DatePicker width="230px" required = "true" id="idPurInfPoDtdp"/>
+														<DatePicker width="230px" id="idPurInfPoDtdp"/>
 														<Label text="Supplier Name"/>
-														<Input width="230px" required = "true" id="idPurInfSupNmip"/>
+														<Input width="230px" id="idPurInfSupNmip"/>
 														<Label text="Supplier SAP Code"/>
 										<!-- Added value help for Supplier SAP Code -Code Start-->				
-                                                        <Input width="230px" required = "true" id="idPurInfSupSCip" valueHelpRequest="onSuppSAPCodehelpRequest" showValueHelp="true"/>
+                                                        <Input width="230px" id="idPurInfSupSCip" valueHelpRequest="onSuppSAPCodehelpRequest" showValueHelp="true"/>
                                         <!-- Added value help for Supplier SAP Code -Code Start-->
 														<Label text="Supplier Part Number"/>
-														<Input width="230px" required = "true" id="idPurInfSupPnip"/>
+														<Input width="230px" id="idPurInfSupPnip"/>
 														<Label text="MRP Controller"/>
-														<Input width="230px" required = "true" id="idPurInfMrpcrip"/>
+														<Input width="230px" id="idPurInfMrpcrip"/>
 														<Label text="MRP Controller Name"/>
-														<Input width="230px" required = "true" id="idPurInfMrpcrnmip"/>
+														<Input width="230px" id="idPurInfMrpcrnmip"/>
 														<Label text="Way Bill No."/>
-														<Input width="230px" required = "true" id="idPurInfWBNip"/>
+														<Input width="230px" id="idPurInfWBNip"/>
 														<Label text="Packaging Slip"/>
-														<Input width="230px" required = "true" id="idPurInfPcgslip"/>
+														<Input width="230px" id="idPurInfPcgslip"/>
 														<Label text="2nd Drop Shop"/>
 														<CheckBox/>
 														<Label text="Way Bill No."/>
-														<Input width="230px" required = "true" id="idPurInfWBN2ip"/>
+														<Input width="230px" id="idPurInfWBN2ip"/>
 														<Label text="Packing Slip"/>
-														<Input width="230px" required = "true" id="idPurInfPcgsl2ip"/>
+														<Input width="230px" id="idPurInfPcgsl2ip"/>
 													</f:content>
 												</f:SimpleForm>
 											</l:BlockLayoutCell>
-											<l:BlockLayoutCell backgroundColorShade="ShadeA" backgroundColorSet="ColorSet5" width="100" class="formcolor">
+											<!-- <l:BlockLayoutCell backgroundColorShade="ShadeA" backgroundColorSet="ColorSet5" width="100" class="formcolor">
 												<f:SimpleForm editable="true" title=" Return To Vendor" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12"
 													adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2"
 													singleContainerFullSize="false" class="sapUiSizeCompact" labelMinWidth="1px">
@@ -1417,7 +1417,7 @@
 														<Input width="230px" liveChange="onCssChange" required = "true" id="idPurInfRelNoteip"/>
 													</f:content>
 												</f:SimpleForm>
-											</l:BlockLayoutCell>
+											</l:BlockLayoutCell> -->
 										</l:BlockLayoutRow>
 									</l:BlockLayout>
 								</ScrollContainer>
