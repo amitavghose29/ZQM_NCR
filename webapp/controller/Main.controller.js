@@ -573,16 +573,19 @@ sap.ui.define([
         * @param {sap.ui.base.Event} oEvent item being selected is returned 
         */
         handleConfirmPartnerCode: function (oEvent) {
-            var oSelProdCode = oEvent.getParameters().selectedItem.getBindingContext().getProperty("ParentPartNumber");
-            // sap.m.MessageToast.show("The partner code chosen is " + oSelContxt);
+            var oSelProdCode = oEvent.getParameters().selectedItem.getBindingContext().getProperty("ParentPartNumber");
+            var oSelProdFrom = oEvent.getParameters().selectedItem.getBindingContext().getProperty("ProductSeqFrom");
+            var oSelProdTo = oEvent.getParameters().selectedItem.getBindingContext().getProperty("ProductSeqTo");
+            var oSelProdseqRange = oSelProdFrom+","+oSelProdTo;
             if (oSelProdCode !== "") {
                 sap.ui.core.BusyIndicator.show();
                 var oModel = new JSONModel();
                 oModel.setSizeLimit(10000);
                 var oDataModel = this.getOwnerComponent().getModel();
                 var oFilter = [];
-                oFilter.push(new Filter("Key", FilterOperator.EQ, "PRO"));
-                oFilter.push(new Filter("PartNumber", FilterOperator.EQ, oSelProdCode));
+                oFilter.push(new Filter("Key", FilterOperator.EQ, "PRO"));
+                oFilter.push(new Filter("ParentPartNo", FilterOperator.EQ, oSelProdCode));
+                oFilter.push(new Filter("ProductSequence", FilterOperator.EQ, oSelProdseqRange));
                 var sPath = "/Rep_ProdOrdSearchSet"
                 oDataModel.read(sPath, {
                     filters: oFilter,

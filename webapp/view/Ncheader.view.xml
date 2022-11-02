@@ -75,20 +75,20 @@
 														<DatePicker value="{path:'CreateDate', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'medium', strictParsing: true}}" editable="false"/>
 														<Label text="Closed Date"/>
 														<Text text="{CloseDate}"/>
-														<Label text="Existing ATS"/>
-														<Switch id="idSwitchExstATS" state="{ExistingATS}" customTextOn="Yes" customTextOff="No">
+														<!-- <Label text="Existing ATS"/>
+														<Switch id="idSwitchExstATS" state="{ExistingATS}" customTextOn="Yes" customTextOff="No"> -->
 															<!--<layoutData>-->
 															<!--	<FlexItemData growFactor="1"/>-->
 															<!--</layoutData>-->
-														</Switch>
+														<!-- </Switch> -->
                                                         <Label text="Link to Aircraft"/>
 														<CheckBox id="idChkBoxLinkAircraft" enabled="false"/>
                                                         <Label text="Aircraft"/>
 														<Input id="idInpAircraft" value="{Aircraftno}" valueHelpRequest="onVHReqAircraft" showValueHelp="true" change="handleAircraftChange"/>
-                                                        <Label text="Supplier Name"/>
+                                                        <!-- <Label text="Supplier Name"/>
 														<Input value=""/>
                                                         <Label text="Supplier SAP"/>
-														<Input value=""/>
+														<Input value=""/> -->
 													</f:content>
 												</f:SimpleForm>
 											</l:BlockLayoutCell>
@@ -104,7 +104,7 @@
 														<Input id="idInpPartNo" value="{PartNumber}" valueHelpRequest=".onOpenVHPartNo"  showValueHelp="true" change="handleChangePartNo"/>
 <!-- Added change event to handle the business logic - Code End  -->														
                                                         <Label text="Part Description"/>
-														<ObjectStatus id="idObjStatPartDesc" text="{PartDescription}" state="Information"/>
+														<Input id="idInpStatPartDesc" value="{PartDescription}" editable="false"/>
                                                         <Label text="Serial No"/>
 <!-- Added MultiInput control for serial number and traceability fields  - Code Start  -->                                                       
                                                         <MultiInput id="idMNInputSN" showValueHelp="true" valueHelpRequest=".onOpenVHSerNo" tokenUpdate="_onTokenUpdateSN">
