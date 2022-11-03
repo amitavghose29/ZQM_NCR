@@ -4,7 +4,7 @@
     xmlns="sap.m">
 	<Dialog title="NC Created By">
         <VBox class="sapUiSizeCompact">
-			<fb:FilterBar showRestoreButton="false" search="onFilterBarSearchNCCrt">
+			<fb:FilterBar showRestoreButton="false" search=".onFilterBarSearchNCCrt">
                   <fb:filterGroupItems>
 					<fb:FilterGroupItem
 							groupName="__$INTERNAL$"
@@ -13,7 +13,7 @@
 							visibleInFilterBar="true"
 						>
 						<fb:control>
-							<Input name="WorkCenterCategory" showValueHelp="true"/>
+							<Input id="idFBNCCrtByWrkCntCateg" name="WorkCenterCategory" showValueHelp="true" valueHelpRequest=".onOpenWrkCntCateg"/>
 						</fb:control>
 					</fb:FilterGroupItem>
 
@@ -24,7 +24,7 @@
 							visibleInFilterBar="true"
 						>
 						<fb:control>
-							<Input name="Plant" showValueHelp="true"/>
+							<Input id="idFBNCCrtByPlant" name="Plant" showValueHelp="true" valueHelpRequest=".onOpenPlant"/>
 						</fb:control>
 					</fb:FilterGroupItem>
 
@@ -36,7 +36,7 @@
 							visibleInFilterBar="true"
 						>
 						<fb:control>
-							<Input name="Work Center" showValueHelp="true"/>
+							<Input id="idFBNCCrtByWorkCenter" name="Work Center" showValueHelp="true" valueHelpRequest=".onOpenWorkCenter"/>
 						</fb:control>
 					</fb:FilterGroupItem>
 
@@ -47,7 +47,7 @@
 							visibleInFilterBar="true"
 						>
 						<fb:control>
-							<Input name="Description" showValueHelp="true"/>
+							<Input id="idFBNCCrtByDesc" name="Description" showValueHelp="true"/>
 						</fb:control>
 					</fb:FilterGroupItem>
 					<fb:FilterGroupItem
@@ -57,7 +57,7 @@
 							visibleInFilterBar="true"
 						>
 						<fb:control>
-							<Input name="LanguageKey" showValueHelp="true"/>
+							<Input id="idFBNCCrtByLanguage" name="LanguageKey" showValueHelp="true"/>
 						</fb:control>
 					</fb:FilterGroupItem>
 
@@ -68,7 +68,7 @@
 							visibleInFilterBar="false"
 						>
 						<fb:control>
-							<Input name="Department" showValueHelp="true"/>
+							<Input id="idFBNCCrtByDprtmnt" name="Department" showValueHelp="true"/>
 						</fb:control>
 					</fb:FilterGroupItem>
 
@@ -79,13 +79,13 @@
 							visibleInFilterBar="false"
 						>
 						<fb:control>
-							<Input name="Station" showValueHelp="true"/>
+							<Input id="idFBNCCrtByStation" name="Station" showValueHelp="true"/>
 						</fb:control>
 					</fb:FilterGroupItem>
 				
 				</fb:filterGroupItems>
 			</fb:FilterBar>
-            <Table id="idTableNCCreatedBy" items="{ path: '/f4_genericSet', filters: [{path: 'Key', operator: 'EQ', value1: 'ERNAM'}]}">
+            <Table id="idTableNCCreatedBy" items="{NCCreatedByModel>/}" itemPress="handleNCItemSelection">
 		        <columns>
 			        <Column>
 				        <Text text="Work Center Category" />
@@ -104,20 +104,20 @@
 			        </Column>
 		        </columns>
 		        <items>
-			        <ColumnListItem vAlign="Middle">
+			        <ColumnListItem vAlign="Middle" type="Active">
 				        <cells>
-					        <Text text="{Value}" /> 
-                            <Text text="{Description}" />
-                            <Text text=""/>
-                            <Text text=""/>
-                            <Text text=""/>   
+					        <Text text="{NCCreatedByModel>WorkCenterCategory}" /> 
+                            <Text text="{NCCreatedByModel>Plant}" />
+                            <Text text="{NCCreatedByModel>WorkCenter}"/>
+                            <Text text="{NCCreatedByModel>WorkCategoryName}"/>
+                            <Text text="{NCCreatedByModel>Language}"/>   
 				        </cells>
 			        </ColumnListItem>
 		        </items>
 	        </Table>
         </VBox>
         <endButton>
-            <Button text="Close" press="_handleNCCrtdAtClose" />
+            <Button text="Close" press="_handleNCCrtdByClose" />
         </endButton>
 	</Dialog>
 </core:FragmentDefinition>

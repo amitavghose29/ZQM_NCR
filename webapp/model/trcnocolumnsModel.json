@@ -2,11 +2,7 @@
 	"cols": [
 		{
 			"label": "Traceability Numbers",
-			"template": "Product"
-		},
-        {
-			"label": "Description",
-			"template": "ProductName"
+			"template": "Value"
 		}
 	]
 }

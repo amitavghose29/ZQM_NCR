@@ -11,7 +11,7 @@
 		key="Value" descriptionKey="Description" 
 	>
         <filterBar>
-			<fb:FilterBar advancedMode="true" search="onFilterBarSearch">
+			<fb:FilterBar advancedMode="true" search="onFilterBarSearchSN">
 			</fb:FilterBar>
 		</filterBar>
 	</ValueHelpDialog>

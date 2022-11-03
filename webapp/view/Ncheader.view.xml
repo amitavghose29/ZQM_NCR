@@ -60,7 +60,7 @@
 														<Label text="Product Code"/>
 														<Input id="idInpProdCode" value="{ProductCode}" valueHelpRequest="onVHReqProductCode" showValueHelp="true"/>
 														<Label text="Work Instruction"/>
-														<Input id="idInpWrkIns" value="{WorkInstruction}" valueHelpRequest="onVHReqWrkIns" showValueHelp="true"/>
+														<Input id="idInpWrkIns" value="{WorkInstruction}" valueHelpRequest="_onValueHelpReqWorkIns" showValueHelp="true"/>
 														<Label text="Prod Order"/>
 														<Input id="idInpPrdOrd" value="{ProdOrder}" valueHelpRequest="onVHReqPrdOrd" showValueHelp="true"/>
 														<!--	<Label text="Last Operation"/>
@@ -1358,48 +1358,43 @@
 									<l:BlockLayout background="Light">
 										<l:BlockLayoutRow>
 											<l:BlockLayoutCell backgroundColorShade="ShadeA" backgroundColorSet="ColorSet1" width="100" class="formcolor">
-												<f:SimpleForm editable="true" title=" Purchase Part Information" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12"
+												<f:SimpleForm id="idSmplFrmPurInf" editable="true" title=" Purchase Part Information" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12"
 													adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2"
 													singleContainerFullSize="false" class="sapUiSizeCompact" labelMinWidth="1px">
 													<f:content>
-														<!--<core:Title text=" Purchase Part Information"/>-->
-														<Label text="GR#"/>
-                                      <!-- Added value help for GR Input -Code Start-->                  
-														<Input width="230px" id="idPurInfGrip" valueHelpRequest="onGRhelpRequest" showValueHelp="true" value="{NCSaveModel>/GRN}"/>
-									  <!-- Added value help for GR Input -Code End-->					
-                                                        <Label text="GR Qty"/>
-														<Input width="230px" id="idPurInfGrQtyip"/>
-														<Label text="Purchase Order#"/>
-                                       <!-- Added value help for Purchase Order Input -Code Start--> 
-														<Input width="230px" id="idPurInfPurOrdip" valueHelpRequest="onPurchOrdhelpRequest" showValueHelp="true" value="{NCSaveModel>/PON}"/>
-										<!-- Added value help for Purchase Order Input -Code End--> 				
+                                                        <Label id="idLblGrn" text="GR Number"/>
+                                                        <Input width="230px" id="idPurInfGrip" valueHelpRequest="onGRhelpRequest" showValueHelp="true" value="{NCSaveModel>/GRN}"/>
+                                                        <Label id="idLblGrqty" text="GR Qty"/>
+                                                        <Input width="230px" id="idPurInfGrQtyip" editable="false"/>
+                                                        <Label id="idLblGrln" text="GR Line Number"/>
+                                                        <Input width="230px" id="idIpPurInfGrLnNo" editable="false"/>
+                                                        <Label text="Purchase Order"/>
+                                                        <Input width="230px" id="idPurInfPurOrdip" valueHelpRequest="onPurchOrdhelpRequest" showValueHelp="true" value="{NCSaveModel>/PON}"/>
                                                         <Label text="PO Line Number"/>
-														<Input width="230px" id="idPurInfPolnip"/>
-														<Label text="PO Date"/>
-														<DatePicker width="230px" id="idPurInfPoDtdp"/>
-														<Label text="Supplier Name"/>
-														<Input width="230px" id="idPurInfSupNmip"/>
-														<Label text="Supplier SAP Code"/>
-										<!-- Added value help for Supplier SAP Code -Code Start-->				
+                                                        <Input width="230px" id="idPurInfPolnip"/>
+                                                        <Label text="PO Date"/>
+                                                        <DatePicker width="230px" editable="false" value="{path:'NCPoDate', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'medium', strictParsing: true}}" />
+                                                        <Label text="Supplier Name"/>
+                                                        <Input width="230px" id="idPurInfSupNmip" editable="false"/>
+                                                        <Label text="Supplier SAP Code"/>
                                                         <Input width="230px" id="idPurInfSupSCip" valueHelpRequest="onSuppSAPCodehelpRequest" showValueHelp="true"/>
-                                        <!-- Added value help for Supplier SAP Code -Code Start-->
-														<Label text="Supplier Part Number"/>
-														<Input width="230px" id="idPurInfSupPnip"/>
-														<Label text="MRP Controller"/>
-														<Input width="230px" id="idPurInfMrpcrip"/>
-														<Label text="MRP Controller Name"/>
-														<Input width="230px" id="idPurInfMrpcrnmip"/>
-														<Label text="Way Bill No."/>
-														<Input width="230px" id="idPurInfWBNip"/>
-														<Label text="Packaging Slip"/>
-														<Input width="230px" id="idPurInfPcgslip"/>
-														<Label text="2nd Drop Shop"/>
-														<CheckBox/>
-														<Label text="Way Bill No."/>
-														<Input width="230px" id="idPurInfWBN2ip"/>
-														<Label text="Packing Slip"/>
-														<Input width="230px" id="idPurInfPcgsl2ip"/>
-													</f:content>
+                                                        <Label text="Supplier Part Number"/>
+                                                        <Input width="230px" id="idPurInfSupPnip" editable="false"/>
+                                                        <Label id="idLblMrpctrlr" text="MRP Controller"/>
+                                                        <Input width="230px" id="idPurInfMrpcrip" editable="false"/>
+                                                        <Label id="idLblMrpCtrlrNm" text="MRP Controller Name"/>
+                                                        <Input width="230px" id="idPurInfMrpcrnmip" editable="false"/>
+                                                        <Label id="idLblWblNo" text="Way Bill No."/>
+                                                        <Input width="230px" id="idPurInfWBNip"/>
+                                                        <Label id="idLblPcgslp" text="Packaging Slip"/>
+                                                        <Input width="230px" id="idPurInfPcgslip"/>
+                                                        <!--<Label text="2nd Drop Shop"/>
+                                                        <CheckBox/>
+                                                        <Label text="Way Bill No."/>
+                                                        <Input width="230px" id="idPurInfWBN2ip"/>
+                                                        <Label text="Packing Slip"/>
+                                                        <Input width="230px" id="idPurInfPcgsl2ip"/>-->
+                                                    </f:content>
 												</f:SimpleForm>
 											</l:BlockLayoutCell>
 											<!-- <l:BlockLayoutCell backgroundColorShade="ShadeA" backgroundColorSet="ColorSet5" width="100" class="formcolor">

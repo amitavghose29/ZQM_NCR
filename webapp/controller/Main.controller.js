@@ -225,21 +225,25 @@ sap.ui.define([
             var oModel = new JSONModel();
             oModel.setSizeLimit(10000);
             var oDataModel = this.getOwnerComponent().getModel();
-            var sValNotif = sap.ui.getCore().byId("idFBNcNum").getValue(),
-                sValSerNo = sap.ui.getCore().byId("idFBNcNum").getValue(),
-                sValAircraft = sap.ui.getCore().byId("idFBNcNum").getValue();
+            var sValNotif = sap.ui.getCore().byId("idFBNcNum").getValue();
+            var sValSerNo = sap.ui.getCore().byId("idFBSerNo").getValue();
+            var sValAircraft = sap.ui.getCore().byId("idFBAircraft").getValue();
             var oFilter = [];
-            oFilter.push(new Filter("Notification", sap.ui.model.FilterOperator.Contains, sValNotif));
-            oFilter.push(new Filter("SerialNumber", sap.ui.model.FilterOperator.Contains, sValSerNo));
-            oFilter.push(new Filter("Aircraft", sap.ui.model.FilterOperator.Contains, sValAircraft));
+            if(sValNotif != ""){
+                oFilter.push(new Filter("Notification", FilterOperator.EQ, sValNotif));
+            } if (sValSerNo != ""){
+                oFilter.push(new Filter("SerialNumber", FilterOperator.EQ, sValSerNo));
+            } if(sValAircraft != ""){   
+               oFilter.push(new Filter("Aircraft", FilterOperator.EQ, sValAircraft));
+            }
             var sPath = "/NCSearchSet"
             oDataModel.read(sPath, {
                 filters: oFilter,
                 success: function (oData, oResult) {
-                    sap.ui.core.BusyIndicator.hide();
                     var data = oData.results;
                     oModel.setData(data);
                     sap.ui.getCore().byId("idCopyNCTable").setModel(oModel, "oNcCopyModel");
+                    sap.ui.core.BusyIndicator.hide();
                 }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();

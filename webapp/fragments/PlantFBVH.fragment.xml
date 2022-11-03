@@ -1,0 +1,8 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+    <SelectDialog title="Plant" items="{path : 'PlantModel>/'}" 
+                 liveChange=".onSearchPlantFB"
+                  confirm="_handleConfirmPlantFB" 
+                  cancel="_handleCancelPlantFB">
+        <StandardListItem title="{PlantModel>Value}"/>
+    </SelectDialog>
+</core:FragmentDefinition>
