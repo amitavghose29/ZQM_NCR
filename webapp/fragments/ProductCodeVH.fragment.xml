@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-	<SelectDialog  title="Product Code" items="{sample>/tablelist}" liveChange="onSearchOrder" confirm="_configProdCodeVHDialog"
+	<SelectDialog  title="Product Code" items="{ProductCodeModel>/}" liveChange="onSearchProductCode" confirm="_configProdCodeVHDialog"
 		cancel="_handleProdCodeVHClose">
-		<StandardListItem title="{sample>Id}" info="{sample>field1}"/>
+		<StandardListItem title="{ProductCodeModel>Value}" info="{ProductCodeModel>Description}"/>
 	</SelectDialog>
 </core:FragmentDefinition>

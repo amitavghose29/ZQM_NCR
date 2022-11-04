@@ -1,137 +1,163 @@
-<mvc:View controllerName="com.airbus.ZQM_NCR.controller.Ncheader" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc"
-	xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:upload="sap.m.upload" xmlns:f="sap.ui.layout.form"
-	displayBlock="true" xmlns="sap.m">
-	<App>
-		<pages>
-			<Page title="NC">
-				<headerContent>
-					<Text id="idworkgroup" text="" class="workgroupncheader"/>
-					<Image src="./image/airbus.png" height="20px" width="50px"/>
-				</headerContent>
-				<subHeader>
-					<Toolbar id="idheader" visible="true">
-						<Label id="idstatus" text="Status" design="Bold" wrapping="true" class="sapUiSmallMarginCenter"/>
-						<!--<Text text="open" class="status"/>-->
-						<ObjectStatus id="idObjNCStatus" class="sapUiSmallMarginCenter" text="{NCStatus}" icon="sap-icon://sys-enter-2" state="Success"/>
-						<ToolbarSpacer/>
-						<Text text="" id="headertext" class="icontabtext font"/>
-						<ToolbarSpacer/>
-						<Button id="button" press="handleSwitchWorkGroup" icon="sap-icon://group-2" tooltip="Switch Workgroup" />
-						<!--<Button icon="sap-icon://group-2" class="sapUiSmallMargin" press=".onButtonPress" ariaHasPopup="Menu">-->
-						<!--	<dependents>-->
-						<!--		<core:Fragment fragmentName="com.airbus.ZQM_NCR.fragments.notespopup" type="XML"/>-->
-						<!--	</dependents>-->
-						<!--</Button>-->
-						<Button icon="sap-icon://cancel"/>
-						<!-- <Button icon="sap-icon://print" press="onPressPrint"/> -->
-					</Toolbar>
-				</subHeader>
-				<content>
-					<IconTabBar headerMode="Standard" stretchContentHeight="true" backgroundDesign="Transparent" applyContentPadding="false" visible="true"
-						id="idIconTabBarHeader" expandable="false" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding"
-						select="handleIconbarSelect">
-						<items>
-							<IconTabFilter id="idheaderdata" text="Header Data" key="Hdata">
-								<ScrollContainer height="100%" width="100%" horizontal="false" vertical="true">
-									<l:BlockLayout background="Light">
-										<l:BlockLayoutRow>
-											<l:BlockLayoutCell backgroundColorShade="ShadeA" backgroundColorSet="ColorSet1" width="100" class="formcolor">
-												<f:SimpleForm id="idNCHeaderDataForm" editable="true" title="General Info" labelSpanXL="8" labelSpanL="8" labelSpanM="8" labelSpanS="12" adjustLabelSpan="false"
-													emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false"
-													maxContainerCols="2" class="sapUiSizeCompact" labelMinWidth="1px">
-													<f:content>
-														<!--<core:Title text="General Info"/>-->
-														<Label text="Nc Type"/>
-														<ComboBox id="idCombNcType" items="{/NCTYPE_SOSet}" change="onNcrchange">
-										                    <core:Item key="{Nctype}" text="{NctypeDesc}"/>
-									                    </ComboBox>
-														<Label text="Prioity" />
-														<ComboBox id="idComBoxPriority" selectedKey="normal" showSecondaryValues="true" items="{oPriorityModel>/}">
-                                                            <core:ListItem key="{oPriorityModel>Key}" text="{oPriorityModel>Value}" additionalText="{oPriorityModel>Description}"/>
+<mvc:View controllerName="com.airbus.ZQM_NCR.controller.Ncheader" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:upload="sap.m.upload" xmlns:f="sap.ui.layout.form" displayBlock="true" xmlns="sap.m">
+    <App>
+        <pages>
+            <Page title="NC">
+                <headerContent>
+                    <Text id="idworkgroup" text="" class="workgroupncheader" />
+                    <Image src="./image/airbus.png" height="20px" width="50px" />
+                </headerContent>
+                <subHeader>
+                    <Toolbar id="idheader" visible="true">
+                        <Label id="idstatus" text="Status" design="Bold" wrapping="true" class="sapUiSmallMarginCenter" />
+                        <!--<Text text="open" class="status"/>-->
+                        <ObjectStatus id="idObjNCStatus" class="sapUiSmallMarginCenter" text="{NCStatus}" icon="sap-icon://sys-enter-2" state="Success" />
+                        <ToolbarSpacer />
+                        <Text text="" id="headertext" class="icontabtext font" />
+                        <ToolbarSpacer />
+                        <Button id="button" press="handleSwitchWorkGroup" icon="sap-icon://group-2" tooltip="Switch Workgroup" />
+                        <!--<Button icon="sap-icon://group-2" class="sapUiSmallMargin" press=".onButtonPress" ariaHasPopup="Menu">-->
+                        <!--	<dependents>-->
+                        <!--		<core:Fragment fragmentName="com.airbus.ZQM_NCR.fragments.notespopup" type="XML"/>-->
+                        <!--	</dependents>-->
+                        <!--</Button>-->
+                        <Button icon="sap-icon://cancel" />
+                        <!-- <Button icon="sap-icon://print" press="onPressPrint"/> -->
+                    </Toolbar>
+                </subHeader>
+                <content>
+                    <IconTabBar headerMode="Standard" stretchContentHeight="true" backgroundDesign="Transparent" applyContentPadding="false" visible="true" id="idIconTabBarHeader" expandable="false" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding" select="handleIconbarSelect">
+                        <items>
+                            <IconTabFilter id="idheaderdata" text="Header Data" key="Hdata">
+                                <ScrollContainer height="100%" width="100%" horizontal="false" vertical="true">
+                                    <l:BlockLayout background="Light">
+                                        <l:BlockLayoutRow>
+                                            <l:BlockLayoutCell backgroundColorShade="ShadeA" backgroundColorSet="ColorSet1" width="100" class="formcolor">
+                                                <f:SimpleForm
+                                                    id="idNCHeaderDataForm"
+                                                    editable="true"
+                                                    title="General Info"
+                                                    labelSpanXL="8"
+                                                    labelSpanL="8"
+                                                    labelSpanM="8"
+                                                    labelSpanS="12"
+                                                    adjustLabelSpan="false"
+                                                    emptySpanXL="0"
+                                                    emptySpanL="0"
+                                                    emptySpanM="0"
+                                                    emptySpanS="0"
+                                                    columnsXL="2"
+                                                    columnsL="2"
+                                                    columnsM="2"
+                                                    singleContainerFullSize="false"
+                                                    maxContainerCols="2"
+                                                    class="sapUiSizeCompact"
+                                                    labelMinWidth="1px"
+                                                >
+                                                    <f:content>
+                                                        <!--<core:Title text="General Info"/>-->
+                                                        <Label text="Nc Type" />
+                                                        <ComboBox id="idCombNcType" items="{/NCTYPE_SOSet}" change="onNcrchange">
+                                                            <core:Item key="{Nctype}" text="{NctypeDesc}" />
                                                         </ComboBox>
-														<Label id="idtype" text="In Which Area"/>
-														<ComboBox id="idCombInWhArea" items="{AreaModel>/}" change="onNcrArea">
-															<core:Item key="{AreaModel>Sequencearea}" text="{AreaModel>Area}"/>
-														</ComboBox>
-														<Label text="Plant Code"/>
-														<ComboBox id="idPlntCodeHdr" showSecondaryValues="true" items="{oPlantCodeModel>/}">
-                                                            <core:ListItem key="{oPlantCodeModel>Key}" text="{oPlantCodeModel>Value}" additionalText="{oPlantCodeModel>Description}"/>
-														</ComboBox>
-														<Label text="Product Code"/>
-														<Input id="idInpProdCode" value="{ProductCode}" valueHelpRequest="onVHReqProductCode" showValueHelp="true"/>
-														<Label text="Work Instruction"/>
-														<Input id="idInpWrkIns" value="{WorkInstruction}" valueHelpRequest="_onValueHelpReqWorkIns" showValueHelp="true"/>
-														<Label text="Prod Order"/>
-														<Input id="idInpPrdOrd" value="{ProdOrder}" valueHelpRequest="onVHReqPrdOrd" showValueHelp="true"/>
-														<!--	<Label text="Last Operation"/>
+                                                        <Label text="Prioity" />
+                                                        <ComboBox id="idComBoxPriority" selectedKey="normal" showSecondaryValues="true" items="{oPriorityModel>/}">
+                                                            <core:ListItem key="{oPriorityModel>Key}" text="{oPriorityModel>Value}" additionalText="{oPriorityModel>Description}" />
+                                                        </ComboBox>
+                                                        <Label id="idtype" text="In Which Area" />
+                                                        <ComboBox id="idCombInWhArea" items="{AreaModel>/}" change="onNcrArea">
+                                                            <core:Item key="{AreaModel>Sequencearea}" text="{AreaModel>Area}" />
+                                                        </ComboBox>
+                                                        <Label text="Plant Code" />
+                                                        <ComboBox id="idPlntCodeHdr" showSecondaryValues="true" items="{oPlantCodeModel>/}">
+                                                            <core:ListItem key="{oPlantCodeModel>Key}" text="{oPlantCodeModel>Value}" additionalText="{oPlantCodeModel>Description}" />
+                                                        </ComboBox>
+                                                        <Label text="Product Code" />
+                                                        <Input id="idInpProdCode" value="{ProductCode}" valueHelpRequest="onVHReqProductCode" showValueHelp="true" />
+                                                        <Label text="Work Instruction" />
+                                                        <Input id="idInpWrkIns" value="{WorkInstruction}" valueHelpRequest="_onValueHelpReqWorkIns" showValueHelp="true" />
+                                                        <Label text="Prod Order" />
+                                                        <Input id="idInpPrdOrd" value="{ProdOrder}" valueHelpRequest="onVHReqPrdOrd" showValueHelp="true" />
+                                                        <!--	<Label text="Last Operation"/>
 														<Input width="230px"/>-->
-														<Label text="Supersedes NC"/>
-														<Input id="idInpSupNC" value="{SupercedesNC}" valueHelpRequest="onVHReqSupNC" showValueHelp="true"/>
-														<Label text="Superseded By"/>
-														<Input id="idInpSupBy" value="{SupercededByNC}" valueHelpRequest="onVHReqSupBy" showValueHelp="true"/>
-														<Label text="Reference NC"/>
-														<Input id="idInpRefNC" value="{ReferenceNC}" valueHelpRequest="onVHReqRefNC" showValueHelp="true"/>
-														<Label text="Create Date"/>
-														<DatePicker value="{path:'CreateDate', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'medium', strictParsing: true}}" editable="false"/>
-														<Label text="Closed Date"/>
-														<Text text="{CloseDate}"/>
-														<!-- <Label text="Existing ATS"/>
+                                                        <Label text="Supersedes NC" />
+                                                        <Input id="idInpSupNC" value="{SupercedesNC}" valueHelpRequest="onVHReqSupNC" showValueHelp="true" />
+                                                        <Label text="Superseded By" />
+                                                        <Input id="idInpSupBy" value="{SupercededByNC}" valueHelpRequest="onVHReqSupBy" showValueHelp="true" />
+                                                        <Label text="Reference NC" />
+                                                        <Input id="idInpRefNC" value="{ReferenceNC}" valueHelpRequest="onVHReqRefNC" showValueHelp="true" />
+                                                        <Label text="Create Date" />
+                                                        <DatePicker value="{path:'CreateDate', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'medium', strictParsing: true}}" editable="false" />
+                                                        <Label text="Closed Date" />
+                                                        <Text text="{CloseDate}" />
+                                                        <!-- <Label text="Existing ATS"/>
 														<Switch id="idSwitchExstATS" state="{ExistingATS}" customTextOn="Yes" customTextOff="No"> -->
-															<!--<layoutData>-->
-															<!--	<FlexItemData growFactor="1"/>-->
-															<!--</layoutData>-->
-														<!-- </Switch> -->
-                                                        <Label text="Link to Aircraft"/>
-														<CheckBox id="idChkBoxLinkAircraft" enabled="false"/>
-                                                        <Label text="Aircraft"/>
-														<Input id="idInpAircraft" value="{Aircraftno}" valueHelpRequest="onVHReqAircraft" showValueHelp="true" change="handleAircraftChange"/>
+                                                        <!--<layoutData>-->
+                                                        <!--	<FlexItemData growFactor="1"/>-->
+                                                        <!--</layoutData>-->
+                                                        <!-- </Switch> -->
+                                                        <Label text="Link to Aircraft" />
+                                                        <CheckBox id="idChkBoxLinkAircraft" enabled="false" />
+                                                        <Label text="Aircraft" />
+                                                        <Input id="idInpAircraft" value="{Aircraftno}" valueHelpRequest="onVHReqAircraft" showValueHelp="true" change="handleAircraftChange" />
                                                         <!-- <Label text="Supplier Name"/>
 														<Input value=""/>
                                                         <Label text="Supplier SAP"/>
 														<Input value=""/> -->
-													</f:content>
-												</f:SimpleForm>
-											</l:BlockLayoutCell>
-											<l:BlockLayoutCell width="100" backgroundColorShade="ShadeA" backgroundColorSet="ColorSet1" class="formcolor">
-												<!--</VBox>-->
-												<!--<VBox>-->
-												<f:SimpleForm editable="true" title="Component Affected" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12"
-													adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" singleContainerFullSize="false"
-													class="sapUiSizeCompact" labelMinWidth="1px">
-													<f:content>
-														<Label text="Part Number"/>
-<!-- Added change event to handle the business logic - Code Start  -->                                                          
-														<Input id="idInpPartNo" value="{PartNumber}" valueHelpRequest=".onOpenVHPartNo"  showValueHelp="true" change="handleChangePartNo"/>
-<!-- Added change event to handle the business logic - Code End  -->														
-                                                        <Label text="Part Description"/>
-														<Input id="idInpStatPartDesc" value="{PartDescription}" editable="false"/>
-                                                        <Label text="Serial No"/>
-<!-- Added MultiInput control for serial number and traceability fields  - Code Start  -->                                                       
+                                                    </f:content>
+                                                </f:SimpleForm>
+                                            </l:BlockLayoutCell>
+                                            <l:BlockLayoutCell width="100" backgroundColorShade="ShadeA" backgroundColorSet="ColorSet1" class="formcolor">
+                                                <!--</VBox>-->
+                                                <!--<VBox>-->
+                                                <f:SimpleForm
+                                                    editable="true"
+                                                    title="Component Affected"
+                                                    labelSpanXL="4"
+                                                    labelSpanL="4"
+                                                    labelSpanM="12"
+                                                    labelSpanS="12"
+                                                    adjustLabelSpan="false"
+                                                    emptySpanXL="0"
+                                                    emptySpanL="0"
+                                                    emptySpanM="0"
+                                                    emptySpanS="0"
+                                                    singleContainerFullSize="false"
+                                                    class="sapUiSizeCompact"
+                                                    labelMinWidth="1px"
+                                                >
+                                                    <f:content>
+                                                        <Label text="Part Number" />
+                                                        <!-- Added change event to handle the business logic - Code Start  -->
+                                                        <Input id="idInpPartNo" value="{PartNumber}" valueHelpRequest=".onOpenVHPartNo" showValueHelp="true" change="handleChangePartNo" />
+                                                        <!-- Added change event to handle the business logic - Code End  -->
+                                                        <Label text="Part Description" />
+                                                        <Input id="idInpStatPartDesc" value="{PartDescription}" editable="false" />
+                                                        <Label text="Serial No" />
+                                                        <!-- Added MultiInput control for serial number and traceability fields  - Code Start  -->
                                                         <MultiInput id="idMNInputSN" showValueHelp="true" valueHelpRequest=".onOpenVHSerNo" tokenUpdate="_onTokenUpdateSN">
                                                             <!-- <core:Item key="{oSerialModel>ProductId}" text="{oSerialModel>Name} ({oSerialModel>ProductId})" /> -->
                                                         </MultiInput>
-                                                        <Label text="Traceability No"/>
-                                                        <MultiInput id="idMNInputTN" showValueHelp="true" valueHelpRequest=".onOpenVHTrcNo" tokenUpdate="_onTokenUpdateTN">
-                                                        </MultiInput>
-<!-- Added MultiInput control for serial number and traceability fields  - Code End  -->
-														<!--<Label/>-->
-														<!--<Input id="idInputSN" change="onChangeSN" placeholder="Component Serial No."/>-->
-														<!--<Input placeholder="Traceability No."/>-->
-														<!--<Label/>-->
-														<!--<List id="list" mode="Delete" delete="handleDelete" enableBusyIndicator="true" growing="true" items="{/}">-->
-														<!--	<CustomListItem>-->
-														<!--		<VBox class="sapUiSmallMarginBegin">-->
-														<!--			<Label text="{SN}"/>-->
-														<!--		</VBox>-->
-														<!--	</CustomListItem>-->
-														<!--</List>-->
-														<!--<List id="list1" mode="Delete" delete="handleDelete" enableBusyIndicator="true" growing="true" items="">-->
-														<!--	<StandardListItem description="Abcd"/>-->
-														<!--	<StandardListItem description="Abcde"/>-->
-														<!--</List>-->
-													</f:content>
-												</f:SimpleForm>
-												<!-- <FlexBox direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Center">
+                                                        <Label text="Traceability No" />
+                                                        <MultiInput id="idMNInputTN" showValueHelp="true" valueHelpRequest=".onOpenVHTrcNo" tokenUpdate="_onTokenUpdateTN" />
+                                                        <!-- Added MultiInput control for serial number and traceability fields  - Code End  -->
+                                                        <!--<Label/>-->
+                                                        <!--<Input id="idInputSN" change="onChangeSN" placeholder="Component Serial No."/>-->
+                                                        <!--<Input placeholder="Traceability No."/>-->
+                                                        <!--<Label/>-->
+                                                        <!--<List id="list" mode="Delete" delete="handleDelete" enableBusyIndicator="true" growing="true" items="{/}">-->
+                                                        <!--	<CustomListItem>-->
+                                                        <!--		<VBox class="sapUiSmallMarginBegin">-->
+                                                        <!--			<Label text="{SN}"/>-->
+                                                        <!--		</VBox>-->
+                                                        <!--	</CustomListItem>-->
+                                                        <!--</List>-->
+                                                        <!--<List id="list1" mode="Delete" delete="handleDelete" enableBusyIndicator="true" growing="true" items="">-->
+                                                        <!--	<StandardListItem description="Abcd"/>-->
+                                                        <!--	<StandardListItem description="Abcde"/>-->
+                                                        <!--</List>-->
+                                                    </f:content>
+                                                </f:SimpleForm>
+                                                <!-- <FlexBox direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Center">
 													<VBox class="sapUiSizeCompact sapUiTinyMarginBegin sapUiTinyMarginEnd">
 														<List width="auto" id="list" itemPress="onListItemPress" mode="Delete" delete="handleDelete" enableBusyIndicator="true" growing="true" items="{/}">
 															<StandardListItem title="{SN}"/>
@@ -197,539 +223,615 @@
 													</VBox>
 													
 												</FlexBox> -->
-												<f:SimpleForm editable="true" labelSpanXL="4" labelSpanL="4" title="Component Location" labelSpanM="12" labelSpanS="12"
-													adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2"
-													singleContainerFullSize="false" class="sapUiSizeCompact" labelMinWidth="1px">
-													<f:content>
-														<!--<core:Title text="Component Location"/>-->
-														<Label text="NC Created By"/>
-														<MultiInput id="idInpNCCrtBy" value="{NCCreatedBy}" valueHelpRequest=".onOpenVHNCCreated" showValueHelp="true"/>
-														<Label text="NC Detected At"/>
-														<MultiInput id="idInpNCDetAt" value="{NCDetectedAt}" valueHelpRequest=".onOpenVHNCDetected" showValueHelp="true"/>
-														<Label text="Bin Location"/>
-														<Input id="idInpBinLoc" value="{Binlocation}" valueHelpRequest=".onOpenVHBinLoc" showValueHelp="true"/>
-														<Label text="Drop Point"/>
-														<Input id="idInpDrpPt" value="{DropPoint}" valueHelpRequest=".onOpenVHDrpPt" showValueHelp="true"/>
-													</f:content>
-												</f:SimpleForm>
-											</l:BlockLayoutCell>
-										</l:BlockLayoutRow>
-									</l:BlockLayout>
-									<!--	</VBox>-->
-									<!--</HBox>-->
-									<Table items="" class="formcolor1" growing="true" mode="MultiSelect" growingThreshold="100" growingScrollToLoad="false"
-										includeItemInSelection="true">
-										<headerToolbar>
-											<Toolbar>
-												<Title text="Discrepancy" level="H2"/>
-												<ToolbarSpacer/>
-												<Button type="Emphasized" icon="sap-icon://copy" press="onCopyDiscrepancy"/>
-												<Button type="Emphasized" icon="sap-icon://add" press="onDiscrepancy"/>
-											</Toolbar>
-										</headerToolbar>
-										<columns>
-											<Column hAlign="Left">
-												<Text text="Item Number"></Text>
-											</Column>
-											<Column hAlign="Left">
-												<Text text="Status"></Text>
-											</Column>
-											<!--	<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
+                                                <f:SimpleForm
+                                                    editable="true"
+                                                    labelSpanXL="4"
+                                                    labelSpanL="4"
+                                                    title="Component Location"
+                                                    labelSpanM="12"
+                                                    labelSpanS="12"
+                                                    adjustLabelSpan="false"
+                                                    emptySpanXL="0"
+                                                    emptySpanL="0"
+                                                    emptySpanM="0"
+                                                    emptySpanS="0"
+                                                    columnsXL="2"
+                                                    columnsL="2"
+                                                    columnsM="2"
+                                                    singleContainerFullSize="false"
+                                                    class="sapUiSizeCompact"
+                                                    labelMinWidth="1px"
+                                                >
+                                                    <f:content>
+                                                        <!--<core:Title text="Component Location"/>-->
+                                                        <Label text="NC Created By" />
+                                                        <MultiInput id="idInpNCCrtBy" value="{NCCreatedBy}" valueHelpRequest=".onOpenVHNCCreated" showValueHelp="true" />
+                                                        <Label text="NC Detected At" />
+                                                        <MultiInput id="idInpNCDetAt" value="{NCDetectedAt}" valueHelpRequest=".onOpenVHNCDetected" showValueHelp="true" />
+                                                        <Label text="Bin Location" />
+                                                        <Input id="idInpBinLoc" value="{Binlocation}" valueHelpRequest=".onOpenVHBinLoc" showValueHelp="true" />
+                                                        <Label text="Drop Point" />
+                                                        <Input id="idInpDrpPt" value="{DropPoint}" valueHelpRequest=".onOpenVHDrpPt" showValueHelp="true" />
+                                                    </f:content>
+                                                </f:SimpleForm>
+                                            </l:BlockLayoutCell>
+                                        </l:BlockLayoutRow>
+                                    </l:BlockLayout>
+                                    <!--	</VBox>-->
+                                    <!--</HBox>-->
+                                    <Table items="" class="formcolor1" growing="true" mode="MultiSelect" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
+                                        <headerToolbar>
+                                            <Toolbar>
+                                                <Title text="Discrepancy" level="H2" />
+                                                <ToolbarSpacer />
+                                                <Button type="Emphasized" icon="sap-icon://copy" press="onCopyDiscrepancy" />
+                                                <Button type="Emphasized" icon="sap-icon://add" press="onDiscrepancy" />
+                                            </Toolbar>
+                                        </headerToolbar>
+                                        <columns>
+                                            <Column hAlign="Left">
+                                                <Text text="Item Number" />
+                                            </Column>
+                                            <Column hAlign="Left">
+                                                <Text text="Status" />
+                                            </Column>
+                                            <!--	<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
 												<Text text="Current Group"></Text>
 											</Column>-->
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
-												<Text text="Part # Affected"></Text>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
-												<Text text="Part Description"></Text>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
-												<Text text="Reject Qty"></Text>
-											</Column>
-											<!--	<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
+                                                <Text text="Part # Affected" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
+                                                <Text text="Part Description" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
+                                                <Text text="Reject Qty" />
+                                            </Column>
+                                            <!--	<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
 												<Text text="Recurring Count"></Text>
 											</Column>-->
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
-												<Text text="Superseded By"></Text>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
-												<Text text="Open Date"></Text>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
-												<Text text="Closed Date"></Text>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
-												<Text text="Sign Off"></Text>
-											</Column>
-										</columns>
-										<items>
-											<ColumnListItem>
-												<cells>
-													<Text text=""/>
-													<Text text=""/>
-													<Text text=""/>
-													<!--<Text text=""/>-->
-													<Text text=""/>
-													<Text text=""/>
-													<Text text=""/>
-													<Text text=""/>
-													<Text text=""/>
-													<Button icon="sap-icon://log"/>
-												</cells>
-											</ColumnListItem>
-										</items>
-									</Table>
-									<upload:UploadSet instantUpload="true" showIcons="true" uploadEnabled="true" terminationEnabled="true" fileTypes="txt,doc,png"
-										maxFileNameLength="30" maxFileSize="200" mediaTypes="text/plain,application/msword,image/jpeg" uploadUrl="../../../../upload"
-										items="{path: '/items', templateShareable: false}">
-										<upload:toolbar>
-											<OverflowToolbar>
-												<Button icon="sap-icon://attachment" text="Attachments" enabled="false"/>
-												<ToolbarSpacer/>
-											</OverflowToolbar>
-										</upload:toolbar>
-										<upload:items>
-											<upload:UploadSetItem fileName="{fileName}" mediaType="{mediaType}" url="{url}" thumbnailUrl="{thumbnailUrl}"
-												attributes="{path: 'attributes', templateShareable: false}" markers="{path: 'markers', templateShareable: false}"
-												statuses="{path: 'statuses', templateShareable: false}" uploadState="{uploadState}">
-												<upload:attributes>
-													<ObjectAttribute title="{title}" text="{text}" active="{active}"/>
-												</upload:attributes>
-												<upload:markers>
-													<ObjectMarker type="{type}" visibility="{visibility}"/>
-												</upload:markers>
-												<upload:statuses>
-													<ObjectStatus title="{title}" text="{text}" state="{state}" icon="{icon}" active="{active}"/>
-												</upload:statuses>
-											</upload:UploadSetItem>
-										</upload:items>
-									</upload:UploadSet>
-								</ScrollContainer>
-							</IconTabFilter>
-							<IconTabFilter id="iddiscrepancy" text="Discrepancy" key="Discre" visible="true">
-								<ScrollContainer height="100%" width="100%" horizontal="false" vertical="true">
-									<Toolbar class="sapUiSizeCompact">
-										<ToolbarSpacer/>
-										<Label text="Disc. No." design="Bold"/>
-										<ComboBox width="100px"/>
-										<Button type="Emphasized" icon="sap-icon://add" press="onaddDispostion"/>
-									</Toolbar>
-									<l:BlockLayout background="Light">
-										<l:BlockLayoutRow>
-											<l:BlockLayoutCell backgroundColorShade="ShadeA" backgroundColorSet="ColorSet1" width="100" class="formcolor">
-												<f:SimpleForm title="General Info" editable="true" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false"
-													emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false"
-													class="sapUiSizeCompact" labelMinWidth="1px">
-													<f:content>
-														<Label text="Linked To"/>
-														<ComboBox width="230px" items="{/LINK_SOSet}" showSecondaryValues="true">
-															<core:ListItem key="{SequenceArea}" text="{Linkto}" additionalText="{SequenceArea}"/>
-														</ComboBox>
-														<Label text="Liability"/>
-														<Input width="230px"/>
-														<Label text="Partner / Suppilier #"/>
-														<Input width="230px"/>
-														<Label text="Partner / Suppilier Name"/>
-														<Input width="230px"/>
-														<Label text="Supersedes Item"/>
-														<Input width="230px"/>
-														<Label text="Superseded by Item"/>
-														<Input width="230px"/>
-														<Label text="Closed Date"/>
-														<Text text=""/>
-														<Label text="2nd Drop Ship"/>
-														<CheckBox/>
-													</f:content>
-												</f:SimpleForm>
-												<f:SimpleForm editable="true" title=" Part Location on Aircraft" layout="GridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12"
-													labelSpanS="12" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
-													singleContainerFullSize="false" class="sapUiSizeCompact" labelMinWidth="1px">
-													<f:content>
-														<!--<Label text=""/>-->
-														<!--<CheckBox text="OML"/>-->
-														<!--<CheckBox text="IML"/>-->
-														<!--<Label text=""/>-->
-														<!--<CheckBox text="RHS" width="50px"/>-->
-														<!--<CheckBox text="LHS" width="50px"/>-->
-														<!--<Label text="Fuselage Station(X)"/>-->
-														<!--<Input width="230px" class="sapUiMediumMarginEnd"/>-->
-														<!--<Label text="Buttock Line(Y)" class="sapUiMediumMarginEnd"/>-->
-														<!--<Input width="230px" class="sapUiMediumMarginEnd"/>-->
-														<!--<Label text="Water Line(Z)" class="sapUiMediumMarginEnd"/>-->
-														<!--<Input width="230px" class="sapUiMediumMarginEnd"/>-->
-														<!--<Label text="Frame" class="sapUiMediumMarginTop"/>-->
-														<!--<Input width="230px" class="sapUiMediumMarginTop"/>-->
-														<!--<Label text="Buttock Line"/>-->
-														<!--<Input width="230px"/>-->
-														<!--<Label text="Water Line"/>-->
-														<!--<Input width="230px"/>-->
-														<Label labelFor="rbg4" text="Select"/>
-														<ComboBox id="rbg" width="200px" selectionChange="onRadioSelectLocation">
-															<core:Item key="fuse0" text="Fuselage"/>
-															<core:Item key="fuse1" text="Fuselage1"/>
-															<core:Item key="fuse2" text="Fuselage2"/>
-															<core:Item key="fuse3" text="Fuselage3"/>
-															<core:Item key="wing" text="Wing"/>
-															<core:Item key="vertical" text="Vertical Empennage"/>
-															<core:Item key="rudder" text="Rudder"/>
-															<core:Item key="horiz" text="Horizontal Empennage"/>
-															<core:Item key="pylon" text="Pylon / Nacelle"/>
-															<core:Item key="others" text="Others"/>
-														</ComboBox >
-														<!--<VBox>-->
-														<!--	<Label/>-->
-														<!--<RadioButtonGroup id="rbg" select="onRadioSelectLocation">-->
-														<!--	<RadioButton id="RB4-1" text="Fuselage"/>-->
-														<!--	<RadioButton id="RB4-2" text="Wing"/>-->
-														<!--	<RadioButton id="RB4-3" text="Vertical Empennage"/>-->
-														<!--	<RadioButton id="RB4-4" text="Rudder"/>-->
-														<!--	<RadioButton id="RB4-5" text="Horizontal Empennage"/>-->
-														<!--	<RadioButton id="RB4-6" text="Pylon / Nacelle"/>-->
-														<!--	<RadioButton id="RB4-7" text="Others"/>-->
-														<!--</RadioButtonGroup>-->
-														<!--</VBox>-->
-													</f:content>
-												</f:SimpleForm>
-												<FlexBox class="columns" direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Start">
-													<HBox id="idFuselage" visible="false" class="sapUiSizeCompact">
-														<VBox>
-															<CheckBox text="Fuselage Station(FX) (X)"/>
-															<CheckBox text="Fuselage Frame Station(FR)"/>
-															<CheckBox text="Fuselage Stringer"/>
-															<CheckBox text="Buttock Line(BL) (Y)"/>
-															<CheckBox text="Water Line(WL) (Z)"/>
-															<CheckBox text="OML / IML"/>
-														</VBox>
-														<VBox>
-															<RadioButton text="at"/>
-															<RadioButton text="at"/>
-															<RadioButton text="at"/>
-															<RadioButton text="at"/>
-															<RadioButton text="at"/>
-															<CheckBox text="OML "/>
-														</VBox>
-														<VBox>
-															<RadioButton text="between"/>
-															<RadioButton text="between"/>
-															<RadioButton text="between"/>
-															<RadioButton text="between"/>
-															<RadioButton text="between"/>
-															<CheckBox text="IML"/>
-														</VBox>
-														<VBox>
-															<Input class="sapUiSmallMarginBeginEnd"/>
-															<Input class="sapUiSmallMarginBeginEnd"/>
-															<Input class="sapUiSmallMarginBeginEnd"/>
-															<Input class="sapUiSmallMarginBeginEnd"/>
-															<Input class="sapUiSmallMarginBeginEnd"/>
-														</VBox>
-														<VBox>
-															<Text/>
-															<Text/>
-															<HBox class="sapUiSmallMarginBeginEnd"><RadioButton text="L"/>
-																<RadioButton text="R"/></HBox>
-															<HBox class="sapUiSmallMarginBeginEnd"><RadioButton text="L"/>
-																<RadioButton text="R"/></HBox>
-															<Text/>
-														</VBox>
-														<VBox>
-															<Input class="sapUiSmallMarginBeginEnd"/>
-															<Input class="sapUiSmallMarginBeginEnd"/>
-															<Input class="sapUiSmallMarginBeginEnd"/>
-															<Input class="sapUiSmallMarginBeginEnd"/>
-															<Input class="sapUiSmallMarginBeginEnd"/>
-														</VBox>
-														<VBox>
-															<Text/>
-															<Text/>
-															<HBox class="sapUiSmallMarginBeginEnd"><RadioButton text="L"/>
-																<RadioButton text="R"/></HBox>
-															<HBox class="sapUiSmallMarginBeginEnd"><RadioButton text="L"/>
-																<RadioButton text="R"/></HBox>
-															<Text/>
-														</VBox>
-													</HBox>
-													<HBox id="idWing" visible="false" class="sapUiSizeCompact">
-														<VBox>
-															<CheckBox text="LHS /RHS"/>
-															<CheckBox text=" Wing Station(WS)"/>
-															<CheckBox text="Wing Rib"/>
-															<CheckBox text="OML / IML"/>
-														</VBox>
-														<VBox>
-															<RadioButton text="L"/>
-															<RadioButton text="at"/>
-															<RadioButton text="at"/>
-															<CheckBox text="OML "/>
-														</VBox>
-														<VBox>
-															<RadioButton text="R"/>
-															<RadioButton text="between"/>
-															<RadioButton text="between"/>
-															<CheckBox text="IML"/>
-														</VBox>
-														<VBox>
-															<Text/>
-															<Input width="50px" class="sapUiSmallMarginBeginEnd"/>
-															<Input width="50px" class="sapUiSmallMarginBeginEnd"/>
-															<Text/>
-														</VBox>
-														<VBox>
-															<Text class="sapUiLargeMarginBeginEnd"/>
-															<Text class="sapUiLargeMarginBeginEnd"/>
-															<Text class="sapUiLargeMarginBeginEnd"/>
-															<Text class="sapUiLargeMarginBeginEnd"/>
-														</VBox>
-														<VBox>
-															<Text/>
-															<Input width="50px" class="sapUiSmallMarginBeginEnd"/>
-															<Input width="50px" class="sapUiSmallMarginBeginEnd"/>
-															<Text/>
-														</VBox>
-														<VBox>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-														</VBox>
-													</HBox>
-													<HBox id="idVertical" visible="false" class="sapUiSizeCompact">
-														<VBox>
-															<CheckBox text="LHS /RHS"/>
-															<CheckBox text=" Vertical Empennage Stations(ZV)"/>
-															<CheckBox text="Vertical Empennage Rib"/>
-															<CheckBox text="OML / IML"/>
-														</VBox>
-														<VBox>
-															<RadioButton text="L"/>
-															<RadioButton text="at"/>
-															<RadioButton text="at"/>
-															<CheckBox text="OML "/>
-														</VBox>
-														<VBox>
-															<RadioButton text="R"/>
-															<RadioButton text="between"/>
-															<RadioButton text="between"/>
-															<CheckBox text="IML"/>
-														</VBox>
-														<VBox>
-															<Text/>
-															<Input width="50px" class="sapUiSmallMarginBeginEnd"/>
-															<Input width="50px" class="sapUiSmallMarginBeginEnd"/>
-															<Text/>
-														</VBox>
-														<VBox>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-														</VBox>
-														<VBox>
-															<Text/>
-															<Input width="50px" class="sapUiSmallMarginBeginEnd"/>
-															<Input width="50px" class="sapUiSmallMarginBeginEnd"/>
-															<Text/>
-														</VBox>
-														<VBox>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-														</VBox>
-													</HBox>
-													<HBox id="idRudder" visible="false" class="sapUiSizeCompact">
-														<VBox>
-															<CheckBox text="LHS /RHS"/>
-															<CheckBox text="Rudder Tail Stations(ZVS)"/>
-															<CheckBox text="Rudder Rib"/>
-															<CheckBox text="OML / IML"/>
-														</VBox>
-														<VBox>
-															<RadioButton text="L"/>
-															<RadioButton text="at"/>
-															<RadioButton text="at"/>
-															<CheckBox text="OML "/>
-														</VBox>
-														<VBox>
-															<RadioButton text="R"/>
-															<RadioButton text="between"/>
-															<RadioButton text="between"/>
-															<CheckBox text="IML"/>
-														</VBox>
-														<VBox>
-															<Text/>
-															<Input width="50px" class="sapUiSmallMarginBeginEnd"/>
-															<Input width="50px" class="sapUiSmallMarginBeginEnd"/>
-															<Text/>
-														</VBox>
-														<VBox>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-														</VBox>
-														<VBox>
-															<Text/>
-															<Input width="50px" class="sapUiSmallMarginBeginEnd"/>
-															<Input width="50px" class="sapUiSmallMarginBeginEnd"/>
-															<Text/>
-														</VBox>
-														<VBox>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-														</VBox>
-													</HBox>
-													<HBox id="idHorizontal" visible="false" class="sapUiSizeCompact">
-														<VBox>
-															<CheckBox text="LHS /RHS"/>
-															<CheckBox text="Horizontal Empennage Stations(HSS)"/>
-															<CheckBox text="Horizontal Empennage Rib"/>
-															<CheckBox text="OML / IML"/>
-														</VBox>
-														<VBox>
-															<RadioButton text="L"/>
-															<RadioButton text="at"/>
-															<RadioButton text="at"/>
-															<CheckBox text="OML "/>
-														</VBox>
-														<VBox>
-															<RadioButton text="R"/>
-															<RadioButton text="between"/>
-															<RadioButton text="between"/>
-															<CheckBox text="IML"/>
-														</VBox>
-														<VBox>
-															<Text/>
-															<Input width="100px" class="sapUiSmallMarginBeginEnd"/>
-															<Input width="100px" class="sapUiSmallMarginBeginEnd"/>
-															<Text/>
-														</VBox>
-														<VBox>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-														</VBox>
-														<VBox>
-															<Text/>
-															<Input width="50px" class="sapUiSmallMarginBeginEnd"/>
-															<Input width="50px" class="sapUiSmallMarginBeginEnd"/>
-															<Text/>
-														</VBox>
-														<VBox>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-															<Text class="sapUiSmallMarginBeginEnd"/>
-														</VBox>
-													</HBox>
-													<HBox id="idPlyon" visible="false" class="sapUiSizeCompact">
-														<VBox>
-															<CheckBox text="Fuselage Station(FS) (X)"/>
-															<CheckBox text="Buttock Line(BL) (Y)"/>
-															<CheckBox text="Water Line(WL) (Z)"/>
-															<CheckBox text="OML / IML"/>
-														</VBox>
-														<VBox>
-															<RadioButton text="at"/>
-															<RadioButton text="at"/>
-															<RadioButton text="at"/>
-															<CheckBox text="OML "/>
-														</VBox>
-														<VBox>
-															<RadioButton text="between"/>
-															<RadioButton text="between"/>
-															<RadioButton text="between"/>
-															<CheckBox text="IML"/>
-														</VBox>
-														<VBox>
-															<Input width="50px" class="sapUiSmallMarginBeginEnd"/>
-															<Input width="50px" class="sapUiSmallMarginBeginEnd"/>
-															<Input width="50px" class="sapUiSmallMarginBeginEnd"/>
-															<Text/>
-														</VBox>
-														<VBox>
-															<Text/>
-															<HBox>
-																<RadioButton text="L"/>
-																<RadioButton text="R"/></HBox>
-															<HBox/>
-															<Text/>
-														</VBox>
-														<VBox>
-															<Input width="50px" class="sapUiSmallMarginBeginEnd"/>
-															<Input width="50px" class="sapUiSmallMarginBeginEnd"/>
-															<Input width="50px" class="sapUiSmallMarginBeginEnd"/>
-															<Text/>
-														</VBox>
-														<VBox>
-															<Text/>
-															<HBox >
-																<RadioButton text="L"/>
-																<RadioButton text="R"/></HBox>
-															<HBox/>
-															<Text/>
-														</VBox>
-													</HBox>
-													<HBox id="idOthers" visible="false" class="sapUiSizeCompact">
-														<VBox>
-															<CheckBox text="LHS / RHS"/>
-															<CheckBox text="Fuselage Station(FS) (X)"/>
-															<CheckBox text="Buttock Line(BL) (Y)"/>
-															<CheckBox text="Water Line(WL) (Z)"/>
-															<CheckBox text="OML / IML"/>
-														</VBox>
-														<VBox>
-															<RadioButton text="L"/>
-															<RadioButton text="at"/>
-															<RadioButton text="at"/>
-															<RadioButton text="at"/>
-															<CheckBox text="OML "/>
-														</VBox>
-														<VBox>
-															<RadioButton text="R"/>
-															<RadioButton text="between"/>
-															<RadioButton text="between"/>
-															<RadioButton text="between"/>
-															<CheckBox text="IML"/>
-														</VBox>
-														<VBox>
-															<Text/>
-															<Input width="50px" class="sapUiSmallMarginBeginEnd"/>
-															<Input width="50px" class="sapUiSmallMarginBeginEnd"/>
-															<Input width="50px" class="sapUiSmallMarginBeginEnd"/>
-															<Text/>
-														</VBox>
-														<VBox>
-															<Text/>
-															<Text/>
-															<HBox>
-																<RadioButton text="L"/>
-																<RadioButton text="R"/></HBox>
-															<Text/>
-															<Text/>
-														</VBox>
-														<VBox>
-															<Text/>
-															<Input width="50px" class="sapUiSmallMarginBeginEnd"/>
-															<Input width="50px" class="sapUiSmallMarginBeginEnd"/>
-															<Input width="50px" class="sapUiSmallMarginBeginEnd"/>
-															<Text/>
-														</VBox>
-														<VBox>
-															<Text/>
-															<Text/>
-															<HBox class="sapUiSmallMarginBeginEnd">
-																<RadioButton text="L"/>
-																<RadioButton text="R"/></HBox>
-															<Text/>
-															<Text/>
-														</VBox>
-													</HBox>
-												</FlexBox>
-												<!--	<VBox class="sapUiContentPadding sapUiSizeCompact equalColumns">
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
+                                                <Text text="Superseded By" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
+                                                <Text text="Open Date" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
+                                                <Text text="Closed Date" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
+                                                <Text text="Sign Off" />
+                                            </Column>
+                                        </columns>
+                                        <items>
+                                            <ColumnListItem>
+                                                <cells>
+                                                    <Text text="" />
+                                                    <Text text="" />
+                                                    <Text text="" />
+                                                    <!--<Text text=""/>-->
+                                                    <Text text="" />
+                                                    <Text text="" />
+                                                    <Text text="" />
+                                                    <Text text="" />
+                                                    <Text text="" />
+                                                    <Button icon="sap-icon://log" />
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+                                    <upload:UploadSet
+                                        instantUpload="true"
+                                        showIcons="true"
+                                        uploadEnabled="true"
+                                        terminationEnabled="true"
+                                        fileTypes="txt,doc,png"
+                                        maxFileNameLength="30"
+                                        maxFileSize="200"
+                                        mediaTypes="text/plain,application/msword,image/jpeg"
+                                        uploadUrl="../../../../upload"
+                                        items="{path: '/items', templateShareable: false}"
+                                    >
+                                        <upload:toolbar>
+                                            <OverflowToolbar>
+                                                <Button icon="sap-icon://attachment" text="Attachments" enabled="false" />
+                                                <ToolbarSpacer />
+                                            </OverflowToolbar>
+                                        </upload:toolbar>
+                                        <upload:items>
+                                            <upload:UploadSetItem
+                                                fileName="{fileName}"
+                                                mediaType="{mediaType}"
+                                                url="{url}"
+                                                thumbnailUrl="{thumbnailUrl}"
+                                                attributes="{path: 'attributes', templateShareable: false}"
+                                                markers="{path: 'markers', templateShareable: false}"
+                                                statuses="{path: 'statuses', templateShareable: false}"
+                                                uploadState="{uploadState}"
+                                            >
+                                                <upload:attributes>
+                                                    <ObjectAttribute title="{title}" text="{text}" active="{active}" />
+                                                </upload:attributes>
+                                                <upload:markers>
+                                                    <ObjectMarker type="{type}" visibility="{visibility}" />
+                                                </upload:markers>
+                                                <upload:statuses>
+                                                    <ObjectStatus title="{title}" text="{text}" state="{state}" icon="{icon}" active="{active}" />
+                                                </upload:statuses>
+                                            </upload:UploadSetItem>
+                                        </upload:items>
+                                    </upload:UploadSet>
+                                </ScrollContainer>
+                            </IconTabFilter>
+                            <IconTabFilter id="iddiscrepancy" text="Discrepancy" key="Discre" visible="true">
+                                <ScrollContainer height="100%" width="100%" horizontal="false" vertical="true">
+                                    <Toolbar class="sapUiSizeCompact">
+                                        <ToolbarSpacer />
+                                        <Label text="Disc. No." design="Bold" />
+                                        <ComboBox width="100px" />
+                                        <Button type="Emphasized" icon="sap-icon://add" press="onaddDispostion" />
+                                    </Toolbar>
+                                    <l:BlockLayout background="Light">
+                                        <l:BlockLayoutRow>
+                                            <l:BlockLayoutCell backgroundColorShade="ShadeA" backgroundColorSet="ColorSet1" width="100" class="formcolor">
+                                                <f:SimpleForm
+                                                    title="General Info"
+                                                    editable="true"
+                                                    labelSpanXL="4"
+                                                    labelSpanL="4"
+                                                    labelSpanM="12"
+                                                    labelSpanS="12"
+                                                    adjustLabelSpan="false"
+                                                    emptySpanXL="0"
+                                                    emptySpanL="0"
+                                                    emptySpanM="0"
+                                                    emptySpanS="0"
+                                                    columnsXL="2"
+                                                    columnsL="2"
+                                                    columnsM="2"
+                                                    singleContainerFullSize="false"
+                                                    class="sapUiSizeCompact"
+                                                    labelMinWidth="1px"
+                                                >
+                                                    <f:content>
+                                                        <Label text="Linked To" />
+                                                        <ComboBox width="230px" items="{/LINK_SOSet}" showSecondaryValues="true">
+                                                            <core:ListItem key="{SequenceArea}" text="{Linkto}" additionalText="{SequenceArea}" />
+                                                        </ComboBox>
+                                                        <Label text="Liability" />
+                                                        <Input width="230px" />
+                                                        <Label text="Partner / Suppilier #" />
+                                                        <Input width="230px" />
+                                                        <Label text="Partner / Suppilier Name" />
+                                                        <Input width="230px" />
+                                                        <Label text="Supersedes Item" />
+                                                        <Input width="230px" />
+                                                        <Label text="Superseded by Item" />
+                                                        <Input width="230px" />
+                                                        <Label text="Closed Date" />
+                                                        <Text text="" />
+                                                        <Label text="2nd Drop Ship" />
+                                                        <CheckBox />
+                                                    </f:content>
+                                                </f:SimpleForm>
+                                                <f:SimpleForm
+                                                    editable="true"
+                                                    title=" Part Location on Aircraft"
+                                                    layout="GridLayout"
+                                                    labelSpanXL="4"
+                                                    labelSpanL="4"
+                                                    labelSpanM="12"
+                                                    labelSpanS="12"
+                                                    adjustLabelSpan="true"
+                                                    emptySpanXL="0"
+                                                    emptySpanL="0"
+                                                    emptySpanM="0"
+                                                    emptySpanS="0"
+                                                    columnsXL="1"
+                                                    columnsL="1"
+                                                    columnsM="1"
+                                                    singleContainerFullSize="false"
+                                                    class="sapUiSizeCompact"
+                                                    labelMinWidth="1px"
+                                                >
+                                                    <f:content>
+                                                        <!--<Label text=""/>-->
+                                                        <!--<CheckBox text="OML"/>-->
+                                                        <!--<CheckBox text="IML"/>-->
+                                                        <!--<Label text=""/>-->
+                                                        <!--<CheckBox text="RHS" width="50px"/>-->
+                                                        <!--<CheckBox text="LHS" width="50px"/>-->
+                                                        <!--<Label text="Fuselage Station(X)"/>-->
+                                                        <!--<Input width="230px" class="sapUiMediumMarginEnd"/>-->
+                                                        <!--<Label text="Buttock Line(Y)" class="sapUiMediumMarginEnd"/>-->
+                                                        <!--<Input width="230px" class="sapUiMediumMarginEnd"/>-->
+                                                        <!--<Label text="Water Line(Z)" class="sapUiMediumMarginEnd"/>-->
+                                                        <!--<Input width="230px" class="sapUiMediumMarginEnd"/>-->
+                                                        <!--<Label text="Frame" class="sapUiMediumMarginTop"/>-->
+                                                        <!--<Input width="230px" class="sapUiMediumMarginTop"/>-->
+                                                        <!--<Label text="Buttock Line"/>-->
+                                                        <!--<Input width="230px"/>-->
+                                                        <!--<Label text="Water Line"/>-->
+                                                        <!--<Input width="230px"/>-->
+                                                        <Label labelFor="rbg4" text="Select" />
+                                                        <ComboBox id="rbg" width="200px" selectionChange="onRadioSelectLocation">
+                                                            <core:Item key="fuse0" text="Fuselage" />
+                                                            <core:Item key="fuse1" text="Fuselage1" />
+                                                            <core:Item key="fuse2" text="Fuselage2" />
+                                                            <core:Item key="fuse3" text="Fuselage3" />
+                                                            <core:Item key="wing" text="Wing" />
+                                                            <core:Item key="vertical" text="Vertical Empennage" />
+                                                            <core:Item key="rudder" text="Rudder" />
+                                                            <core:Item key="horiz" text="Horizontal Empennage" />
+                                                            <core:Item key="pylon" text="Pylon / Nacelle" />
+                                                            <core:Item key="others" text="Others" />
+                                                        </ComboBox>
+                                                        <!--<VBox>-->
+                                                        <!--	<Label/>-->
+                                                        <!--<RadioButtonGroup id="rbg" select="onRadioSelectLocation">-->
+                                                        <!--	<RadioButton id="RB4-1" text="Fuselage"/>-->
+                                                        <!--	<RadioButton id="RB4-2" text="Wing"/>-->
+                                                        <!--	<RadioButton id="RB4-3" text="Vertical Empennage"/>-->
+                                                        <!--	<RadioButton id="RB4-4" text="Rudder"/>-->
+                                                        <!--	<RadioButton id="RB4-5" text="Horizontal Empennage"/>-->
+                                                        <!--	<RadioButton id="RB4-6" text="Pylon / Nacelle"/>-->
+                                                        <!--	<RadioButton id="RB4-7" text="Others"/>-->
+                                                        <!--</RadioButtonGroup>-->
+                                                        <!--</VBox>-->
+                                                    </f:content>
+                                                </f:SimpleForm>
+                                                <FlexBox class="columns" direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Start">
+                                                    <HBox id="idFuselage" visible="false" class="sapUiSizeCompact">
+                                                        <VBox>
+                                                            <CheckBox text="Fuselage Station(FX) (X)" />
+                                                            <CheckBox text="Fuselage Frame Station(FR)" />
+                                                            <CheckBox text="Fuselage Stringer" />
+                                                            <CheckBox text="Buttock Line(BL) (Y)" />
+                                                            <CheckBox text="Water Line(WL) (Z)" />
+                                                            <CheckBox text="OML / IML" />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <RadioButton text="at" />
+                                                            <RadioButton text="at" />
+                                                            <RadioButton text="at" />
+                                                            <RadioButton text="at" />
+                                                            <RadioButton text="at" />
+                                                            <CheckBox text="OML " />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <RadioButton text="between" />
+                                                            <RadioButton text="between" />
+                                                            <RadioButton text="between" />
+                                                            <RadioButton text="between" />
+                                                            <RadioButton text="between" />
+                                                            <CheckBox text="IML" />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Input class="sapUiSmallMarginBeginEnd" />
+                                                            <Input class="sapUiSmallMarginBeginEnd" />
+                                                            <Input class="sapUiSmallMarginBeginEnd" />
+                                                            <Input class="sapUiSmallMarginBeginEnd" />
+                                                            <Input class="sapUiSmallMarginBeginEnd" />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text />
+                                                            <Text />
+                                                            <HBox class="sapUiSmallMarginBeginEnd">
+                                                                <RadioButton text="L" />
+                                                                <RadioButton text="R" />
+                                                            </HBox>
+                                                            <HBox class="sapUiSmallMarginBeginEnd">
+                                                                <RadioButton text="L" />
+                                                                <RadioButton text="R" />
+                                                            </HBox>
+                                                            <Text />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Input class="sapUiSmallMarginBeginEnd" />
+                                                            <Input class="sapUiSmallMarginBeginEnd" />
+                                                            <Input class="sapUiSmallMarginBeginEnd" />
+                                                            <Input class="sapUiSmallMarginBeginEnd" />
+                                                            <Input class="sapUiSmallMarginBeginEnd" />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text />
+                                                            <Text />
+                                                            <HBox class="sapUiSmallMarginBeginEnd">
+                                                                <RadioButton text="L" />
+                                                                <RadioButton text="R" />
+                                                            </HBox>
+                                                            <HBox class="sapUiSmallMarginBeginEnd">
+                                                                <RadioButton text="L" />
+                                                                <RadioButton text="R" />
+                                                            </HBox>
+                                                            <Text />
+                                                        </VBox>
+                                                    </HBox>
+                                                    <HBox id="idWing" visible="false" class="sapUiSizeCompact">
+                                                        <VBox>
+                                                            <CheckBox text="LHS /RHS" />
+                                                            <CheckBox text=" Wing Station(WS)" />
+                                                            <CheckBox text="Wing Rib" />
+                                                            <CheckBox text="OML / IML" />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <RadioButton text="L" />
+                                                            <RadioButton text="at" />
+                                                            <RadioButton text="at" />
+                                                            <CheckBox text="OML " />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <RadioButton text="R" />
+                                                            <RadioButton text="between" />
+                                                            <RadioButton text="between" />
+                                                            <CheckBox text="IML" />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text />
+                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Text />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text class="sapUiLargeMarginBeginEnd" />
+                                                            <Text class="sapUiLargeMarginBeginEnd" />
+                                                            <Text class="sapUiLargeMarginBeginEnd" />
+                                                            <Text class="sapUiLargeMarginBeginEnd" />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text />
+                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Text />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                        </VBox>
+                                                    </HBox>
+                                                    <HBox id="idVertical" visible="false" class="sapUiSizeCompact">
+                                                        <VBox>
+                                                            <CheckBox text="LHS /RHS" />
+                                                            <CheckBox text=" Vertical Empennage Stations(ZV)" />
+                                                            <CheckBox text="Vertical Empennage Rib" />
+                                                            <CheckBox text="OML / IML" />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <RadioButton text="L" />
+                                                            <RadioButton text="at" />
+                                                            <RadioButton text="at" />
+                                                            <CheckBox text="OML " />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <RadioButton text="R" />
+                                                            <RadioButton text="between" />
+                                                            <RadioButton text="between" />
+                                                            <CheckBox text="IML" />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text />
+                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Text />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text />
+                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Text />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                        </VBox>
+                                                    </HBox>
+                                                    <HBox id="idRudder" visible="false" class="sapUiSizeCompact">
+                                                        <VBox>
+                                                            <CheckBox text="LHS /RHS" />
+                                                            <CheckBox text="Rudder Tail Stations(ZVS)" />
+                                                            <CheckBox text="Rudder Rib" />
+                                                            <CheckBox text="OML / IML" />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <RadioButton text="L" />
+                                                            <RadioButton text="at" />
+                                                            <RadioButton text="at" />
+                                                            <CheckBox text="OML " />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <RadioButton text="R" />
+                                                            <RadioButton text="between" />
+                                                            <RadioButton text="between" />
+                                                            <CheckBox text="IML" />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text />
+                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Text />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text />
+                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Text />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                        </VBox>
+                                                    </HBox>
+                                                    <HBox id="idHorizontal" visible="false" class="sapUiSizeCompact">
+                                                        <VBox>
+                                                            <CheckBox text="LHS /RHS" />
+                                                            <CheckBox text="Horizontal Empennage Stations(HSS)" />
+                                                            <CheckBox text="Horizontal Empennage Rib" />
+                                                            <CheckBox text="OML / IML" />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <RadioButton text="L" />
+                                                            <RadioButton text="at" />
+                                                            <RadioButton text="at" />
+                                                            <CheckBox text="OML " />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <RadioButton text="R" />
+                                                            <RadioButton text="between" />
+                                                            <RadioButton text="between" />
+                                                            <CheckBox text="IML" />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text />
+                                                            <Input width="100px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="100px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Text />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text />
+                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Text />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                        </VBox>
+                                                    </HBox>
+                                                    <HBox id="idPlyon" visible="false" class="sapUiSizeCompact">
+                                                        <VBox>
+                                                            <CheckBox text="Fuselage Station(FS) (X)" />
+                                                            <CheckBox text="Buttock Line(BL) (Y)" />
+                                                            <CheckBox text="Water Line(WL) (Z)" />
+                                                            <CheckBox text="OML / IML" />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <RadioButton text="at" />
+                                                            <RadioButton text="at" />
+                                                            <RadioButton text="at" />
+                                                            <CheckBox text="OML " />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <RadioButton text="between" />
+                                                            <RadioButton text="between" />
+                                                            <RadioButton text="between" />
+                                                            <CheckBox text="IML" />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Text />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text />
+                                                            <HBox>
+                                                                <RadioButton text="L" />
+                                                                <RadioButton text="R" />
+                                                            </HBox>
+                                                            <HBox />
+                                                            <Text />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Text />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text />
+                                                            <HBox>
+                                                                <RadioButton text="L" />
+                                                                <RadioButton text="R" />
+                                                            </HBox>
+                                                            <HBox />
+                                                            <Text />
+                                                        </VBox>
+                                                    </HBox>
+                                                    <HBox id="idOthers" visible="false" class="sapUiSizeCompact">
+                                                        <VBox>
+                                                            <CheckBox text="LHS / RHS" />
+                                                            <CheckBox text="Fuselage Station(FS) (X)" />
+                                                            <CheckBox text="Buttock Line(BL) (Y)" />
+                                                            <CheckBox text="Water Line(WL) (Z)" />
+                                                            <CheckBox text="OML / IML" />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <RadioButton text="L" />
+                                                            <RadioButton text="at" />
+                                                            <RadioButton text="at" />
+                                                            <RadioButton text="at" />
+                                                            <CheckBox text="OML " />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <RadioButton text="R" />
+                                                            <RadioButton text="between" />
+                                                            <RadioButton text="between" />
+                                                            <RadioButton text="between" />
+                                                            <CheckBox text="IML" />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text />
+                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Text />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text />
+                                                            <Text />
+                                                            <HBox>
+                                                                <RadioButton text="L" />
+                                                                <RadioButton text="R" />
+                                                            </HBox>
+                                                            <Text />
+                                                            <Text />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text />
+                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Text />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text />
+                                                            <Text />
+                                                            <HBox class="sapUiSmallMarginBeginEnd">
+                                                                <RadioButton text="L" />
+                                                                <RadioButton text="R" />
+                                                            </HBox>
+                                                            <Text />
+                                                            <Text />
+                                                        </VBox>
+                                                    </HBox>
+                                                </FlexBox>
+                                                <!--	<VBox class="sapUiContentPadding sapUiSizeCompact equalColumns">
 													<FlexBox class="columns" direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Start">
 														<CheckBox text="Fuselage Station(FX) (X)"/>
 														<RadioButton text="at"/>
@@ -790,19 +892,36 @@
 														<CheckBox text="IML"/>
 													</FlexBox>
 												</VBox>-->
-											</l:BlockLayoutCell>
-											<l:BlockLayoutCell width="100" backgroundColorShade="ShadeA" backgroundColorSet="ColorSet1" class="formcolor">
-												<f:SimpleForm id="ff" title="Discrepancy Parts" editable="true" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12"
-													adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2"
-													singleContainerFullSize="false" class="sapUiSizeCompact" labelMinWidth="1px">
-													<f:content>
-														<!--<core:Title text="Discrepancy Parts"/>-->
-														<Label text="Part Number"/>
-														<Input value="79000-750-002-29780" width="230px"/>
-														<Label text="Part Description"/>
-														<!--<TextArea value="Hose Assembly" editable="false"/>-->
-														<ObjectStatus text="Hose Assembly" state="Information"/>
-														<!--	<Label/>
+                                            </l:BlockLayoutCell>
+                                            <l:BlockLayoutCell width="100" backgroundColorShade="ShadeA" backgroundColorSet="ColorSet1" class="formcolor">
+                                                <f:SimpleForm
+                                                    id="ff"
+                                                    title="Discrepancy Parts"
+                                                    editable="true"
+                                                    labelSpanXL="4"
+                                                    labelSpanL="4"
+                                                    labelSpanM="12"
+                                                    labelSpanS="12"
+                                                    adjustLabelSpan="false"
+                                                    emptySpanXL="0"
+                                                    emptySpanL="0"
+                                                    emptySpanM="0"
+                                                    emptySpanS="0"
+                                                    columnsXL="2"
+                                                    columnsL="2"
+                                                    columnsM="2"
+                                                    singleContainerFullSize="false"
+                                                    class="sapUiSizeCompact"
+                                                    labelMinWidth="1px"
+                                                >
+                                                    <f:content>
+                                                        <!--<core:Title text="Discrepancy Parts"/>-->
+                                                        <Label text="Part Number" />
+                                                        <Input value="79000-750-002-29780" width="230px" />
+                                                        <Label text="Part Description" />
+                                                        <!--<TextArea value="Hose Assembly" editable="false"/>-->
+                                                        <ObjectStatus text="Hose Assembly" state="Information" />
+                                                        <!--	<Label/>
 														<Input id="didInputSN" change="onChangeSN" placeholder="Component Serial No."/><Input placeholder="Traceability No."/>
 														<Label/>
 														<List id="dlist" mode="Delete" delete="handleDelete" enableBusyIndicator="true" growing="true" items="{/}">
@@ -816,25 +935,23 @@
 															<StandardListItem description="Abcd"/>
 															<StandardListItem description="Abcde"/>
 														</List>-->
-														<Label text="Quantity Inspected"/>
-														<HBox>
-															<Input width="80px"/>
-															<Input width="60px" class="sapUiTinyMarginBegin" placeholder="UOM"/>
-														</HBox>
-														<Label text="Quantity Rejected"/>
-														<HBox>
-															<Input width="80px"/>
-															<Input width="60px" class="sapUiTinyMarginBegin" placeholder="UOM"/>
-														</HBox>
-                                                        <Label text="Serial No"/>
-                                                        <MultiInput id="idMNInputSNDisc" showValueHelp="true" valueHelpRequest=".onOpenVHSerNoDisc" width="230px" tokenUpdate="_onTokenUpdateSNDisc">
-                                                        </MultiInput>
-                                                        <Label text="Traceability No"/>
-                                                        <MultiInput id="idMNInputTNDisc" showValueHelp="true" valueHelpRequest=".onOpenVHTrcNoDisc" width="230px" tokenUpdate="_onTokenUpdateTNDisc">
-                                                        </MultiInput>
-													</f:content>
-												</f:SimpleForm>
-												<!--<HBox justifyContent="Center">
+                                                        <Label text="Quantity Inspected" />
+                                                        <HBox>
+                                                            <Input width="80px" />
+                                                            <Input width="60px" class="sapUiTinyMarginBegin" placeholder="UOM" />
+                                                        </HBox>
+                                                        <Label text="Quantity Rejected" />
+                                                        <HBox>
+                                                            <Input width="80px" />
+                                                            <Input width="60px" class="sapUiTinyMarginBegin" placeholder="UOM" />
+                                                        </HBox>
+                                                        <Label text="Serial No" />
+                                                        <MultiInput id="idMNInputSNDisc" showValueHelp="true" valueHelpRequest=".onOpenVHSerNoDisc" width="230px" tokenUpdate="_onTokenUpdateSNDisc" />
+                                                        <Label text="Traceability No" />
+                                                        <MultiInput id="idMNInputTNDisc" showValueHelp="true" valueHelpRequest=".onOpenVHTrcNoDisc" width="230px" tokenUpdate="_onTokenUpdateTNDisc" />
+                                                    </f:content>
+                                                </f:SimpleForm>
+                                                <!--<HBox justifyContent="Center">
 													<VBox class="sapUiSizeCompact sapUiTinyMarginBegin sapUiTinyMarginEnd">
 														<Input id="idInputSN1" valueHelpRequest="helpRequestComponent" showValueHelp="true" change="onChangeSN" placeholder="Component Serial No."/>
 														<List width="auto" id="idlist" mode="Delete" delete="handleDelete" enableBusyIndicator="true" growing="true" items="{/}">
@@ -848,7 +965,7 @@
 														</List>
 													</VBox>
 												</HBox>-->
-												<!-- <FlexBox direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Center">
+                                                <!-- <FlexBox direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Center">
 													<VBox class="sapUiSizeCompact sapUiTinyMarginBegin sapUiTinyMarginEnd">
 														<Table id="dlist1" inset="false" width="200px" items="{/}">
 															<headerToolbar>
@@ -904,490 +1021,590 @@
 														</Table>
 													</VBox>
 												</FlexBox> -->
-												<f:SimpleForm editable="true" title="Discrepancy Details" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12"
-													adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2"
-													singleContainerFullSize="false" class="sapUiSizeCompact" labelMinWidth="1px">
-													<f:content>
-														<!--<core:Title text="Discrepancy Details"/>-->
-														<!--<Label text="MB1B m vt Z11"/>-->
-														<!--<CheckBox text="Might be Unnecessary when bin location fielld in for detail NC"></CheckBox>-->
-														<Label text="Part Received in Quarantine (Z11)" width="200%"/>
-														<CheckBox class="sapUiLargeMarginBegin"/>
-														<Label text="MES Issue"/>
-														<Input width="130px"/>
-														<Label text="CSMS Issue"/>
-														<Input width="130px"/>
-														<!--<HBox>-->
-														<!--class="sapUiTinyMarginBegin sapUiTinyMarginTop"-->
-														<!--<FlexBox direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Center">-->
-														<!--</FlexBox>-->
-														<!--</HBox>-->
-														<!--<Label text="CSMS Issue"/>-->
-														<Label text="Preliminary Cause"/>
-														<ComboBox items="" width="200px">
-															<core:Item text="Human"/>
-															<core:Item text="Technical"/>
-														</ComboBox>
-														<!--<CheckBox text="To be validate with the team"/>-->
-														<Label text="Defect Code"/>
-														<FlexBox direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Center">
-															<Input value="37A4" showValueHelp="true" valueHelpRequest="handleValueHelp" width="100px"/>
-															<!--<Label text=""/>-->
-															<Text class="sapUiTinyMarginBegin" text=" DAMAGE (other than skins) - N/A - BROKEN EDGE "/>
-														</FlexBox>
-														<Label text="Drop Point"/>
-														<Input width="230px"/>
-														<!--<Label text="Liability"/>-->
-														<!--<HBox>-->
-														<!--	<Input width="100px"/>-->
-														<!--	<Input width="130px"/>-->
-														<!--</HBox>-->
-														<!--<Label text="Link To"/>-->
-														<!--<Input width="230px"/>-->
-														<Label text="Is"/>
-														<TextArea/>
-														<Label text="Should be"/>
-														<TextArea/>
-														<Label text="As Per"/>
-														<Input width="230px"/>
-													</f:content>
-												</f:SimpleForm>
-											</l:BlockLayoutCell>
-										</l:BlockLayoutRow>
-									</l:BlockLayout>
-									<upload:UploadSet instantUpload="true" showIcons="true" uploadEnabled="true" terminationEnabled="true" fileTypes="txt,doc,png"
-										maxFileNameLength="30" maxFileSize="200" mediaTypes="text/plain,application/msword,image/jpeg" uploadUrl="../../../../upload"
-										items="{path: '/items', templateShareable: false}">
-										<upload:toolbar>
-											<OverflowToolbar>
-												<Button icon="sap-icon://attachment" text="Attachments" enabled="false"/>
-												<ToolbarSpacer/>
-											</OverflowToolbar>
-										</upload:toolbar>
-										<upload:items>
-											<upload:UploadSetItem fileName="{fileName}" mediaType="{mediaType}" url="{url}" thumbnailUrl="{thumbnailUrl}"
-												attributes="{path: 'attributes', templateShareable: false}" markers="{path: 'markers', templateShareable: false}"
-												statuses="{path: 'statuses', templateShareable: false}" uploadState="{uploadState}">
-												<upload:attributes>
-													<ObjectAttribute title="{title}" text="{text}" active="{active}"/>
-												</upload:attributes>
-												<upload:markers>
-													<ObjectMarker type="{type}" visibility="{visibility}"/>
-												</upload:markers>
-												<upload:statuses>
-													<ObjectStatus title="{title}" text="{text}" state="{state}" icon="{icon}" active="{active}"/>
-												</upload:statuses>
-											</upload:UploadSetItem>
-										</upload:items>
-									</upload:UploadSet>
-								</ScrollContainer>
-							</IconTabFilter>
-							<IconTabFilter id="idsingoff" text="Sign Off" key="Signoff" visible="true">
-								<ScrollContainer height="100%" width="100%" horizontal="false" vertical="true">
-									<Table class="formcolor1 sapUiSizeCompact" items="" growing="true" growingThreshold="100" growingScrollToLoad="false"
-										includeItemInSelection="true">
-										<headerToolbar>
-											<Toolbar>
-												<Title text="Header Signoff Sheet" level="H2"/>
-												<ToolbarSpacer/>
-												<Button icon="sap-icon://add" type="Accept"/>
-											</Toolbar>
-										</headerToolbar>
-										<columns>
-											<Column hAlign="Left" width="6rem">
-												<Text text="Group"></Text>
-											</Column>
-											<!--<Column hAlign="Left" width="4rem">-->
-											<!--	<Text text="Disc"></Text>-->
-											<!--</Column>-->
-											<Column hAlign="Left" width="6rem">
-												<Text text="User"></Text>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="12rem">
-												<Text text="Note"></Text>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="5rem">
-												<Text text="Action Code"></Text>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="9rem">
-												<Text text="Date in Queue(Local)"></Text>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="9rem">
-												<Text text="Actual Start(Local)"></Text>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="9rem">
-												<Text text="Finish Date(Local)"></Text>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="5rem">
-												<Text text="A/R"></Text>
-											</Column>
-											<Column hAlign="Left" width="8rem">
-												<Text text="Comments"/>
-											</Column>
-											<Column hAlign="Right" width="3rem">
-												<Text text=""/>
-											</Column>
-										</columns>
-										<items>
-											<ColumnListItem >
-												<cells>
-													<Text text="C3QAMANU"/>
-													<!--<Text text=""/>-->
-													<Link text="AB012345"/>
-													<!--<Input value="" liveChange="onEnterText" valueHelpIconSrc="sap-icon://document-text" showValueHelp="true" valueHelpRequest="onNotesChange"/>-->
-													<Input/>
-													<Input value="RJ" showValueHelp="true"/>
-													<Text text="11-Mar-2016 10:26"/>
-													<Text text="11-Mar-2016 10:26"/>
-													<Text text="11-Mar-2016 10:26"/>
-													<Input value="A" showValueHelp="true"/>
-													<Input value="Approved"/>
-													<Button icon="sap-icon://less"/>
-												</cells>
-											</ColumnListItem>
-											<ColumnListItem >
-												<cells>
-													<Text text="C3QAMAZU"/>
-													<!--<Text text=""/>-->
-													<Link text="XY012345"/>
-													<!--<Input value="" liveChange="onEnterText" valueHelpIconSrc="sap-icon://document-text" showValueHelp="true" valueHelpRequest="onNotesChange"/>-->
-													<Input/>
-													<Input value="AJ"/>
-													<Text text="11-Mar-2016 10:26"/>
-													<Text text="11-Mar-2016 10:26"/>
-													<Text text="11-Mar-2016 10:26"/>
-													<Input value="R"/>
-													<Input value="Rejected"/>
-													<Button icon="sap-icon://less"/>
-												</cells>
-											</ColumnListItem>
-										</items>
-									</Table>
-									<Table id="idsingoff1" items="" class="formcolor1 sapUiSizeCompact" growing="true" growingThreshold="100" growingScrollToLoad="false"
-										includeItemInSelection="true">
-										<headerToolbar>
-											<Toolbar>
-												<Title text="Discrepancy and Disposition Signoff Sheet" level="H2"/>
-												<ToolbarSpacer/>
-												<Button tooltip="Filter" type="Accept" icon="sap-icon://filter" press="handleFilterButtonPressed"/>
-												<Button icon="sap-icon://add" type="Accept"/>
-											</Toolbar>
-										</headerToolbar>
-										<columns>
-											<Column hAlign="Left" width="6rem">
-												<Text text="Group"></Text>
-											</Column>
-											<Column hAlign="Left" width="4rem">
-												<Text text="Disc"></Text>
-											</Column>
-											<Column hAlign="Left" width="6rem">
-												<Text text="User"></Text>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="12rem">
-												<Text text="Note"></Text>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="5rem">
-												<Text text="Action Code"></Text>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="9rem">
-												<Text text="Date in Queue(Local)"></Text>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="9rem">
-												<Text text="Actual Start(Local)"></Text>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="9rem">
-												<Text text="Finish Date(Local)"></Text>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="5rem">
-												<Text text="A/R"></Text>
-											</Column>
-											<Column hAlign="Left" width="8rem">
-												<Text text="Comments"/>
-											</Column>
-											<Column hAlign="Right" width="3rem">
-												<Text text=""/>
-											</Column>
-										</columns>
-										<items>
-											<ColumnListItem >
-												<cells>
-													<Text text="C3QAMANU"/>
-													<Text text=""/>
-													<Link text="AB012345"/>
-													<!--<Input value="" valueHelpIconSrc="sap-icon://document-text" liveChange="onEnterText" showValueHelp="true" valueHelpRequest="onNotesChange"/>-->
-													<Input/>
-													<Input value="RJ" showValueHelp="true"/>
-													<Text text="11-Mar-2016 10:26"/>
-													<Text text="11-Mar-2016 10:26"/>
-													<Text text="11-Mar-2016 10:26"/>
-													<Input value="A" showValueHelp="true"/>
-													<Input value="Approved"/>
-													<Button icon="sap-icon://less"/>
-												</cells>
-											</ColumnListItem>
-											<ColumnListItem >
-												<cells>
-													<Text text="C3QAMAZU"/>
-													<Text text=""/>
-													<Text text="XY012345"/>
-													<!--<Input value="" valueHelpIconSrc="sap-icon://document-text" liveChange="onEnterText" showValueHelp="true" valueHelpRequest="onNotesChange"/>-->
-													<Input/>
-													<Input value="AJ"/>
-													<Text text="11-Mar-2016 10:26"/>
-													<Text text="11-Mar-2016 10:26"/>
-													<Text text="11-Mar-2016 10:26"/>
-													<Input value="R"/>
-													<Input value="Rejected"/>
-													<Button icon="sap-icon://less"/>
-												</cells>
-											</ColumnListItem>
-										</items>
-									</Table>
-								</ScrollContainer>
-							</IconTabFilter>
-							<IconTabFilter text="Disposition" key="Dispo" visible="true">
-								<ScrollContainer height="100%" width="100%" horizontal="false" vertical="true">
-									<Toolbar class="sapUiSizeCompact">
-										<ToolbarSpacer/>
-										<Label text="Dispo. No." design="Bold"/>
-										<ComboBox width="100px"/>
-										<Button type="Emphasized" icon="sap-icon://add" press="onaddDispostion"/>
-									</Toolbar>
-									<l:BlockLayout background="Light">
-										<l:BlockLayoutRow>
-											<l:BlockLayoutCell backgroundColorShade="ShadeA" backgroundColorSet="ColorSet1" width="100" class="formcolor">
-												<f:SimpleForm editable="true" title="General Information" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12"
-													adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2"
-													singleContainerFullSize="false" class="sapUiSizeCompact" labelMinWidth="1px">
-													<f:content>
-														<!--<core:Title text="General Information"/>-->
-														<Label text="Part Number"/>
-														<Input value="79000-750-002-29780" width="230px"/>
-														<Label text="Part Description"/>
-														<!--<TextArea value="Hose Assembly" editable="false"/>-->
-														<ObjectStatus class="sapUiSmallMarginBottom" text="Hose Assembly" state="Information"/>
-														<Label text="Inter Chargeability Affected"/>
-														<CheckBox text=""/>
-														<Label text="Major/Minor NC"/>
-														<Input width="50%"/>
-														<Label text="Rework Order"/>
-														<Input width="50%"/>
-														<Label text="Drop Point"/>
-														<Input width="50%"/>
-														<Label text="Restricted Part"/>
-														<CheckBox text=""/>
-														<Label text="Customer Support Notification"/>
-														<Switch state="true" customTextOn="Yes" customTextOff="No"></Switch>
-														<!--<CheckBox/>-->
-													</f:content>
-												</f:SimpleForm>
-											</l:BlockLayoutCell>
-											<l:BlockLayoutCell width="100" backgroundColorShade="ShadeA" backgroundColorSet="ColorSet1" class="formcolor">
-												<f:SimpleForm editable="true" title="Discrepancy Details" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12"
-													adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2"
-													singleContainerFullSize="false" class="sapUiSizeCompact" labelMinWidth="1px">
-													<f:content>
-														<!--<core:Title text="Discrepancy Details"/>-->
-														<Label text="Part Received in Quarantine (Z11)" width="200%"/>
-														<CheckBox class="sapUiLargeMarginBegin"></CheckBox>
-														<!--<Label text="Bin Location"/>
+                                                <f:SimpleForm
+                                                    editable="true"
+                                                    title="Discrepancy Details"
+                                                    labelSpanXL="4"
+                                                    labelSpanL="4"
+                                                    labelSpanM="12"
+                                                    labelSpanS="12"
+                                                    adjustLabelSpan="false"
+                                                    emptySpanXL="0"
+                                                    emptySpanL="0"
+                                                    emptySpanM="0"
+                                                    emptySpanS="0"
+                                                    columnsXL="2"
+                                                    columnsL="2"
+                                                    columnsM="2"
+                                                    singleContainerFullSize="false"
+                                                    class="sapUiSizeCompact"
+                                                    labelMinWidth="1px"
+                                                >
+                                                    <f:content>
+                                                        <!--<core:Title text="Discrepancy Details"/>-->
+                                                        <!--<Label text="MB1B m vt Z11"/>-->
+                                                        <!--<CheckBox text="Might be Unnecessary when bin location fielld in for detail NC"></CheckBox>-->
+                                                        <Label text="Part Received in Quarantine (Z11)" width="200%" />
+                                                        <CheckBox class="sapUiLargeMarginBegin" />
+                                                        <Label text="MES Issue" />
+                                                        <Input width="130px" />
+                                                        <Label text="CSMS Issue" />
+                                                        <Input width="130px" />
+                                                        <!--<HBox>-->
+                                                        <!--class="sapUiTinyMarginBegin sapUiTinyMarginTop"-->
+                                                        <!--<FlexBox direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Center">-->
+                                                        <!--</FlexBox>-->
+                                                        <!--</HBox>-->
+                                                        <!--<Label text="CSMS Issue"/>-->
+                                                        <Label text="Preliminary Cause" />
+                                                        <ComboBox items="" width="200px">
+                                                            <core:Item text="Human" />
+                                                            <core:Item text="Technical" />
+                                                        </ComboBox>
+                                                        <!--<CheckBox text="To be validate with the team"/>-->
+                                                        <Label text="Defect Code" />
+                                                        <FlexBox direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Center">
+                                                            <Input value="37A4" showValueHelp="true" valueHelpRequest="handleValueHelp" width="100px" />
+                                                            <!--<Label text=""/>-->
+                                                            <Text class="sapUiTinyMarginBegin" text=" DAMAGE (other than skins) - N/A - BROKEN EDGE " />
+                                                        </FlexBox>
+                                                        <Label text="Drop Point" />
+                                                        <Input width="230px" />
+                                                        <!--<Label text="Liability"/>-->
+                                                        <!--<HBox>-->
+                                                        <!--	<Input width="100px"/>-->
+                                                        <!--	<Input width="130px"/>-->
+                                                        <!--</HBox>-->
+                                                        <!--<Label text="Link To"/>-->
+                                                        <!--<Input width="230px"/>-->
+                                                        <Label text="Is" />
+                                                        <TextArea />
+                                                        <Label text="Should be" />
+                                                        <TextArea />
+                                                        <Label text="As Per" />
+                                                        <Input width="230px" />
+                                                    </f:content>
+                                                </f:SimpleForm>
+                                            </l:BlockLayoutCell>
+                                        </l:BlockLayoutRow>
+                                    </l:BlockLayout>
+                                    <upload:UploadSet
+                                        instantUpload="true"
+                                        showIcons="true"
+                                        uploadEnabled="true"
+                                        terminationEnabled="true"
+                                        fileTypes="txt,doc,png"
+                                        maxFileNameLength="30"
+                                        maxFileSize="200"
+                                        mediaTypes="text/plain,application/msword,image/jpeg"
+                                        uploadUrl="../../../../upload"
+                                        items="{path: '/items', templateShareable: false}"
+                                    >
+                                        <upload:toolbar>
+                                            <OverflowToolbar>
+                                                <Button icon="sap-icon://attachment" text="Attachments" enabled="false" />
+                                                <ToolbarSpacer />
+                                            </OverflowToolbar>
+                                        </upload:toolbar>
+                                        <upload:items>
+                                            <upload:UploadSetItem
+                                                fileName="{fileName}"
+                                                mediaType="{mediaType}"
+                                                url="{url}"
+                                                thumbnailUrl="{thumbnailUrl}"
+                                                attributes="{path: 'attributes', templateShareable: false}"
+                                                markers="{path: 'markers', templateShareable: false}"
+                                                statuses="{path: 'statuses', templateShareable: false}"
+                                                uploadState="{uploadState}"
+                                            >
+                                                <upload:attributes>
+                                                    <ObjectAttribute title="{title}" text="{text}" active="{active}" />
+                                                </upload:attributes>
+                                                <upload:markers>
+                                                    <ObjectMarker type="{type}" visibility="{visibility}" />
+                                                </upload:markers>
+                                                <upload:statuses>
+                                                    <ObjectStatus title="{title}" text="{text}" state="{state}" icon="{icon}" active="{active}" />
+                                                </upload:statuses>
+                                            </upload:UploadSetItem>
+                                        </upload:items>
+                                    </upload:UploadSet>
+                                </ScrollContainer>
+                            </IconTabFilter>
+                            <IconTabFilter id="idsingoff" text="Sign Off" key="Signoff" visible="true">
+                                <ScrollContainer height="100%" width="100%" horizontal="false" vertical="true">
+                                    <Table class="formcolor1 sapUiSizeCompact" items="" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
+                                        <headerToolbar>
+                                            <Toolbar>
+                                                <Title text="Header Signoff Sheet" level="H2" />
+                                                <ToolbarSpacer />
+                                                <Button icon="sap-icon://add" type="Accept" />
+                                            </Toolbar>
+                                        </headerToolbar>
+                                        <columns>
+                                            <Column hAlign="Left" width="6rem">
+                                                <Text text="Group" />
+                                            </Column>
+                                            <!--<Column hAlign="Left" width="4rem">-->
+                                            <!--	<Text text="Disc"></Text>-->
+                                            <!--</Column>-->
+                                            <Column hAlign="Left" width="6rem">
+                                                <Text text="User" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="12rem">
+                                                <Text text="Note" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="5rem">
+                                                <Text text="Action Code" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="9rem">
+                                                <Text text="Date in Queue(Local)" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="9rem">
+                                                <Text text="Actual Start(Local)" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="9rem">
+                                                <Text text="Finish Date(Local)" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="5rem">
+                                                <Text text="A/R" />
+                                            </Column>
+                                            <Column hAlign="Left" width="8rem">
+                                                <Text text="Comments" />
+                                            </Column>
+                                            <Column hAlign="Right" width="3rem">
+                                                <Text text="" />
+                                            </Column>
+                                        </columns>
+                                        <items>
+                                            <ColumnListItem>
+                                                <cells>
+                                                    <Text text="C3QAMANU" />
+                                                    <!--<Text text=""/>-->
+                                                    <Link text="AB012345" />
+                                                    <!--<Input value="" liveChange="onEnterText" valueHelpIconSrc="sap-icon://document-text" showValueHelp="true" valueHelpRequest="onNotesChange"/>-->
+                                                    <Input />
+                                                    <Input value="RJ" showValueHelp="true" />
+                                                    <Text text="11-Mar-2016 10:26" />
+                                                    <Text text="11-Mar-2016 10:26" />
+                                                    <Text text="11-Mar-2016 10:26" />
+                                                    <Input value="A" showValueHelp="true" />
+                                                    <Input value="Approved" />
+                                                    <Button icon="sap-icon://less" />
+                                                </cells>
+                                            </ColumnListItem>
+                                            <ColumnListItem>
+                                                <cells>
+                                                    <Text text="C3QAMAZU" />
+                                                    <!--<Text text=""/>-->
+                                                    <Link text="XY012345" />
+                                                    <!--<Input value="" liveChange="onEnterText" valueHelpIconSrc="sap-icon://document-text" showValueHelp="true" valueHelpRequest="onNotesChange"/>-->
+                                                    <Input />
+                                                    <Input value="AJ" />
+                                                    <Text text="11-Mar-2016 10:26" />
+                                                    <Text text="11-Mar-2016 10:26" />
+                                                    <Text text="11-Mar-2016 10:26" />
+                                                    <Input value="R" />
+                                                    <Input value="Rejected" />
+                                                    <Button icon="sap-icon://less" />
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+                                    <Table id="idsingoff1" items="" class="formcolor1 sapUiSizeCompact" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
+                                        <headerToolbar>
+                                            <Toolbar>
+                                                <Title text="Discrepancy and Disposition Signoff Sheet" level="H2" />
+                                                <ToolbarSpacer />
+                                                <Button tooltip="Filter" type="Accept" icon="sap-icon://filter" press="handleFilterButtonPressed" />
+                                                <Button icon="sap-icon://add" type="Accept" />
+                                            </Toolbar>
+                                        </headerToolbar>
+                                        <columns>
+                                            <Column hAlign="Left" width="6rem">
+                                                <Text text="Group" />
+                                            </Column>
+                                            <Column hAlign="Left" width="4rem">
+                                                <Text text="Disc" />
+                                            </Column>
+                                            <Column hAlign="Left" width="6rem">
+                                                <Text text="User" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="12rem">
+                                                <Text text="Note" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="5rem">
+                                                <Text text="Action Code" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="9rem">
+                                                <Text text="Date in Queue(Local)" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="9rem">
+                                                <Text text="Actual Start(Local)" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="9rem">
+                                                <Text text="Finish Date(Local)" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="5rem">
+                                                <Text text="A/R" />
+                                            </Column>
+                                            <Column hAlign="Left" width="8rem">
+                                                <Text text="Comments" />
+                                            </Column>
+                                            <Column hAlign="Right" width="3rem">
+                                                <Text text="" />
+                                            </Column>
+                                        </columns>
+                                        <items>
+                                            <ColumnListItem>
+                                                <cells>
+                                                    <Text text="C3QAMANU" />
+                                                    <Text text="" />
+                                                    <Link text="AB012345" />
+                                                    <!--<Input value="" valueHelpIconSrc="sap-icon://document-text" liveChange="onEnterText" showValueHelp="true" valueHelpRequest="onNotesChange"/>-->
+                                                    <Input />
+                                                    <Input value="RJ" showValueHelp="true" />
+                                                    <Text text="11-Mar-2016 10:26" />
+                                                    <Text text="11-Mar-2016 10:26" />
+                                                    <Text text="11-Mar-2016 10:26" />
+                                                    <Input value="A" showValueHelp="true" />
+                                                    <Input value="Approved" />
+                                                    <Button icon="sap-icon://less" />
+                                                </cells>
+                                            </ColumnListItem>
+                                            <ColumnListItem>
+                                                <cells>
+                                                    <Text text="C3QAMAZU" />
+                                                    <Text text="" />
+                                                    <Text text="XY012345" />
+                                                    <!--<Input value="" valueHelpIconSrc="sap-icon://document-text" liveChange="onEnterText" showValueHelp="true" valueHelpRequest="onNotesChange"/>-->
+                                                    <Input />
+                                                    <Input value="AJ" />
+                                                    <Text text="11-Mar-2016 10:26" />
+                                                    <Text text="11-Mar-2016 10:26" />
+                                                    <Text text="11-Mar-2016 10:26" />
+                                                    <Input value="R" />
+                                                    <Input value="Rejected" />
+                                                    <Button icon="sap-icon://less" />
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+                                </ScrollContainer>
+                            </IconTabFilter>
+                            <IconTabFilter text="Disposition" key="Dispo" visible="true">
+                                <ScrollContainer height="100%" width="100%" horizontal="false" vertical="true">
+                                    <Toolbar class="sapUiSizeCompact">
+                                        <ToolbarSpacer />
+                                        <Label text="Dispo. No." design="Bold" />
+                                        <ComboBox width="100px" />
+                                        <Button type="Emphasized" icon="sap-icon://add" press="onaddDispostion" />
+                                    </Toolbar>
+                                    <l:BlockLayout background="Light">
+                                        <l:BlockLayoutRow>
+                                            <l:BlockLayoutCell backgroundColorShade="ShadeA" backgroundColorSet="ColorSet1" width="100" class="formcolor">
+                                                <f:SimpleForm
+                                                    editable="true"
+                                                    title="General Information"
+                                                    labelSpanXL="4"
+                                                    labelSpanL="4"
+                                                    labelSpanM="12"
+                                                    labelSpanS="12"
+                                                    adjustLabelSpan="false"
+                                                    emptySpanXL="0"
+                                                    emptySpanL="0"
+                                                    emptySpanM="0"
+                                                    emptySpanS="0"
+                                                    columnsXL="2"
+                                                    columnsL="2"
+                                                    columnsM="2"
+                                                    singleContainerFullSize="false"
+                                                    class="sapUiSizeCompact"
+                                                    labelMinWidth="1px"
+                                                >
+                                                    <f:content>
+                                                        <!--<core:Title text="General Information"/>-->
+                                                        <Label text="Part Number" />
+                                                        <Input value="79000-750-002-29780" width="230px" />
+                                                        <Label text="Part Description" />
+                                                        <!--<TextArea value="Hose Assembly" editable="false"/>-->
+                                                        <ObjectStatus class="sapUiSmallMarginBottom" text="Hose Assembly" state="Information" />
+                                                        <Label text="Inter Chargeability Affected" />
+                                                        <CheckBox text="" />
+                                                        <Label text="Major/Minor NC" />
+                                                        <Input width="50%" />
+                                                        <Label text="Rework Order" />
+                                                        <Input width="50%" />
+                                                        <Label text="Drop Point" />
+                                                        <Input width="50%" />
+                                                        <Label text="Restricted Part" />
+                                                        <CheckBox text="" />
+                                                        <Label text="Customer Support Notification" />
+                                                        <Switch state="true" customTextOn="Yes" customTextOff="No" />
+                                                        <!--<CheckBox/>-->
+                                                    </f:content>
+                                                </f:SimpleForm>
+                                            </l:BlockLayoutCell>
+                                            <l:BlockLayoutCell width="100" backgroundColorShade="ShadeA" backgroundColorSet="ColorSet1" class="formcolor">
+                                                <f:SimpleForm
+                                                    editable="true"
+                                                    title="Discrepancy Details"
+                                                    labelSpanXL="4"
+                                                    labelSpanL="4"
+                                                    labelSpanM="12"
+                                                    labelSpanS="12"
+                                                    adjustLabelSpan="false"
+                                                    emptySpanXL="0"
+                                                    emptySpanL="0"
+                                                    emptySpanM="0"
+                                                    emptySpanS="0"
+                                                    columnsXL="2"
+                                                    columnsL="2"
+                                                    columnsM="2"
+                                                    singleContainerFullSize="false"
+                                                    class="sapUiSizeCompact"
+                                                    labelMinWidth="1px"
+                                                >
+                                                    <f:content>
+                                                        <!--<core:Title text="Discrepancy Details"/>-->
+                                                        <Label text="Part Received in Quarantine (Z11)" width="200%" />
+                                                        <CheckBox class="sapUiLargeMarginBegin" />
+                                                        <!--<Label text="Bin Location"/>
 												<Input width="230px"/> Might be Unnecessary when bin location fielld in for detail NC-->
-														<Label text="MES Issue"/>
-														<Input width="200px"/>
-														<Label text="CSMS Issue"/>
-														<Input width="200px"/>
-														<Label text="Preliminary Cause"/>
-														<ComboBox items="" width="200px">
-															<core:Item text="Human"/>
-															<core:Item text="Technical"/>
-														</ComboBox>
-														<Label text="Defect Code"/>
-														<Input value="37A4" showValueHelp="true" valueHelpRequest="handleValueHelp" width="100px"/>
-														<Label text=""/>
-														<Text text=" DAMAGE (other than skins) - N/A - BROKEN EDGE "/>
-														<!--<Label text="Liability"/>-->
-														<!--<Input width="230px"/>-->
-														<Label text="Partner / Supplier#"/>
-														<Input width="230px"/>
-														<Label text="Partner / Supplier Name"/>
-														<Text/>
-														<!--<Label text="Link To"/>-->
-														<!--<Input width="230px"/>-->
-														<Label text="Is"/>
-														<TextArea/>
-														<Label text="Should be"/>
-														<TextArea/>
-														<Label text="As Per"/>
-														<Input width="230px"/>
-													</f:content>
-												</f:SimpleForm>
-											</l:BlockLayoutCell>
-										</l:BlockLayoutRow>
-									</l:BlockLayout>
-									<Table items="" mode="MultiSelect" class="formcolor1" growing="true" growingThreshold="100" growingScrollToLoad="false"
-										includeItemInSelection="true">
-										<headerToolbar>
-											<Toolbar>
-												<Title text="Disposition Details" level="H2"/>
-												<ToolbarSpacer/>
-												<Button type="Emphasized" icon="sap-icon://copy" press="onDispoistionCopy"/>
-												<Button type="Emphasized" icon="sap-icon://add" press="onDispoistionAdd"/>
-											</Toolbar>
-										</headerToolbar>
-										<columns>
-											<Column hAlign="Left">
-												<Text text="No."></Text>
-											</Column>
-											<Column hAlign="Left">
-												<Text text="Type"></Text>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
-												<Text text="Code"></Text>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
-												<Text text="Status"></Text>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
-												<Text text="Qty"></Text>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
-												<Text text="Parts Required"></Text>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
-												<Text text="Attachment"/>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
-												<Text text="Created by"/>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
-												<Text text="Badge"/>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
-												<Text text="Group"/>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
-												<Text text="Date in Working"/>
-											</Column>
-										</columns>
-										<items>
-											<ColumnListItem >
-												<cells>
-													<Input value=""/>
-													<Input value=""/>
-													<Input value=""/>
-													<Input value=""/>
-													<Input value=""/>
-													<Input value=""/>
-													<Input value=""/>
-													<Input value=""/>
-													<Input value=""/>
-													<!--<Text text=""/>-->
-													<Input value=""/>
-													<Input value=""/>
-													<!--	<Button icon="sap-icon://attachment" press="handleValueHelp"/>-->
-												</cells>
-											</ColumnListItem>
-										</items>
-									</Table>
-									<Label text="Disposition Text" design="Bold" class="sapUiTinyMarginTop"/>
-									<TextArea value="" maxLength="40" placeholder="Text" width="100%"/>
-									<Table items="" class="formcolor1" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
-										<headerToolbar>
-											<Toolbar>
-												<Title text="Buyoff" level="H2"/>
-												<ToolbarSpacer/>
-												<Button type="Emphasized" icon="sap-icon://copy" press="onBuyoffCopy"/>
-												<Button type="Emphasized" icon="sap-icon://add" press="onBuyoffAdd"/>
-											</Toolbar>
-										</headerToolbar>
-										<columns>
-											<Column hAlign="Left">
-												<Text text="Buyoff Group"></Text>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
-												<Text text="Work Center"></Text>
-											</Column>
-											<Column hAlign="Left">
-												<Text text="Buyoff User"></Text>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
-												<Text text="Buyoff Date"></Text>
-											</Column>
-											<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
-												<Text text="Status"></Text>
-											</Column>
-										</columns>
-										<items>
-											<ColumnListItem >
-												<cells>
-													<Input value=""/>
-													<Input value=""/>
-													<Input value=""/>
-													<Input value=""/>
-													<Input value=""/>
-													<Input value=""/>
-												</cells>
-											</ColumnListItem>
-										</items>
-									</Table>
-									<Label text="Buyoff Text" design="Bold" class="sapUiTinyMarginTop"/>
-									<TextArea value="" maxLength="40" placeholder="Text" width="100%"/>
-									<upload:UploadSet id="UploadSet" instantUpload="true" showIcons="true" uploadEnabled="true" terminationEnabled="true"
-										fileTypes="txt,doc,png" maxFileNameLength="30" maxFileSize="200" mediaTypes="text/plain,application/msword,image/jpeg"
-										uploadUrl="../../../../upload" items="{path: '/items', templateShareable: false}">
-										<upload:items>
-											<upload:UploadSetItem fileName="{fileName}" mediaType="{mediaType}" url="{url}" thumbnailUrl="{thumbnailUrl}"
-												attributes="{path: 'attributes', templateShareable: false}" markers="{path: 'markers', templateShareable: false}"
-												statuses="{path: 'statuses', templateShareable: false}" uploadState="{uploadState}">
-												<upload:attributes>
-													<ObjectAttribute title="{title}" text="{text}" active="{active}"/>
-												</upload:attributes>
-												<upload:markers>
-													<ObjectMarker type="{type}" visibility="{visibility}"/>
-												</upload:markers>
-												<upload:statuses>
-													<ObjectStatus title="{title}" text="{text}" state="{state}" icon="{icon}" active="{active}"/>
-												</upload:statuses>
-											</upload:UploadSetItem>
-										</upload:items>
-									</upload:UploadSet>
-								</ScrollContainer>
-							</IconTabFilter>
-							<IconTabFilter text="Purchase Info" key="Purchase" visible="true">
-								<ScrollContainer height="100%" width="100%" horizontal="false" vertical="true">
-									<l:BlockLayout background="Light">
-										<l:BlockLayoutRow>
-											<l:BlockLayoutCell backgroundColorShade="ShadeA" backgroundColorSet="ColorSet1" width="100" class="formcolor">
-												<f:SimpleForm id="idSmplFrmPurInf" editable="true" title=" Purchase Part Information" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12"
-													adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2"
-													singleContainerFullSize="false" class="sapUiSizeCompact" labelMinWidth="1px">
-													<f:content>
-                                                        <Label id="idLblGrn" text="GR Number"/>
-                                                        <Input width="230px" id="idPurInfGrip" valueHelpRequest="onGRhelpRequest" showValueHelp="true" value="{NCSaveModel>/GRN}"/>
-                                                        <Label id="idLblGrqty" text="GR Qty"/>
-                                                        <Input width="230px" id="idPurInfGrQtyip" editable="false"/>
-                                                        <Label id="idLblGrln" text="GR Line Number"/>
-                                                        <Input width="230px" id="idIpPurInfGrLnNo" editable="false"/>
-                                                        <Label text="Purchase Order"/>
-                                                        <Input width="230px" id="idPurInfPurOrdip" valueHelpRequest="onPurchOrdhelpRequest" showValueHelp="true" value="{NCSaveModel>/PON}"/>
-                                                        <Label text="PO Line Number"/>
-                                                        <Input width="230px" id="idPurInfPolnip"/>
-                                                        <Label text="PO Date"/>
+                                                        <Label text="MES Issue" />
+                                                        <Input width="200px" />
+                                                        <Label text="CSMS Issue" />
+                                                        <Input width="200px" />
+                                                        <Label text="Preliminary Cause" />
+                                                        <ComboBox items="" width="200px">
+                                                            <core:Item text="Human" />
+                                                            <core:Item text="Technical" />
+                                                        </ComboBox>
+                                                        <Label text="Defect Code" />
+                                                        <Input value="37A4" showValueHelp="true" valueHelpRequest="handleValueHelp" width="100px" />
+                                                        <Label text="" />
+                                                        <Text text=" DAMAGE (other than skins) - N/A - BROKEN EDGE " />
+                                                        <!--<Label text="Liability"/>-->
+                                                        <!--<Input width="230px"/>-->
+                                                        <Label text="Partner / Supplier#" />
+                                                        <Input width="230px" />
+                                                        <Label text="Partner / Supplier Name" />
+                                                        <Text />
+                                                        <!--<Label text="Link To"/>-->
+                                                        <!--<Input width="230px"/>-->
+                                                        <Label text="Is" />
+                                                        <TextArea />
+                                                        <Label text="Should be" />
+                                                        <TextArea />
+                                                        <Label text="As Per" />
+                                                        <Input width="230px" />
+                                                    </f:content>
+                                                </f:SimpleForm>
+                                            </l:BlockLayoutCell>
+                                        </l:BlockLayoutRow>
+                                    </l:BlockLayout>
+                                    <Table items="" mode="MultiSelect" class="formcolor1" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
+                                        <headerToolbar>
+                                            <Toolbar>
+                                                <Title text="Disposition Details" level="H2" />
+                                                <ToolbarSpacer />
+                                                <Button type="Emphasized" icon="sap-icon://copy" press="onDispoistionCopy" />
+                                                <Button type="Emphasized" icon="sap-icon://add" press="onDispoistionAdd" />
+                                            </Toolbar>
+                                        </headerToolbar>
+                                        <columns>
+                                            <Column hAlign="Left">
+                                                <Text text="No." />
+                                            </Column>
+                                            <Column hAlign="Left">
+                                                <Text text="Type" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
+                                                <Text text="Code" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
+                                                <Text text="Status" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
+                                                <Text text="Qty" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
+                                                <Text text="Parts Required" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
+                                                <Text text="Attachment" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
+                                                <Text text="Created by" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
+                                                <Text text="Badge" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
+                                                <Text text="Group" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
+                                                <Text text="Date in Working" />
+                                            </Column>
+                                        </columns>
+                                        <items>
+                                            <ColumnListItem>
+                                                <cells>
+                                                    <Input value="" />
+                                                    <Input value="" />
+                                                    <Input value="" />
+                                                    <Input value="" />
+                                                    <Input value="" />
+                                                    <Input value="" />
+                                                    <Input value="" />
+                                                    <Input value="" />
+                                                    <Input value="" />
+                                                    <!--<Text text=""/>-->
+                                                    <Input value="" />
+                                                    <Input value="" />
+                                                    <!--	<Button icon="sap-icon://attachment" press="handleValueHelp"/>-->
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+                                    <Label text="Disposition Text" design="Bold" class="sapUiTinyMarginTop" />
+                                    <TextArea value="" maxLength="40" placeholder="Text" width="100%" />
+                                    <Table items="" class="formcolor1" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
+                                        <headerToolbar>
+                                            <Toolbar>
+                                                <Title text="Buyoff" level="H2" />
+                                                <ToolbarSpacer />
+                                                <Button type="Emphasized" icon="sap-icon://copy" press="onBuyoffCopy" />
+                                                <Button type="Emphasized" icon="sap-icon://add" press="onBuyoffAdd" />
+                                            </Toolbar>
+                                        </headerToolbar>
+                                        <columns>
+                                            <Column hAlign="Left">
+                                                <Text text="Buyoff Group" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
+                                                <Text text="Work Center" />
+                                            </Column>
+                                            <Column hAlign="Left">
+                                                <Text text="Buyoff User" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
+                                                <Text text="Buyoff Date" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
+                                                <Text text="Status" />
+                                            </Column>
+                                        </columns>
+                                        <items>
+                                            <ColumnListItem>
+                                                <cells>
+                                                    <Input value="" />
+                                                    <Input value="" />
+                                                    <Input value="" />
+                                                    <Input value="" />
+                                                    <Input value="" />
+                                                    <Input value="" />
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+                                    <Label text="Buyoff Text" design="Bold" class="sapUiTinyMarginTop" />
+                                    <TextArea value="" maxLength="40" placeholder="Text" width="100%" />
+                                    <upload:UploadSet
+                                        id="UploadSet"
+                                        instantUpload="true"
+                                        showIcons="true"
+                                        uploadEnabled="true"
+                                        terminationEnabled="true"
+                                        fileTypes="txt,doc,png"
+                                        maxFileNameLength="30"
+                                        maxFileSize="200"
+                                        mediaTypes="text/plain,application/msword,image/jpeg"
+                                        uploadUrl="../../../../upload"
+                                        items="{path: '/items', templateShareable: false}"
+                                    >
+                                        <upload:items>
+                                            <upload:UploadSetItem
+                                                fileName="{fileName}"
+                                                mediaType="{mediaType}"
+                                                url="{url}"
+                                                thumbnailUrl="{thumbnailUrl}"
+                                                attributes="{path: 'attributes', templateShareable: false}"
+                                                markers="{path: 'markers', templateShareable: false}"
+                                                statuses="{path: 'statuses', templateShareable: false}"
+                                                uploadState="{uploadState}"
+                                            >
+                                                <upload:attributes>
+                                                    <ObjectAttribute title="{title}" text="{text}" active="{active}" />
+                                                </upload:attributes>
+                                                <upload:markers>
+                                                    <ObjectMarker type="{type}" visibility="{visibility}" />
+                                                </upload:markers>
+                                                <upload:statuses>
+                                                    <ObjectStatus title="{title}" text="{text}" state="{state}" icon="{icon}" active="{active}" />
+                                                </upload:statuses>
+                                            </upload:UploadSetItem>
+                                        </upload:items>
+                                    </upload:UploadSet>
+                                </ScrollContainer>
+                            </IconTabFilter>
+                            <IconTabFilter text="Purchase Info" key="Purchase" visible="true">
+                                <ScrollContainer height="100%" width="100%" horizontal="false" vertical="true">
+                                    <l:BlockLayout background="Light">
+                                        <l:BlockLayoutRow>
+                                            <l:BlockLayoutCell backgroundColorShade="ShadeA" backgroundColorSet="ColorSet1" width="100" class="formcolor">
+                                                <f:SimpleForm
+                                                    id="idSmplFrmPurInf"
+                                                    editable="true"
+                                                    title=" Purchase Part Information"
+                                                    labelSpanXL="4"
+                                                    labelSpanL="4"
+                                                    labelSpanM="12"
+                                                    labelSpanS="12"
+                                                    adjustLabelSpan="false"
+                                                    emptySpanXL="0"
+                                                    emptySpanL="0"
+                                                    emptySpanM="0"
+                                                    emptySpanS="0"
+                                                    columnsXL="2"
+                                                    columnsL="2"
+                                                    columnsM="2"
+                                                    singleContainerFullSize="false"
+                                                    class="sapUiSizeCompact"
+                                                    labelMinWidth="1px"
+                                                >
+                                                    <f:content>
+                                                        <Label id="idLblGrn" text="GR Number" />
+                                                        <HBox>
+                                                            <Input width="230px" id="idPurInfGrip" valueHelpRequest="onGRhelpRequest" showValueHelp="true" />
+                                                            <Input width="100px" id="idInpPurInfGritm" editable="false" class="sapUiTinyMarginBegin" />
+                                                            <Input width="100px" id="idInpPurInfGryr" editable="false" class="sapUiTinyMarginBegin" />
+                                                        </HBox>
+                                                        <Label id="idLblGrqty" text="GR Qty" />
+                                                        <HBox>
+                                                            <Input width="230px" id="idPurInfGrQtyip" editable="false" />
+                                                            <Input width="100px" id="idPurInfGrUom" editable="false" class="sapUiTinyMarginBegin" />
+                                                        </HBox>
+                                                        <Label text="Purchase Order" />
+                                                        <Input width="230px" id="idPurInfPurOrdip" valueHelpRequest="onPurchOrdhelpRequest" showValueHelp="true" value="{NCSaveModel>/PON}" />
+                                                        <Label text="PO Line Number" />
+                                                        <Input width="230px" id="idPurInfPolnip" />
+                                                        <Label text="PO Date" />
                                                         <DatePicker width="230px" editable="false" value="{path:'NCPoDate', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'medium', strictParsing: true}}" />
-                                                        <Label text="Supplier Name"/>
-                                                        <Input width="230px" id="idPurInfSupNmip" editable="false"/>
-                                                        <Label text="Supplier SAP Code"/>
-                                                        <Input width="230px" id="idPurInfSupSCip" valueHelpRequest="onSuppSAPCodehelpRequest" showValueHelp="true"/>
-                                                        <Label text="Supplier Part Number"/>
-                                                        <Input width="230px" id="idPurInfSupPnip" editable="false"/>
-                                                        <Label id="idLblMrpctrlr" text="MRP Controller"/>
-                                                        <Input width="230px" id="idPurInfMrpcrip" editable="false"/>
-                                                        <Label id="idLblMrpCtrlrNm" text="MRP Controller Name"/>
-                                                        <Input width="230px" id="idPurInfMrpcrnmip" editable="false"/>
-                                                        <Label id="idLblWblNo" text="Way Bill No."/>
-                                                        <Input width="230px" id="idPurInfWBNip"/>
-                                                        <Label id="idLblPcgslp" text="Packaging Slip"/>
-                                                        <Input width="230px" id="idPurInfPcgslip"/>
+                                                        <Label text="Supplier Name" />
+                                                        <Input width="230px" id="idPurInfSupNmip" editable="false" />
+                                                        <Label text="Supplier SAP Code" />
+                                                        <Input width="230px" id="idPurInfSupSCip" valueHelpRequest="onSuppSAPCodehelpRequest" showValueHelp="true" />
+                                                        <Label text="Supplier Part Number" />
+                                                        <Input width="230px" id="idPurInfSupPnip" editable="false" />
+                                                        <Label id="idLblMrpctrlr" text="MRP Controller" />
+                                                        <Input width="230px" id="idPurInfMrpcrip" editable="false" />
+                                                        <Label id="idLblMrpCtrlrNm" text="MRP Controller Name" />
+                                                        <Input width="230px" id="idPurInfMrpcrnmip" editable="false" />
+                                                        <Label id="idLblWblNo" text="Way Bill No." />
+                                                        <Input width="230px" id="idPurInfWBNip" />
+                                                        <Label id="idLblPcgslp" text="Packaging Slip" />
+                                                        <Input width="230px" id="idPurInfPcgslip" />
                                                         <!--<Label text="2nd Drop Shop"/>
                                                         <CheckBox/>
                                                         <Label text="Way Bill No."/>
@@ -1395,9 +1612,9 @@
                                                         <Label text="Packing Slip"/>
                                                         <Input width="230px" id="idPurInfPcgsl2ip"/>-->
                                                     </f:content>
-												</f:SimpleForm>
-											</l:BlockLayoutCell>
-											<!-- <l:BlockLayoutCell backgroundColorShade="ShadeA" backgroundColorSet="ColorSet5" width="100" class="formcolor">
+                                                </f:SimpleForm>
+                                            </l:BlockLayoutCell>
+                                            <!-- <l:BlockLayoutCell backgroundColorShade="ShadeA" backgroundColorSet="ColorSet5" width="100" class="formcolor">
 												<f:SimpleForm editable="true" title=" Return To Vendor" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12"
 													adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2"
 													singleContainerFullSize="false" class="sapUiSizeCompact" labelMinWidth="1px">
@@ -1413,54 +1630,54 @@
 													</f:content>
 												</f:SimpleForm>
 											</l:BlockLayoutCell> -->
-										</l:BlockLayoutRow>
-									</l:BlockLayout>
-								</ScrollContainer>
-							</IconTabFilter>
-							<IconTabFilter text="Change Log" key="log" visible="true">
-								<ScrollContainer height="100%" width="100%" horizontal="false" vertical="true">
-									<l:BlockLayout background="Light">
-										<l:BlockLayoutRow >
-											<l:BlockLayoutCell backgroundColorShade="ShadeA" backgroundColorSet="ColorSet1" width="100" class="formcolor">
-												<VBox>
-													<HBox class="sapUiSmallMarginBottom">
-														<core:Icon src="sap-icon://menu" color="#0a6ed1" class="sapUiTinyMarginBeginEnd "/>
-														<Link text="Action Log"/>
-													</HBox>
-													<HBox class="sapUiSmallMarginBottom">
-														<core:Icon src="sap-icon://action" color="#0a6ed1" class="sapUiTinyMarginBeginEnd"/>
-														<Link text="Changes"/>
-													</HBox>
-													<HBox class="sapUiSmallMarginBottom">
-														<core:Icon src="sap-icon://documents" color="#0a6ed1" class="sapUiTinyMarginBeginEnd"/>
-														<Link text="Document Flow"/>
-													</HBox>
-													<HBox class="sapUiSmallMarginBottom">
-														<core:Icon src="sap-icon://error" color="#0a6ed1" class="sapUiTinyMarginBeginEnd"/>
-														<Link text="Error Log"/>
-													</HBox>
-												</VBox>
-											</l:BlockLayoutCell>
-										</l:BlockLayoutRow>
-									</l:BlockLayout>
-								</ScrollContainer>
-							</IconTabFilter>
-						</items>
-					</IconTabBar>
-					<!--	</content>-->
-					<!--</Panel>-->
-				</content>
-				<footer>
-					<Toolbar>
-						<ToolbarSpacer/>
-						<Button text="{i18n>Save}" id="idncrsave" type="Emphasized" press="onNcrPressSave"/>
-						<Button text="{i18n>Cancel}" id="idncrcancel" type="Emphasized" press="onNcrPressCancel"/>
-						<!--<Button text="{i18n>Save}" visible="false" id="idsave" type="Emphasized" press="onPressNext"/>-->
-						<!--<Button text="{i18n>Cancel}" visible="false" id="idcancel" type="Emphasized" press="onPressCancel"/>-->
-						<!--<Image src="./image/airbus.png" height="20px" width="40px"/>-->
-					</Toolbar>
-				</footer>
-			</Page>
-		</pages>
-	</App>
+                                        </l:BlockLayoutRow>
+                                    </l:BlockLayout>
+                                </ScrollContainer>
+                            </IconTabFilter>
+                            <IconTabFilter text="Change Log" key="log" visible="true">
+                                <ScrollContainer height="100%" width="100%" horizontal="false" vertical="true">
+                                    <l:BlockLayout background="Light">
+                                        <l:BlockLayoutRow>
+                                            <l:BlockLayoutCell backgroundColorShade="ShadeA" backgroundColorSet="ColorSet1" width="100" class="formcolor">
+                                                <VBox>
+                                                    <HBox class="sapUiSmallMarginBottom">
+                                                        <core:Icon src="sap-icon://menu" color="#0a6ed1" class="sapUiTinyMarginBeginEnd " />
+                                                        <Link text="Action Log" />
+                                                    </HBox>
+                                                    <HBox class="sapUiSmallMarginBottom">
+                                                        <core:Icon src="sap-icon://action" color="#0a6ed1" class="sapUiTinyMarginBeginEnd" />
+                                                        <Link text="Changes" />
+                                                    </HBox>
+                                                    <HBox class="sapUiSmallMarginBottom">
+                                                        <core:Icon src="sap-icon://documents" color="#0a6ed1" class="sapUiTinyMarginBeginEnd" />
+                                                        <Link text="Document Flow" />
+                                                    </HBox>
+                                                    <HBox class="sapUiSmallMarginBottom">
+                                                        <core:Icon src="sap-icon://error" color="#0a6ed1" class="sapUiTinyMarginBeginEnd" />
+                                                        <Link text="Error Log" />
+                                                    </HBox>
+                                                </VBox>
+                                            </l:BlockLayoutCell>
+                                        </l:BlockLayoutRow>
+                                    </l:BlockLayout>
+                                </ScrollContainer>
+                            </IconTabFilter>
+                        </items>
+                    </IconTabBar>
+                    <!--	</content>-->
+                    <!--</Panel>-->
+                </content>
+                <footer>
+                    <Toolbar>
+                        <ToolbarSpacer />
+                        <Button text="{i18n>Save}" id="idncrsave" type="Emphasized" press="onNcrPressSave" />
+                        <Button text="{i18n>Cancel}" id="idncrcancel" type="Emphasized" press="onNcrPressCancel" />
+                        <!--<Button text="{i18n>Save}" visible="false" id="idsave" type="Emphasized" press="onPressNext"/>-->
+                        <!--<Button text="{i18n>Cancel}" visible="false" id="idcancel" type="Emphasized" press="onPressCancel"/>-->
+                        <!--<Image src="./image/airbus.png" height="20px" width="40px"/>-->
+                    </Toolbar>
+                </footer>
+            </Page>
+        </pages>
+    </App>
 </mvc:View>

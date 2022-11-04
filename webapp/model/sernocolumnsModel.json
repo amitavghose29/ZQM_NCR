@@ -3,10 +3,6 @@
 		{
 			"label": "Serial Numbers",
 			"template": "Value"
-		},
-        {
-			"label": "Description",
-			"template": "Description"
 		}
 	]
 }

@@ -8,8 +8,7 @@
 		ok=".onValueHelpSNOkPress"
 		cancel=".onValueHelpSNCancelPress"
 		afterClose=".onValueHelpSNAfterClose"
-		key="Value" descriptionKey="Description" 
-	>
+		key="Value" descriptionKey="Value1" >
         <filterBar>
 			<fb:FilterBar advancedMode="true" search="onFilterBarSearchSN">
 			</fb:FilterBar>
