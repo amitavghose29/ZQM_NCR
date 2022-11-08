@@ -18,7 +18,24 @@ sap.ui.define([
 		 * @memberOf com.airbus.ZQM_NCR.view.Main
 		 */
         onInit: function () { 
-
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new JSONModel();
+            oModel.setSizeLimit(10000);
+            var oDataModel = this.getOwnerComponent().getModel();
+            var sPath = "/NCTYPE_SOSet";
+            oDataModel.read(sPath, {
+                success: function (oData) {
+                   var data = oData.results;
+                    oModel.setData(data);
+                    this.getView().setModel(oModel, "ncTypeModel");
+                    sap.ui.core.BusyIndicator.hide();
+            }.bind(this),
+            error: function (oError) {
+                sap.ui.core.BusyIndicator.hide();
+                var msg = JSON.parse(oError.responseText).error.message.value;
+                MessageBox.error(msg);
+            }
+        });
         },
 
         /**

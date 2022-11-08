@@ -64,8 +64,8 @@
                         >
                             <f:content>
                                 <Label text="NC Type" required="true" />
-                                <ComboBox id="idncr" width="200px" items="{/NCTYPE_SOSet}" change="onNCTypeChange">
-                                    <core:Item key="{Nctype}" text="{NctypeDesc}" />
+                                <ComboBox id="idncr" width="200px" items="{ncTypeModel>/}" change="onNCTypeChange">
+                                    <core:Item key="{ncTypeModel>Nctype}" text="{ncTypeModel>NctypeDesc}" />
                                 </ComboBox>
                                 <Label text="In Which Area" required="true" />
                                 <ComboBox id="idiwa" width="200px" items="{inWhichAreaModel>/}" change="onNCAreaChange">

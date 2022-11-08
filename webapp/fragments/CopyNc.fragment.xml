@@ -71,6 +71,10 @@
                         <Text text="NC Type" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="Notification Type" />
+                    </Column>
+                    
+                    <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="NC Description" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
@@ -84,11 +88,12 @@
                 <items>
                     <ColumnListItem vAlign="Middle" type="Active">
                         <cells>
-                            <Text text="{oNcCopyModel>Notification}" />
-                            <Text text="{oNcCopyModel>NotifType}" />
-                            <Text text="{oNcCopyModel>Description}" />
-                            <Text text="{oNcCopyModel>SerialNumber}" />
-                            <Text text="{oNcCopyModel>Aircraft}" />
+                            <Text text="{oNcCopyModel>Notification}"/>
+                            <Text text="{oNcCopyModel>NotifType}"/>
+                            <Text text="{oNcCopyModel>NotificationType}"/>
+                            <Text text="{oNcCopyModel>Description}"/>
+                            <Text text="{oNcCopyModel>SerialNumber}"/>
+                            <Text text="{oNcCopyModel>Aircraft}"/>
                         </cells>
                     </ColumnListItem>
                 </items>
