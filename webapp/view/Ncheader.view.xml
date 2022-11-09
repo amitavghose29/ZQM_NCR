@@ -368,14 +368,16 @@
                                     <Toolbar class="sapUiSizeCompact">
                                         <ToolbarSpacer />
                                         <Label text="Disc. No." design="Bold" />
-                                        <ComboBox width="100px" />
+                                        <ComboBox id="idDcCobDscNo" width="100px" items="{discrepancyDropdownModel>/results}" selectionChange="_onSelectingDiscrepancy">
+                                            <core:Item key="{discrepancyDropdownModel>DiscrepancyNo}" text="{discrepancyDropdownModel>DiscrepancyNo}" />
+                                        </ComboBox>
                                         <Button type="Emphasized" icon="sap-icon://add" press="onaddDispostion" />
                                     </Toolbar>
                                     <l:BlockLayout background="Light">
                                         <l:BlockLayoutRow>
                                             <l:BlockLayoutCell backgroundColorShade="ShadeA" backgroundColorSet="ColorSet1" width="100" class="formcolor">
                                                 <f:SimpleForm
-                                                    title="General Info"
+                                                    title="Discrepancy General Information"
                                                     editable="true"
                                                     labelSpanXL="4"
                                                     labelSpanL="4"
@@ -412,6 +414,10 @@
                                                         <Text text="" />
                                                         <Label text="2nd Drop Ship" />
                                                         <CheckBox />
+                                                        <Label text="Aircraft" />
+                                                        <Input width="230px" id="idDiscAircraft" showValueHelp="true" valueHelpRequest="onVHReqAircraft" />
+                                                        <Label text="Open Date" />
+                                                        <Input width="230px" />
                                                     </f:content>
                                                 </f:SimpleForm>
                                                 <f:SimpleForm
@@ -1041,48 +1047,35 @@
                                                     labelMinWidth="1px"
                                                 >
                                                     <f:content>
-                                                        <!--<core:Title text="Discrepancy Details"/>-->
-                                                        <!--<Label text="MB1B m vt Z11"/>-->
-                                                        <!--<CheckBox text="Might be Unnecessary when bin location fielld in for detail NC"></CheckBox>-->
-                                                        <Label text="Part Received in Quarantine (Z11)" width="200%" />
-                                                        <CheckBox class="sapUiLargeMarginBegin" />
+                                                        <Label text="Preliminary Investigation" />
+                                                        <TextArea id="idDcTAPi" />
+                                                        <Label text="Part Received in Quarantine(Z11):" width="125%" />
+                                                        <CheckBox id="idDcCbPrq" class="sapUiLargeMarginBegin" />
                                                         <Label text="MES Issue" />
-                                                        <Input width="130px" />
+                                                        <CheckBox id="idDcCbMesi" class="sapUiLargeMarginBegin" />
+                                                        <!-- <Input width="130px" /> -->
                                                         <Label text="CSMS Issue" />
-                                                        <Input width="130px" />
-                                                        <!--<HBox>-->
-                                                        <!--class="sapUiTinyMarginBegin sapUiTinyMarginTop"-->
-                                                        <!--<FlexBox direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Center">-->
-                                                        <!--</FlexBox>-->
-                                                        <!--</HBox>-->
-                                                        <!--<Label text="CSMS Issue"/>-->
+                                                        <CheckBox id="idDcCbCsmsi" class="sapUiLargeMarginBegin" />
                                                         <Label text="Preliminary Cause" />
-                                                        <ComboBox items="" width="200px">
+                                                        <ComboBox id="idDcCobPc" items="" width="200px">
                                                             <core:Item text="Human" />
                                                             <core:Item text="Technical" />
                                                         </ComboBox>
-                                                        <!--<CheckBox text="To be validate with the team"/>-->
                                                         <Label text="Defect Code" />
                                                         <FlexBox direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Center">
-                                                            <Input value="37A4" showValueHelp="true" valueHelpRequest="handleValueHelp" width="100px" />
-                                                            <!--<Label text=""/>-->
-                                                            <Text class="sapUiTinyMarginBegin" text=" DAMAGE (other than skins) - N/A - BROKEN EDGE " />
+                                                            <Input id="idDcIpDc" value="37A4" showValueHelp="true" valueHelpRequest="handleValueHelp" width="100px" />
+                                                            <Text id="idDcTxtDc" class="sapUiTinyMarginBegin" text=" DAMAGE (other than skins) - N/A - BROKEN EDGE " />
                                                         </FlexBox>
                                                         <Label text="Drop Point" />
-                                                        <Input width="230px" />
-                                                        <!--<Label text="Liability"/>-->
-                                                        <!--<HBox>-->
-                                                        <!--	<Input width="100px"/>-->
-                                                        <!--	<Input width="130px"/>-->
-                                                        <!--</HBox>-->
-                                                        <!--<Label text="Link To"/>-->
-                                                        <!--<Input width="230px"/>-->
+                                                        <Input id="idDcIpDp" width="230px" showValueHelp="true" />
                                                         <Label text="Is" />
-                                                        <TextArea />
+                                                        <TextArea id="idDcTxtIs" />
                                                         <Label text="Should be" />
-                                                        <TextArea />
+                                                        <TextArea id="idDcTaIs" />
                                                         <Label text="As Per" />
-                                                        <Input width="230px" />
+                                                        <Input id="idDcInpAp" width="230px" />
+                                                        <Label text="Incomplete Flag" />
+                                                        <CheckBox id="idDcCbIf" class="sapUiLargeMarginBegin" selected="true" />
                                                     </f:content>
                                                 </f:SimpleForm>
                                             </l:BlockLayoutCell>

@@ -296,6 +296,9 @@ sap.ui.define([
                 text = "Traceability and History";
             } else if (key === "Purchase") {
                 this._setPurchaseInfoData();
+            } 
+            else if (key === "Discre") {
+            this._setDiscrepancyComboBox();
             } else {
                 text = oEvent.getParameters().selectedItem.getText();
             }
@@ -1123,6 +1126,44 @@ sap.ui.define([
                     MessageBox.error(msg);
                 }
             });
+        },
+
+        /**Function is triggered when clicked on Discrepancy tab to set discrepancy drop down */
+        _setDiscrepancyComboBox: function () {
+            this.getOwnerComponent().getModel().metadataLoaded().then(function () {
+                var sEntitypath = this.getOwnerComponent().getModel().createKey("CreateNotificationHeaderSet", {
+                    //NotificationNo: sObjectId
+                    NotificationNo : '200000032'
+                });
+                sap.ui.core.BusyIndicator.show();
+                var oModel = new JSONModel();
+                var oDataModel = this.getOwnerComponent().getModel();
+                var sPath = "/" + sEntitypath;
+                oDataModel.read(sPath, {
+                    urlParameters: {
+                        "$expand": "to_discrepancy"
+                    },
+                    success: function (oData, oResult) {
+                        sap.ui.core.BusyIndicator.hide();
+                        var data = oData.to_discrepancy;
+                        oModel.setData(data);
+                        this.getView().setModel(oModel, "discrepancyDropdownModel");
+                    }.bind(this),
+                    error: function (oError) {
+                        sap.ui.core.BusyIndicator.hide();
+                        var msg = JSON.parse(oError.responseText).error.message.value;
+                        MessageBox.error(msg);
+                    }
+                });
+            }.bind(this));
+        },
+        /**Function is triggered when selected an item in discrepancy drop down */
+        _onSelectingDiscrepancy : function(oEvent){
+            var discrepancyNo = oEvent.getParameters("selectedItem").selectedItem.getKey();
+            if(discrepancyNo)
+            {
+                
+            }
         },
 
         handleAircraftChange: function () {
@@ -2270,15 +2311,21 @@ sap.ui.define([
         },
 
         _confirmAircraftValueHelpDialog: function (oEvent) {
-            var oSelectedItem = oEvent.getParameter("selectedItem"),
-                oInput = this.getView().byId("idInpAircraft");
+            var oSelectedItem = oEvent.getParameter("selectedItem");
+                
+                if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata") {
+                   var oInput = this.getView().byId("idInpAircraft");
+                }else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre"){
+                   var oInput = this.getView().byId("idDiscAircraft");
+                }
             if (!oSelectedItem) {
                 oInput.resetProperty("value");
                 return;
             }
             oInput.setValue(oSelectedItem.getTitle());
             this._oAircraftDialog.destroy();
-            if (oInput !== "") {
+            
+            if (this.getView().byId("idInpAircraft").getValue() !== "") {
                 this.getView().byId("idInpAircraft").setValueState("None");
                 this.getView().byId("idInpAircraft").setValueStateText("");
             }
