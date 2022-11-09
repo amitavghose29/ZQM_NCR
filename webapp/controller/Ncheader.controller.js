@@ -117,6 +117,9 @@ sap.ui.define([
                             this.getView().byId("idInpSupBy").setValue(oSupercededByNC);
                             this.getView().byId("idInpSupNC").setValue(oSupercedesNC);
                             this.getView().byId("idInpWrkIns").setValue(oWorkInstruction);
+                            this._oMultiInputSN.removeAllTokens();
+                            this._oMultiInputTN.removeAllTokens();
+
                             if (oSerialList !== "") {
                                 var oSerialNosToken = oSerialList.split(",");
                                 for (var i = 0; i < oSerialNosToken.length; i++) {
@@ -149,6 +152,7 @@ sap.ui.define([
             this.bindDefaultWorkGroup();
             this.bindPriority();
             this.bindPlantCode();
+            this.getView().byId("idPageNCHeader").setTitle("NC: " + sObjectId + "");
         },
 
         bindPriority: function () {
@@ -945,8 +949,15 @@ sap.ui.define([
                         sap.ui.core.BusyIndicator.hide();
                         // var msg = "The header data has been updated successfully.!";
                         if (Response.data.__batchResponses.length > 0) {
-                            var oMsg = JSON.parse(Response.data.__batchResponses[0].__changeResponses[0].headers["sap-message"]).message;
-                            MessageBox.success(oMsg);
+                            if(Response.data.__batchResponses[0].response){
+                                var oMsg = JSON.parse(Response.data.__batchResponses[0].response.body).error.message.value;
+                                    MessageBox.error(oMsg);
+                            }
+                            if(Response.data.__batchResponses[0].__changeResponses){
+                                var oMsg = JSON.parse(Response.data.__batchResponses[0].__changeResponses[0].headers["sap-message"]).message;
+                                    MessageBox.success(oMsg);            
+                            }   
+                            this.getOwnerComponent().getModel().refresh();                        
                         }
                     }.bind(this),
                     error: function (oError) {
@@ -994,9 +1005,17 @@ sap.ui.define([
                         sap.ui.core.BusyIndicator.hide();
                         // var msg = "The header data has been updated successfully.!";
                         if (Response.data.__batchResponses.length > 0) {
-                            var oMsg = JSON.parse(Response.data.__batchResponses[0].__changeResponses[0].headers["sap-message"]).message;
-                            MessageBox.success(oMsg);
+                            if(Response.data.__batchResponses[0].response){
+                                var oMsg = JSON.parse(Response.data.__batchResponses[0].response.body).error.message.value;
+                                    MessageBox.error(oMsg);
+                            }
+                            if(Response.data.__batchResponses[0].__changeResponses){
+                                var oMsg = JSON.parse(Response.data.__batchResponses[0].__changeResponses[0].headers["sap-message"]).message;
+                                    MessageBox.success(oMsg);
+                            }  
+                            this.getOwnerComponent().getModel().refresh();                         
                         }
+                        this.getOwnerComponent().getModel().refresh();
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
@@ -2312,7 +2331,7 @@ sap.ui.define([
 
         _confirmAircraftValueHelpDialog: function (oEvent) {
             var oSelectedItem = oEvent.getParameter("selectedItem");
-                
+               
                 if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata") {
                    var oInput = this.getView().byId("idInpAircraft");
                 }else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre"){

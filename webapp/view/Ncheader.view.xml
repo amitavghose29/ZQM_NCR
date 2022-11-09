@@ -1,7 +1,7 @@
 <mvc:View controllerName="com.airbus.ZQM_NCR.controller.Ncheader" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:upload="sap.m.upload" xmlns:f="sap.ui.layout.form" displayBlock="true" xmlns="sap.m">
     <App>
         <pages>
-            <Page title="NC">
+            <Page title="NC" id="idPageNCHeader">
                 <headerContent>
                     <Text id="idworkgroup" text="" class="workgroupncheader" />
                     <Image src="./image/airbus.png" height="20px" width="50px" />
@@ -244,9 +244,9 @@
                                                 >
                                                     <f:content>
                                                         <!--<core:Title text="Component Location"/>-->
-                                                        <Label text="NC Created By" />
+                                                        <Label text="NC Caused By Work Centre" />
                                                         <MultiInput id="idInpNCCrtBy" value="{NCCreatedBy}" valueHelpRequest=".onOpenVHNCCreated" showValueHelp="true" />
-                                                        <Label text="NC Detected At" />
+                                                        <Label text="NC Detected At Work Centre" />
                                                         <MultiInput id="idInpNCDetAt" value="{NCDetectedAt}" valueHelpRequest=".onOpenVHNCDetected" showValueHelp="true" />
                                                         <Label text="Bin Location" />
                                                         <Input id="idInpBinLoc" value="{Binlocation}" valueHelpRequest=".onOpenVHBinLoc" showValueHelp="true" />
