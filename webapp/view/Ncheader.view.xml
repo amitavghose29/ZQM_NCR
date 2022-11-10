@@ -8,9 +8,10 @@
                 </headerContent>
                 <subHeader>
                     <Toolbar id="idheader" visible="true">
-                        <Label id="idstatus" text="Status" design="Bold" wrapping="true" class="sapUiSmallMarginCenter" />
-                        <!--<Text text="open" class="status"/>-->
-                        <ObjectStatus id="idObjNCStatus" class="sapUiSmallMarginCenter" text="{NCStatus}" icon="sap-icon://sys-enter-2" state="Success" />
+                        <Label id="idstatus" text="Status:" design="Bold" wrapping="true" class="sapUiSmallMarginCenter" />
+                        <ObjectStatus id="idObjNCStatus" class="sapUiSmallMarginCenter"/>
+                        <ObjectStatus id="idObjNCStatusDiscrep" class="sapUiSmallMarginCenter"/>
+                        <ObjectStatus id="idObjNCStatusDispo" class="sapUiSmallMarginCenter"/>
                         <ToolbarSpacer />
                         <Text text="" id="headertext" class="icontabtext font" />
                         <ToolbarSpacer />
@@ -259,7 +260,7 @@
                                     </l:BlockLayout>
                                     <!--	</VBox>-->
                                     <!--</HBox>-->
-                                    <Table items="" class="formcolor1" growing="true" mode="MultiSelect" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
+                                    <Table id="idHeaderDiscTable" items="{oHeaderDiscTable>/}" class="formcolor1" growing="true" mode="MultiSelect" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
                                         <headerToolbar>
                                             <Toolbar>
                                                 <Title text="Discrepancy" level="H2" />
@@ -275,9 +276,6 @@
                                             <Column hAlign="Left">
                                                 <Text text="Status" />
                                             </Column>
-                                            <!--	<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
-												<Text text="Current Group"></Text>
-											</Column>-->
                                             <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
                                                 <Text text="Part # Affected" />
                                             </Column>
@@ -287,9 +285,6 @@
                                             <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
                                                 <Text text="Reject Qty" />
                                             </Column>
-                                            <!--	<Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
-												<Text text="Recurring Count"></Text>
-											</Column>-->
                                             <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
                                                 <Text text="Superseded By" />
                                             </Column>
@@ -306,15 +301,14 @@
                                         <items>
                                             <ColumnListItem>
                                                 <cells>
-                                                    <Text text="" />
-                                                    <Text text="" />
-                                                    <Text text="" />
-                                                    <!--<Text text=""/>-->
-                                                    <Text text="" />
-                                                    <Text text="" />
-                                                    <Text text="" />
-                                                    <Text text="" />
-                                                    <Text text="" />
+                                                    <Text text="{oHeaderDiscTable>DiscrepancyNo}" />
+                                                    <Text text="{oHeaderDiscTable>Status}" />
+                                                    <Text text="{oHeaderDiscTable>PartNumber}" />               
+                                                    <Text text="{oHeaderDiscTable>PartDesc}" />
+                                                    <Text text="{oHeaderDiscTable>RejectQnty}" />
+                                                    <Text text="{oHeaderDiscTable>SupercededByItem}" />
+                                                    <Text text="{oHeaderDiscTable>OpenDate}" />
+                                                    <Text text="{oHeaderDiscTable>}" />
                                                     <Button icon="sap-icon://log" />
                                                 </cells>
                                             </ColumnListItem>
@@ -367,7 +361,7 @@
                                 <ScrollContainer height="100%" width="100%" horizontal="false" vertical="true">
                                     <Toolbar class="sapUiSizeCompact">
                                         <ToolbarSpacer />
-                                        <Label text="Disc. No." design="Bold" />
+                                        <Label text="Disc. No." design="Bold" class="discrepancyHeader"/>
                                         <ComboBox id="idDcCobDscNo" width="100px" items="{discrepancyDropdownModel>/results}" selectionChange="_onSelectingDiscrepancy">
                                             <core:Item key="{discrepancyDropdownModel>DiscrepancyNo}" text="{discrepancyDropdownModel>DiscrepancyNo}" />
                                         </ComboBox>
@@ -397,27 +391,27 @@
                                                 >
                                                     <f:content>
                                                         <Label text="Linked To" />
-                                                        <ComboBox width="230px" items="{/LINK_SOSet}" showSecondaryValues="true">
-                                                            <core:ListItem key="{SequenceArea}" text="{Linkto}" additionalText="{SequenceArea}" />
+                                                        <ComboBox id="idComBoxDiscLinkTo" items="{LinkToModel>/}" change="onChangeLinkedTo">
+                                                            <core:ListItem key="{LinkToModel>Key}" text="{LinkToModel>Value}"/>
                                                         </ComboBox>
                                                         <Label text="Liability" />
-                                                        <Input width="230px" />
+                                                        <Input id="idDcIpLblty" />
                                                         <Label text="Partner / Suppilier #" />
-                                                        <Input width="230px" />
+                                                        <Input id="idDcIpPrtnr" />
                                                         <Label text="Partner / Suppilier Name" />
-                                                        <Input width="230px" />
+                                                        <Input id="idDcIpPrtnrNm" />
                                                         <Label text="Supersedes Item" />
-                                                        <Input width="230px" />
+                                                        <Input id="idDcIpSpsdsItm" />
                                                         <Label text="Superseded by Item" />
-                                                        <Input width="230px" />
+                                                        <Input id="idDcIpSpsdbyItm" />
                                                         <Label text="Closed Date" />
-                                                        <Text text="" />
+                                                        <Text id="idDcTxtCdt" text="" />
                                                         <Label text="2nd Drop Ship" />
-                                                        <CheckBox />
+                                                        <CheckBox id="idDcCbDs2" />
                                                         <Label text="Aircraft" />
-                                                        <Input width="230px" id="idDiscAircraft" showValueHelp="true" valueHelpRequest="onVHReqAircraft" />
+                                                        <Input id="idDiscAircraft" showValueHelp="true" valueHelpRequest="onVHReqAircraft" />
                                                         <Label text="Open Date" />
-                                                        <Input width="230px" />
+                                                        <Input id="idDcIpOdt" />
                                                     </f:content>
                                                 </f:SimpleForm>
                                                 <f:SimpleForm
@@ -901,7 +895,7 @@
                                             </l:BlockLayoutCell>
                                             <l:BlockLayoutCell width="100" backgroundColorShade="ShadeA" backgroundColorSet="ColorSet1" class="formcolor">
                                                 <f:SimpleForm
-                                                    id="ff"
+                                                    id="idSFDiscrepancyParts"
                                                     title="Discrepancy Parts"
                                                     editable="true"
                                                     labelSpanXL="4"
@@ -923,38 +917,23 @@
                                                     <f:content>
                                                         <!--<core:Title text="Discrepancy Parts"/>-->
                                                         <Label text="Part Number" />
-                                                        <Input value="79000-750-002-29780" width="230px" />
+                                                        <Input id="idDiscPartNumber" showValueHelp="true" valueHelpRequest=".onOpenVHPartNoDisc" valueHelpOnly="true" change="handleChangeDiscPartNo"/>
                                                         <Label text="Part Description" />
-                                                        <!--<TextArea value="Hose Assembly" editable="false"/>-->
-                                                        <ObjectStatus text="Hose Assembly" state="Information" />
-                                                        <!--	<Label/>
-														<Input id="didInputSN" change="onChangeSN" placeholder="Component Serial No."/><Input placeholder="Traceability No."/>
-														<Label/>
-														<List id="dlist" mode="Delete" delete="handleDelete" enableBusyIndicator="true" growing="true" items="{/}">
-															<CustomListItem>
-																<VBox class="sapUiSmallMarginBegin">
-																	<Label text="{SN}"/>
-																</VBox>
-															</CustomListItem>
-														</List>
-														<List id="dlist1" mode="Delete" delete="handleDelete" enableBusyIndicator="true" growing="true" items="">
-															<StandardListItem description="Abcd"/>
-															<StandardListItem description="Abcde"/>
-														</List>-->
+                                                        <Input id="idDiscPartDesc" editable="false" />
                                                         <Label text="Quantity Inspected" />
                                                         <HBox>
-                                                            <Input width="80px" />
-                                                            <Input width="60px" class="sapUiTinyMarginBegin" placeholder="UOM" />
+                                                            <Input id="idDiscQtyIns" width="240px" />
+                                                            <Input id="idDiscUomIns" width="125px" class="sapUiTinyMarginBegin" placeholder="UOM" />
                                                         </HBox>
                                                         <Label text="Quantity Rejected" />
                                                         <HBox>
-                                                            <Input width="80px" />
-                                                            <Input width="60px" class="sapUiTinyMarginBegin" placeholder="UOM" />
+                                                            <Input id="idDiscQtyRej" width="240px" />
+                                                            <Input id="idDiscUomRej" width="125px" class="sapUiTinyMarginBegin" placeholder="UOM" />
                                                         </HBox>
                                                         <Label text="Serial No" />
-                                                        <MultiInput id="idMNInputSNDisc" showValueHelp="true" valueHelpRequest=".onOpenVHSerNoDisc" width="230px" tokenUpdate="_onTokenUpdateSNDisc" />
+                                                        <MultiInput id="idMulInpDiscSerNo" showValueHelp="true" valueHelpRequest=".onOpenVHSerNo" />
                                                         <Label text="Traceability No" />
-                                                        <MultiInput id="idMNInputTNDisc" showValueHelp="true" valueHelpRequest=".onOpenVHTrcNoDisc" width="230px" tokenUpdate="_onTokenUpdateTNDisc" />
+                                                        <MultiInput id="idMulInpDiscTrcNo" showValueHelp="true" valueHelpRequest=".onOpenVHTrcNo" />
                                                     </f:content>
                                                 </f:SimpleForm>
                                                 <!--<HBox justifyContent="Center">
@@ -1057,23 +1036,22 @@
                                                         <Label text="CSMS Issue" />
                                                         <CheckBox id="idDcCbCsmsi" class="sapUiLargeMarginBegin" />
                                                         <Label text="Preliminary Cause" />
-                                                        <ComboBox id="idDcCobPc" items="" width="200px">
-                                                            <core:Item text="Human" />
-                                                            <core:Item text="Technical" />
+                                                        <ComboBox id="idDcCobPc" items="{preliminarycauseModel>/}">
+                                                            <core:Item key="{preliminarycauseModel>Value}" text="{preliminarycauseModel>Value}" />                                                            
                                                         </ComboBox>
                                                         <Label text="Defect Code" />
                                                         <FlexBox direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Center">
-                                                            <Input id="idDcIpDc" value="37A4" showValueHelp="true" valueHelpRequest="handleValueHelp" width="100px" />
-                                                            <Text id="idDcTxtDc" class="sapUiTinyMarginBegin" text=" DAMAGE (other than skins) - N/A - BROKEN EDGE " />
+                                                            <Input id="idDcIpDc" showValueHelp="true" valueHelpRequest="_handleValueHelpDefCode" width="100px" />
+                                                            <Text id="idDcTxtDc" class="sapUiTinyMarginBegin"  />
                                                         </FlexBox>
                                                         <Label text="Drop Point" />
-                                                        <Input id="idDcIpDp" width="230px" showValueHelp="true" />
+                                                        <Input id="idDcIpDp" showValueHelp="true" valueHelpRequest="onOpenVHDrpPt"/>
                                                         <Label text="Is" />
                                                         <TextArea id="idDcTxtIs" />
                                                         <Label text="Should be" />
-                                                        <TextArea id="idDcTaIs" />
+                                                        <TextArea id="idDcTaSb" />
                                                         <Label text="As Per" />
-                                                        <Input id="idDcInpAp" width="230px" />
+                                                        <Input id="idDcInpAp"/>
                                                         <Label text="Incomplete Flag" />
                                                         <CheckBox id="idDcCbIf" class="sapUiLargeMarginBegin" selected="true" />
                                                     </f:content>

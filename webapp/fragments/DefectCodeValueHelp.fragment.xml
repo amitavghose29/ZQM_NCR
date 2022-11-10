@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+    <SelectDialog   title="Select Defect Code" items="{defectCodeModel>/}" liveChange="onDefectCodeliveSearch" confirm="_confirmDefectCodeValueHelpDialog"
+        cancel="_handleDefectCodeValueHelpClose">
+        <StandardListItem  title="{defectCodeModel>Value}" info="{defectCodeModel>Description}" />
+    </SelectDialog>
+</core:FragmentDefinition>
