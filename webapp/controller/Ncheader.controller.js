@@ -18,11 +18,11 @@ sap.ui.define([
 
     return Controller.extend("com.airbus.ZQM_NCR.controller.Ncheader", {
 
-		/**
-		 * Called when a controller is instantiated and its View controls (if available) are already created.
-		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
-		 * @memberOf com.airbus.ZQM_NCR.view.Ncheader
-		 */
+        /**
+         * Called when a controller is instantiated and its View controls (if available) are already created.
+         * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
+         * @memberOf com.airbus.ZQM_NCR.view.Ncheader
+         */
         onInit: function () {
             //this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
             var oRouter = this.getOwnerComponent().getRouter();
@@ -300,9 +300,9 @@ sap.ui.define([
                 text = "Traceability and History";
             } else if (key === "Purchase") {
                 this._setPurchaseInfoData();
-            } 
+            }
             else if (key === "Discre") {
-            this._setDiscrepancyComboBox();
+                this._setDiscrepancyComboBox();
             } else {
                 text = oEvent.getParameters().selectedItem.getText();
             }
@@ -313,17 +313,17 @@ sap.ui.define([
             // var wind = window.open("", "PrintWindow", ctrlstring);
             //	var hContent = '<html><head></head><body>';
 
-			/*var print_Url = $.sap.getModulePath("com", "/css/");
-			var printCssUrl = print_Url + "style.css";
-			// var hContent = '<html><head><link rel="stylesheet" href=' + printCssUrl + ' type="text/css" /></head><body>';
-			var bodyContent = $(".printAreaBox").html();
-			var closeContent = "</body></html>";
-			var htmlpage = hContent + bodyContent + closeContent;
+            /*var print_Url = $.sap.getModulePath("com", "/css/");
+            var printCssUrl = print_Url + "style.css";
+            // var hContent = '<html><head><link rel="stylesheet" href=' + printCssUrl + ' type="text/css" /></head><body>';
+            var bodyContent = $(".printAreaBox").html();
+            var closeContent = "</body></html>";
+            var htmlpage = hContent + bodyContent + closeContent;
 
-			var win = window.open("", "PrintWindow");
-			win.document.write(htmlpage);
-			win.print();
-			win.stop();*/
+            var win = window.open("", "PrintWindow");
+            win.document.write(htmlpage);
+            win.print();
+            win.stop();*/
             window.print();
 
         },
@@ -489,13 +489,13 @@ sap.ui.define([
         },
 
         handleDelete: function (oEvent) {
-			/*	var oList = oEvent.getSource(),
-					oItem = oEvent.getParameter("listItem"),
-					sPath = oItem.getBindingContext().getPath();
-					var _selIndex = oEvent
-						.getParameter("listItem")
-						.getBindingContextPath()
-						.substr(1);*/
+            /*	var oList = oEvent.getSource(),
+                    oItem = oEvent.getParameter("listItem"),
+                    sPath = oItem.getBindingContext().getPath();
+                    var _selIndex = oEvent
+                        .getParameter("listItem")
+                        .getBindingContextPath()
+                        .substr(1);*/
             // after deletion put the focus back to the list
             //	oList.attachEventOnce("updateFinished", oList.focus, oList);
             var _selIndex = oEvent.getParameters().id[oEvent.getParameters().id.length - 1];
@@ -520,15 +520,15 @@ sap.ui.define([
             this.getView().byId("idheader").setVisible(false);
         },
         onNcrPressCancel: function () {
-			/*	this.getView().byId("idlink").setValue();
-				this.getView().byId("idlink").setVisible(false);
-				this.getView().byId("idin").setValue();
-				this.getView().byId("idpono").setValue();
-				this.getView().byId("idporder").setValue();
-				this.getView().byId("idworkinst").setValue();
-				this.getView().byId("idworkorder").setValue();
-				this.getView().byId("idlast").setValue();
-				this.getView().byId("idncr").setValue();*/
+            /*	this.getView().byId("idlink").setValue();
+                this.getView().byId("idlink").setVisible(false);
+                this.getView().byId("idin").setValue();
+                this.getView().byId("idpono").setValue();
+                this.getView().byId("idporder").setValue();
+                this.getView().byId("idworkinst").setValue();
+                this.getView().byId("idworkorder").setValue();
+                this.getView().byId("idlast").setValue();
+                this.getView().byId("idncr").setValue();*/
             this.getOwnerComponent().getRouter().navTo("TargetMain");
             this.getView().byId("idCombNcType").setValue();
             this.getView().byId("idCombInWhArea").setValue();
@@ -949,15 +949,15 @@ sap.ui.define([
                         sap.ui.core.BusyIndicator.hide();
                         // var msg = "The header data has been updated successfully.!";
                         if (Response.data.__batchResponses.length > 0) {
-                            if(Response.data.__batchResponses[0].response){
+                            if (Response.data.__batchResponses[0].response) {
                                 var oMsg = JSON.parse(Response.data.__batchResponses[0].response.body).error.message.value;
-                                    MessageBox.error(oMsg);
+                                MessageBox.error(oMsg);
                             }
-                            if(Response.data.__batchResponses[0].__changeResponses){
+                            if (Response.data.__batchResponses[0].__changeResponses) {
                                 var oMsg = JSON.parse(Response.data.__batchResponses[0].__changeResponses[0].headers["sap-message"]).message;
-                                    MessageBox.success(oMsg);            
-                            }   
-                            this.getOwnerComponent().getModel().refresh();                        
+                                MessageBox.success(oMsg);
+                            }
+                            this.getOwnerComponent().getModel().refresh();
                         }
                     }.bind(this),
                     error: function (oError) {
@@ -1005,15 +1005,15 @@ sap.ui.define([
                         sap.ui.core.BusyIndicator.hide();
                         // var msg = "The header data has been updated successfully.!";
                         if (Response.data.__batchResponses.length > 0) {
-                            if(Response.data.__batchResponses[0].response){
+                            if (Response.data.__batchResponses[0].response) {
                                 var oMsg = JSON.parse(Response.data.__batchResponses[0].response.body).error.message.value;
-                                    MessageBox.error(oMsg);
+                                MessageBox.error(oMsg);
                             }
-                            if(Response.data.__batchResponses[0].__changeResponses){
+                            if (Response.data.__batchResponses[0].__changeResponses) {
                                 var oMsg = JSON.parse(Response.data.__batchResponses[0].__changeResponses[0].headers["sap-message"]).message;
-                                    MessageBox.success(oMsg);
-                            }  
-                            this.getOwnerComponent().getModel().refresh();                         
+                                MessageBox.success(oMsg);
+                            }
+                            this.getOwnerComponent().getModel().refresh();
                         }
                         this.getOwnerComponent().getModel().refresh();
                     }.bind(this),
@@ -1152,7 +1152,7 @@ sap.ui.define([
             this.getOwnerComponent().getModel().metadataLoaded().then(function () {
                 var sEntitypath = this.getOwnerComponent().getModel().createKey("CreateNotificationHeaderSet", {
                     //NotificationNo: sObjectId
-                    NotificationNo : '200000032'
+                    NotificationNo: '200000032'
                 });
                 sap.ui.core.BusyIndicator.show();
                 var oModel = new JSONModel();
@@ -1177,11 +1177,10 @@ sap.ui.define([
             }.bind(this));
         },
         /**Function is triggered when selected an item in discrepancy drop down */
-        _onSelectingDiscrepancy : function(oEvent){
+        _onSelectingDiscrepancy: function (oEvent) {
             var discrepancyNo = oEvent.getParameters("selectedItem").selectedItem.getKey();
-            if(discrepancyNo)
-            {
-                
+            if (discrepancyNo) {
+
             }
         },
 
@@ -1251,20 +1250,20 @@ sap.ui.define([
         onCreate: function () {
             var ic = this.getView().byId("idIconTabBarHeader");
 
-			/*	var ncr = this.getView().byId("idncr").getSelected();
-				var snag = this.getView().byId("idsnag").getSelected();
-				var stock = this.getView().byId("idstock").getSelected();
-				var supplier = this.getView().byId("idsupplier").getSelected();*/
+            /*	var ncr = this.getView().byId("idncr").getSelected();
+                var snag = this.getView().byId("idsnag").getSelected();
+                var stock = this.getView().byId("idstock").getSelected();
+                var supplier = this.getView().byId("idsupplier").getSelected();*/
 
             var inw = this.getView().byId("idin").getValue();
             var pono = this.getView().byId("idpono").getValue();
             var porder = this.getView().byId("idporder").getValue();
 
             if (inw === "" || pono === "" || porder === "") {
-				/*this.getView().byId("idncr").setValueState("Warning");
-				this.getView().byId("idsnag").setValueState("Warning");
-				this.getView().byId("idstock").setValueState("Warning");
-				this.getView().byId("idsupplier").setValueState("Warning");*/
+                /*this.getView().byId("idncr").setValueState("Warning");
+                this.getView().byId("idsnag").setValueState("Warning");
+                this.getView().byId("idstock").setValueState("Warning");
+                this.getView().byId("idsupplier").setValueState("Warning");*/
 
                 this.getView().byId("idin").setValueState("Warning");
                 this.getView().byId("idpono").setValueState("Warning");
@@ -1292,9 +1291,9 @@ sap.ui.define([
         },
 
         handleValueHelp1: function (oEvent) {
-			/*	var oDialog1 = sap.ui.xmlfragment("com.airbus.Zncreport.fragments.disposition",
-					this);
-				oDialog1.open();*/
+            /*	var oDialog1 = sap.ui.xmlfragment("com.airbus.Zncreport.fragments.disposition",
+                    this);
+                oDialog1.open();*/
             this._getDialog().open();
         },
         _getDialog: function () {
@@ -1576,7 +1575,7 @@ sap.ui.define([
 
             if (oEvent.getParameter('type') === Tokenizer.TokenUpdateType.Added) {
                 aTokens = oEvent.getParameter('addedTokens');
-                sTokensText = "Added tokens: ";             
+                sTokensText = "Added tokens: ";
                 sap.ui.core.BusyIndicator.show();
                 var oModel = new sap.ui.model.json.JSONModel();
                 var oDataModel = this.getOwnerComponent().getModel();
@@ -1585,14 +1584,14 @@ sap.ui.define([
                 var sPath = "/f4_genericSet";
                 oDataModel.read(sPath, {
                     filters: oFilter,
-                    success: function (oData, oResult) {     
+                    success: function (oData, oResult) {
                         var data = oData.results;
                         oModel.setData(data);
                         for (i = 0; i < aTokens.length; i++) {
                             this.getView().byId("idMNInputSN").setValueState("None");
                             this.getView().byId("idMNInputSN").setValueStateText("");
                             sTokensText = aTokens[i].getText();
-        
+
                             for (j = 0; j < oModel.getData().length; j++) {
                                 sNo = oModel.getData()[j].Value;
                                 if (sTokensText === sNo) {
@@ -1602,7 +1601,7 @@ sap.ui.define([
                                     bFlag = false;
                                 }
                             }
-                        }      
+                        }
                         if (bFlag === false) {
                             var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
                             MessageBox.information(
@@ -1653,7 +1652,7 @@ sap.ui.define([
                         var data = oData.results;
                         oModel.setData(data);
                         for (i = 0; i < aTokens.length; i++) {
-                            sTokensText = aTokens[i].getText();      
+                            sTokensText = aTokens[i].getText();
                             for (j = 0; j < oModel.getData().length; j++) {
                                 tNo = oModel.getData()[j].Value;
                                 if (sTokensText === tNo) {
@@ -1663,7 +1662,7 @@ sap.ui.define([
                                     bFlag = false;
                                 }
                             }
-        
+
                             if (bFlag === false) {
                                 var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
                                 MessageBox.information(
@@ -1750,9 +1749,13 @@ sap.ui.define([
             var oSelectedItem = oEvent.getParameters("selectedItem").listItem.getBindingContext("oGRModel").getProperty("GoodsReceiptNum");
             var oSelectedItem1 = oEvent.getParameters("selectedItem").listItem.getBindingContext("oGRModel").getProperty("GoodsRecpItem");
             var oSelectedItem2 = oEvent.getParameters("selectedItem").listItem.getBindingContext("oGRModel").getProperty("GoodsRecpYear");
+            var oSelectedItem3 = oEvent.getParameters("selectedItem").listItem.getBindingContext("oGRModel").getProperty("GRQty");
+            var oSelectedItem4 = oEvent.getParameters("selectedItem").listItem.getBindingContext("oGRModel").getProperty("GRUom");
             var oInput = this.getView().byId("idPurInfGrip");
             var oInput1 = this.getView().byId("idInpPurInfGritm");
             var oInput2 = this.getView().byId("idInpPurInfGryr");
+            var oInput3 = this.getView().byId("idPurInfGrQtyip");
+            var oInput4 = this.getView().byId("idPurInfGrUom");
             if (!oSelectedItem) {
                 oInput.resetProperty("value");
                 return;
@@ -1761,21 +1764,28 @@ sap.ui.define([
             oInput.setValue(oSelectedItem);
             oInput1.setValue(oSelectedItem1);
             oInput2.setValue(oSelectedItem2);
+            oInput3.setValue(oSelectedItem3);
+            oInput4.setValue(oSelectedItem4);
             this._oGRDialog.destroy();
         },
 
         handlePurOrdItemSelection: function (oEvent) {
             var oSelectedItem = oEvent.getParameters("selectedItem").listItem.getBindingContext("oPrModel").getProperty("PurchaseOrderNum");
             var oSelectedItem1 = oEvent.getParameters("selectedItem").listItem.getBindingContext("oPrModel").getProperty("PurchaseItem");
+            var oSelectedItem2 = oEvent.getParameters("selectedItem").listItem.getBindingContext("oPrModel").getProperty("SupplierCode");
+            var oSelectedItem3 = oEvent.getParameters("selectedItem").listItem.getBindingContext("oPrModel").getProperty("SupplierName");
             var oInput = this.getView().byId("idPurInfPurOrdip");
             var oInput1 = this.getView().byId("idPurInfPolnip");
+            var oInput2 = this.getView().byId("idPurInfSupSCip");
+            var oInput3 = this.getView().byId("idPurInfSupNmip");
             if (!oSelectedItem) {
                 oInput.resetProperty("value");
                 return;
             }
-
             oInput.setValue(oSelectedItem);
             oInput1.setValue(oSelectedItem1);
+            oInput2.setValue(oSelectedItem2);
+            oInput3.setValue(oSelectedItem3);
             this._oPODialog.destroy();
         },
         //Added code for Slection Change in PO and GR Search Tables - Code End
@@ -2331,19 +2341,19 @@ sap.ui.define([
 
         _confirmAircraftValueHelpDialog: function (oEvent) {
             var oSelectedItem = oEvent.getParameter("selectedItem");
-               
-                if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata") {
-                   var oInput = this.getView().byId("idInpAircraft");
-                }else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre"){
-                   var oInput = this.getView().byId("idDiscAircraft");
-                }
+
+            if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata") {
+                var oInput = this.getView().byId("idInpAircraft");
+            } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre") {
+                var oInput = this.getView().byId("idDiscAircraft");
+            }
             if (!oSelectedItem) {
                 oInput.resetProperty("value");
                 return;
             }
             oInput.setValue(oSelectedItem.getTitle());
             this._oAircraftDialog.destroy();
-            
+
             if (this.getView().byId("idInpAircraft").getValue() !== "") {
                 this.getView().byId("idInpAircraft").setValueState("None");
                 this.getView().byId("idInpAircraft").setValueStateText("");
@@ -3405,19 +3415,19 @@ sap.ui.define([
         },
 
         /**
-		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
-		 * (NOT before the first rendering! onInit() is used for that one!).
-		 * @memberOf com.airbus.ZQM_NCR.view.Ncheader
-		 */
+         * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
+         * (NOT before the first rendering! onInit() is used for that one!).
+         * @memberOf com.airbus.ZQM_NCR.view.Ncheader
+         */
         //	onBeforeRendering: function() {
         //
         //	},
 
-		/**
-		 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
-		 * This hook is the same one that SAPUI5 controls get after being rendered.
-		 * @memberOf com.airbus.ZQM_NCR.view.Ncheader
-		 */
+        /**
+         * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
+         * This hook is the same one that SAPUI5 controls get after being rendered.
+         * @memberOf com.airbus.ZQM_NCR.view.Ncheader
+         */
         onAfterRendering: function () {
             var oModel = this.getOwnerComponent().getModel("NCSaveModel");
             this.getView().setModel(oModel, "NCSaveModel");
@@ -3425,9 +3435,9 @@ sap.ui.define([
         }
 
         /**
-		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
-		 * @memberOf com.airbus.ZQM_NCR.view.Ncheader
-		 */
+         * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
+         * @memberOf com.airbus.ZQM_NCR.view.Ncheader
+         */
         //	onExit: function() {
         //
         //	}
