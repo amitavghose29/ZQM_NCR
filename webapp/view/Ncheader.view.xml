@@ -396,17 +396,17 @@
                                                         </ComboBox>
                                                         <Label text="Liability" />                   
                                                         <VBox>
-                                                            <Input id="idDcIpLblty" showValueHelp="true" valueHelpRequest="onVHReqLiability"/>
+                                                            <Input id="idDcIpLblty" showValueHelp="true" valueHelpRequest="onVHReqLiability" />
                                                             <TextArea rows="3" width="100%" id="idDiscLbltyTxt"/>
                                                         </VBox>
                                                         <Label text="Partner / Suppilier #" />
-                                                        <Input id="idDcIpPrtnr" />
+                                                        <Input id="idDcIpPrtnr" showValueHelp="true" valueHelpRequest="onVHReqPartner" />
                                                         <Label text="Partner / Suppilier Name" />
                                                         <Input id="idDcIpPrtnrNm" />
                                                         <Label text="Supersedes Item" />
-                                                        <Input id="idDcIpSpsdsItm" />
+                                                        <Input id="idDcIpSpsdsItm" showValueHelp="true" valueHelpRequest="onVHReqSupersedesItem" />
                                                         <Label text="Superseded by Item" />
-                                                        <Input id="idDcIpSpsdbyItm" />
+                                                        <Input id="idDcIpSpsdbyItm" showValueHelp="true" valueHelpRequest="onVHReqSupersededbyItem" />
                                                         <Label text="Closed Date" />
                                                         <Text id="idDcTxtCdt" text="" />
                                                         <Label text="2nd Drop Ship" />

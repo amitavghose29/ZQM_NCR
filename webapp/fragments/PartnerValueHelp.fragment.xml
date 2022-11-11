@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog title="Partner Name" items="{PartnerModel>/}" liveChange="onSearchPartner" confirm="_configVHDialogPartner"
+		cancel="_handleVHPartner" search="onSearchPartner">
+		<StandardListItem title="{PartnerModel>Value}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

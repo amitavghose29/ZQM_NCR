@@ -2101,6 +2101,7 @@ sap.ui.define([
                     success: function (data) {
                         MessageBox.success(data.Message, {
                             onClose: function () {
+                                sap.ui.core.BusyIndicator.show();
                                 saveData = payload;
                                 saveData.NotifNo = data.Notification;
                                 var jsonModel = new JSONModel();
@@ -2109,8 +2110,18 @@ sap.ui.define([
 
                                 this.getOwnerComponent().getRouter().navTo("Ncheader", {
                                     ID: data.Notification
-                                });
+                                });          
+                                this.onPressCancel();
+                                sap.ui.core.BusyIndicator.hide();
+                                // saveData = payload;
+                                // saveData.NotifNo = data.Notification;
+                                // var jsonModel = new JSONModel();
+                                // jsonModel.setData(saveData);
+                                // this.getOwnerComponent().setModel(jsonModel, "NCSaveModel");
 
+                                // this.getOwnerComponent().getRouter().navTo("Ncheader", {
+                                //     ID: data.Notification
+                                // });
                             }.bind(this)
                         });
                     }.bind(this),
@@ -2120,6 +2131,18 @@ sap.ui.define([
                     }
                 });
             }
+        },
+
+        onPressCancel:function(){
+            this.getView().byId("idncr").setSelectedKey();
+            this.getView().byId("idiwa").setSelectedKey();
+            this.getView().byId("idlinksubc").setSelectedKey();
+            this.getView().byId("idsubcno").setValue();
+            this.getView().byId("idInpBinLoc").setValue();
+            this.getView().byId("idAirCraftNum").setValue();
+            this.getView().byId("idsubsubno").setValue();
+            this.onAfterRendering();
         }
+        
     });
 });

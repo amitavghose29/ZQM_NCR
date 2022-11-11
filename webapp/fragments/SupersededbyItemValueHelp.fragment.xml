@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog title="Supersedes by Item" items="{SupersededbyItemModel>/}" liveChange="onSearchSupersededbyItem" confirm="_configVHDialogSupersededbyItem"
+		cancel="_handleVHSupersededbyItem" search="onSearchSupersededbyItem">
+		<StandardListItem title="{SupersededbyItemModel>Value}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

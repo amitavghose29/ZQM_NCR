@@ -973,7 +973,7 @@ sap.ui.define([
                             MessageBox.success(oMsg);
                         }
                         this.getOwnerComponent().getModel().refresh();
-                    },
+                    }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
                         var msg = JSON.parse(oError.responseText).error.message.value;
@@ -2729,6 +2729,7 @@ sap.ui.define([
                 oMulInpSer.setEditable(false);
                 oMulInpTrc.setEditable(false);
                 this.getView().byId("idInpStatPartDesc").setEditable(false);
+                this.getView().byId("idInpStatPartDesc").setValue();
                 if (oMulInpSer.getTokens()) {
                     oMulInpSer.removeAllTokens();
                 } else if (oMulInpTrc.getTokens()) {
@@ -2749,7 +2750,8 @@ sap.ui.define([
                         var data = oData.results;
                         var bFlag;
                         for (var i = 0; i < data.length; i++) {
-                            var oPartNo = data[0].Value;
+                            var oPartNo = data[i].Value;
+                            var oPartDesc = data[i].Description;
                             if (oPartNo == oInpPartNo.getValue()) {
                                 bFlag = false;
                                 break;
@@ -2759,6 +2761,7 @@ sap.ui.define([
                         }
                         if (bFlag === true) {
                             this.getView().byId("idInpStatPartDesc").setEditable(true);
+                            this.getView().byId("idInpStatPartDesc").setValue();
                             MessageBox.warning(
                                 "No matching Part master records found..!", {
                                 icon: MessageBox.Icon.WARNING,
@@ -2772,6 +2775,7 @@ sap.ui.define([
                             });
                         } else {
                             this.getView().byId("idInpStatPartDesc").setEditable(false);
+                            this.getView().byId("idInpStatPartDesc").setValue(oPartDesc);
                         }
                     }.bind(this),
                     error: function (oError) {
@@ -3121,6 +3125,7 @@ sap.ui.define([
 
         _configDrpPntVHDialog: function (oEvent) {
             var oSelectedItem = oEvent.getParameter("selectedItem");
+            var oInput;
                 if(this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata"){
                     oInput = this.getView().byId("idInpDrpPt");
                 }else if(this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre"){
@@ -3791,7 +3796,7 @@ sap.ui.define([
                     sap.ui.core.BusyIndicator.hide();
                     var data = oData.results;
                     oModel.setData(data);
-                    this._oLiabilityDialog.setModel(oModel, "oRMANoFBModel");
+                    this._oLiabilityDialog.setModel(oModel, "LiabilityModel");
                 }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
@@ -3799,6 +3804,160 @@ sap.ui.define([
                     MessageBox.error(msg);
                 }
             });
+        },
+
+        _configVHDialogLiability: function (oEvent) {
+            var oSelectedItem = oEvent.getParameter("selectedItem"),
+                oInput = this.getView().byId("idDcIpLblty");
+
+            if (!oSelectedItem) {
+                oInput.resetProperty("value");
+                return;
+            }
+            oInput.setValue(oSelectedItem.getTitle());
+            this._oLiabilityDialog.destroy();
+        },
+
+        onSearchLiability: function (oEvent) {
+            var oValue = oEvent.getParameter("value");
+            var oFilter = new Filter("Value", FilterOperator.Contains, oValue);
+            var oBinding = oEvent.getParameter("itemsBinding");
+                oBinding.filter([oFilter]);
+        },
+
+        onVHReqPartner: function () {
+            this._oPartnerDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.PartnerValueHelp", this);
+            this.getView().addDependent(this._oPartnerDialog);
+            this._oPartnerDialog.open();
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new JSONModel();
+            var oDataModel = this.getOwnerComponent().getModel();
+            var oFilter = [];
+            oFilter.push(new Filter("Key", FilterOperator.EQ, "PARNRDISC"));
+            var sPath = "/f4_genericSet"
+            oDataModel.read(sPath, {
+                filters: oFilter,
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.results;
+                    oModel.setData(data);
+                    this._oPartnerDialog.setModel(oModel, "PartnerModel");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+        },
+
+        _configVHDialogPartner: function (oEvent) {
+            var oSelectedItem = oEvent.getParameter("selectedItem"),
+                oInput = this.getView().byId("idDcIpPrtnr");
+
+            if (!oSelectedItem) {
+                oInput.resetProperty("value");
+                return;
+            }
+            oInput.setValue(oSelectedItem.getTitle());
+            this._oPartnerDialog.destroy();
+        },
+
+        onSearchPartner: function (oEvent) {
+            var oValue = oEvent.getParameter("value");
+            var oFilter = new Filter("Value", FilterOperator.Contains, oValue);
+            var oBinding = oEvent.getParameter("itemsBinding");
+                oBinding.filter([oFilter]);
+        },
+
+        onVHReqSupersedesItem: function () {
+            this._oSupersedesItemDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.SupersedesItemValueHelp", this);
+            this.getView().addDependent(this._oSupersedesItemDialog);
+            this._oSupersedesItemDialog.open();
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new JSONModel();
+            var oDataModel = this.getOwnerComponent().getModel();
+            var oFilter = [];
+            oFilter.push(new Filter("Key", FilterOperator.EQ, "DISCITEM"));
+            var sPath = "/f4_genericSet"
+            oDataModel.read(sPath, {
+                filters: oFilter,
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.results;
+                    oModel.setData(data);
+                    this._oSupersedesItemDialog.setModel(oModel, "SupersedesItemModel");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+        },
+
+        _configVHDialogSupersedesItem: function (oEvent) {
+            var oSelectedItem = oEvent.getParameter("selectedItem"),
+                oInput = this.getView().byId("idDcIpSpsdsItm");
+
+            if (!oSelectedItem) {
+                oInput.resetProperty("value");
+                return;
+            }
+            oInput.setValue(oSelectedItem.getTitle());
+            this._oSupersedesItemDialog.destroy();
+        },
+
+        onSearchSupersedesItem: function (oEvent) {
+            var oValue = oEvent.getParameter("value");
+            var oFilter = new Filter("Value", FilterOperator.Contains, oValue);
+            var oBinding = oEvent.getParameter("itemsBinding");
+                oBinding.filter([oFilter]);
+        },
+
+        onVHReqSupersededbyItem: function () {
+            this._oSupersededbyItemDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.SupersededbyItemValueHelp", this);
+            this.getView().addDependent(this._oSupersededbyItemDialog);
+            this._oSupersededbyItemDialog.open();
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new JSONModel();
+            var oDataModel = this.getOwnerComponent().getModel();
+            var oFilter = [];
+            oFilter.push(new Filter("Key", FilterOperator.EQ, "DISCSUPBY"));
+            var sPath = "/f4_genericSet"
+            oDataModel.read(sPath, {
+                filters: oFilter,
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.results;
+                    oModel.setData(data);
+                    this._oSupersededbyItemDialog.setModel(oModel, "SupersededbyItemModel");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+        },
+
+        _configVHDialogSupersededbyItem: function (oEvent) {
+            var oSelectedItem = oEvent.getParameter("selectedItem"),
+                oInput = this.getView().byId("idDcIpSpsdbyItm");
+
+            if (!oSelectedItem) {
+                oInput.resetProperty("value");
+                return;
+            }
+            oInput.setValue(oSelectedItem.getTitle());
+            this._oSupersededbyItemDialog.destroy();
+        },
+
+        onSearchSupersededbyItem: function (oEvent) {
+            var oValue = oEvent.getParameter("value");
+            var oFilter = new Filter("Value", FilterOperator.Contains, oValue);
+            var oBinding = oEvent.getParameter("itemsBinding");
+                oBinding.filter([oFilter]);
         },
 
         handleChangeDiscPartNo: function () {
@@ -3830,7 +3989,8 @@ sap.ui.define([
                         var data = oData.results;
                         var bFlag;
                         for (var i = 0; i < data.length; i++) {
-                            var oPartNo = data[0].Value;
+                            var oPartNo = data[i].Value;
+                            var oPartDesc = data[i].Description;
                             if (oPartNo == oInpPartNo.getValue()) {
                                 bFlag = false;
                                 break;
@@ -3840,6 +4000,7 @@ sap.ui.define([
                         }
                         if (bFlag === true) {
                             this.getView().byId("idDiscPartDesc").setEditable(true);
+                            this.getView().byId("idDiscPartDesc").setValue();
                             if(this.getView().byId("idComBoxDiscLinkTo").getSelectedItem()){
                                 if(this.getView().byId("idComBoxDiscLinkTo").getSelectedItem().getText() == "AIRCRAFT"){
                                     var oMessage = "No matching Part master records found.!";
@@ -3860,6 +4021,7 @@ sap.ui.define([
                             });
                         } else {
                             this.getView().byId("idDiscPartDesc").setEditable(false);
+                            this.getView().byId("idDiscPartDesc").setValue(oPartDesc);
                         }
                     }.bind(this),
                     error: function (oError) {
