@@ -394,8 +394,11 @@
                                                         <ComboBox id="idComBoxDiscLinkTo" items="{LinkToModel>/}" change="onChangeLinkedTo">
                                                             <core:ListItem key="{LinkToModel>Key}" text="{LinkToModel>Value}"/>
                                                         </ComboBox>
-                                                        <Label text="Liability" />
-                                                        <Input id="idDcIpLblty" />
+                                                        <Label text="Liability" />                   
+                                                        <VBox>
+                                                            <Input id="idDcIpLblty" showValueHelp="true" valueHelpRequest="onVHReqLiability"/>
+                                                            <TextArea rows="3" width="100%" id="idDiscLbltyTxt"/>
+                                                        </VBox>
                                                         <Label text="Partner / Suppilier #" />
                                                         <Input id="idDcIpPrtnr" />
                                                         <Label text="Partner / Suppilier Name" />

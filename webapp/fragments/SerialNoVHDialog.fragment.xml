@@ -4,7 +4,7 @@
     xmlns:fb="sap.ui.comp.filterbar" 
     xmlns:m="sap.m" xmlns:ui="sap.ui.table">
 	<ValueHelpDialog class="vhdialogstyleclass"
-		title="{i18n>Title}"
+		title="{i18n>SerialNoDialogTitle}"
 		ok=".onValueHelpSNOkPress"
 		cancel=".onValueHelpSNCancelPress"
 		afterClose=".onValueHelpSNAfterClose"

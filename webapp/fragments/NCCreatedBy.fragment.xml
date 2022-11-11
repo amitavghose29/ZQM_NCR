@@ -2,7 +2,7 @@
 	xmlns:core="sap.ui.core" 
     xmlns:fb="sap.ui.comp.filterbar" 
     xmlns="sap.m">
-	<Dialog title="{i18n>Title}">
+	<Dialog title="{i18n>Title}" class="vhdialogNCSearchstyle">
         <VBox class="sapUiSizeCompact">
 			<fb:FilterBar showRestoreButton="false" search=".onFilterBarSearchNCCrt">
                   <fb:filterGroupItems>
@@ -85,7 +85,7 @@
 				
 				</fb:filterGroupItems>
 			</fb:FilterBar>
-            <Table id="idTableNCCreatedBy" items="{NCCreatedByModel>/}" itemPress="handleNCItemSelection">
+            <Table id="idTableNCCreatedBy" items="{NCCreatedByModel>/}" itemPress="handleNCCrtItemSelection">
 		        <columns>
 			        <Column>
 				        <Text text="{i18n>WorkcenterCategory}" />

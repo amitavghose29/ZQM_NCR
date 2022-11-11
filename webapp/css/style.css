@@ -212,6 +212,11 @@ sapUiFormContainerTitle>.sapUiFormTitleH1,
 }
 /* Added custom class for styling the width of value help dialog opened on click of serial no and traceability multi input fields - Code End*/
 
+.vhdialogNCSearchstyle {
+    min-width: 40rem;
+    width: 1200px !important;
+}
+
 .sapMToken {
     color: #3c4038;
 }

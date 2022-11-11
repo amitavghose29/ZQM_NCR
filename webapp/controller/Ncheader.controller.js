@@ -972,6 +972,7 @@ sap.ui.define([
                             var oMsg = JSON.parse(Response.headers["sap-message"]).message;
                             MessageBox.success(oMsg);
                         }
+                        this.getOwnerComponent().getModel().refresh();
                     },
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
@@ -2671,6 +2672,8 @@ sap.ui.define([
                     return;
                 }
                 oInput.setValue(oSelectedItem.getTitle());
+                this.getView().byId("idMNInputSN").setEditable(true);
+                this.getView().byId("idMNInputTN").setEditable(true);
                 this._oPartNoDialog.destroy();
             } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Purchase") {
                 var oSelectedItem = oEvent.getParameter("selectedItem"),
@@ -2827,7 +2830,7 @@ sap.ui.define([
             });
         },
 
-        handleNCItemSelection: function (oEvent) {
+        handleNCCrtItemSelection: function (oEvent) {
             var oSelectedItem = oEvent.getParameters("selectedItem").listItem.getBindingContext("NCCreatedByModel").getProperty("WorkCenter");
             var oInput = this.getView().byId("idInpNCCrtBy");
             if (!oSelectedItem) {
@@ -2857,7 +2860,7 @@ sap.ui.define([
             oModel.setSizeLimit(10000);
             var oDataModel = this.getOwnerComponent().getModel();
             var wrkcentercategory = sap.ui.getCore().byId("idFBNCDetAtWrkCntCateg").getValue();
-            var workcenter = sap.ui.getCore().byId("idFBNCCrtByWorkCenter").getValue();
+            var workcenter = sap.ui.getCore().byId("idFBNCDetAtWorkCenter").getValue();
             var plant = sap.ui.getCore().byId("idFBNCDetAtPlant").getValue();
 
             var oFilter = [];
@@ -2886,8 +2889,8 @@ sap.ui.define([
             });
         },
 
-        handleNCItemSelection: function (oEvent) {
-            var oSelectedItem = oEvent.getParameters("selectedItem").listItem.getBindingContext("NCCreatedByModel").getProperty("WorkCenter");
+        handleNCDetItemSelection: function (oEvent) {
+            var oSelectedItem = oEvent.getParameters("selectedItem").listItem.getBindingContext("NCDetectedAtModel").getProperty("WorkCenter");
             var oInput = this.getView().byId("idInpNCDetAt");
             if (!oSelectedItem) {
                 oInput.resetProperty("value");
@@ -3770,6 +3773,32 @@ sap.ui.define([
                 this.getView().byId("idDiscPartNumber").setValueHelpOnly(true);
                 this.getView().byId("idDiscPartDesc").setEditable(false);
            }
+        },
+
+        onVHReqLiability: function () {
+            this._oLiabilityDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.LiabilityValueHelp", this);
+            this.getView().addDependent(this._oLiabilityDialog);
+            this._oLiabilityDialog.open();
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new JSONModel();
+            var oDataModel = this.getOwnerComponent().getModel();
+            var oFilter = [];
+            oFilter.push(new Filter("Key", FilterOperator.EQ, "LIAB"));
+            var sPath = "/f4_genericSet"
+            oDataModel.read(sPath, {
+                filters: oFilter,
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.results;
+                    oModel.setData(data);
+                    this._oLiabilityDialog.setModel(oModel, "oRMANoFBModel");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
         },
 
         handleChangeDiscPartNo: function () {
