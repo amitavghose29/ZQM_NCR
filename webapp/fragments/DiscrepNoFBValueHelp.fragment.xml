@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-	<SelectDialog title="Discrepancy Number" items="{oDiscNoFBModel>/}" liveChange="onSearchDiscNoFB" confirm="_configValueHelpDialogDiscNoFB"
+	<SelectDialog title="{i18n>DiscrepencyNum}" items="{oDiscNoFBModel>/}" liveChange="onSearchDiscNoFB" confirm="_configValueHelpDialogDiscNoFB"
 		cancel="_handleValueHelpDiscNoFB" search="onSearchDiscNoFB">
 		<StandardListItem title="{oDiscNoFBModel>Value}" info="{oDiscNoFBModel>Value1}" description="{oDiscNoFBModel>Description}"/>
 	</SelectDialog>

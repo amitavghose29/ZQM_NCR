@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-	<SelectDialog  title="Drop Point" items="{DrpPointModel>/}" liveChange="onDropPointSearch" confirm="_configDrpPntVHDialog"
+	<SelectDialog  title="{i18n>DroppointVH}" items="{DrpPointModel>/}" liveChange="onDropPointSearch" confirm="_configDrpPntVHDialog"
 		cancel="_handleDrpPntVHClose">
 		<StandardListItem title="{DrpPointModel>Value}" info="{DrpPointModel>Description}"/>
 	</SelectDialog>

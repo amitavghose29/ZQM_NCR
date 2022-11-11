@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:fb="sap.ui.comp.filterbar">
-    <Dialog title="Select Part Number" class="vhdialogPOSearchstyle">
+    <Dialog title="{i18n>Title}" class="vhdialogPOSearchstyle">
     <VBox class="sapUiSizeCompact">
         <fb:FilterBar id="idFBLotNum" visible="false" reset="onReset" search="_onPartSearchWithLotNum" showRestoreButton="true" showClearButton="true">
             <fb:filterGroupItems>
@@ -18,10 +18,10 @@
         <Table id="idPartnumTab" items="{PartNumModel>/}" mode="SingleSelectMaster" selectionChange="onSelectPartnum">
             <columns>
                 <Column>
-                    <Text text="Part No" />
+                    <Text text="{i18n>Partnum}" />
                 </Column>
                 <Column>
-                    <Text text="Part Description" />
+                    <Text text="{i18n>Partdesc}" />
                 </Column>
             </columns>
             <items>
@@ -35,7 +35,7 @@
         </Table>
         </VBox>
         <endButton>
-            <Button text="Close" press="onClosePartNumDialog" />
+            <Button text="{i18n>Close}" press="onClosePartNumDialog" />
         </endButton>
     </Dialog>
 </core:FragmentDefinition>

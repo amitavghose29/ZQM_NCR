@@ -4,7 +4,7 @@
     xmlns:fb="sap.ui.comp.filterbar" 
     xmlns:m="sap.m">
 	<ValueHelpDialog class="vhdialogstyleclass"
-		title="Traceability No"
+		title="{i18n>Title}"
 		ok=".onValueHelpTNOkPress"
 		cancel=".onValueHelpTNCancelPress"
 		afterClose=".onValueHelpTNAfterClose"

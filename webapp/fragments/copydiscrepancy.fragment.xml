@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-	<SelectDialog id="mySelectDialogOrder" title="Copy Discrepancy" items="{/}" liveChange="onSearchOrder" confirm="_configValueHelpDialogOrder"
+	<SelectDialog id="mySelectDialogOrder" title="{i18n>copydiscrepancy}" items="{/}" liveChange="onSearchOrder" confirm="_configValueHelpDialogOrder"
 		cancel="_handleValueHelpClose">
 		<StandardListItem highlight="Information" title="{Aufnr}" info="{Ktext}"/>
 	</SelectDialog>

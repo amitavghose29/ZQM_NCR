@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-	<SelectDialog  title="Production Order" items="{sample>/prodorder}" liveChange="onSearchOrder" confirm="_configProdOrdVHDialog"
+	<SelectDialog  title="{i18n>Title}" items="{sample>/prodorder}" liveChange="onSearchOrder" confirm="_configProdOrdVHDialog"
 		cancel="_handleProdOrdVHClose">
 		<StandardListItem title="{sample>Id}" info="{sample>field1}"/>
 	</SelectDialog>

@@ -4,7 +4,7 @@
 		<StandardListItem highlight="Information" title="{sample>Id}" info="{Ktext}"/>
 	</SelectDialog>-->
     <!-- ok=".onValueHelpOkNCPress" cancel=".onValueHelpCancelNCPress" afterClose=".onValueHelpAfterNCClose" supportMultiselect="false" key="ProductId" descriptionKey="Name"  -->
-    <Dialog title="Copy NC" class="vhdialogGRSearchstyle">
+    <Dialog title="{i18n>Title}" class="vhdialogGRSearchstyle">
         <VBox class="sapUiSizeCompact">
 			<fb:FilterBar search="onFilterBarSearchCopyNC" showRestoreButton="false">
                 <fb:filterGroupItems>
@@ -65,23 +65,23 @@
 				itemPress="handleCloseUserValueHelpNCcopy">
                 <columns>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="NC Number" />
+                        <Text text="{i18n>Nc}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="NC Type" />
+                        <Text text="{i18n>NCtype}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="Notification Type" />
                     </Column>
                     
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="NC Description" />
+                        <Text text="{i18n>NcDesc}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="Serial Number" />
+                        <Text text="{i18>SerialNum}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="Aircraft No." />
+                        <Text text="{i18n>AirCraftNo}" />
                     </Column>
                     
                 </columns>
@@ -100,7 +100,7 @@
             </Table>
         </VBox>
         <endButton>
-            <Button text="Close" press="_handleNCCopyVHClose" />
+            <Button text="{i18n>Close}" press="_handleNCCopyVHClose" />
         </endButton>
     </Dialog>
 </core:FragmentDefinition>

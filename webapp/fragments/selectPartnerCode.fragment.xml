@@ -3,7 +3,7 @@
 	xmlns:core="sap.ui.core">
 	<TableSelectDialog
 		noDataText="No Partner Code Found"
-		title="Select Partner Code"
+		title="{i18n>Title}"
 		search="handleSearchPartnerCode"
 		confirm="handleConfirmPartnerCode"
 		cancel="handleClosePartnerCode"
@@ -25,42 +25,42 @@
 		<columns>
 			<Column>
 				<header>
-					<Text text="Product Code" />
+					<Text text="{i18n>Productcode}" />
 				</header>
 			</Column>
             <Column>
 				<header>
-					<Text text="Product Code Description" />
+					<Text text="{i18n>ProdcodeDesc}" />
 				</header>
 			</Column>
 			<Column>
 				<header>
-					<Text text="Partner Code" />
+					<Text text="{i18n>Partnercode}" />
 				</header>
 			</Column>
             <Column>
 				<header>
-					<Text text="Partner Code Description" />
+					<Text text="{i18n>PartnercodeDesc}" />
 				</header>
 			</Column>
 			<Column>
 				<header>
-					<Text text="Parent Part No" />
+					<Text text="{i18n>Parentpartnum}" />
 				</header>
 			</Column>
             <Column>
 				<header>
-					<Text text="Part No Description" />
+					<Text text="{i18n>PartNumDesc}" />
 				</header>
 			</Column>
 			<Column>
 				<header>
-					<Text text="Product Sequence From" />
+					<Text text="{i18n>ProductSequencefrom}" />
 				</header>
 			</Column>
             <Column>
 				<header>
-					<Text text="Product Sequence To" />
+					<Text text="{i18n>Productsequenceto}" />
 				</header>
 			</Column>
 		</columns>

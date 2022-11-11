@@ -5,7 +5,7 @@
 	</SelectDialog>
 </core:FragmentDefinition> -->
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:layout="sap.ui.layout" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar">
-    <Dialog id="idGRHelpDialog" title="Goods Receipt Search" class="vhdialogGRSearchstyle">
+    <Dialog id="idGRHelpDialog" title="{i18n>GRS}" class="vhdialogGRSearchstyle">
         <VBox class="sapUiSizeCompact">
             <fb:FilterBar reset="onGRfbReset" search="_onGRSearchGo" showRestoreButton="true" showClearButton="true">
                 <fb:filterGroupItems>
@@ -41,19 +41,19 @@
             <Table id="idGRTable" inset="false" items="{oGRModel>/}" mode="SingleSelectMaster" itemPress="handleGRItemSelection">
                 <columns>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="GR ID" />
+                        <Text text="{i18n>GRId}" />
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="GR Item" />
+                        <Text text="{i18n>GRItem}" />
                     </Column>
                      <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="Purchase Order" />
+                        <Text text="{i18n>Purchaseorder}" />
                     </Column>
                      <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="Inbound Delivery" />
+                        <Text text="{i18n>Inbounddelivery}" />
                     </Column>
                      <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="Part Number" />
+                        <Text text="{i18n>PartNum}" />
                     </Column>
                 </columns>
                 <items>
@@ -70,7 +70,7 @@
             </Table>
         </VBox>
         <endButton>
-            <Button text="Close" press="_handleGRValueHelpClose" />
+            <Button text="{i18n>Close}" press="_handleGRValueHelpClose" />
         </endButton>
     </Dialog>
 </core:FragmentDefinition>

@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-	<SelectDialog  title="Supersedes NC" items="{oSupsedNcModel>/}" liveChange="onSearchSupsedNC" confirm="_configSupNCVHDialog"
+	<SelectDialog  title="{i18n>Title}" items="{oSupsedNcModel>/}" liveChange="onSearchSupsedNC" confirm="_configSupNCVHDialog"
 		cancel="_handleSupNCVHClose">
 		<StandardListItem title="{oSupsedNcModel>Value}" info="{oSupsedNcModel>Description}"/>
 	</SelectDialog>

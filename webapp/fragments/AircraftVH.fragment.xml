@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-	<SelectDialog  title="Aircraft" items="{sample>/aircraft}" liveChange="onSearchAircraft" confirm="_configAircraftVHDialog"
+	<SelectDialog  title="{i18n>AirCraft}" items="{sample>/aircraft}" liveChange="onSearchAircraft" confirm="_configAircraftVHDialog"
 		cancel="_handleAircraftVHClose">
 		<StandardListItem title="{sample>Id}" info="{sample>field1}"/>
 	</SelectDialog>

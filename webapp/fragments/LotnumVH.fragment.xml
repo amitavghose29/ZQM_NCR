@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-    <SelectDialog title="Select Lot Number" items="{LotNumModel>/}" liveChange="onSearchLotnumber" confirm="_onConfirmLotNumVH" cancel="_onLotNumVHClose" search="onSearchLotnumber">
+    <SelectDialog title="{i18n>SelectLotNum}" items="{LotNumModel>/}" liveChange="onSearchLotnumber" confirm="_onConfirmLotNumVH" cancel="_onLotNumVHClose" search="onSearchLotnumber">
         <StandardListItem title="{LotNumModel>Value}" />
     </SelectDialog>
 </core:FragmentDefinition>

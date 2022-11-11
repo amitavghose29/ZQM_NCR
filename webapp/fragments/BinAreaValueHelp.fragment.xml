@@ -18,7 +18,7 @@
             <Button text="Close" press="onCloseBinAreaDialog" />
         </endButton>
     </Dialog> -->
-    <SelectDialog   title="Select Bin Area" items="{BinAreaModel>/}" liveChange="onBinArealiveSearch" confirm="_confirmBinAreaVHDialog"
+    <SelectDialog   title="{i18n>SelectBinArea}" items="{BinAreaModel>/}" liveChange="onBinArealiveSearch" confirm="_confirmBinAreaVHDialog"
 		cancel="_handleBinAreaVHClose">
 		<StandardListItem  title="{BinAreaModel>BinLocation}" />
 	</SelectDialog>

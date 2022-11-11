@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-	<SelectDialog title="Select NC Number" 
+	<SelectDialog title="{i18n>Title}" 
         items="{oNcNumFBModel>/}" 
         liveChange="onNcNoFBLiveSearch" 
         confirm="_confirmNcNoFBValueHelpDialog"

@@ -2,7 +2,7 @@
 	xmlns:core="sap.ui.core" 
     xmlns:fb="sap.ui.comp.filterbar" 
     xmlns="sap.m">
-	<Dialog title="NC Created By">
+	<Dialog title="{i18n>Title}">
         <VBox class="sapUiSizeCompact">
 			<fb:FilterBar showRestoreButton="false" search=".onFilterBarSearchNCCrt">
                   <fb:filterGroupItems>
@@ -88,19 +88,19 @@
             <Table id="idTableNCCreatedBy" items="{NCCreatedByModel>/}" itemPress="handleNCItemSelection">
 		        <columns>
 			        <Column>
-				        <Text text="Work Center Category" />
+				        <Text text="{i18n>WorkcenterCategory}" />
 			        </Column>
 			        <Column>
-				        <Text text="Plant" />
+				        <Text text="{i18n>plant}" />
 			        </Column>
                     <Column>
-				        <Text text="Work Center" />
+				        <Text text="{i18n>Workcenter}" />
 			        </Column>
                     <Column>
-				        <Text text="Short Description" />
+				        <Text text="{i18n>Shortdescription}" />
 			        </Column>
                     <Column>
-				        <Text text="Language" />
+				        <Text text="{i18n>language}" />
 			        </Column>
 		        </columns>
 		        <items>
@@ -117,7 +117,7 @@
 	        </Table>
         </VBox>
         <endButton>
-            <Button text="Close" press="_handleNCCrtdByClose" />
+            <Button text="{i18n>Close}" press="_handleNCCrtdByClose" />
         </endButton>
 	</Dialog>
 </core:FragmentDefinition>

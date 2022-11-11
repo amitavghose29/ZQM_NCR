@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:layout="sap.ui.layout" xmlns:f="sap.f"
 	xmlns:fb="sap.ui.comp.filterbar" width="auto">
-	<Dialog id="idUserHelpDialog"  title="Serial No">
+	<Dialog id="idUserHelpDialog"  title="{i18n>Title}">
 		<VBox class="sapUiSizeCompact">
 			<Table id="idProductsTable" mode="MultiSelect" inset="false" items="{UsersList>/}" selectionChange="handleCloseUserValueHelp"
 				itemPress="handleCloseUserValueHelp">
@@ -12,16 +12,16 @@
 				</headerToolbar>
 				<columns>
 					<Column minScreenWidth="Tablet" demandPopin="true">
-						<Text text="Serial Numbers"/>
+						<Text text="{i18n>SerianNo}"/>
 					</Column>
 					<Column minScreenWidth="Tablet" demandPopin="true">
-						<Text text="Status"/>
+						<Text text="{i18n>status}"/>
 					</Column>
 					<Column minScreenWidth="Tablet" demandPopin="true">
-						<Text text="User Status"/>
+						<Text text="{i18n>userstatus}"/>
 					</Column>
 					<Column minScreenWidth="Tablet" demandPopin="true">
-						<Text text="Refernce"/>
+						<Text text="{i18n>Ref}"/>
 					</Column>
 				</columns>
 				<items>
@@ -37,10 +37,10 @@
 			</Table>
 		</VBox>
 		<endButton>
-		    <Button text="Close" press="onCloseUserPopup"/>
+		    <Button text="{i18n>Close}" press="onCloseUserPopup"/>
 		</endButton>
         <beginButton>
-        	<Button text="Ok" press="onOkUserPopup"/>
+        	<Button text="{i18n>OK}" press="onOkUserPopup"/>
         </beginButton>
 	</Dialog>
 </core:FragmentDefinition>

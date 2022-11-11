@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-	<SelectDialog  title="Reference NC" items="{oRefNCModel>/}" liveChange="onSearchRefNC" confirm="_configRefNCVHDialog"
+	<SelectDialog  title="{i18n>Title}" items="{oRefNCModel>/}" liveChange="onSearchRefNC" confirm="_configRefNCVHDialog"
 		cancel="_handleRefNCVHClose">
 		<StandardListItem title="{oRefNCModel>Value}" info="{oRefNCModel>Description}"/>
 	</SelectDialog>

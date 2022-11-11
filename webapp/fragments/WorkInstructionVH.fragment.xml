@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-	<SelectDialog  title="Work Instruction" items="{oWRSuggestionModel>/}" liveChange="onSearchOrderWorkInst" confirm="_configWrkInsVHDialog"
+	<SelectDialog  title="{i18n>Title}" items="{oWRSuggestionModel>/}" liveChange="onSearchOrderWorkInst" confirm="_configWrkInsVHDialog"
 		cancel="_handleWrkInsVHClose">
 		<StandardListItem title="{oWRSuggestionModel>Value}" info="{oWRSuggestionModel>Value1}"/>
 	</SelectDialog>

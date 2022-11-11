@@ -5,7 +5,7 @@
 	</SelectDialog>
 </core:FragmentDefinition> -->
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:layout="sap.ui.layout" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar">
-    <Dialog id="idPOHelpDialog" title="Purchase Order Search" class="vhdialogGRSearchstyle">
+    <Dialog id="idPOHelpDialog" title="{i18n>Title}" class="vhdialogGRSearchstyle">
         <VBox class="sapUiSizeCompact">
             <fb:FilterBar search="_onPoSearchGo" showRestoreButton="false">
                 <fb:filterGroupItems>
@@ -68,31 +68,31 @@
             <Table id="idPurOrdTable" inset="false" items="{oPrModel>/}" mode="SingleSelectMaster" itemPress="handlePurOrdItemSelection">
                 <columns>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="PO ID"/>
+                        <Text text="{i18n>POID}"/>
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="PO Item"/>
+                        <Text text="{i18n>POItem}"/>
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="ASN Number"/>
+                        <Text text="{i18n>ASNNum}"/>
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="Inbound Delivery"/>
+                        <Text text="{i18n>InbDel}"/>
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="Part Number"/>
+                        <Text text="{i18n>PartNum}"/>
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="Part Name"/>
+                        <Text text="{i18n>Partname}"/>
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="NC Number"/>
+                        <Text text="{i18n>NCNum}"/>
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="Discrepancy Number"/>
+                        <Text text="{i18n>DiscrepancyNum}"/>
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true">
-                        <Text text="RMA Number"/>
+                        <Text text="{i18n>RMANum}"/>
                     </Column>
                 </columns>
                 <items>
@@ -113,7 +113,7 @@
             </Table>
         </VBox>
         <endButton>
-            <Button text="Close" press="_handlePOValueHelpClose" />
+            <Button text="{i18n>Close}" press="_handlePOValueHelpClose" />
         </endButton>
     </Dialog>
 </core:FragmentDefinition>

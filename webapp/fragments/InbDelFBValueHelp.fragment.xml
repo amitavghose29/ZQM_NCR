@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-	<SelectDialog title="Inbound Delivery" items="{oInbDelFBModel>/}" liveChange="onSearchInbDelFB" confirm="_configValueHelpDialogInbDelFB"
+	<SelectDialog title="{i18n>InboundDelivery}" items="{oInbDelFBModel>/}" liveChange="onSearchInbDelFB" confirm="_configValueHelpDialogInbDelFB"
 		cancel="_handleValueHelpInbDelFB" search="onSearchInbDelFB">
 		<StandardListItem title="{oInbDelFBModel>Value}" />
 	</SelectDialog>
