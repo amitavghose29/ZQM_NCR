@@ -2,7 +2,7 @@
 	xmlns:core="sap.ui.core" 
     xmlns:fb="sap.ui.comp.filterbar" 
     xmlns="sap.m">
-	<Dialog title="{i18n>Title}" class="vhdialogNCSearchstyle">
+	<Dialog title="{i18n>NCDetectedAtTitle}" class="vhdialogNCSearchstyle">
         <VBox class="sapUiSizeCompact">
 			<fb:FilterBar showRestoreButton="false" search=".onFilterBarSearchNCDet">
                   <fb:filterGroupItems>

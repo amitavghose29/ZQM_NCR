@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:layout="sap.ui.layout" xmlns:f="sap.f"
 	xmlns:fb="sap.ui.comp.filterbar" width="auto">
-	<Dialog id="idUserHelpDialog"  title="{i18n>Title}">
+	<Dialog id="idUserHelpDialog"  title="{i18n>SerialNumTitle}">
 		<VBox class="sapUiSizeCompact">
 			<Table id="idProductsTable" mode="MultiSelect" inset="false" items="{UsersList>/}" selectionChange="handleCloseUserValueHelp"
 				itemPress="handleCloseUserValueHelp">

@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-	<SelectDialog title="{i18n>Title}" items="{oASNNoFBModel>/}" liveChange="onSearchASNNoFB" confirm="_configValueHelpDialogASNNoFB"
+	<SelectDialog title="{i18n>ASNNumberTitle}" items="{oASNNoFBModel>/}" liveChange="onSearchASNNoFB" confirm="_configValueHelpDialogASNNoFB"
 		cancel="_handleValueHelpASNNoFB" search="onSearchASNNoFB">
 		<StandardListItem title="{oASNNoFBModel>Value}" info="{oASNNoFBModel>Key}"/>
 	</SelectDialog>

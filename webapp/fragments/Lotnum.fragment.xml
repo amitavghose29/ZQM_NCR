@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-    <Dialog title="{i18n>Title}" contentHeight="250px" contentWidth="400px">
+    <Dialog title="{i18n>SelectLotNumTitle}" contentHeight="250px" contentWidth="400px">
         <FlexBox height="125px" alignItems="Center" justifyContent="Center">
             <Label text="{i18n>SelectLotNum}" />
             <Input id="idInpLotNo" showValueHelp="true" valueHelpRequest="onLotNumHelpRequest" />

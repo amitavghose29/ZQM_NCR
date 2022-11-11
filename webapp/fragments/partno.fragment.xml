@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:fb="sap.ui.comp.filterbar">
-    <Dialog title="{i18n>Title}" class="vhdialogPOSearchstyle">
+    <Dialog title="{i18n>SelectPartNumTitle}" class="vhdialogPOSearchstyle">
     <VBox class="sapUiSizeCompact">
         <fb:FilterBar id="idFBLotNum" visible="false" reset="onReset" search="_onPartSearchWithLotNum" showRestoreButton="true" showClearButton="true">
             <fb:filterGroupItems>

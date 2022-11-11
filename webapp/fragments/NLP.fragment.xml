@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-    <SelectDialog title="{i8n>Title}" items="{path : 'oNLPSuggestionModel>/'}" 
+    <SelectDialog title="{i8n>NLPTitle}" items="{path : 'oNLPSuggestionModel>/'}" 
                  liveChange="onSearchOrderWorkInst"
                   confirm="_handleConfirmNLP" 
                   cancel="_handleCancelNLP">

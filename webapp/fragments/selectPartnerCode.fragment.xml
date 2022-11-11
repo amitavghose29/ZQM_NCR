@@ -3,7 +3,7 @@
 	xmlns:core="sap.ui.core">
 	<TableSelectDialog
 		noDataText="No Partner Code Found"
-		title="{i18n>Title}"
+		title="{i18n>SelectPartnerCodeTitle}"
 		search="handleSearchPartnerCode"
 		confirm="handleConfirmPartnerCode"
 		cancel="handleClosePartnerCode"

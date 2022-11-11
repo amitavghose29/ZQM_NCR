@@ -4,7 +4,7 @@
 		<StandardListItem highlight="Information" title="{sample>Id}" info="{Ktext}"/>
 	</SelectDialog>-->
     <!-- ok=".onValueHelpOkNCPress" cancel=".onValueHelpCancelNCPress" afterClose=".onValueHelpAfterNCClose" supportMultiselect="false" key="ProductId" descriptionKey="Name"  -->
-    <Dialog title="{i18n>Title}" class="vhdialogGRSearchstyle">
+    <Dialog title="{i18n>CopyNcTitle}" class="vhdialogGRSearchstyle">
         <VBox class="sapUiSizeCompact">
 			<fb:FilterBar search="onFilterBarSearchCopyNC" showRestoreButton="false">
                 <fb:filterGroupItems>

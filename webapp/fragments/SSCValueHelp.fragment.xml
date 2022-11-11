@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-    <SelectDialog title="{i18n>Title}" items="{supplierCodeModel>/}" search="onSearchSSC" liveChange="onSearchSSC" confirm="_confirmSSCValueHelpDialog" cancel="_handleSSCValueHelpClose">
+    <SelectDialog title="{i18n>SelectSAPSuppCodeTitle}" items="{supplierCodeModel>/}" search="onSearchSSC" liveChange="onSearchSSC" confirm="_confirmSSCValueHelpDialog" cancel="_handleSSCValueHelpClose">
         <StandardListItem title="{supplierCodeModel>SupplierCodeID}"/>
     </SelectDialog>
 </core:FragmentDefinition>

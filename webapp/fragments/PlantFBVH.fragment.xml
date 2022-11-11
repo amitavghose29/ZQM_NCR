@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-    <SelectDialog title="{i18n>Title}" items="{path : 'PlantModel>/'}" 
+    <SelectDialog title="{i18n>PlantTitle}" items="{path : 'PlantModel>/'}" 
                  liveChange=".onSearchPlantFB"
                   confirm="_handleConfirmPlantFB" 
                   cancel="_handleCancelPlantFB">

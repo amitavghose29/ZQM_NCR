@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-	<SelectDialog title="Liability Number" items="{LiabilityModel>/}" liveChange="onSearchLiability" confirm="_configVHDialogLiability"
+	<SelectDialog title="{i18n>LiabilityNum}" items="{LiabilityModel>/}" liveChange="onSearchLiability" confirm="_configVHDialogLiability"
 		cancel="_handleVHLiability" search="onSearchRMANoFB">
 		<StandardListItem title="{LiabilityModel>Key}" info="{LiabilityModel>Value}"/>
 	</SelectDialog>
