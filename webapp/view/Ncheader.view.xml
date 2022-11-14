@@ -9,9 +9,9 @@
                 <subHeader>
                     <Toolbar id="idheader" visible="true">
                         <Label id="idstatus" text="Status:" design="Bold" wrapping="true" class="sapUiSmallMarginCenter" />
-                        <ObjectStatus id="idObjNCStatus" class="sapUiSmallMarginCenter"/>
-                        <ObjectStatus id="idObjNCStatusDiscrep" class="sapUiSmallMarginCenter"/>
-                        <ObjectStatus id="idObjNCStatusDispo" class="sapUiSmallMarginCenter"/>
+                        <ObjectStatus id="idObjNCStatus" class="sapUiSmallMarginCenter" />
+                        <ObjectStatus id="idObjNCStatusDiscrep" class="sapUiSmallMarginCenter" />
+                        <ObjectStatus id="idObjNCStatusDispo" class="sapUiSmallMarginCenter" />
                         <ToolbarSpacer />
                         <Text text="" id="headertext" class="icontabtext font" />
                         <ToolbarSpacer />
@@ -303,7 +303,7 @@
                                                 <cells>
                                                     <Text text="{oHeaderDiscTable>DiscrepancyNo}" />
                                                     <Text text="{oHeaderDiscTable>Status}" />
-                                                    <Text text="{oHeaderDiscTable>PartNumber}" />               
+                                                    <Text text="{oHeaderDiscTable>PartNumber}" />
                                                     <Text text="{oHeaderDiscTable>PartDesc}" />
                                                     <Text text="{oHeaderDiscTable>RejectQnty}" />
                                                     <Text text="{oHeaderDiscTable>SupercededByItem}" />
@@ -361,7 +361,7 @@
                                 <ScrollContainer height="100%" width="100%" horizontal="false" vertical="true">
                                     <Toolbar class="sapUiSizeCompact">
                                         <ToolbarSpacer />
-                                        <Label text="Disc. No." design="Bold" class="discrepancyHeader"/>
+                                        <Label text="Disc. No." design="Bold" class="discrepancyHeader" />
                                         <ComboBox id="idDcCobDscNo" width="100px" items="{discrepancyDropdownModel>/results}" selectionChange="_onSelectingDiscrepancy">
                                             <core:Item key="{discrepancyDropdownModel>DiscrepancyNo}" text="{discrepancyDropdownModel>DiscrepancyNo}" />
                                         </ComboBox>
@@ -392,12 +392,12 @@
                                                     <f:content>
                                                         <Label text="Linked To" />
                                                         <ComboBox id="idComBoxDiscLinkTo" items="{LinkToModel>/}" change="onChangeLinkedTo">
-                                                            <core:ListItem key="{LinkToModel>Key}" text="{LinkToModel>Value}"/>
+                                                            <core:ListItem key="{LinkToModel>Key}" text="{LinkToModel>Value}" />
                                                         </ComboBox>
-                                                        <Label text="Liability" />                   
+                                                        <Label text="Liability" />
                                                         <VBox>
                                                             <Input id="idDcIpLblty" showValueHelp="true" valueHelpRequest="onVHReqLiability" />
-                                                            <TextArea rows="3" width="100%" id="idDiscLbltyTxt"/>
+                                                            <TextArea rows="3" width="100%" id="idDiscLbltyTxt" />
                                                         </VBox>
                                                         <Label text="Partner / Suppilier #" />
                                                         <Input id="idDcIpPrtnr" showValueHelp="true" valueHelpRequest="onVHReqPartner" />
@@ -920,7 +920,7 @@
                                                     <f:content>
                                                         <!--<core:Title text="Discrepancy Parts"/>-->
                                                         <Label text="Part Number" />
-                                                        <Input id="idDiscPartNumber" showValueHelp="true" valueHelpRequest=".onOpenVHPartNoDisc" valueHelpOnly="true" change="handleChangeDiscPartNo"/>
+                                                        <Input id="idDiscPartNumber" showValueHelp="true" valueHelpRequest=".onOpenVHPartNoDisc" valueHelpOnly="true" change="handleChangeDiscPartNo" />
                                                         <Label text="Part Description" />
                                                         <Input id="idDiscPartDesc" editable="false" />
                                                         <Label text="Quantity Inspected" />
@@ -1040,21 +1040,27 @@
                                                         <CheckBox id="idDcCbCsmsi" class="sapUiLargeMarginBegin" />
                                                         <Label text="Preliminary Cause" />
                                                         <ComboBox id="idDcCobPc" items="{preliminarycauseModel>/}">
-                                                            <core:Item key="{preliminarycauseModel>Value}" text="{preliminarycauseModel>Value}" />                                                            
+                                                            <core:Item key="{preliminarycauseModel>Value}" text="{preliminarycauseModel>Value}" />
                                                         </ComboBox>
                                                         <Label text="Defect Code" />
-                                                        <FlexBox direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Center">
+                                                        <FlexBox direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Start">
                                                             <Input id="idDcIpDc" showValueHelp="true" valueHelpRequest="_handleValueHelpDefCode" width="100px" />
-                                                            <Text id="idDcTxtDc" class="sapUiTinyMarginBegin"  />
+                                                            <Input id="idDcIpDcVal1" width="100px" class="sapUiTinyMarginBegin" />
+                                                            <Text id="idDcTxtDc" class="sapUiTinyMarginBegin" />
                                                         </FlexBox>
                                                         <Label text="Drop Point" />
-                                                        <Input id="idDcIpDp" showValueHelp="true" valueHelpRequest="onOpenVHDrpPt"/>
+                                                        <Input id="idDcIpDp" showValueHelp="true" valueHelpRequest="onOpenVHDrpPt" />
                                                         <Label text="Is" />
-                                                        <TextArea id="idDcTxtIs" />
+                                                        <HBox>
+                                                            <ComboBox id="idDcCobPcIs" items="{}" visible="false">
+                                                                <core:Item key="{}" text="{}" />
+                                                            </ComboBox>
+                                                            <TextArea id="idDcTxtIs" class="sapUiTinyMarginBegin" />
+                                                        </HBox>
                                                         <Label text="Should be" />
                                                         <TextArea id="idDcTaSb" />
                                                         <Label text="As Per" />
-                                                        <Input id="idDcInpAp"/>
+                                                        <Input id="idDcInpAp" />
                                                         <Label text="Incomplete Flag" />
                                                         <CheckBox id="idDcCbIf" class="sapUiLargeMarginBegin" selected="true" />
                                                     </f:content>

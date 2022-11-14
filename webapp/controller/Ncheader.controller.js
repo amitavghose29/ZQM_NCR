@@ -26,12 +26,12 @@ sap.ui.define([
         onInit: function () {
             //this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
             var oRouter = this.getOwnerComponent().getRouter();
-                oRouter.getRoute("Ncheader").attachMatched(this._onRouteMatched, this);
-                this.addMultiInputValidator();
+            oRouter.getRoute("Ncheader").attachMatched(this._onRouteMatched, this);
+            this.addMultiInputValidator();
         },
 
         // Added code for multiinput control id initialisation and validator
-        addMultiInputValidator: function(){
+        addMultiInputValidator: function () {
             this._oMultiInputSN = this.getView().byId("idMNInputSN");
             this._oMultiInputSN.addValidator(function (args) {
                 var text = args.text;
@@ -44,7 +44,7 @@ sap.ui.define([
                 var text = args.text;
 
                 return new Token({ key: text, text: text });
-            });	
+            });
 
             this._oMultiInputDiscSN = this.getView().byId("idMulInpDiscSerNo");
             this._oMultiInputDiscSN.addValidator(function (args) {
@@ -58,7 +58,7 @@ sap.ui.define([
                 var text = args.text;
 
                 return new Token({ key: text, text: text });
-            });	
+            });
         },
 
         _onRouteMatched: function (oEvent) {
@@ -88,7 +88,7 @@ sap.ui.define([
                 path: sObjectPath,
                 events: {
                     dataReceived: function (dataRec) {
-                        debugger;
+                        //debugger;
                         if (dataRec.getParameters().data) {
                             var data = dataRec.getParameters().data,
                                 oNCType = data.NCType,
@@ -153,10 +153,10 @@ sap.ui.define([
                                     this._oMultiInputTN.addToken(oTrcNoToken);
                                 }
                             }
-                            if(oPartNumber !== ""){
+                            if (oPartNumber !== "") {
                                 this._oMultiInputSN.setEditable(true);
                                 this._oMultiInputTN.setEditable(true);
-                            }else{
+                            } else {
                                 this._oMultiInputSN.setEditable(false);
                                 this._oMultiInputTN.setEditable(false);
                             }
@@ -286,22 +286,22 @@ sap.ui.define([
             });
         },
 
-        _bindTable:function(sObjectPath){
+        _bindTable: function (sObjectPath) {
             var oHeaderDisTabModel = new JSONModel();
             var that = this;
             var oDataModel = this.getOwnerComponent().getModel().sServiceUrl;
             var sPath = oDataModel + sObjectPath + "?$expand=to_discrepancy";
             var aData = jQuery.ajax({
-                type: "GET",    
+                type: "GET",
                 contentType: "application/json",
                 url: sPath,
                 dataType: "json",
                 async: false,
-                success: function(data, textStatus, jqXHR) {
+                success: function (data, textStatus, jqXHR) {
                     oHeaderDisTabModel.setData(data.d.to_discrepancy.results);
                 }
             });
-            this.getView().byId("idHeaderDiscTable").setModel(oHeaderDisTabModel,"oHeaderDiscTable");
+            this.getView().byId("idHeaderDiscTable").setModel(oHeaderDisTabModel, "oHeaderDiscTable");
         },
 
         onListItemPress: function () {
@@ -335,12 +335,12 @@ sap.ui.define([
             var htext = this.getView().byId("idIconTabBarHeader");
             var key = oEvent.getParameters().selectedItem.getKey();
             var text;
-                this.getView().byId("headertext").setText();
-                this.getView().byId("idstatus").setVisible(false);
-                this.getView().byId("idObjNCStatus").setVisible(false);
-                this.getView().byId("idObjNCStatusDiscrep").setVisible(false);
-                this.getView().byId("idObjNCStatusDispo").setVisible(false);
-            if (key === "Hdata") {               
+            this.getView().byId("headertext").setText();
+            this.getView().byId("idstatus").setVisible(false);
+            this.getView().byId("idObjNCStatus").setVisible(false);
+            this.getView().byId("idObjNCStatusDiscrep").setVisible(false);
+            this.getView().byId("idObjNCStatusDispo").setVisible(false);
+            if (key === "Hdata") {
                 this.getView().byId("idstatus").setVisible(true);
                 this.getView().byId("idObjNCStatus").setVisible(true);
                 this.getView().byId("idObjNCStatusDiscrep").setVisible(false);
@@ -351,12 +351,12 @@ sap.ui.define([
             } else if (key === "Purchase") {
                 this._setPurchaseInfoData();
             } else if (key === "Discre") {
-                if(this.getView().byId("idDcCobDscNo").getSelectedItem()){
+                if (this.getView().byId("idDcCobDscNo").getSelectedItem()) {
                     var oDiscNo = this.getView().byId("idDcCobDscNo").getSelectedItem().getText();
-                        text = "Discrepancy No: " + oDiscNo + "";
-                }else {
+                    text = "Discrepancy No: " + oDiscNo + "";
+                } else {
                     text = "Discrepancy No: ";
-                }              
+                }
                 this.getView().byId("headertext").setText(text);
                 this._setDiscrepancyComboBox();
                 this._setPrelimCauseComboBox();
@@ -1203,10 +1203,13 @@ sap.ui.define([
             var oModel = this.getOwnerComponent().getModel();
             oModel.update("/CreatePurchaseInfoSet('" + oNotifNo + "')", payloadPurchInfData, {
                 method: "PUT",
-                success: function (data) {
+                success: function (data, response) {
                     sap.ui.core.BusyIndicator.hide();
-                    var msg = "Purchase Info data has been updated successfully.!";
-                    MessageBox.success(msg);
+                    //var msg = "Purchase Info data has been updated successfully.!";
+                    if (response.headers["sap-message"]) {
+                        var sMessg = JSON.parse(response.headers["sap-message"]).message;
+                        MessageBox.success(sMessg);
+                    }
                     oModel.refresh();
                 },
                 error: function (oError) {
@@ -1313,13 +1316,15 @@ sap.ui.define([
         _confirmDefectCodeValueHelpDialog: function (oEvent) {
             var oSelectedItem = oEvent.getParameter("selectedItem"),
                 oInput = this.getView().byId("idDcIpDc"),
-                oInput1 = this.getView().byId("idDcTxtDc");
+                oInput1 = this.getView().byId("idDcIpDcVal1"),
+                oText = this.getView().byId("idDcTxtDc");
             if (!oSelectedItem) {
                 oInput.resetProperty("value");
                 return;
             }
             oInput.setValue(oSelectedItem.getTitle());
-            oInput1.setText(oSelectedItem.getInfo());
+            oInput1.setValue(oSelectedItem.getInfo());
+            oText.setText(oSelectedItem.getDescription());
             this._oDefectCodeDialog.destroy();
         },
 
@@ -1340,7 +1345,7 @@ sap.ui.define([
                             dataReceived: function (dataRec) {
                                 if (dataRec.getParameters().data) {
                                     var data = dataRec.getParameters().data,
-                                        discstatus= data.Status,
+                                        discstatus = data.Status,
                                         linkedTo = data.LinkedTo,
                                         liability = data.Liability,
                                         partner = data.Partner,
@@ -1363,6 +1368,7 @@ sap.ui.define([
                                         csmsIssue = data.CsmsIssue,
                                         prelimCause = data.PrelimCause,
                                         defectCode = data.DefectCode,
+                                        defect=data.Defect,
                                         defectCodeDesc = data.DefectCodeDesc,
                                         dropPoint = data.DropPoint,
                                         is = data.Is,
@@ -1378,8 +1384,7 @@ sap.ui.define([
                                     this.getView().byId("idDiscUomIns").setValue(qntyUOM);
                                     this.getView().byId("idDiscQtyRej").setValue(rejectQnty);
                                     this.getView().byId("idDiscUomRej").setValue(qntyUOM);
-                                    if(linkedTo != "")
-                                    {
+                                    if (linkedTo != "") {
                                         this.getView().byId("idComBoxDiscLinkTo").setSelectedKey(linkedTo);
                                     }
                                     this.getView().byId("idDcIpLblty").setValue(liability);
@@ -1388,12 +1393,11 @@ sap.ui.define([
                                     this.getView().byId("idDcIpSpsdsItm").setValue(supercedesItem);
                                     this.getView().byId("idDcIpSpsdbyItm").setValue(supercededByItem);
                                     this.getView().byId("idDcTxtCdt").setText();
-                                    if(dropShip2)
-                                    {
+                                    if (dropShip2) {
                                         this.getView().byId("idDcCbDs2").setSelected(true);
                                     }
                                     this.getView().byId("idDiscAircraft").setValue(aircraft);
-                                    this.getView().byId("idDcIpOdt").setValue(openDate);                                                                   
+                                    this.getView().byId("idDcIpOdt").setValue(openDate);
 
                                     //setting values in descripancy details 
                                     this.getView().byId("idDcTAPi").setValue(prelimInvest);
@@ -1411,6 +1415,7 @@ sap.ui.define([
                                     }
                                     this.getView().byId("idDcIpDc").setValue(defectCode);
                                     this.getView().byId("idDcTxtDc").setText(defectCodeDesc);
+                                    this.getView().byId("idDcIpDcVal1").setValue(defect);
                                     this.getView().byId("idDcIpDp").setValue(dropPoint);
                                     this.getView().byId("idDcTxtIs").setValue(is);
                                     this.getView().byId("idDcTaSb").setValue(shouldbe);
@@ -1682,14 +1687,14 @@ sap.ui.define([
 
         onValueHelpSNOkPress: function (oEvent) {
             var aTokens = oEvent.getParameter("tokens");
-            if(this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata"){
+            if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata") {
                 this._oMultiInputSN.setTokens(aTokens);
                 this._oValueHelpDialogSN.close();
                 if (aTokens.length > 0 && this.getView().byId("idMNInputSN").getValueState() === "Error") {
                     this.getView().byId("idMNInputSN").setValueState("None");
                     this.getView().byId("idMNInputSN").setValueStateText("");
                 }
-            }else if(this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre"){
+            } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre") {
                 this._oMultiInputDiscSN.setTokens(aTokens);
                 this._oValueHelpDialogSN.close();
             }
@@ -1761,14 +1766,14 @@ sap.ui.define([
 
         onValueHelpTNOkPress: function (oEvent) {
             var aTokens = oEvent.getParameter("tokens");
-            if(this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata"){
+            if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata") {
                 this._oMultiInputTN.setTokens(aTokens);
                 this._oValueHelpDialogTN.close();
                 if (aTokens.length > 0 && this.getView().byId("idMNInputTN").getValueState() === "Error") {
                     this.getView().byId("idMNInputTN").setValueState("None");
                     this.getView().byId("idMNInputTN").setValueStateText("");
                 }
-            }else if(this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre"){
+            } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre") {
                 this._oMultiInputDiscTN.setTokens(aTokens);
                 this._oValueHelpDialogTN.close();
             }
@@ -3126,12 +3131,12 @@ sap.ui.define([
         _configDrpPntVHDialog: function (oEvent) {
             var oSelectedItem = oEvent.getParameter("selectedItem");
             var oInput;
-                if(this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata"){
-                    oInput = this.getView().byId("idInpDrpPt");
-                }else if(this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre"){
-                    oInput = this.getView().byId("idDcIpDp");
-                }
-                
+            if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata") {
+                oInput = this.getView().byId("idInpDrpPt");
+            } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre") {
+                oInput = this.getView().byId("idDcIpDp");
+            }
+
             if (!oSelectedItem) {
                 oInput.resetProperty("value");
                 return;
@@ -3686,7 +3691,7 @@ sap.ui.define([
             this._oRMANoFBDialog.destroy();
         },
 
-        bindLinkedToDiscrepancy: function(){
+        bindLinkedToDiscrepancy: function () {
             sap.ui.core.BusyIndicator.show();
             var oModel = new JSONModel();
             oModel.setSizeLimit(10000);
@@ -3738,7 +3743,7 @@ sap.ui.define([
             var oSelectedItem = oEvent.getParameter("selectedItem"),
                 oInput = this.getView().byId("idDiscPartNumber");
             var oPartDesc = oEvent.getParameter("selectedItem").getInfo();
-                this.getView().byId("idDiscPartDesc").setValue(oPartDesc);
+            this.getView().byId("idDiscPartDesc").setValue(oPartDesc);
 
             if (!oSelectedItem) {
                 oInput.resetProperty("value");
@@ -3754,30 +3759,30 @@ sap.ui.define([
                 var oSplitVal = oValue.split("*")[1];
                 var oFilter = new Filter("PartNumber", FilterOperator.Contains, oSplitVal);
                 var oBinding = oEvent.getParameter("itemsBinding");
-                    oBinding.filter([oFilter]);
+                oBinding.filter([oFilter]);
             } else {
                 var oValue = oEvent.getParameter("value");
                 var oFilter = new Filter("PartNumber", FilterOperator.Contains, oValue);
                 var oBinding = oEvent.getParameter("itemsBinding");
-                    oBinding.filter([oFilter]);
+                oBinding.filter([oFilter]);
             }
         },
 
-        onChangeLinkedTo: function(oEvent){
-           var oSelLinkedTo = oEvent.getSource().getSelectedItem();
-           var oSelLinkToTxt = oSelLinkedTo.getText();
-                this.getView().byId("idDiscPartNumber").setValue();
-                this.getView().byId("idDiscPartDesc").setValue();
-           if(oSelLinkToTxt == "AIRCRAFT"){
+        onChangeLinkedTo: function (oEvent) {
+            var oSelLinkedTo = oEvent.getSource().getSelectedItem();
+            var oSelLinkToTxt = oSelLinkedTo.getText();
+            this.getView().byId("idDiscPartNumber").setValue();
+            this.getView().byId("idDiscPartDesc").setValue();
+            if (oSelLinkToTxt == "AIRCRAFT") {
                 this.getView().byId("idDiscPartNumber").setValueHelpOnly(false);
                 this.getView().byId("idDiscPartDesc").setEditable(true);
-           }else if(oSelLinkToTxt == "DETAIL"){
+            } else if (oSelLinkToTxt == "DETAIL") {
                 this.getView().byId("idDiscPartNumber").setValueHelpOnly(false);
                 this.getView().byId("idDiscPartDesc").setEditable(true);
-           }else{
+            } else {
                 this.getView().byId("idDiscPartNumber").setValueHelpOnly(true);
                 this.getView().byId("idDiscPartDesc").setEditable(false);
-           }
+            }
         },
 
         onVHReqLiability: function () {
@@ -3822,7 +3827,7 @@ sap.ui.define([
             var oValue = oEvent.getParameter("value");
             var oFilter = new Filter("Value", FilterOperator.Contains, oValue);
             var oBinding = oEvent.getParameter("itemsBinding");
-                oBinding.filter([oFilter]);
+            oBinding.filter([oFilter]);
         },
 
         onVHReqPartner: function () {
@@ -3867,7 +3872,7 @@ sap.ui.define([
             var oValue = oEvent.getParameter("value");
             var oFilter = new Filter("Value", FilterOperator.Contains, oValue);
             var oBinding = oEvent.getParameter("itemsBinding");
-                oBinding.filter([oFilter]);
+            oBinding.filter([oFilter]);
         },
 
         onVHReqSupersedesItem: function () {
@@ -3912,7 +3917,7 @@ sap.ui.define([
             var oValue = oEvent.getParameter("value");
             var oFilter = new Filter("Value", FilterOperator.Contains, oValue);
             var oBinding = oEvent.getParameter("itemsBinding");
-                oBinding.filter([oFilter]);
+            oBinding.filter([oFilter]);
         },
 
         onVHReqSupersededbyItem: function () {
@@ -3957,7 +3962,7 @@ sap.ui.define([
             var oValue = oEvent.getParameter("value");
             var oFilter = new Filter("Value", FilterOperator.Contains, oValue);
             var oBinding = oEvent.getParameter("itemsBinding");
-                oBinding.filter([oFilter]);
+            oBinding.filter([oFilter]);
         },
 
         handleChangeDiscPartNo: function () {
@@ -4001,10 +4006,10 @@ sap.ui.define([
                         if (bFlag === true) {
                             this.getView().byId("idDiscPartDesc").setEditable(true);
                             this.getView().byId("idDiscPartDesc").setValue();
-                            if(this.getView().byId("idComBoxDiscLinkTo").getSelectedItem()){
-                                if(this.getView().byId("idComBoxDiscLinkTo").getSelectedItem().getText() == "AIRCRAFT"){
+                            if (this.getView().byId("idComBoxDiscLinkTo").getSelectedItem()) {
+                                if (this.getView().byId("idComBoxDiscLinkTo").getSelectedItem().getText() == "AIRCRAFT") {
                                     var oMessage = "No matching Part master records found.!";
-                                }else if(this.getView().byId("idComBoxDiscLinkTo").getSelectedItem().getText() == "DETAIL"){
+                                } else if (this.getView().byId("idComBoxDiscLinkTo").getSelectedItem().getText() == "DETAIL") {
                                     var oMessage = "No matching Part master records found, please contact the responsible team.!";
                                 }
                             }
