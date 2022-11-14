@@ -57,8 +57,8 @@
                                                     <f:content>
                                                         <!--<core:Title text="General Info"/>-->
                                                         <Label text="Nc Type" />
-                                                        <ComboBox id="idCombNcType" items="{/NCTYPE_SOSet}" change="onNcrchange">
-                                                            <core:Item key="{Nctype}" text="{NctypeDesc}" />
+                                                        <ComboBox id="idCombNcType" items="{/NCTYPE_SOSet}" change="onNcrchange" showSecondaryValues="true">
+                                                            <core:ListItem key="{Nctype}" text="{Nctype}" additionalText="{NctypeDesc}"/>
                                                         </ComboBox>
                                                         <Label text="Prioity" />
                                                         <ComboBox id="idComBoxPriority" selectedKey="normal" showSecondaryValues="true" items="{oPriorityModel>/}">

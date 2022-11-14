@@ -820,8 +820,7 @@ sap.ui.define([
                     this.getView().byId("idMNInputTN").setValueStateText("Please Enter Traceability Number");
                 }
 
-                if (Number(this.getOwnerComponent().getModel("NCSaveModel").getData().Category) == "002" ||
-                    this.getView().byId("idInpWrkIns").getValue() !== "") {
+                if (Number(this.getOwnerComponent().getModel("NCSaveModel").getData().Category) == "002") {
                     if (this.getView().byId("idInpAircraft").getValue() !== "") {
                         this.getView().byId("idInpAircraft").setValueState("None");
                         this.getView().byId("idInpAircraft").setValueStateText("");
@@ -979,6 +978,8 @@ sap.ui.define([
                             var oMsg = JSON.parse(Response.headers["sap-message"]).message;
                             MessageBox.success(oMsg);
                         }
+                        var sObjectPath = "CreateNotificationHeaderSet('" + oNotifNo + "')";
+                            this._bindView("/" + sObjectPath);
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
@@ -1034,6 +1035,8 @@ sap.ui.define([
                                 MessageBox.success(oMsg);
                             }
                         }
+                        var sObjectPath = "CreateNotificationHeaderSet('" + oNotifNo + "')";
+                            this._bindView("/" + sObjectPath);
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
@@ -1072,7 +1075,7 @@ sap.ui.define([
                         "SerialNo": oInpSerNo,
                         "TraceabilityNo": oTraceabilityNo.getTokens()[j].getKey()
                     }
-                    this.getOwnerComponent().getModel().update("/CreateNotificationHeaderSet('" + oNotifNo + "')", payLoadHdrData, mParameters);
+                    this.getOwnerComponent().getModel().update("CreateNotificationHeaderSet('" + oNotifNo + "')", payLoadHdrData, mParameters);
                 }
                 this.getOwnerComponent().getModel().submitChanges({
                     groupId: "batchUpdate",
@@ -1089,6 +1092,8 @@ sap.ui.define([
                                 MessageBox.success(oMsg);
                             }
                         }
+                        var sObjectPath = "/CreateNotificationHeaderSet('" + oNotifNo + "')";
+                            this._bindView("/" + sObjectPath);
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
