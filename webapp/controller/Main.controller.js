@@ -397,6 +397,11 @@ sap.ui.define([
                         "idFlBarPrOrdVhPartNo").getValue() !== "" ||
                         sap.ui.getCore().byId("idFlBarPrOrdVhnlp").getValue() !== "" ||
                         sap.ui.getCore().byId("idFlBarPrOrdVhWrkIns").getValue() !== "")) {
+                            this.i18nModel = new sap.ui.model.resource.ResourceModel({
+                                bundleName: "com.airbus.ZQM_NCR.i18n.i18n"
+                            });
+                            var that = this;
+
                         MessageBox.warning(
                             "Do you want to specify a Partner Code for this Part?", {
                             icon: MessageBox.Icon.WARNING,
@@ -413,6 +418,7 @@ sap.ui.define([
                                         }).then(function (oDialog) {
                                             this._oSelPartDialog = oDialog;
                                             this._oSelPartDialog.setModel(this.getOwnerComponent().getModel());
+                                            this._oSelPartDialog.setModel(that.i18nModel, "i18n");
                                             this._oSelPartDialog.open();
                                         }.bind(this));
                                     } else {
