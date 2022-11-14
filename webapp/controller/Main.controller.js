@@ -67,6 +67,32 @@ sap.ui.define([
                             this.getView().byId("idlinksubc").setSelectedKey(subcatkey);
                         }
                     }
+                    this.bindSubCategory();
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+        },
+
+        bindSubCategory: function(){
+            debugger;
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new JSONModel();
+            oModel.setSizeLimit(10000);
+            var oDataModel = this.getOwnerComponent().getModel();
+            var oFilter = [];
+            oFilter.push(new Filter("NcType", FilterOperator.EQ, this.getView().byId("idncr").getSelectedKey()));
+            var sPath = "/Subcat_SoSet"
+            oDataModel.read(sPath, {
+                filters: oFilter,
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.results;
+                    oModel.setData(data);
+                    this.getView().setModel(oModel, "SubCatModel");
                 }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
@@ -2003,6 +2029,7 @@ sap.ui.define([
         * @function
         */
         onNCTypeChange: function () {
+            this.bindSubCategory();
             var ncType = this.getView().byId("idncr").getSelectedKey();
             sap.ui.core.BusyIndicator.show();
             var oModel = new JSONModel();

@@ -72,8 +72,8 @@
                                     <core:Item key="{inWhichAreaModel>Sequencearea}" text="{inWhichAreaModel>Area}" />
                                 </ComboBox>
                                 <Label text="{i18n>Subcategory}" required="true" />
-                                <ComboBox id="idlinksubc" items="{/Subcat_SoSet}" change="onChngSubCat">
-                                    <core:Item key="{SequenceCat}" text="{Subcat}" />
+                                <ComboBox id="idlinksubc" items="{SubCatModel>/}" change="onChngSubCat">
+                                    <core:Item key="{SubCatModel>SequenceCat}" text="{SubCatModel>Subcat}" />
                                     <layoutData>
                                         <l:GridData span="XL1 L2 M8 S8" />
                                     </layoutData>

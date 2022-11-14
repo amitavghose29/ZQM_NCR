@@ -100,6 +100,8 @@
                                                         <CheckBox id="idChkBoxLinkAircraft" enabled="false" />
                                                         <Label text="Aircraft" />
                                                         <Input id="idInpAircraft" value="{Aircraftno}" valueHelpRequest="onVHReqAircraft" showValueHelp="true" change="handleAircraftChange" />
+                                                        <Label text="QSR" />
+                                                        <Input id="idInpQSR" value="" editable="false"/>
                                                         <!-- <Label text="Supplier Name"/>
 														<Input value=""/>
                                                         <Label text="Supplier SAP"/>
@@ -265,7 +267,7 @@
                                             <Toolbar>
                                                 <Title text="Discrepancy" level="H2" />
                                                 <ToolbarSpacer />
-                                                <Button type="Emphasized" icon="sap-icon://copy" press="onCopyDiscrepancy" />
+                                                <Button type="Emphasized" icon="sap-icon://copy" press="_onSelectingDiscrepancy" />
                                                 <Button type="Emphasized" icon="sap-icon://add" press="onDiscrepancy" />
                                             </Toolbar>
                                         </headerToolbar>
@@ -435,27 +437,9 @@
                                                     columnsM="1"
                                                     singleContainerFullSize="false"
                                                     class="sapUiSizeCompact"
-                                                    labelMinWidth="1px"
-                                                >
+                                                    labelMinWidth="1px" > 
                                                     <f:content>
-                                                        <!--<Label text=""/>-->
-                                                        <!--<CheckBox text="OML"/>-->
-                                                        <!--<CheckBox text="IML"/>-->
-                                                        <!--<Label text=""/>-->
-                                                        <!--<CheckBox text="RHS" width="50px"/>-->
-                                                        <!--<CheckBox text="LHS" width="50px"/>-->
-                                                        <!--<Label text="Fuselage Station(X)"/>-->
-                                                        <!--<Input width="230px" class="sapUiMediumMarginEnd"/>-->
-                                                        <!--<Label text="Buttock Line(Y)" class="sapUiMediumMarginEnd"/>-->
-                                                        <!--<Input width="230px" class="sapUiMediumMarginEnd"/>-->
-                                                        <!--<Label text="Water Line(Z)" class="sapUiMediumMarginEnd"/>-->
-                                                        <!--<Input width="230px" class="sapUiMediumMarginEnd"/>-->
-                                                        <!--<Label text="Frame" class="sapUiMediumMarginTop"/>-->
-                                                        <!--<Input width="230px" class="sapUiMediumMarginTop"/>-->
-                                                        <!--<Label text="Buttock Line"/>-->
-                                                        <!--<Input width="230px"/>-->
-                                                        <!--<Label text="Water Line"/>-->
-                                                        <!--<Input width="230px"/>-->
+                                                        
                                                         <Label labelFor="rbg4" text="Select" />
                                                         <ComboBox id="rbg" width="200px" selectionChange="onRadioSelectLocation">
                                                             <core:Item key="fuse0" text="Fuselage" />
@@ -469,28 +453,20 @@
                                                             <core:Item key="pylon" text="Pylon / Nacelle" />
                                                             <core:Item key="others" text="Others" />
                                                         </ComboBox>
-                                                        <!--<VBox>-->
-                                                        <!--	<Label/>-->
-                                                        <!--<RadioButtonGroup id="rbg" select="onRadioSelectLocation">-->
-                                                        <!--	<RadioButton id="RB4-1" text="Fuselage"/>-->
-                                                        <!--	<RadioButton id="RB4-2" text="Wing"/>-->
-                                                        <!--	<RadioButton id="RB4-3" text="Vertical Empennage"/>-->
-                                                        <!--	<RadioButton id="RB4-4" text="Rudder"/>-->
-                                                        <!--	<RadioButton id="RB4-5" text="Horizontal Empennage"/>-->
-                                                        <!--	<RadioButton id="RB4-6" text="Pylon / Nacelle"/>-->
-                                                        <!--	<RadioButton id="RB4-7" text="Others"/>-->
-                                                        <!--</RadioButtonGroup>-->
-                                                        <!--</VBox>-->
-                                                    </f:content>
-                                                </f:SimpleForm>
+                                                        <ComboBox ></ComboBox>
+                                                        
+                                                        <Button text="save" type="Emphasized" width="40%"/>
+                                                        
+                                                     </f:content>
+                                                </f:SimpleForm> 
                                                 <FlexBox class="columns" direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Start">
                                                     <HBox id="idFuselage" visible="false" class="sapUiSizeCompact">
                                                         <VBox>
-                                                            <CheckBox text="Fuselage Station(FX) (X)" />
+                                                            <CheckBox text="Fuselage Station(FX)(X)" />
                                                             <CheckBox text="Fuselage Frame Station(FR)" />
                                                             <CheckBox text="Fuselage Stringer" />
-                                                            <CheckBox text="Buttock Line(BL) (Y)" />
-                                                            <CheckBox text="Water Line(WL) (Z)" />
+                                                            <CheckBox text="Buttock Line(BL)(Y)" />
+                                                            <CheckBox text="Water Line(WL)(Z)" />
                                                             <CheckBox text="OML / IML" />
                                                         </VBox>
                                                         <VBox>
@@ -502,48 +478,48 @@
                                                             <CheckBox text="OML " />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton text="between" />
-                                                            <RadioButton text="between" />
-                                                            <RadioButton text="between" />
-                                                            <RadioButton text="between" />
-                                                            <RadioButton text="between" />
+                                                            <RadioButton text="b/w" />
+                                                            <RadioButton text="b/w" />
+                                                            <RadioButton text="b/w" />
+                                                            <RadioButton text="b/w" />
+                                                            <RadioButton text="b/w" />
                                                             <CheckBox text="IML" />
                                                         </VBox>
-                                                        <VBox>
-                                                            <Input class="sapUiSmallMarginBeginEnd" />
-                                                            <Input class="sapUiSmallMarginBeginEnd" />
-                                                            <Input class="sapUiSmallMarginBeginEnd" />
-                                                            <Input class="sapUiSmallMarginBeginEnd" />
-                                                            <Input class="sapUiSmallMarginBeginEnd" />
+                                                        <VBox class="sapUiSmallMarginBegin">
+                                                            <Input />
+                                                            <Input />
+                                                            <Input />
+                                                            <Input />
+                                                            <Input />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
                                                             <Text />
-                                                            <HBox class="sapUiSmallMarginBeginEnd">
+                                                            <HBox >
                                                                 <RadioButton text="L" />
                                                                 <RadioButton text="R" />
                                                             </HBox>
-                                                            <HBox class="sapUiSmallMarginBeginEnd">
+                                                            <HBox >
                                                                 <RadioButton text="L" />
                                                                 <RadioButton text="R" />
                                                             </HBox>
                                                             <Text />
                                                         </VBox>
-                                                        <VBox>
-                                                            <Input class="sapUiSmallMarginBeginEnd" />
-                                                            <Input class="sapUiSmallMarginBeginEnd" />
-                                                            <Input class="sapUiSmallMarginBeginEnd" />
-                                                            <Input class="sapUiSmallMarginBeginEnd" />
-                                                            <Input class="sapUiSmallMarginBeginEnd" />
+                                                        <VBox class="sapUiSmallMarginBegin">
+                                                            <Input />
+                                                            <Input />
+                                                            <Input />
+                                                            <Input />
+                                                            <Input />
                                                         </VBox>
-                                                        <VBox>
+                                                        <VBox >
                                                             <Text />
                                                             <Text />
-                                                            <HBox class="sapUiSmallMarginBeginEnd">
+                                                            <HBox >
                                                                 <RadioButton text="L" />
                                                                 <RadioButton text="R" />
                                                             </HBox>
-                                                            <HBox class="sapUiSmallMarginBeginEnd">
+                                                            <HBox >
                                                                 <RadioButton text="L" />
                                                                 <RadioButton text="R" />
                                                             </HBox>
@@ -834,67 +810,6 @@
                                                         </VBox>
                                                     </HBox>
                                                 </FlexBox>
-                                                <!--	<VBox class="sapUiContentPadding sapUiSizeCompact equalColumns">
-													<FlexBox class="columns" direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Start">
-														<CheckBox text="Fuselage Station(FX) (X)"/>
-														<RadioButton text="at"/>
-														<RadioButton text="between"/>
-														<Input/>
-														<Text/>
-														<Text/>
-														<Input/>
-														<Text/>
-														<Text/>
-													</FlexBox>
-													<FlexBox class="columns" direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Start">
-														<CheckBox text="Fuselage Frame Station(FR)"/>
-														<RadioButton text="at"/>
-														<RadioButton text="between"/>
-														<Input/>
-														<Text/>
-														<Text/>
-														<Input/>
-														<Text/>
-														<Text/>
-													</FlexBox>
-													<FlexBox class="columns" direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Start">
-														<CheckBox text="Fuselage Stringer"/>
-														<RadioButton text="at"/>
-														<RadioButton text="between"/>
-														<Input/>
-														<RadioButton text="L"/>
-														<RadioButton text="R"/>
-														<Input/>
-														<RadioButton text="L"/>
-														<RadioButton text="R"/>
-													</FlexBox>
-													<FlexBox class="columns" direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Start">
-														<CheckBox text="Buttock Line(BL) (Y)"/>
-														<RadioButton text="at"/>
-														<RadioButton text="between"/>
-														<Input/>
-														<RadioButton text="L"/>
-														<RadioButton text="R"/>
-														<Input/>
-														<RadioButton text="L"/>
-														<RadioButton text="R"/>
-													</FlexBox>
-													<FlexBox class="columns" direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Start">
-														<CheckBox text="Water Line(WL) (Z)"/>
-														<RadioButton text="at"/>
-														<RadioButton text="between"/>
-														<Input/>
-														<Text/>
-														<Text/>
-														<Input/>
-														<Text/>
-													</FlexBox>
-													<FlexBox class="columns" direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Start">
-														<CheckBox text="OML / IML"/>
-														<CheckBox text="OML "/>
-														<CheckBox text="IML"/>
-													</FlexBox>
-												</VBox>-->
                                             </l:BlockLayoutCell>
                                             <l:BlockLayoutCell width="100" backgroundColorShade="ShadeA" backgroundColorSet="ColorSet1" class="formcolor">
                                                 <f:SimpleForm
@@ -934,9 +849,9 @@
                                                             <Input id="idDiscUomRej" width="125px" class="sapUiTinyMarginBegin" placeholder="UOM" />
                                                         </HBox>
                                                         <Label text="Serial No" />
-                                                        <MultiInput id="idMulInpDiscSerNo" showValueHelp="true" valueHelpRequest=".onOpenVHSerNo" />
+                                                        <MultiInput id="idMulInpDiscSerNo" showValueHelp="true" valueHelpRequest=".onOpenVHSerNo" tokenUpdate="_onTokenUpdateSN" />
                                                         <Label text="Traceability No" />
-                                                        <MultiInput id="idMulInpDiscTrcNo" showValueHelp="true" valueHelpRequest=".onOpenVHTrcNo" />
+                                                        <MultiInput id="idMulInpDiscTrcNo" showValueHelp="true" valueHelpRequest=".onOpenVHTrcNo" tokenUpdate="_onTokenUpdateSN" />
                                                     </f:content>
                                                 </f:SimpleForm>
                                                 <!--<HBox justifyContent="Center">

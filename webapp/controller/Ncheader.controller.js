@@ -72,97 +72,94 @@ sap.ui.define([
                 this._bindView("/" + sObjectPath);
                 this._bindTable("/" + sObjectPath);
             }.bind(this));
-            this.getView().byId("idNCHeaderDataForm").setModel(this.getOwnerComponent().getModel());
-            if (this.getOwnerComponent().getModel("NCSaveModel").getData()) {
-                if (this.getOwnerComponent().getModel("NCSaveModel").getData().NcType) {
-                    this.getView().byId("idCombNcType").setSelectedKey(this.getOwnerComponent().getModel("NCSaveModel").getData().NcType);
-                    this.getView().byId("idCombInWhArea").setSelectedKey(this.getOwnerComponent().getModel("NCSaveModel").getData().Area);
-                    this.bindInWhichArea();
-                }
-            }
-            this.bindHeaderData();
         },
 
         _bindView: function (sObjectPath) {
-            this.getView().bindElement({
-                path: sObjectPath,
-                events: {
-                    dataReceived: function (dataRec) {
-                        //debugger;
-                        if (dataRec.getParameters().data) {
-                            var data = dataRec.getParameters().data,
-                                oNCType = data.NCType,
-                                oPlantCode = data.PlantCode,
-                                oNCPriority = data.NCPriority,
-                                oNCArea = data.NCArea,
-                                oAircraftno = data.Aircraftno,
-                                oBinlocation = data.Binlocation,
-                                oDropPint = data.DropPoint,
-                                oNCCreatedBy = data.NCCreatedBy,
-                                oNCDetectedAt = data.NCDetectedAt,
-                                oNCStatus = data.NCStatus,
-                                oPartDescription = data.PartDescription,
-                                oPartNumber = data.PartNumber,
-                                oProdOrder = data.ProdOrder,
-                                oProductCode = data.ProductCode,
-                                oReferenceNC = data.ReferenceNC,
-                                oSupercededByNC = data.SupercededByNC,
-                                oSupercedesNC = data.SupercedesNC,
-                                oWorkInstruction = data.WorkInstruction,
-                                oSerialList = data.SerialList,
-                                oTraceList = data.TraceList;
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new JSONModel();
+            oModel.setSizeLimit(10000);
+            var oDataModel = this.getOwnerComponent().getModel();
+            var sPath = sObjectPath;
+            oDataModel.read(sPath, {
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData;
+                    var oNCType = data.NCType,
+                        oPlantCode = data.PlantCode,
+                        oNCPriority = data.NCPriority,
+                        oNCArea = data.NCArea,
+                        oAircraftno = data.Aircraftno,
+                        oBinlocation = data.Binlocation,
+                        oDropPint = data.DropPoint,
+                        oNCCreatedBy = data.NCCreatedBy,
+                        oNCDetectedAt = data.NCDetectedAt,
+                        oNCStatus = data.NCStatus,
+                        oPartDescription = data.PartDescription,
+                        oPartNumber = data.PartNumber,
+                        oProdOrder = data.ProdOrder,
+                        oProductCode = data.ProductCode,
+                        oReferenceNC = data.ReferenceNC,
+                        oSupercededByNC = data.SupercededByNC,
+                        oSupercedesNC = data.SupercedesNC,
+                        oWorkInstruction = data.WorkInstruction,
+                        oSerialList = data.SerialList,
+                        oTraceList = data.TraceList;
 
-                            this.getView().byId("idCombNcType").setValue(oNCType);
-                            this.getView().byId("idPlntCodeHdr").setValue(oPlantCode);
-                            this.getView().byId("idComBoxPriority").setValue(oNCPriority);
-                            this.getView().byId("idCombInWhArea").setValue(oNCArea);
-                            this.getView().byId("idInpAircraft").setValue(oAircraftno);
-                            this.getView().byId("idInpBinLoc").setValue(oBinlocation);
-                            this.getView().byId("idInpDrpPt").setValue(oDropPint);
-                            this.getView().byId("idInpNCCrtBy").setValue(oNCCreatedBy);
-                            this.getView().byId("idInpNCDetAt").setValue(oNCDetectedAt);
-                            this.getView().byId("idObjNCStatus").setText(oNCStatus);
-                            this.getView().byId("idInpStatPartDesc").setValue(oPartDescription);
-                            this.getView().byId("idInpPartNo").setValue(oPartNumber);
-                            this.getView().byId("idInpPrdOrd").setValue(oProdOrder);
-                            this.getView().byId("idInpProdCode").setValue(oProductCode);
-                            this.getView().byId("idInpRefNC").setValue(oReferenceNC);
-                            this.getView().byId("idInpSupBy").setValue(oSupercededByNC);
-                            this.getView().byId("idInpSupNC").setValue(oSupercedesNC);
-                            this.getView().byId("idInpWrkIns").setValue(oWorkInstruction);
-                            this._oMultiInputSN.removeAllTokens();
-                            this._oMultiInputTN.removeAllTokens();
-
-                            if (oSerialList !== "") {
-                                var oSerialNosToken = oSerialList.split(",");
-                                for (var i = 0; i < oSerialNosToken.length; i++) {
-                                    var oSernrToken = new sap.m.Token({
-                                        key: oSerialNosToken[i],
-                                        text: oSerialNosToken[i]
-                                    });
-                                    this._oMultiInputSN.addToken(oSernrToken);
-                                }
-                            }
-                            if (oTraceList !== "") {
-                                var oTrcNosToken = oTraceList.split(",");
-                                for (var j = 0; j < oTrcNosToken.length; j++) {
-                                    var oTrcNoToken = new sap.m.Token({
-                                        key: oTrcNosToken[j],
-                                        text: oTrcNosToken[j]
-                                    });
-                                    this._oMultiInputTN.addToken(oTrcNoToken);
-                                }
-                            }
-                            if (oPartNumber !== "") {
-                                this._oMultiInputSN.setEditable(true);
-                                this._oMultiInputTN.setEditable(true);
-                            } else {
-                                this._oMultiInputSN.setEditable(false);
-                                this._oMultiInputTN.setEditable(false);
-                            }
-                            oNctype = this.getView().byId("idCombNcType").getValue();
+                    this.getView().byId("idCombNcType").setValue(oNCType);
+                    this.getView().byId("idPlntCodeHdr").setValue(oPlantCode);
+                    this.getView().byId("idComBoxPriority").setValue(oNCPriority);
+                    this.getView().byId("idCombInWhArea").setValue(oNCArea);
+                    this.getView().byId("idInpAircraft").setValue(oAircraftno);
+                    this.getView().byId("idInpBinLoc").setValue(oBinlocation);
+                    this.getView().byId("idInpDrpPt").setValue(oDropPint);
+                    this.getView().byId("idInpNCCrtBy").setValue(oNCCreatedBy);
+                    this.getView().byId("idInpNCDetAt").setValue(oNCDetectedAt);
+                    this.getView().byId("idObjNCStatus").setText(oNCStatus);
+                    this.getView().byId("idInpStatPartDesc").setValue(oPartDescription);
+                    this.getView().byId("idInpPartNo").setValue(oPartNumber);
+                    this.getView().byId("idInpPrdOrd").setValue(oProdOrder);
+                    this.getView().byId("idInpProdCode").setValue(oProductCode);
+                    this.getView().byId("idInpRefNC").setValue(oReferenceNC);
+                    this.getView().byId("idInpSupBy").setValue(oSupercededByNC);
+                    this.getView().byId("idInpSupNC").setValue(oSupercedesNC);
+                    this.getView().byId("idInpWrkIns").setValue(oWorkInstruction);
+                    this._oMultiInputSN.removeAllTokens();
+                    this._oMultiInputTN.removeAllTokens();   
+                    
+                    if (oSerialList !== "") {
+                        var oSerialNosToken = oSerialList.split(",");
+                        for (var i = 0; i < oSerialNosToken.length; i++) {
+                            var oSernrToken = new sap.m.Token({
+                                key: oSerialNosToken[i],
+                                text: oSerialNosToken[i]
+                            });
+                            this._oMultiInputSN.addToken(oSernrToken);
                         }
-                    }.bind(this)
+                    }
+                    if (oTraceList !== "") {
+                        var oTrcNosToken = oTraceList.split(",");
+                        for (var j = 0; j < oTrcNosToken.length; j++) {
+                            var oTrcNoToken = new sap.m.Token({
+                                key: oTrcNosToken[j],
+                                text: oTrcNosToken[j]
+                            });
+                            this._oMultiInputTN.addToken(oTrcNoToken);
+                        }
+                    }
+                    if(oPartNumber !== ""){
+                        this._oMultiInputSN.setEditable(true);
+                        this._oMultiInputTN.setEditable(true);
+                    }else{
+                        this._oMultiInputSN.setEditable(false);
+                        this._oMultiInputTN.setEditable(false);
+                    }
+                    oNctype = this.getView().byId("idCombNcType").getValue();
+                    this.bindHeaderData();
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
                 }
             });
         },
@@ -172,6 +169,7 @@ sap.ui.define([
             this.bindDefaultWorkGroup();
             this.bindPriority();
             this.bindPlantCode();
+            this.bindInWhichArea();
             this.getView().byId("idPageNCHeader").setTitle("NC: " + sObjectId + "");
         },
 
@@ -205,7 +203,7 @@ sap.ui.define([
             oModel.setSizeLimit(10000);
             var oDataModel = this.getOwnerComponent().getModel();
             var oFilter = [];
-            var oNcType = this.getOwnerComponent().getModel("NCSaveModel").getData().NcType;
+            var oNcType = this.getView().byId("idCombNcType").getValue();
             oFilter.push(new Filter("NcType", FilterOperator.EQ, oNcType));
             var sPath = "/Area_soSet";
             oDataModel.read(sPath, {
@@ -252,7 +250,9 @@ sap.ui.define([
             if (this.getOwnerComponent().getModel("NCSaveModel").getData()) {
                 if (Number(this.getOwnerComponent().getModel("NCSaveModel").getData().Category) == "002") {
                     this.getView().byId("idInpAircraft").setRequired(true);
-                } else {
+                }else if(this.getView().byId("idInpWrkIns").getValue() !== ""){
+                    this.getView().byId("idInpAircraft").setRequired(true);
+                }else {
                     this.getView().byId("idInpAircraft").setRequired(false);
                 }
             }
@@ -820,7 +820,8 @@ sap.ui.define([
                     this.getView().byId("idMNInputTN").setValueStateText("Please Enter Traceability Number");
                 }
 
-                if (Number(this.getOwnerComponent().getModel("NCSaveModel").getData().Category) == "002") {
+                if (Number(this.getOwnerComponent().getModel("NCSaveModel").getData().Category) == "002" ||
+                    this.getView().byId("idInpWrkIns").getValue() !== "") {
                     if (this.getView().byId("idInpAircraft").getValue() !== "") {
                         this.getView().byId("idInpAircraft").setValueState("None");
                         this.getView().byId("idInpAircraft").setValueStateText("");
@@ -831,7 +832,7 @@ sap.ui.define([
                 } else {
                     this.updateHeaderData();
                 }
-            } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Purchase") {
+            }else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Purchase") {
                 var oNCType = this.getView().byId("idCombNcType").getSelectedKey();
                 if (oNCType == "SUPPLIER") {
                     var updateFlag = true;
@@ -907,6 +908,12 @@ sap.ui.define([
                     }
                     this.updatePurchaseInfoData(payloadPurchInfData);
                 }
+            }else if(this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre"){
+                if(this.getView().byId("idDcCobDscNo").getValue() === ""){
+                    this.createDiscrepancyData();
+                }else{
+                    this.updateDiscrepancyData();
+                }
             }
         },
 
@@ -972,7 +979,6 @@ sap.ui.define([
                             var oMsg = JSON.parse(Response.headers["sap-message"]).message;
                             MessageBox.success(oMsg);
                         }
-                        this.getOwnerComponent().getModel().refresh();
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
@@ -1027,7 +1033,6 @@ sap.ui.define([
                                 var oMsg = JSON.parse(Response.data.__batchResponses[0].__changeResponses[0].headers["sap-message"]).message;
                                 MessageBox.success(oMsg);
                             }
-                            this.getOwnerComponent().getModel().refresh();
                         }
                     }.bind(this),
                     error: function (oError) {
@@ -1083,9 +1088,7 @@ sap.ui.define([
                                 var oMsg = JSON.parse(Response.data.__batchResponses[0].__changeResponses[0].headers["sap-message"]).message;
                                 MessageBox.success(oMsg);
                             }
-                            this.getOwnerComponent().getModel().refresh();
                         }
-                        this.getOwnerComponent().getModel().refresh();
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
@@ -1330,7 +1333,18 @@ sap.ui.define([
 
         /**Function is triggered when selected an item in discrepancy drop down */
         _onSelectingDiscrepancy: function (oEvent) {
-            var discrepancyNo = oEvent.getParameters("selectedItem").selectedItem.getKey();
+            var iconKey = this.getView().byId("idIconTabBarHeader").getSelectedKey();
+            if(iconKey == "Hdata"){               
+                var hdatatab = this.getView().byId("idHeaderDiscTable").getSelectedItems();
+                if ( hdatatab == null || hdatatab.length > 1 ){
+                    MessageBox.warning("Please Select Line Item");
+                    return
+                }
+                var discrepancyNo = hdatatab.getCells()[0].getText();
+                this.getView().byId("idIconTabBarHeader").setSelectedKey("Discre");
+            }else{
+                var discrepancyNo = oEvent.getParameters("selectedItem").selectedItem.getKey();
+            }
             if (discrepancyNo != "") {
                 this.getOwnerComponent().getModel().metadataLoaded().then(function () {
                     var sEntitypath = this.getOwnerComponent().getModel().createKey("CreateNotificationHeaderSet", {
@@ -1384,6 +1398,26 @@ sap.ui.define([
                                     this.getView().byId("idDiscUomIns").setValue(qntyUOM);
                                     this.getView().byId("idDiscQtyRej").setValue(rejectQnty);
                                     this.getView().byId("idDiscUomRej").setValue(qntyUOM);
+                                    if (compSerialNo !== "") {
+                                        var oSerialNosToken = compSerialNo.split(",");
+                                        for (var i = 0; i < oSerialNosToken.length; i++) {
+                                            var oSernrToken = new sap.m.Token({
+                                                key: oSerialNosToken[i],
+                                                text: oSerialNosToken[i]
+                                            });
+                                            this._oMultiInputDiscSN.addToken(oSernrToken);
+                                        }
+                                    }
+                                    if (traceNo !== "") {
+                                        var oTrcNosToken = oTraceList.split(",");
+                                        for (var j = 0; j < oTrcNosToken.length; j++) {
+                                            var oTrcNoToken = new sap.m.Token({
+                                                key: oTrcNosToken[j],
+                                                text: oTrcNosToken[j]
+                                            });
+                                            this._oMultiInputDiscTN.addToken(oTrcNoToken);
+                                        }
+                                    }
                                     if (linkedTo != "") {
                                         this.getView().byId("idComBoxDiscLinkTo").setSelectedKey(linkedTo);
                                     }
@@ -1607,7 +1641,7 @@ sap.ui.define([
                 var oModel = new sap.ui.model.json.JSONModel();
                 var oDataModel = this.getOwnerComponent().getModel();
                 var oFilter = [];
-                oFilter.push(new Filter("Key", FilterOperator.EQ, "PRT"));
+                oFilter.push(new Filter("Key", FilterOperator.EQ, "SERNR"));
                 var sPath = "/f4_genericSet";
                 oDataModel.read(sPath, {
                     filters: oFilter,
@@ -1640,7 +1674,11 @@ sap.ui.define([
                     }
                 });
             }.bind(this));
-            this._oValueHelpDialogSN.setTokens(this._oMultiInputSN.getTokens());
+            if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata") {
+                this._oValueHelpDialogSN.setTokens(this._oMultiInputSN.getTokens());
+            } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre") {
+                this._oValueHelpDialogSN.setTokens(this._oMultiInputDiscSN.getTokens());
+            }            
             this._oValueHelpDialogSN.open();
             sap.ui.core.BusyIndicator.hide();
         },
@@ -1759,7 +1797,11 @@ sap.ui.define([
                     }
                 });
             }.bind(this));
-            this._oValueHelpDialogTN.setTokens(this._oMultiInputTN.getTokens());
+            if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata") {
+                this._oValueHelpDialogTN.setTokens(this._oMultiInputTN.getTokens());
+            } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre") {
+                this._oValueHelpDialogTN.setTokens(this._oMultiInputDiscTN.getTokens());
+            }           
             this._oValueHelpDialogTN.open();
             sap.ui.core.BusyIndicator.hide();
         },
@@ -1838,53 +1880,99 @@ sap.ui.define([
                 j,
                 bFlag = true;
 
-            if (oEvent.getParameter('type') === Tokenizer.TokenUpdateType.Added) {
-                aTokens = oEvent.getParameter('addedTokens');
-                sTokensText = "Added tokens: ";
-                sap.ui.core.BusyIndicator.show();
-                var oModel = new sap.ui.model.json.JSONModel();
-                var oDataModel = this.getOwnerComponent().getModel();
-                var oFilter = [];
-                oFilter.push(new Filter("Key", FilterOperator.EQ, "PRT"));
-                var sPath = "/f4_genericSet";
-                oDataModel.read(sPath, {
-                    filters: oFilter,
-                    success: function (oData, oResult) {
-                        var data = oData.results;
-                        oModel.setData(data);
-                        for (i = 0; i < aTokens.length; i++) {
-                            this.getView().byId("idMNInputSN").setValueState("None");
-                            this.getView().byId("idMNInputSN").setValueStateText("");
-                            sTokensText = aTokens[i].getText();
-
-                            for (j = 0; j < oModel.getData().length; j++) {
-                                sNo = oModel.getData()[j].Value;
-                                if (sTokensText === sNo) {
-                                    bFlag = true;
-                                    break;
-                                } else {
-                                    bFlag = false;
+            if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata") {
+                if (oEvent.getParameter('type') === Tokenizer.TokenUpdateType.Added) {
+                    aTokens = oEvent.getParameter('addedTokens');
+                    sTokensText = "Added tokens: ";
+                    sap.ui.core.BusyIndicator.show();
+                    var oModel = new sap.ui.model.json.JSONModel();
+                    var oDataModel = this.getOwnerComponent().getModel();
+                    var oFilter = [];
+                    oFilter.push(new Filter("Key", FilterOperator.EQ, "SERNR"));
+                    var sPath = "/f4_genericSet";
+                    oDataModel.read(sPath, {
+                        filters: oFilter,
+                        success: function (oData, oResult) {
+                            var data = oData.results;
+                            oModel.setData(data);
+                            for (i = 0; i < aTokens.length; i++) {
+                                this.getView().byId("idMNInputSN").setValueState("None");
+                                this.getView().byId("idMNInputSN").setValueStateText("");
+                                sTokensText = aTokens[i].getText();
+    
+                                for (j = 0; j < oModel.getData().length; j++) {
+                                    sNo = oModel.getData()[j].Value;
+                                    if (sTokensText === sNo) {
+                                        bFlag = true;
+                                        break;
+                                    } else {
+                                        bFlag = false;
+                                    }
                                 }
                             }
+                            if (bFlag === false) {
+                                var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
+                                MessageBox.information(
+                                    "Serial Number not available in SAP.!",
+                                    {
+                                        styleClass: bCompact ? "sapUiSizeCompact" : ""
+                                    }
+                                );
+                            }
+                            sap.ui.core.BusyIndicator.hide();
+                        }.bind(this),
+                        error: function (oError) {
+                            sap.ui.core.BusyIndicator.hide();
+                            var msg = JSON.parse(oError.responseText).error.message.value;
+                            MessageBox.error(msg);
                         }
-                        if (bFlag === false) {
-                            var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
-                            MessageBox.information(
-                                "Serial Number not available in SAP.!",
-                                {
-                                    styleClass: bCompact ? "sapUiSizeCompact" : ""
+                    });
+                }
+            } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre") {
+                if (oEvent.getParameter('type') === Tokenizer.TokenUpdateType.Added) {
+                    aTokens = oEvent.getParameter('addedTokens');
+                    sTokensText = "Added tokens: ";
+                    sap.ui.core.BusyIndicator.show();
+                    var oModel = new sap.ui.model.json.JSONModel();
+                    var oDataModel = this.getOwnerComponent().getModel();
+                    var oFilter = [];
+                    oFilter.push(new Filter("Key", FilterOperator.EQ, "SERNR"));
+                    var sPath = "/f4_genericSet";
+                    oDataModel.read(sPath, {
+                        filters: oFilter,
+                        success: function (oData, oResult) {
+                            var data = oData.results;
+                            oModel.setData(data);
+                            for (i = 0; i < aTokens.length; i++) {
+                                sTokensText = aTokens[i].getText();  
+                                for (j = 0; j < oModel.getData().length; j++) {
+                                    sNo = oModel.getData()[j].Value;
+                                    if (sTokensText === sNo) {
+                                        bFlag = true;
+                                        break;
+                                    } else {
+                                        bFlag = false;
+                                    }
                                 }
-                            );
-                            // sap.m.MessageToast.show("Serial Number not available in SAP");
+                            }
+                            if (bFlag === false) {
+                                var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
+                                MessageBox.information(
+                                    "Serial Number not available in SAP.!",
+                                    {
+                                        styleClass: bCompact ? "sapUiSizeCompact" : ""
+                                    }
+                                );
+                            }
+                            sap.ui.core.BusyIndicator.hide();
+                        }.bind(this),
+                        error: function (oError) {
+                            sap.ui.core.BusyIndicator.hide();
+                            var msg = JSON.parse(oError.responseText).error.message.value;
+                            MessageBox.error(msg);
                         }
-                        sap.ui.core.BusyIndicator.hide();
-                    }.bind(this),
-                    error: function (oError) {
-                        sap.ui.core.BusyIndicator.hide();
-                        var msg = JSON.parse(oError.responseText).error.message.value;
-                        MessageBox.error(msg);
-                    }
-                });
+                    });
+                }
             }
         },
         // Added code for Serial Number Multi Input token when the tokens aggregation changed due to a user interaction   - Code End 
@@ -1897,55 +1985,100 @@ sap.ui.define([
                 i,
                 j,
                 bFlag = true;
-
-            if (oEvent.getParameter('type') === Tokenizer.TokenUpdateType.Added) {
-                this.getView().byId("idMNInputTN").setValueState("None");
-                this.getView().byId("idMNInputTN").setValueStateText("");
-                aTokens = oEvent.getParameter('addedTokens');
-
-                sTokensText = "Added tokens: ";
-                sap.ui.core.BusyIndicator.show();
-                var oModel = new sap.ui.model.json.JSONModel();
-                var oDataModel = this.getOwnerComponent().getModel();
-                var oFilter = [];
-                oFilter.push(new Filter("Key", FilterOperator.EQ, "TRACE"));
-                var sPath = "/f4_genericSet";
-                oDataModel.read(sPath, {
-                    filters: oFilter,
-                    success: function (oData, oResult) {
-                        sap.ui.core.BusyIndicator.hide();
-                        var data = oData.results;
-                        oModel.setData(data);
-                        for (i = 0; i < aTokens.length; i++) {
-                            sTokensText = aTokens[i].getText();
-                            for (j = 0; j < oModel.getData().length; j++) {
-                                tNo = oModel.getData()[j].Value;
-                                if (sTokensText === tNo) {
-                                    bFlag = true;
-                                    break;
-                                } else {
-                                    bFlag = false;
+            if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata") {
+                if (oEvent.getParameter('type') === Tokenizer.TokenUpdateType.Added) {
+                    this.getView().byId("idMNInputTN").setValueState("None");
+                    this.getView().byId("idMNInputTN").setValueStateText("");
+                    aTokens = oEvent.getParameter('addedTokens');  
+                    sTokensText = "Added tokens: ";
+                    sap.ui.core.BusyIndicator.show();
+                    var oModel = new sap.ui.model.json.JSONModel();
+                    var oDataModel = this.getOwnerComponent().getModel();
+                    var oFilter = [];
+                    oFilter.push(new Filter("Key", FilterOperator.EQ, "TRACE"));
+                    var sPath = "/f4_genericSet";
+                    oDataModel.read(sPath, {
+                        filters: oFilter,
+                        success: function (oData, oResult) {
+                            sap.ui.core.BusyIndicator.hide();
+                            var data = oData.results;
+                            oModel.setData(data);
+                            for (i = 0; i < aTokens.length; i++) {
+                                sTokensText = aTokens[i].getText();
+                                for (j = 0; j < oModel.getData().length; j++) {
+                                    tNo = oModel.getData()[j].Value;
+                                    if (sTokensText === tNo) {
+                                        bFlag = true;
+                                        break;
+                                    } else {
+                                        bFlag = false;
+                                    }
+                                }
+    
+                                if (bFlag === false) {
+                                    var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
+                                    MessageBox.information(
+                                        "Traceability Number not available in SAP.!",
+                                        {
+                                            styleClass: bCompact ? "sapUiSizeCompact" : ""
+                                        }
+                                    );
                                 }
                             }
-
-                            if (bFlag === false) {
-                                var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
-                                MessageBox.information(
-                                    "Traceability Number not available in SAP.!",
-                                    {
-                                        styleClass: bCompact ? "sapUiSizeCompact" : ""
-                                    }
-                                );
-                                // sap.m.MessageToast.show("Traceability Number not available in SAP");
-                            }
+                        }.bind(this),
+                        error: function (oError) {
+                            sap.ui.core.BusyIndicator.hide();
+                            var msg = JSON.parse(oError.responseText).error.message.value;
+                            MessageBox.error(msg);
                         }
-                    }.bind(this),
-                    error: function (oError) {
-                        sap.ui.core.BusyIndicator.hide();
-                        var msg = JSON.parse(oError.responseText).error.message.value;
-                        MessageBox.error(msg);
-                    }
-                });
+                    });
+                }   
+            } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre") {
+                if (oEvent.getParameter('type') === Tokenizer.TokenUpdateType.Added) {
+                    aTokens = oEvent.getParameter('addedTokens');  
+                    sTokensText = "Added tokens: ";
+                    sap.ui.core.BusyIndicator.show();
+                    var oModel = new sap.ui.model.json.JSONModel();
+                    var oDataModel = this.getOwnerComponent().getModel();
+                    var oFilter = [];
+                    oFilter.push(new Filter("Key", FilterOperator.EQ, "TRACE"));
+                    var sPath = "/f4_genericSet";
+                    oDataModel.read(sPath, {
+                        filters: oFilter,
+                        success: function (oData, oResult) {
+                            sap.ui.core.BusyIndicator.hide();
+                            var data = oData.results;
+                            oModel.setData(data);
+                            for (i = 0; i < aTokens.length; i++) {
+                                sTokensText = aTokens[i].getText();
+                                for (j = 0; j < oModel.getData().length; j++) {
+                                    tNo = oModel.getData()[j].Value;
+                                    if (sTokensText === tNo) {
+                                        bFlag = true;
+                                        break;
+                                    } else {
+                                        bFlag = false;
+                                    }
+                                }
+    
+                                if (bFlag === false) {
+                                    var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
+                                    MessageBox.information(
+                                        "Traceability Number not available in SAP.!",
+                                        {
+                                            styleClass: bCompact ? "sapUiSizeCompact" : ""
+                                        }
+                                    );
+                                }
+                            }
+                        }.bind(this),
+                        error: function (oError) {
+                            sap.ui.core.BusyIndicator.hide();
+                            var msg = JSON.parse(oError.responseText).error.message.value;
+                            MessageBox.error(msg);
+                        }
+                    });
+                }
             }
         },
         // Added code for Traceability Number Multi Input token when the tokens aggregation changed due to a user interaction   - Code End 
@@ -3884,6 +4017,7 @@ sap.ui.define([
             var oDataModel = this.getOwnerComponent().getModel();
             var oFilter = [];
             oFilter.push(new Filter("Key", FilterOperator.EQ, "DISCITEM"));
+            oFilter.push(new Filter("Value", FilterOperator.EQ, this.getView().byId("idInpSupNC").getValue()));
             var sPath = "/f4_genericSet"
             oDataModel.read(sPath, {
                 filters: oFilter,
@@ -3929,6 +4063,7 @@ sap.ui.define([
             var oDataModel = this.getOwnerComponent().getModel();
             var oFilter = [];
             oFilter.push(new Filter("Key", FilterOperator.EQ, "DISCSUPBY"));
+            oFilter.push(new Filter("Value", FilterOperator.EQ, this.getView().byId("idInpSupBy").getValue()));
             var sPath = "/f4_genericSet"
             oDataModel.read(sPath, {
                 filters: oFilter,
@@ -4028,6 +4163,234 @@ sap.ui.define([
                             this.getView().byId("idDiscPartDesc").setEditable(false);
                             this.getView().byId("idDiscPartDesc").setValue(oPartDesc);
                         }
+                    }.bind(this),
+                    error: function (oError) {
+                        sap.ui.core.BusyIndicator.hide();
+                        var msg = JSON.parse(oError.responseText).error.message.value;
+                        MessageBox.error(msg);
+                    }
+                });
+            }
+        },
+
+        createDiscrepancyData: function(){
+            var oModel = this.getOwnerComponent().getModel();
+            var oNotifNo = sObjectId;
+            var oDiscrepancyNo = this.getView().byId("idDcCobDscNo").getValue();
+            var oDisLinkedTo = this.getView().byId("idComBoxDiscLinkTo").getValue();
+            var oDiscLiability = this.getView().byId("idDcIpLblty").getValue();
+            var oDiscPartner = this.getView().byId("idDcIpPrtnr").getValue();
+            var oDiscPartnerName = this.getView().byId("idDcIpPrtnrNm").getValue();
+            var oDiscSupercedesItem = this.getView().byId("idDcIpSpsdsItm").getValue();
+            var oDiscSupercededByItem = this.getView().byId("idDcIpSpsdbyItm").getValue();
+            var oDiscDropShip2 = this.getView().byId("idDcCbDs2").getSelected();
+            var oDiscAircraft = this.getView().byId("idDiscAircraft").getValue();
+            var oDiscPartNumber = this.getView().byId("idDiscPartNumber").getValue();
+            var oDiscPartDesc = this.getView().byId("idDiscPartDesc").getValue();
+            var oDiscInspQnty = this.getView().byId("idDiscQtyIns").getValue();
+            var oDiscRejectQnty = this.getView().byId("idDiscQtyRej").getValue();
+            var oDiscQntyUOM = this.getView().byId("idDiscUomIns").getValue();
+            var oDiscCompSerialNo = this.getView().byId("idMulInpDiscSerNo").getTokens();
+            var oDiscTraceNo = this.getView().byId("idMulInpDiscTrcNo").getTokens();
+
+            if ((oDiscCompSerialNo.length === 1 && oDiscTraceNo.length === 1) ||
+                (oDiscCompSerialNo.length === 1 && oDiscTraceNo.length === 0) ||
+                (oDiscCompSerialNo.length === 0 && oDiscTraceNo.length === 1) ||
+                (oDiscCompSerialNo.length === 0 && oDiscTraceNo.length === 0)){
+                    sap.ui.core.BusyIndicator.show();
+                    oDiscCompSerialNo = oDiscCompSerialNo.length === 1 ? oDiscCompSerialNo[0].getKey() : "";
+                    oDiscTraceNo = oDiscTraceNo.length === 1 ? oDiscTraceNo[0].getKey() : "";
+                    var payloadCrtDisData = {
+                        "LinkedTo": oDisLinkedTo,
+                        "Liability": oDiscLiability,
+                        "Partner": oDiscPartner,
+                        "PartnerName": oDiscPartnerName,
+                        "SupercedesItem": oDiscSupercedesItem,
+                        "SupercededByItem": oDiscSupercededByItem,
+                        "DropShip2": oDiscDropShip2,
+                        "Aircraft": oDiscAircraft,
+                        "PartNumber": oDiscPartNumber,
+                        "PartDesc": oDiscPartDesc,
+                        "InspQnty": oDiscInspQnty,
+                        "RejectQnty": oDiscRejectQnty,
+                        "QntyUOM": oDiscQntyUOM,
+                        "CompSerialNo": oDiscCompSerialNo,
+                        "TraceNo": oDiscTraceNo
+                    }
+                oModel.create("/NotificationDiscrepancySet", payloadCrtDisData, {
+                    success: function (odata, Response) {
+                        debugger;
+                        sap.ui.core.BusyIndicator.hide();
+                        // if (Response.headers["sap-message"]) {
+                        //     var oMsg = JSON.parse(Response.headers["sap-message"]).message;
+                        //     MessageBox.success(oMsg);
+                        // }
+                    }.bind(this),
+                    error: function (oError) {
+                        sap.ui.core.BusyIndicator.hide();
+                        var msg = JSON.parse(oError.responseText).error.message.value;
+                        MessageBox.error(msg);
+                    }
+                });
+            }else {
+                var payloadCrtDisData = {
+                    "LinkedTo": oDisLinkedTo,
+                        "Liability": oDiscLiability,
+                        "Partner": oDiscPartner,
+                        "PartnerName": oDiscPartnerName,
+                        "SupercedesItem": oDiscSupercedesItem,
+                        "SupercededByItem": oDiscSupercededByItem,
+                        "DropShip2": oDiscDropShip2,
+                        "Aircraft": oDiscAircraft,
+                        "PartNumber": oDiscPartNumber,
+                        "PartDesc": oDiscPartDesc,
+                        "InspQnty": oDiscInspQnty,
+                        "RejectQnty": oDiscRejectQnty,
+                        "QntyUOM": oDiscQntyUOM,
+                        "to_serials": [],
+                        "to_traces": []
+                };
+                if(oDiscCompSerialNo.length > 1){
+                    payloadCrtDisData["to_serials"] = [];
+                    for (var i = 0; i < oDiscCompSerialNo.length; i++) {
+                        var oSerialNo = oDiscCompSerialNo[i].getKey();
+                        payloadCrtDisData["to_serials"].push({
+                            "NotificationNo" : oNotifNo,
+                            "DiscrepancyNo" : oDiscrepancyNo,
+                            "SerialNo": oSerialNo
+                        });
+                    }
+                }
+                
+                if(oDiscTraceNo.length > 1){
+                    payloadCrtDisData["to_traces"] = [];
+                    for (var j = 0; j < oDiscTraceNo.length; j++) {
+                        var oTraceNo = oDiscTraceNo[j].getKey();
+                        payloadCrtDisData["to_traces"].push({
+                            "NotificationNo" : oNotifNo,
+                            "DiscrepancyNo" : oDiscrepancyNo,
+                            "TraceNo": oTraceNo
+                        });
+                    }
+                }
+
+                oModel.create("/NotificationDiscrepancySet", payloadCrtDisData, {
+                    success: function (odata, Response) {
+                        debugger;
+                        sap.ui.core.BusyIndicator.hide();
+                    }.bind(this),
+                    error: function (oError) {
+                        sap.ui.core.BusyIndicator.hide();
+                        var msg = JSON.parse(oError.responseText).error.message.value;
+                        MessageBox.error(msg);
+                    }
+                });
+            }
+        },
+
+        updateDiscrepancyData: function(){
+            var oModel = this.getOwnerComponent().getModel();
+            var oNotifNo = sObjectId;
+            var oDiscrepancyNo = this.getView().byId("idDcCobDscNo").getValue();
+            var oDisLinkedTo = this.getView().byId("idComBoxDiscLinkTo").getValue();
+            var oDiscLiability = this.getView().byId("idDcIpLblty").getValue();
+            var oDiscPartner = this.getView().byId("idDcIpPrtnr").getValue();
+            var oDiscPartnerName = this.getView().byId("idDcIpPrtnrNm").getValue();
+            var oDiscSupercedesItem = this.getView().byId("idDcIpSpsdsItm").getValue();
+            var oDiscSupercededByItem = this.getView().byId("idDcIpSpsdbyItm").getValue();
+            var oDiscDropShip2 = this.getView().byId("idDcCbDs2").getSelected();
+            var oDiscAircraft = this.getView().byId("idDiscAircraft").getValue();
+            var oDiscPartNumber = this.getView().byId("idDiscPartNumber").getValue();
+            var oDiscPartDesc = this.getView().byId("idDiscPartDesc").getValue();
+            var oDiscInspQnty = this.getView().byId("idDiscQtyIns").getValue();
+            var oDiscRejectQnty = this.getView().byId("idDiscQtyRej").getValue();
+            var oDiscQntyUOM = this.getView().byId("idDiscUomIns").getValue();
+            var oDiscCompSerialNo = this.getView().byId("idMulInpDiscSerNo").getTokens();
+            var oDiscTraceNo = this.getView().byId("idMulInpDiscTrcNo").getTokens();
+
+            if ((oDiscCompSerialNo.length === 1 && oDiscTraceNo.length === 1) ||
+                (oDiscCompSerialNo.length === 1 && oDiscTraceNo.length === 0) ||
+                (oDiscCompSerialNo.length === 0 && oDiscTraceNo.length === 1) ||
+                (oDiscCompSerialNo.length === 0 && oDiscTraceNo.length === 0)){
+                    sap.ui.core.BusyIndicator.show();
+                    oDiscCompSerialNo = oDiscCompSerialNo.length === 1 ? oDiscCompSerialNo[0].getKey() : "";
+                    oDiscTraceNo = oDiscTraceNo.length === 1 ? oDiscTraceNo[0].getKey() : "";
+                    var payloadUpdDisData = {
+                        "LinkedTo": oDisLinkedTo,
+                        "Liability": oDiscLiability,
+                        "Partner": oDiscPartner,
+                        "PartnerName": oDiscPartnerName,
+                        "SupercedesItem": oDiscSupercedesItem,
+                        "SupercededByItem": oDiscSupercededByItem,
+                        "DropShip2": oDiscDropShip2,
+                        "Aircraft": oDiscAircraft,
+                        "PartNumber": oDiscPartNumber,
+                        "PartDesc": oDiscPartDesc,
+                        "InspQnty": oDiscInspQnty,
+                        "RejectQnty": oDiscRejectQnty,
+                        "QntyUOM": oDiscQntyUOM,
+                        "CompSerialNo": oDiscCompSerialNo,
+                        "TraceNo": oDiscTraceNo
+                    }
+                oModel.update("/NotificationDiscrepancySet(NotificationNo eq '" + oNotifNo + "', DiscrepancyNo eq '" + oDiscrepancyNo + "')", payloadUpdDisData, {
+                    method: "PUT",
+                    success: function (odata, Response) {
+                        debugger;
+                        sap.ui.core.BusyIndicator.hide();
+                    }.bind(this),
+                    error: function (oError) {
+                        sap.ui.core.BusyIndicator.hide();
+                        var msg = JSON.parse(oError.responseText).error.message.value;
+                        MessageBox.error(msg);
+                    }
+                });
+            }else {
+                var payloadUpdDisData = {
+                        "LinkedTo": oDisLinkedTo,
+                        "Liability": oDiscLiability,
+                        "Partner": oDiscPartner,
+                        "PartnerName": oDiscPartnerName,
+                        "SupercedesItem": oDiscSupercedesItem,
+                        "SupercededByItem": oDiscSupercededByItem,
+                        "DropShip2": oDiscDropShip2,
+                        "Aircraft": oDiscAircraft,
+                        "PartNumber": oDiscPartNumber,
+                        "PartDesc": oDiscPartDesc,
+                        "InspQnty": oDiscInspQnty,
+                        "RejectQnty": oDiscRejectQnty,
+                        "QntyUOM": oDiscQntyUOM,
+                        "to_serials": [],
+                        "to_traces": []
+                };
+                if(oDiscCompSerialNo.length > 1){
+                    payloadUpdDisData["to_serials"] = [];
+                    for (var i = 0; i < oDiscCompSerialNo.length; i++) {
+                        var oSerialNo = oDiscCompSerialNo[i].getKey();
+                        payloadUpdDisData["to_serials"].push({
+                            "NotificationNo" : oNotifNo,
+                            "DiscrepancyNo" : oDiscrepancyNo,
+                            "SerialNo": oSerialNo
+                        });
+                    }
+                }
+                
+                if(oDiscTraceNo.length > 1){
+                    payloadUpdDisData["to_traces"] = [];
+                    for (var j = 0; j < oDiscTraceNo.length; j++) {
+                        var oTraceNo = oDiscTraceNo[j].getKey();
+                        payloadUpdDisData["to_traces"].push({
+                            "NotificationNo" : oNotifNo,
+                            "DiscrepancyNo" : oDiscrepancyNo,
+                            "TraceNo": oTraceNo
+                        });
+                    }
+                }
+
+                oModel.update("/NotificationDiscrepancySet(NotificationNo eq '" + oNotifNo + "', DiscrepancyNo eq '" + oDiscrepancyNo + "')", payloadUpdDisData, {
+                    method: "PUT",
+                    success: function (odata, Response) {
+                        debugger;
+                        sap.ui.core.BusyIndicator.hide();
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
