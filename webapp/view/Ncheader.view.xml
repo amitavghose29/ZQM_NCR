@@ -58,7 +58,7 @@
                                                         <!--<core:Title text="General Info"/>-->
                                                         <Label text="Nc Type" />
                                                         <ComboBox id="idCombNcType" items="{/NCTYPE_SOSet}" change="onNcrchange" showSecondaryValues="true">
-                                                            <core:ListItem key="{Nctype}" text="{Nctype}" additionalText="{NctypeDesc}"/>
+                                                            <core:ListItem key="{Nctype}" text="{Nctype}" additionalText="{NctypeDesc}" />
                                                         </ComboBox>
                                                         <Label text="Prioity" />
                                                         <ComboBox id="idComBoxPriority" selectedKey="normal" showSecondaryValues="true" items="{oPriorityModel>/}">
@@ -101,7 +101,7 @@
                                                         <Label text="Aircraft" />
                                                         <Input id="idInpAircraft" value="{Aircraftno}" valueHelpRequest="onVHReqAircraft" showValueHelp="true" change="handleAircraftChange" />
                                                         <Label text="QSR" />
-                                                        <Input id="idInpQSR" value="" editable="false"/>
+                                                        <Input id="idInpQSR" value="" editable="false" />
                                                         <!-- <Label text="Supplier Name"/>
 														<Input value=""/>
                                                         <Label text="Supplier SAP"/>
@@ -437,9 +437,9 @@
                                                     columnsM="1"
                                                     singleContainerFullSize="false"
                                                     class="sapUiSizeCompact"
-                                                    labelMinWidth="1px" > 
+                                                    labelMinWidth="1px"
+                                                >
                                                     <f:content>
-                                                        
                                                         <Label labelFor="rbg4" text="Select" />
                                                         <ComboBox id="rbg" width="200px" selectionChange="onRadioSelectLocation">
                                                             <core:Item key="fuse0" text="Fuselage" />
@@ -453,12 +453,11 @@
                                                             <core:Item key="pylon" text="Pylon / Nacelle" />
                                                             <core:Item key="others" text="Others" />
                                                         </ComboBox>
-                                                        <ComboBox ></ComboBox>
-                                                        
-                                                        <Button text="save" type="Emphasized" width="40%"/>
-                                                        
-                                                     </f:content>
-                                                </f:SimpleForm> 
+                                                        <ComboBox />
+
+                                                        <Button text="save" type="Emphasized" width="40%" />
+                                                    </f:content>
+                                                </f:SimpleForm>
                                                 <FlexBox class="columns" direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Start">
                                                     <HBox id="idFuselage" visible="false" class="sapUiSizeCompact">
                                                         <VBox>
@@ -495,11 +494,11 @@
                                                         <VBox>
                                                             <Text />
                                                             <Text />
-                                                            <HBox >
+                                                            <HBox>
                                                                 <RadioButton text="L" />
                                                                 <RadioButton text="R" />
                                                             </HBox>
-                                                            <HBox >
+                                                            <HBox>
                                                                 <RadioButton text="L" />
                                                                 <RadioButton text="R" />
                                                             </HBox>
@@ -512,14 +511,14 @@
                                                             <Input />
                                                             <Input />
                                                         </VBox>
-                                                        <VBox >
+                                                        <VBox>
                                                             <Text />
                                                             <Text />
-                                                            <HBox >
+                                                            <HBox>
                                                                 <RadioButton text="L" />
                                                                 <RadioButton text="R" />
                                                             </HBox>
-                                                            <HBox >
+                                                            <HBox>
                                                                 <RadioButton text="L" />
                                                                 <RadioButton text="R" />
                                                             </HBox>
@@ -941,9 +940,11 @@
                                                     columnsM="2"
                                                     singleContainerFullSize="false"
                                                     class="sapUiSizeCompact"
-                                                    labelMinWidth="1px"
+                                                    labelMinWidth="1px"                                                    
                                                 >
                                                     <f:content>
+                                                        <Label/>
+                                                        <Button text="Stock Purge" width="130px" press="_onPressStockPurge"/>
                                                         <Label text="Preliminary Investigation" />
                                                         <TextArea id="idDcTAPi" />
                                                         <Label text="Part Received in Quarantine(Z11):" width="125%" />
@@ -960,20 +961,19 @@
                                                         <Label text="Defect Code" />
                                                         <FlexBox direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Start">
                                                             <Input id="idDcIpDc" showValueHelp="true" valueHelpRequest="_handleValueHelpDefCode" width="100px" />
-                                                            <Input id="idDcIpDcVal1" width="100px" class="sapUiTinyMarginBegin" />
+                                                            <Input id="idDcIpDcVal1" width="100px" enabled="false" class="sapUiTinyMarginBegin" />
                                                             <Text id="idDcTxtDc" class="sapUiTinyMarginBegin" />
                                                         </FlexBox>
                                                         <Label text="Drop Point" />
                                                         <Input id="idDcIpDp" showValueHelp="true" valueHelpRequest="onOpenVHDrpPt" />
                                                         <Label text="Is" />
-                                                        <HBox>
-                                                            <ComboBox id="idDcCobPcIs" items="{}" visible="false">
-                                                                <core:Item key="{}" text="{}" />
-                                                            </ComboBox>
-                                                            <TextArea id="idDcTxtIs" class="sapUiTinyMarginBegin" />
-                                                        </HBox>
+                                                        <TextArea id="idDcTxtIs" />
                                                         <Label text="Should be" />
                                                         <TextArea id="idDcTaSb" />
+                                                        <Label text="Format" />
+                                                        <ComboBox id="idDcCobPcAsper" items="{discrepancyFormatModel>/}" >
+                                                            <core:Item key="{discrepancyFormatModel>Value}" text="{discrepancyFormatModel>Value}" />
+                                                        </ComboBox>
                                                         <Label text="As Per" />
                                                         <Input id="idDcInpAp" />
                                                         <Label text="Incomplete Flag" />

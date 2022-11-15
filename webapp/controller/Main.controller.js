@@ -78,7 +78,7 @@ sap.ui.define([
         },
 
         bindSubCategory: function(){
-            debugger;
+            //debugger;
             sap.ui.core.BusyIndicator.show();
             var oModel = new JSONModel();
             oModel.setSizeLimit(10000);

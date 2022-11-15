@@ -1,0 +1,36 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+    <Dialog title="Stock Purge" contentHeight="200px" contentWidth="500px">
+        <FlexBox height="200px" alignItems="Center" justifyContent="Center">
+            <VBox>
+                <HBox>
+                    <Label width="100px"/>
+                    <Label text="Floor" class="sapUiSmallMarginBegin" width="100px"/>
+                    <Label text="Store" class="sapUiSmallMarginBegin" width="100px"/>
+                    <Label text="G Total" class="sapUiSmallMarginBegin" width="100px"/>
+                </HBox>
+                <HBox>
+                    <Label text="Qty Total" width="100px"/>
+                    <Input id="idInpFlrQtot" class="sapUiSmallMarginBegin" width="100px"/>
+                    <Input id="idInpStrQtot" class="sapUiSmallMarginBegin" width="100px"/>
+                    <Input id="idInpGtotQtot" class="sapUiSmallMarginBegin" width="100px"/>
+                </HBox>
+                <HBox>
+                    <Label  text="Qty Good" width="100px"/>
+                    <Input id="idInpFlrQgd" class="sapUiSmallMarginBegin" width="100px"/>
+                    <Input id="idInpStrQgd" class="sapUiSmallMarginBegin" width="100px"/>
+                    <Input id="idInpGtotQgd" class="sapUiSmallMarginBegin" width="100px"/>
+                </HBox>
+                <HBox>
+                    <Label text="Qty Not Good" width="100px"/>
+                    <Input id="idInpFlrQngd" class="sapUiSmallMarginBegin" width="100px"/>
+                    <Input id="idInpStrQngd" class="sapUiSmallMarginBegin" width="100px"/>
+                    <Input id="idInpGtotQngd" class="sapUiSmallMarginBegin" width="100px"/>
+                </HBox>
+            </VBox>
+        </FlexBox>
+        <buttons>
+            <Button text="Save" press="onSaveStockPurge" />
+            <Button text="Close" press="onCloseStockPurge" />
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>
