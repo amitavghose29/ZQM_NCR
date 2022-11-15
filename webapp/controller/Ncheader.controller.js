@@ -171,6 +171,7 @@ sap.ui.define([
             this.bindPlantCode();
             this.bindInWhichArea();
             this.getView().byId("idPageNCHeader").setTitle("NC: " + sObjectId + "");
+            this.getView().byId("idIconTabBarHeader").setSelectedKey("Hdata");
         },
 
         bindPriority: function () {
@@ -980,7 +981,7 @@ sap.ui.define([
                             MessageBox.success(oMsg);
                         }
                         var sObjectPath = "CreateNotificationHeaderSet('" + oNotifNo + "')";
-                        this._bindView("/" + sObjectPath);
+                            this._bindView("/" + sObjectPath);
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
@@ -1037,7 +1038,7 @@ sap.ui.define([
                             }
                         }
                         var sObjectPath = "CreateNotificationHeaderSet('" + oNotifNo + "')";
-                        this._bindView("/" + sObjectPath);
+                            this._bindView("/" + sObjectPath);
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
@@ -1094,7 +1095,7 @@ sap.ui.define([
                             }
                         }
                         var sObjectPath = "/CreateNotificationHeaderSet('" + oNotifNo + "')";
-                        this._bindView("/" + sObjectPath);
+                            this._bindView("/" + sObjectPath);
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
@@ -4039,6 +4040,9 @@ sap.ui.define([
                 return;
             }
             oInput.setValue(oSelectedItem.getTitle());
+            if(oSelectedItem.getInfo()){
+                this.getView().byId("idDcIpPrtnrNm").setValue(oSelectedItem.getInfo());
+            } 
             this._oPartnerDialog.destroy();
         },
 
@@ -4438,8 +4442,7 @@ sap.ui.define([
                     "AsPer": oDiscAsPer,
                     "Incompletion": oDiscIncompletion
                 }
-                oModel.update("/NotificationDiscrepancySet(NotificationNo eq '" + oNotifNo + "', DiscrepancyNo eq '" + oDiscrepancyNo + "')", payloadUpdDisData, {
-                    method: "PUT",
+                oModel.create("/NotificationDiscrepancySet", payloadUpdDisData, {
                     success: function (odata, Response) {
                         debugger;
                         sap.ui.core.BusyIndicator.hide();
@@ -4505,8 +4508,7 @@ sap.ui.define([
                     }
                 }
 
-                oModel.update("/NotificationDiscrepancySet(NotificationNo eq '" + oNotifNo + "', DiscrepancyNo eq '" + oDiscrepancyNo + "')", payloadUpdDisData, {
-                    method: "PUT",
+                oModel.update("/NotificationDiscrepancySet", payloadUpdDisData, {
                     success: function (odata, Response) {
                         debugger;
                         sap.ui.core.BusyIndicator.hide();

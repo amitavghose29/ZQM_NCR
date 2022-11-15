@@ -404,7 +404,7 @@
                                                         <Label text="Partner / Suppilier #" />
                                                         <Input id="idDcIpPrtnr" showValueHelp="true" valueHelpRequest="onVHReqPartner" />
                                                         <Label text="Partner / Suppilier Name" />
-                                                        <Input id="idDcIpPrtnrNm" />
+                                                        <Input id="idDcIpPrtnrNm" editable="false"/>
                                                         <Label text="Supersedes Item" />
                                                         <Input id="idDcIpSpsdsItm" showValueHelp="true" valueHelpRequest="onVHReqSupersedesItem" />
                                                         <Label text="Superseded by Item" />
@@ -839,13 +839,13 @@
                                                         <Input id="idDiscPartDesc" editable="false" />
                                                         <Label text="Quantity Inspected" />
                                                         <HBox>
-                                                            <Input id="idDiscQtyIns" width="240px" />
-                                                            <Input id="idDiscUomIns" width="125px" class="sapUiTinyMarginBegin" placeholder="UOM" />
+                                                            <Input id="idDiscQtyIns" />
+                                                            <Input id="idDiscUomIns" class="sapUiSmallMarginBegin" placeholder="UOM" />
                                                         </HBox>
                                                         <Label text="Quantity Rejected" />
                                                         <HBox>
-                                                            <Input id="idDiscQtyRej" width="240px" />
-                                                            <Input id="idDiscUomRej" width="125px" class="sapUiTinyMarginBegin" placeholder="UOM" />
+                                                            <Input id="idDiscQtyRej" />
+                                                            <Input id="idDiscUomRej" class="sapUiSmallMarginBegin" placeholder="UOM" />
                                                         </HBox>
                                                         <Label text="Serial No" />
                                                         <MultiInput id="idMulInpDiscSerNo" showValueHelp="true" valueHelpRequest=".onOpenVHSerNo" tokenUpdate="_onTokenUpdateSN" />

@@ -46,52 +46,52 @@
                             editable="true"
                             layout="ResponsiveGridLayout"
                             title="NC Create"
-                            labelSpanXL="2"
-                            labelSpanL="2"
-                            labelSpanM="12"
-                            labelSpanS="12"
-                            adjustLabelSpan="false"
-                            emptySpanXL="4"
-                            emptySpanL="4"
-                            emptySpanM="4"
-                            emptySpanS="0"
-                            columnsXL="1"
-                            columnsL="1"
-                            columnsM="1"
-                            singleContainerFullSize="false"
-                            class="headercss sapUiSizeCompact"
+			                labelSpanXL="4"
+			                labelSpanL="4"
+			                labelSpanM="12"
+			                labelSpanS="12"
+			                adjustLabelSpan="false"
+			                emptySpanXL="0"
+			                emptySpanL="0"
+			                emptySpanM="0"
+			                emptySpanS="0"
+			                columnsXL="2"
+			                columnsL="2"
+			                columnsM="1"
+			                singleContainerFullSize="false"
+                            class="sapUiSizeCompact"
                             visible="true"
                         >
                             <f:content>
                                 <Label text="{i18n>NcType}" required="true" />
-                                <ComboBox id="idncr" width="200px" items="{ncTypeModel>/}" change="onNCTypeChange">
+                                <ComboBox id="idncr" items="{ncTypeModel>/}" change="onNCTypeChange">
                                     <core:Item key="{ncTypeModel>Nctype}" text="{ncTypeModel>NctypeDesc}" />
                                 </ComboBox>
                                 <Label text="{i18n>InwhichArea}" required="true" />
-                                <ComboBox id="idiwa" width="200px" items="{inWhichAreaModel>/}" change="onNCAreaChange">
+                                <ComboBox id="idiwa" items="{inWhichAreaModel>/}" change="onNCAreaChange">
                                     <core:Item key="{inWhichAreaModel>Sequencearea}" text="{inWhichAreaModel>Area}" />
                                 </ComboBox>
                                 <Label text="{i18n>Subcategory}" required="true" />
                                 <ComboBox id="idlinksubc" items="{SubCatModel>/}" change="onChngSubCat">
                                     <core:Item key="{SubCatModel>SequenceCat}" text="{SubCatModel>Subcat}" />
-                                    <layoutData>
-                                        <l:GridData span="XL1 L2 M8 S8" />
-                                    </layoutData>
+                                    <!-- <layoutData>
+                                        <l:GridData span="XL2 L3 M6 S4" />
+                                    </layoutData> -->
                                 </ComboBox>
                                 <Input id="idsubcno" valueHelpRequest="_onVHReqSubCategory" visible="true" showValueHelp="true" liveChange="poEnter" change="onChangeWI">
-                                    <layoutData>
-                                        <l:GridData span="XL1 L2 M8 S8" />
-                                    </layoutData>
+                                    <!-- <layoutData>
+                                        <l:GridData span="XL2 L3 M6 S4" />
+                                    </layoutData> -->
                                 </Input>
                                 <Input id="idsubsubno" showValueHelp="false" visible="true">
-                                    <layoutData>
-                                        <l:GridData span="XL1 L1 M8 S8" />
-                                    </layoutData>
+                                    <!-- <layoutData>
+                                        <l:GridData span="XL2 L3 M6 S4" />
+                                    </layoutData> -->
                                 </Input>
                                 <Label text="{i18n>Binlocation}" />
-                                <Input id="idInpBinLoc" maxLength="10" width="150px" valueHelpRequest="onBinhelpRequest" showValueHelp="true" liveChange="poEnter" />
+                                <Input id="idInpBinLoc" maxLength="10" valueHelpRequest="onBinhelpRequest" showValueHelp="true" liveChange="poEnter" />
                                 <Label text="{i18n>Aircraftnumber}" />
-                                <Input id="idAirCraftNum" width="150px" showValueHelp="true" valueHelpRequest="onAircrafthelpRequest" />
+                                <Input id="idAirCraftNum" showValueHelp="true" valueHelpRequest="onAircrafthelpRequest" />
                             </f:content>
                         </f:SimpleForm>
                     </VBox>
