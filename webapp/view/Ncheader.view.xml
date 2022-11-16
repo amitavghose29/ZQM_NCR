@@ -676,8 +676,8 @@
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
-                                                            <Input width="50px" id="inpHorizontalStation"  />
-                                                            <Input width="50px" id="inpHorizontalRib" />
+                                                            <Input width="50px" id="inpHorizontalStation"  class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" id="inpHorizontalRib" class="sapUiSmallMarginBeginEnd"/>
                                                             <Text />
                                                         </VBox>
                                                         <VBox>

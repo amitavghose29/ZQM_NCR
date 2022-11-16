@@ -1143,6 +1143,7 @@ sap.ui.define([
                                     suppliercode = data.NCSupplierCode,
                                     suppliername = data.NCSupplierName,
                                     supplierpartno = data.NCSupplierPartNo,
+                                    supplierpartnodesc = data.NCSupplierPartNoDesc,
                                     mrpcontroller = data.NCMRPNo,
                                     mrpcntrlrname = data.NCMRPName,
                                     pckgslp = data.NCPackSlip,
@@ -1180,6 +1181,8 @@ sap.ui.define([
                                     this.getView().byId("idPurInfSupNmip").setValue(suppliername);
                                     this.getView().byId("idPurInfSupSCip").setValue(suppliercode);
                                     this.getView().byId("idPurInfSupPnip").setValue(supplierpartno);
+                                    this.getView().byId("idPurInfSupPnDescip").setValue(supplierpartnodesc);
+                                    
                                 } else {
                                     this.getView().byId("idPurInfPurOrdip").setRequired(false);
                                     this.getView().byId("idPurInfPolnip").setRequired(false);
@@ -1210,6 +1213,7 @@ sap.ui.define([
                                     this.getView().byId("idPurInfSupNmip").setValue(suppliername);
                                     this.getView().byId("idPurInfSupSCip").setValue(suppliercode);
                                     this.getView().byId("idPurInfSupPnip").setValue(supplierpartno);
+                                    this.getView().byId("idPurInfSupPnDescip").setValue(supplierpartnodesc);
                                     this.getView().byId("idPurInfMrpcrip").setValue(mrpcontroller);
                                     this.getView().byId("idPurInfMrpcrnmip").setValue(mrpcntrlrname);
                                     this.getView().byId("idPurInfWBNip").setValue(wayblnum);
@@ -2229,10 +2233,14 @@ sap.ui.define([
             var oSelectedItem1 = oEvent.getParameters("selectedItem").listItem.getBindingContext("oPrModel").getProperty("PurchaseItem");
             var oSelectedItem2 = oEvent.getParameters("selectedItem").listItem.getBindingContext("oPrModel").getProperty("SupplierCode");
             var oSelectedItem3 = oEvent.getParameters("selectedItem").listItem.getBindingContext("oPrModel").getProperty("SupplierName");
+            var oSelectedItem4 = oEvent.getParameters("selectedItem").listItem.getBindingContext("oPrModel").getProperty("PartNumber");
+            var oSelectedItem5 = oEvent.getParameters("selectedItem").listItem.getBindingContext("oPrModel").getProperty("PartName");
             var oInput = this.getView().byId("idPurInfPurOrdip");
             var oInput1 = this.getView().byId("idPurInfPolnip");
             var oInput2 = this.getView().byId("idPurInfSupSCip");
             var oInput3 = this.getView().byId("idPurInfSupNmip");
+            var oInput4 = this.getView().byId("idPurInfSupPnip");
+            var oInput5 = this.getView().byId("idPurInfSupPnDescip");
             if (!oSelectedItem) {
                 oInput.resetProperty("value");
                 return;
@@ -2241,6 +2249,8 @@ sap.ui.define([
             oInput1.setValue(oSelectedItem1);
             oInput2.setValue(oSelectedItem2);
             oInput3.setValue(oSelectedItem3);
+            oInput4.setValue(oSelectedItem4);
+            oInput5.setValue(oSelectedItem5);
             this._oPODialog.destroy();
         },
         //Added code for Slection Change in PO and GR Search Tables - Code End
@@ -2927,7 +2937,8 @@ sap.ui.define([
                 this.getView().byId("idInpStatPartDesc").setValue();
                 if (oMulInpSer.getTokens()) {
                     oMulInpSer.removeAllTokens();
-                } else if (oMulInpTrc.getTokens()) {
+                } 
+                if (oMulInpTrc.getTokens()) {
                     oMulInpTrc.removeAllTokens();
                 }
             } else {
