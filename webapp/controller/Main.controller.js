@@ -126,6 +126,66 @@ sap.ui.define([
             this.getView().addDependent(this._oNCDialog);
             this._oNCDialog.open();
             this._oNCDialog.setModel(this.getOwnerComponent().getModel());
+            
+            sap.ui.core.BusyIndicator.show();
+            var oModelSer = new JSONModel();
+            var oModelNotif = new JSONModel();
+            var oModelAir = new JSONModel();
+                oModelSer.setSizeLimit(10000);
+                oModelNotif.setSizeLimit(10000);
+                oModelAir.setSizeLimit(10000);
+            var oDataModel = this.getOwnerComponent().getModel();
+            var oFilterSernr = [];
+            oFilterSernr.push(new Filter("Key", FilterOperator.EQ, "SERNR"));
+            var oFilterNotif = [];
+            oFilterNotif.push(new Filter("Key", FilterOperator.EQ, "NOTIF"));
+            var oFilterAir = [];
+            oFilterAir.push(new Filter("Key", FilterOperator.EQ, "AIR"));
+            var sPath = "/f4_genericSet"
+            oDataModel.read(sPath, {
+                filters: oFilterSernr,
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.results;
+                    oModelSer.setData(data);
+                    sap.ui.getCore().byId("idFBSerNo").setModel(oModelSer, "oSerNoSuggModel");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+
+            oDataModel.read(sPath, {
+                filters: oFilterNotif,
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.results;
+                    oModelNotif.setData(data);
+                    sap.ui.getCore().byId("idFBNcNum").setModel(oModelNotif, "oNcNumSuggModel");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+
+            oDataModel.read(sPath, {
+                filters: oFilterAir,
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.results;
+                    oModelAir.setData(data);
+                    sap.ui.getCore().byId("idFBAircraft").setModel(oModelAir, "oAircrafttNoSuggModel");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
         },
 
         /**

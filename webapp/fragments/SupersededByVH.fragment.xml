@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
 	<SelectDialog  title="{i18n>SupersededbyTitle}" items="{oSupsedByModel>/}" liveChange="onSearchSupsedBy" confirm="_configSupByVHDialog"
 		cancel="_handleSupByVHClose">
-		<StandardListItem title="{oSupsedByModel>Value}" info="{oSupsedByModel>Description}"/>
+		<StandardListItem title="{oSupsedByModel>Value}" info="{oSupsedByModel>Value1}"/>
 	</SelectDialog>
 </core:FragmentDefinition>

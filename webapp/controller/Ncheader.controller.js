@@ -2235,12 +2235,16 @@ sap.ui.define([
             var oSelectedItem3 = oEvent.getParameters("selectedItem").listItem.getBindingContext("oPrModel").getProperty("SupplierName");
             var oSelectedItem4 = oEvent.getParameters("selectedItem").listItem.getBindingContext("oPrModel").getProperty("PartNumber");
             var oSelectedItem5 = oEvent.getParameters("selectedItem").listItem.getBindingContext("oPrModel").getProperty("PartName");
+            var oSelectedItem6 = oEvent.getParameters("selectedItem").listItem.getBindingContext("oPrModel").getProperty("MRPControllerNo");
+            var oSelectedItem7 = oEvent.getParameters("selectedItem").listItem.getBindingContext("oPrModel").getProperty("MRPControllerName");
             var oInput = this.getView().byId("idPurInfPurOrdip");
             var oInput1 = this.getView().byId("idPurInfPolnip");
             var oInput2 = this.getView().byId("idPurInfSupSCip");
             var oInput3 = this.getView().byId("idPurInfSupNmip");
             var oInput4 = this.getView().byId("idPurInfSupPnip");
             var oInput5 = this.getView().byId("idPurInfSupPnDescip");
+            var oInput6 = this.getView().byId("idPurInfMrpcrip");
+            var oInput7 = this.getView().byId("idPurInfMrpcrnmip");
             if (!oSelectedItem) {
                 oInput.resetProperty("value");
                 return;
@@ -2251,6 +2255,8 @@ sap.ui.define([
             oInput3.setValue(oSelectedItem3);
             oInput4.setValue(oSelectedItem4);
             oInput5.setValue(oSelectedItem5);
+            oInput6.setValue(oSelectedItem6);
+            oInput7.setValue(oSelectedItem7);
             this._oPODialog.destroy();
         },
         //Added code for Slection Change in PO and GR Search Tables - Code End
