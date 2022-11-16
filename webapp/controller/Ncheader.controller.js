@@ -366,6 +366,7 @@ sap.ui.define([
                 this._setPrelimCauseComboBox();
                 this._setFormatComboBox();
                 this.bindLinkedToDiscrepancy();
+                this.onSelectDiscPartlocation();
                 this.getView().byId("idstatus").setVisible(true);
                 this.getView().byId("idObjNCStatus").setVisible(false);
                 this.getView().byId("idObjNCStatusDiscrep").setVisible(true);
@@ -378,6 +379,64 @@ sap.ui.define([
                 this.getView().byId("idObjNCStatusDispo").setVisible(true);
             }
         },
+            // discrepancy part location combobox data select
+            onSelectDiscPartlocation:function(){
+                var oDataModel = this.getOwnerComponent().getModel();
+                var oModel = new JSONModel();
+                var oFilterPart = [];
+                oFilterPart.push(new Filter("Key", FilterOperator.EQ, "DISCSTATION"));
+                var sPath = "/f4_genericSet"
+                oDataModel.read(sPath, {
+                    filters: oFilterPart,
+                    success: function (oData, oResult) {
+                        sap.ui.core.BusyIndicator.hide();
+                        var data = oData.results;
+                        oModel.setData(data);
+                        this.getView().setModel(oModel, "oSelectPartLocationModel");
+                    }.bind(this),
+                    error: function (oError) {
+                        sap.ui.core.BusyIndicator.hide();
+                        var msg = JSON.parse(oError.responseText).error.message.value;
+                        MessageBox.error(msg);
+
+                    }
+                });
+            },
+            //Based on location it will display location fields 
+            onDiscPartSelectLocation: function (oEvent) {
+                var rsel = oEvent.getSource().getSelectedKey();
+                this.getView().byId("idFuselage").setVisible(false);
+                this.getView().byId("idWing").setVisible(false);
+                this.getView().byId("idVertical").setVisible(false);
+                this.getView().byId("idRudder").setVisible(false);
+                this.getView().byId("idHorizontal").setVisible(false);
+                this.getView().byId("idPlyon").setVisible(false);
+                this.getView().byId("idOthers").setVisible(false);
+                switch (rsel) {
+
+                    case "WING":
+                        this.getView().byId("idWing").setVisible(true);
+                        break;
+                    case "VERTICAL EMPENNAGE":
+                        this.getView().byId("idVertical").setVisible(true);
+                        break;
+                    case "RUDDER":
+                        this.getView().byId("idRudder").setVisible(true);
+                        break;
+                    case "HORIZONTAL EMPENNAGE":
+                        this.getView().byId("idHorizontal").setVisible(true);
+                        break;
+                    case "PYLON / NACELLE":
+                        this.getView().byId("idPlyon").setVisible(true);
+                        break;
+                    case "OTHER":
+                        this.getView().byId("idOthers").setVisible(true);
+                        break;
+                    default:
+                        this.getView().byId("idFuselage").setVisible(true);
+                }
+
+            },
 
         onPressPrint: function () {
             // var ctrlstring = "width=500px,height=500px";

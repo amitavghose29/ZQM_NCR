@@ -436,130 +436,125 @@
                                                     columnsL="1"
                                                     columnsM="1"
                                                     singleContainerFullSize="false"
-                                                    class="sapUiSizeCompact"
-                                                    labelMinWidth="1px"
-                                                >
+                                                    class="sapUiSizeCompact"> 
                                                     <f:content>
                                                         <Label labelFor="rbg4" text="Select" />
-                                                        <ComboBox id="rbg" width="200px" selectionChange="onRadioSelectLocation">
-                                                            <core:Item key="fuse0" text="Fuselage" />
-                                                            <core:Item key="fuse1" text="Fuselage1" />
-                                                            <core:Item key="fuse2" text="Fuselage2" />
-                                                            <core:Item key="fuse3" text="Fuselage3" />
-                                                            <core:Item key="wing" text="Wing" />
-                                                            <core:Item key="vertical" text="Vertical Empennage" />
-                                                            <core:Item key="rudder" text="Rudder" />
-                                                            <core:Item key="horiz" text="Horizontal Empennage" />
-                                                            <core:Item key="pylon" text="Pylon / Nacelle" />
-                                                            <core:Item key="others" text="Others" />
+                                                        <ComboBox id="cmbDescSelect" 
+                                                                width="200px" 
+                                                                items="{oSelectPartLocationModel>/}" 
+                                                                selectionChange="onDiscPartSelectLocation">
+                                                           <core:Item key="{oSelectPartLocationModel>Value}" text="{oSelectPartLocationModel>Value}" />
                                                         </ComboBox>
-                                                        <ComboBox />
-
-                                                        <Button text="save" type="Emphasized" width="40%" />
-                                                    </f:content>
+                                                        <ComboBox id="cmbDescSelect1"></ComboBox>
+                                                        
+                                                        <Button text="save" type="Emphasized" width="40%"/>
+                                                        
+                                                     </f:content>
                                                 </f:SimpleForm>
+
+ 
                                                 <FlexBox class="columns" direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Start">
                                                     <HBox id="idFuselage" visible="false" class="sapUiSizeCompact">
                                                         <VBox>
-                                                            <CheckBox text="Fuselage Station(FX)(X)" />
-                                                            <CheckBox text="Fuselage Frame Station(FR)" />
-                                                            <CheckBox text="Fuselage Stringer" />
-                                                            <CheckBox text="Buttock Line(BL)(Y)" />
-                                                            <CheckBox text="Water Line(WL)(Z)" />
-                                                            <CheckBox text="OML / IML" />
+                                                            <CheckBox id="chbFuseStation" text="Fuselage Station(FX)(X)" />
+                                                            <CheckBox id="chbFuseFStation" text="Fuselage Frame Station(FR)" />
+                                                            <CheckBox id="chbFuseString" text="Fuselage Stringer" />
+                                                            <CheckBox id="chbFuseBLine" text="Buttock Line(BL)(Y)" />
+                                                            <CheckBox id="chbFuseWLine" text="Water Line(WL)(Z)" />
+                                                            <CheckBox id="chbFuseOmlIml" text="OML / IML" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton text="at" />
-                                                            <RadioButton text="at" />
-                                                            <RadioButton text="at" />
-                                                            <RadioButton text="at" />
-                                                            <RadioButton text="at" />
-                                                            <CheckBox text="OML " />
+                                                            <RadioButton id="rbtFuseStation" text="at" />
+                                                            <RadioButton id="rbtFuseFStation" text="at" />
+                                                            <RadioButton id="rbtFuseString" text="at" />
+                                                            <RadioButton id="rbtFuseBLine" text="at" />
+                                                            <RadioButton id="rbtFuseWLine" text="at" />
+                                                            <CheckBox id="chbFuseOml" text="OML " />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton text="b/w" />
-                                                            <RadioButton text="b/w" />
-                                                            <RadioButton text="b/w" />
-                                                            <RadioButton text="b/w" />
-                                                            <RadioButton text="b/w" />
-                                                            <CheckBox text="IML" />
+                                                            <RadioButton id="rbtFuseStation1" text="b/w" />
+                                                            <RadioButton id="rbtFuseFStation1" text="b/w" />
+                                                            <RadioButton id="rbtFuseString1" text="b/w" />
+                                                            <RadioButton id="rbtFuseBLine1" text="b/w" />
+                                                            <RadioButton id="rbtFuseWLine1" text="b/w" />
+                                                            <CheckBox id="chbFuseIml" text="IML" />
                                                         </VBox>
                                                         <VBox class="sapUiSmallMarginBegin">
-                                                            <Input />
-                                                            <Input />
-                                                            <Input />
-                                                            <Input />
-                                                            <Input />
+                                                            <Input id="inpFuseStation"/>
+                                                            <Input id="inpFuseFStation"/>
+                                                            <Input id="inpFuseString"/>
+                                                            <Input id="inpFuseBLine"/>
+                                                            <Input id="inpFuseWLine"/>
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
                                                             <Text />
-                                                            <HBox>
-                                                                <RadioButton text="L" />
-                                                                <RadioButton text="R" />
+                                                            <HBox >
+                                                                <RadioButton id="rbtFuseStringL" text="L" />
+                                                                <RadioButton id="rbtFuseStringR" text="R" />
                                                             </HBox>
-                                                            <HBox>
-                                                                <RadioButton text="L" />
-                                                                <RadioButton text="R" />
+                                                            <HBox >
+                                                                <RadioButton id="rbtFuseBLineL" text="L" />
+                                                                <RadioButton id="rbtFuseBLineR" text="R" />
                                                             </HBox>
                                                             <Text />
                                                         </VBox>
                                                         <VBox class="sapUiSmallMarginBegin">
-                                                            <Input />
-                                                            <Input />
-                                                            <Input />
-                                                            <Input />
-                                                            <Input />
+                                                           <Input id="inpFuseStation1"/>
+                                                            <Input id="inpFuseFStation1"/>
+                                                            <Input id="inpFuseString1"/>
+                                                            <Input id="inpFuseBLine1"/>
+                                                            <Input id="inpFuseWLine1"/>
                                                         </VBox>
-                                                        <VBox>
+                                                        <VBox >
+                                                             <Text />
                                                             <Text />
-                                                            <Text />
-                                                            <HBox>
-                                                                <RadioButton text="L" />
-                                                                <RadioButton text="R" />
+                                                            <HBox >
+                                                                <RadioButton id="rbtFuseStringL1" text="L" />
+                                                                <RadioButton id="rbtFuseStringR1" text="R" />
                                                             </HBox>
-                                                            <HBox>
-                                                                <RadioButton text="L" />
-                                                                <RadioButton text="R" />
+                                                            <HBox >
+                                                                <RadioButton id="rbtFuseBLineL1" text="L" />
+                                                                <RadioButton id="rbtFuseBLineR1" text="R" />
                                                             </HBox>
                                                             <Text />
                                                         </VBox>
                                                     </HBox>
                                                     <HBox id="idWing" visible="false" class="sapUiSizeCompact">
                                                         <VBox>
-                                                            <CheckBox text="LHS /RHS" />
-                                                            <CheckBox text=" Wing Station(WS)" />
-                                                            <CheckBox text="Wing Rib" />
-                                                            <CheckBox text="OML / IML" />
+                                                            <CheckBox id="chbWingLhsRhs" text="LHS /RHS" />
+                                                            <CheckBox id="chbWingStation" text=" Wing Station(WS)" />
+                                                            <CheckBox id="chbWingRib" text="Wing Rib" />
+                                                            <CheckBox id="chbWingOmlIml" text="OML / IML" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton text="L" />
-                                                            <RadioButton text="at" />
-                                                            <RadioButton text="at" />
-                                                            <CheckBox text="OML " />
+                                                            <RadioButton id="rbtWingLhsRhsL" text="L" />
+                                                            <RadioButton id="rbtWingStationat" text="at" />
+                                                            <RadioButton id="rbtWingRibat" text="at" />
+                                                            <CheckBox id="chbWingOml" text="OML " />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton text="R" />
-                                                            <RadioButton text="between" />
-                                                            <RadioButton text="between" />
-                                                            <CheckBox text="IML" />
-                                                        </VBox>
-                                                        <VBox>
-                                                            <Text />
-                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
-                                                            <Text />
-                                                        </VBox>
-                                                        <VBox>
-                                                            <Text class="sapUiLargeMarginBeginEnd" />
-                                                            <Text class="sapUiLargeMarginBeginEnd" />
-                                                            <Text class="sapUiLargeMarginBeginEnd" />
-                                                            <Text class="sapUiLargeMarginBeginEnd" />
+                                                            <RadioButton id="rbtWingLhsRhsR" text="R" />
+                                                            <RadioButton id="rbtWingStationbw" text="between" />
+                                                            <RadioButton id="rbtWingRibbw" text="between" />
+                                                            <CheckBox id="chbWingIml" text="IML" />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
-                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" id="inpWingStation" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" id="inpWingRib" class="sapUiSmallMarginBeginEnd" />
+                                                            <Text />
+                                                        </VBox>
+                                                        <VBox>
+                                                           <Text/>
+                                                            <Text/>
+                                                            <Text/>
+                                                            <Text/>
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text />
+                                                            <Input width="50px" id="inpWingStation1" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" id="inpWingRib1" class="sapUiSmallMarginBeginEnd" />
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
@@ -570,84 +565,86 @@
                                                         </VBox>
                                                     </HBox>
                                                     <HBox id="idVertical" visible="false" class="sapUiSizeCompact">
-                                                        <VBox>
-                                                            <CheckBox text="LHS /RHS" />
-                                                            <CheckBox text=" Vertical Empennage Stations(ZV)" />
-                                                            <CheckBox text="Vertical Empennage Rib" />
-                                                            <CheckBox text="OML / IML" />
+                                                    <VBox>
+                                                             <CheckBox id="chbVerticalLhsRhs" text="LHS /RHS" />
+                                                            <CheckBox id="chbVerticalStation" text="Vertical Empennage Stations(ZV)" />
+                                                            <CheckBox id="chbVerticalRib" text="Vertical Empennage Rib" />
+                                                            <CheckBox id="chbVerticalOmlIml" text="OML / IML" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton text="L" />
-                                                            <RadioButton text="at" />
-                                                            <RadioButton text="at" />
-                                                            <CheckBox text="OML " />
+                                                            <RadioButton id="rbtVerticalLhsRhsL" text="L" />
+                                                            <RadioButton id="rbtVerticalStationat" text="at" />
+                                                            <RadioButton id="rbtVerticalRibat" text="at" />
+                                                            <CheckBox id="chbVerticalOml" text="OML " />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton text="R" />
-                                                            <RadioButton text="between" />
-                                                            <RadioButton text="between" />
-                                                            <CheckBox text="IML" />
-                                                        </VBox>
-                                                        <VBox>
-                                                            <Text />
-                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
-                                                            <Text />
-                                                        </VBox>
-                                                        <VBox>
-                                                            <Text class="sapUiSmallMarginBeginEnd" />
-                                                            <Text class="sapUiSmallMarginBeginEnd" />
-                                                            <Text class="sapUiSmallMarginBeginEnd" />
-                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                            <RadioButton id="rbtVerticalLhsRhsR" text="R" />
+                                                            <RadioButton id="rbtVerticalStationbw" text="between" />
+                                                            <RadioButton id="rbtVerticalRibbw" text="between" />
+                                                            <CheckBox id="chbVerticalIml" text="IML" />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
-                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" id="inpVerticalStation" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" id="inpVerticalRib" class="sapUiSmallMarginBeginEnd" />
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
-                                                            <Text class="sapUiSmallMarginBeginEnd" />
-                                                            <Text class="sapUiSmallMarginBeginEnd" />
-                                                            <Text class="sapUiSmallMarginBeginEnd" />
-                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                            <Text/>
+                                                            <Text/>
+                                                            <Text/>
+                                                            <Text/>
                                                         </VBox>
+                                                        <VBox>
+                                                            <Text />
+                                                            <Input width="50px" id="inpVerticalStation1" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" id="inpVerticalRib1" class="sapUiSmallMarginBeginEnd" />
+                                                            <Text />
+                                                        </VBox>
+                                                        <VBox>
+                                                           <Text/>
+                                                            <Text/>
+                                                            <Text/>
+                                                            <Text/>
+                                                        </VBox>
+
                                                     </HBox>
                                                     <HBox id="idRudder" visible="false" class="sapUiSizeCompact">
-                                                        <VBox>
-                                                            <CheckBox text="LHS /RHS" />
-                                                            <CheckBox text="Rudder Tail Stations(ZVS)" />
-                                                            <CheckBox text="Rudder Rib" />
-                                                            <CheckBox text="OML / IML" />
+         
+							                            <VBox>
+                                                             <CheckBox id="chbRudderLhsRhs" text="LHS /RHS" />
+                                                            <CheckBox id="chbRudderStation" text="Rudder Tail Stations(ZVS)" />
+                                                            <CheckBox id="chbRudderRib" text="Rudder Rib" />
+                                                            <CheckBox id="chbRudderOmlIml" text="OML / IML" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton text="L" />
-                                                            <RadioButton text="at" />
-                                                            <RadioButton text="at" />
-                                                            <CheckBox text="OML " />
+                                                            <RadioButton id="rbtRudderLhsRhsL" text="L" />
+                                                            <RadioButton id="rbtRudderStationat" text="at" />
+                                                            <RadioButton id="rbtRudderRibat" text="at" />
+                                                            <CheckBox id="chbRudderOml" text="OML " />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton text="R" />
-                                                            <RadioButton text="between" />
-                                                            <RadioButton text="between" />
-                                                            <CheckBox text="IML" />
-                                                        </VBox>
-                                                        <VBox>
-                                                            <Text />
-                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
-                                                            <Text />
-                                                        </VBox>
-                                                        <VBox>
-                                                            <Text class="sapUiSmallMarginBeginEnd" />
-                                                            <Text class="sapUiSmallMarginBeginEnd" />
-                                                            <Text class="sapUiSmallMarginBeginEnd" />
-                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                            <RadioButton id="rbtRudderLhsRhsR" text="R" />
+                                                            <RadioButton id="rbtRudderStationbw" text="between" />
+                                                            <RadioButton id="rbtRudderRibbw" text="between" />
+                                                            <CheckBox id="chbRudderIml" text="IML" />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
-                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" id="inpRudderStation" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" id="inpRudderRib" class="sapUiSmallMarginBeginEnd" />
+                                                            <Text />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text/>
+                                                            <Text/>
+                                                            <Text/>
+                                                            <Text/>
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text />
+                                                            <Input width="50px" id="inpRudderStation1" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" id="inpRudderRib1" class="sapUiSmallMarginBeginEnd" />
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
@@ -656,96 +653,98 @@
                                                             <Text class="sapUiSmallMarginBeginEnd" />
                                                             <Text class="sapUiSmallMarginBeginEnd" />
                                                         </VBox>
+
                                                     </HBox>
                                                     <HBox id="idHorizontal" visible="false" class="sapUiSizeCompact">
-                                                        <VBox>
-                                                            <CheckBox text="LHS /RHS" />
-                                                            <CheckBox text="Horizontal Empennage Stations(HSS)" />
-                                                            <CheckBox text="Horizontal Empennage Rib" />
-                                                            <CheckBox text="OML / IML" />
+                        							<VBox>
+                                                             <CheckBox id="chbHorizontalLhsRhs" text="LHS /RHS" />
+                                                            <CheckBox id="chbHorizontalStation" text="Horizontal Empennage Stations(HSS)" />
+                                                            <CheckBox id="chbHorizontalRib" text="Horizontal Empennage Rib" />
+                                                            <CheckBox id="chbHorizontalOmlIml" text="OML / IML" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton text="L" />
-                                                            <RadioButton text="at" />
-                                                            <RadioButton text="at" />
-                                                            <CheckBox text="OML " />
+                                                            <RadioButton id="rbtHorizontalLhsRhsL" text="L" />
+                                                            <RadioButton id="rbtHorizontalStationat" text="at" />
+                                                            <RadioButton id="rbtHorizontalRibat" text="at" />
+                                                            <CheckBox id="chbHorizontalOml" text="OML " />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton text="R" />
-                                                            <RadioButton text="between" />
-                                                            <RadioButton text="between" />
-                                                            <CheckBox text="IML" />
-                                                        </VBox>
-                                                        <VBox>
-                                                            <Text />
-                                                            <Input width="100px" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input width="100px" class="sapUiSmallMarginBeginEnd" />
-                                                            <Text />
-                                                        </VBox>
-                                                        <VBox>
-                                                            <Text class="sapUiSmallMarginBeginEnd" />
-                                                            <Text class="sapUiSmallMarginBeginEnd" />
-                                                            <Text class="sapUiSmallMarginBeginEnd" />
-                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                            <RadioButton id="rbtHorizontalLhsRhsR" text="R" />
+                                                            <RadioButton id="rbtHorizontalStationbw" text="between" />
+                                                            <RadioButton id="rbtHorizontalRibbw" text="between" />
+                                                            <CheckBox id="chbHorizontalIml" text="IML" />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
-                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" id="inpHorizontalStation"  />
+                                                            <Input width="50px" id="inpHorizontalRib" />
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
-                                                            <Text class="sapUiSmallMarginBeginEnd" />
-                                                            <Text class="sapUiSmallMarginBeginEnd" />
-                                                            <Text class="sapUiSmallMarginBeginEnd" />
-                                                            <Text class="sapUiSmallMarginBeginEnd" />
+                                                            <Text/>
+                                                            <Text/>
+                                                            <Text/>
+                                                            <Text/>
                                                         </VBox>
+                                                        <VBox>
+                                                            <Text />
+                                                            <Input width="50px" id="inpHorizontalStation1" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" id="inpHorizontalRib1" class="sapUiSmallMarginBeginEnd" />
+                                                            <Text />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text/>
+                                                            <Text/>
+                                                           <Text/>
+                                                            <Text/>
+                                                        </VBox>
+
                                                     </HBox>
                                                     <HBox id="idPlyon" visible="false" class="sapUiSizeCompact">
                                                         <VBox>
-                                                            <CheckBox text="Fuselage Station(FS) (X)" />
-                                                            <CheckBox text="Buttock Line(BL) (Y)" />
-                                                            <CheckBox text="Water Line(WL) (Z)" />
-                                                            <CheckBox text="OML / IML" />
+                                                            <CheckBox id="chbPlyonStation" text="Fuselage Station(FS) (X)" />
+                                                            <CheckBox id="chbPlyonBLine" text="Buttock Line(BL) (Y)" />
+                                                            <CheckBox id="chbPlyonWLine" text="Water Line(WL) (Z)" />
+                                                            <CheckBox id="chbPlyonOmlIml" text="OML / IML" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton text="at" />
-                                                            <RadioButton text="at" />
-                                                            <RadioButton text="at" />
-                                                            <CheckBox text="OML " />
+                                                            <RadioButton id="rbtPlyonStationat" text="at" />
+                                                            <RadioButton id="rbtPlyonBLineat" text="at" />
+                                                            <RadioButton id ="rbtPlyonWLineat" text="at" />
+                                                            <CheckBox id="chbPlyonOml" text="OML " />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton text="between" />
-                                                            <RadioButton text="between" />
-                                                            <RadioButton text="between" />
-                                                            <CheckBox text="IML" />
+                                                            <RadioButton id="rbtPlyonStationbw" text="b/w" />
+                                                            <RadioButton id="rbtPlyonBLinebw" text="b/w" />
+                                                            <RadioButton id ="rbtPlyonWLinebw" text="b/w" />
+                                                            <CheckBox id="chbPlyonIml" text="IML" />
                                                         </VBox>
                                                         <VBox>
-                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input id="inpPlyonStation" width="50px" class="sapUiSmallMarginBegin" />
+                                                            <Input id="inpPlyonBLine" width="50px" class="sapUiSmallMarginBegin" />
+                                                            <Input id="inpPlyonWLine" width="50px" class="sapUiSmallMarginBegin" />
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
                                                             <HBox>
-                                                                <RadioButton text="L" />
-                                                                <RadioButton text="R" />
+                                                                <RadioButton id="rbtPlyonBLineL" text="L" />
+                                                                <RadioButton id="rbtPlyonBLineR" text="R" />
                                                             </HBox>
                                                             <HBox />
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
-                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                             <Input id="inpPlyonStation1" width="50px" class="sapUiSmallMarginBegin" />
+                                                            <Input id="inpPlyonBLine1" width="50px" class="sapUiSmallMarginBegin" />
+                                                            <Input id="inpPlyonWLine1" width="50px" class="sapUiSmallMarginBegin" />
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
                                                             <HBox>
-                                                                <RadioButton text="L" />
-                                                                <RadioButton text="R" />
+                                                             <RadioButton id="rbtPlyonBLineL1" text="L" />
+                                                             <RadioButton id="rbtPlyonBLineR1" text="R" />
                                                             </HBox>
                                                             <HBox />
                                                             <Text />
@@ -753,56 +752,56 @@
                                                     </HBox>
                                                     <HBox id="idOthers" visible="false" class="sapUiSizeCompact">
                                                         <VBox>
-                                                            <CheckBox text="LHS / RHS" />
-                                                            <CheckBox text="Fuselage Station(FS) (X)" />
-                                                            <CheckBox text="Buttock Line(BL) (Y)" />
-                                                            <CheckBox text="Water Line(WL) (Z)" />
-                                                            <CheckBox text="OML / IML" />
+                                                            <CheckBox id="chbOthersLhsRhs" text="LHS / RHS" />
+                                                            <CheckBox id="chbOthersFStation" text="Fuselage Station(FS) (X)" />
+                                                            <CheckBox id="chbOthersBLine" text="Buttock Line(BL) (Y)" />
+                                                            <CheckBox id="chbOthersWLine" text="Water Line(WL) (Z)" />
+                                                            <CheckBox id="chbOthersOmlIml" text="OML / IML" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton text="L" />
-                                                            <RadioButton text="at" />
-                                                            <RadioButton text="at" />
-                                                            <RadioButton text="at" />
-                                                            <CheckBox text="OML " />
+                                                            <RadioButton id="rbtOthersLhsRhsL" text="L" />
+                                                            <RadioButton id="rbtOthersFStationat" text="at" />
+                                                            <RadioButton id="rbtOthersBLineat" text="at" />
+                                                            <RadioButton id="rbtOthersWLineat" text="at" />
+                                                            <CheckBox id="chbOthersOml" text="OML " />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton text="R" />
-                                                            <RadioButton text="between" />
-                                                            <RadioButton text="between" />
-                                                            <RadioButton text="between" />
-                                                            <CheckBox text="IML" />
+                                                            <RadioButton id="rbtOthersLhsRhsR" text="R" />
+                                                            <RadioButton id="rbtOthersFStationbw" text="between" />
+                                                            <RadioButton id="rbtOthersBLinebw" text="between" />
+                                                            <RadioButton id="rbtOthersWLinebw" text="between" />
+                                                            <CheckBox id="chbOthersIml" text="IML " />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
-                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input id="inpOthersFStation" width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input id="inpOthersBLine" width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input id="inpOthersWLine" width="50px" class="sapUiSmallMarginBeginEnd" />
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
                                                             <Text />
                                                             <HBox>
-                                                                <RadioButton text="L" />
-                                                                <RadioButton text="R" />
+                                                                <RadioButton id="rbtOthersBLineL" text="L" />
+                                                                <RadioButton id="rbtOthersBLineR" text="R" />
                                                             </HBox>
                                                             <Text />
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
-                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input id="inpOthersFStation1" width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input id="inpOthersBLine1" width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input id="inpOthersWLine1" width="50px" class="sapUiSmallMarginBeginEnd" />
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
                                                             <Text />
                                                             <HBox class="sapUiSmallMarginBeginEnd">
-                                                                <RadioButton text="L" />
-                                                                <RadioButton text="R" />
+                                                              <RadioButton id="rbtOthersBLineL1" text="L" />
+                                                                <RadioButton id="rbtOthersBLineR1" text="R" />
                                                             </HBox>
                                                             <Text />
                                                             <Text />
