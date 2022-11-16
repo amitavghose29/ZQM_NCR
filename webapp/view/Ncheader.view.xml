@@ -1490,8 +1490,10 @@
                                                         <Input width="230px" id="idPurInfSupNmip" editable="false" />
                                                         <Label text="Supplier SAP Code" />
                                                         <Input width="230px" id="idPurInfSupSCip" valueHelpRequest="onSuppSAPCodehelpRequest" showValueHelp="true" />
-                                                        <Label text="Supplier Part Number" />
+                                                        <Label text="Part Number" />
                                                         <Input width="230px" id="idPurInfSupPnip" editable="false" />
+                                                        <Label text="Part Number Description" />
+                                                        <Input width="230px" id="idPurInfSupPnDescip" editable="false" />
                                                         <Label id="idLblMrpctrlr" text="MRP Controller" />
                                                         <Input width="230px" id="idPurInfMrpcrip" editable="false" />
                                                         <Label id="idLblMrpCtrlrNm" text="MRP Controller Name" />

@@ -81,6 +81,9 @@ sap.ui.define([
             var oDataModel = this.getOwnerComponent().getModel();
             var sPath = sObjectPath;
             oDataModel.read(sPath, {
+                urlParameters: {
+                    "$expand": "to_headerserial,to_headertrace"
+                },
                 success: function (oData, oResult) {
                     sap.ui.core.BusyIndicator.hide();
                     var data = oData;
@@ -102,8 +105,8 @@ sap.ui.define([
                         oSupercededByNC = data.SupercededByNC,
                         oSupercedesNC = data.SupercedesNC,
                         oWorkInstruction = data.WorkInstruction,
-                        oSerialList = data.SerialList,
-                        oTraceList = data.TraceList;
+                        oSerialList = data.to_headerserial,
+                        oTraceList = data.to_headertrace;
 
                     this.getView().byId("idCombNcType").setValue(oNCType);
                     this.getView().byId("idPlntCodeHdr").setValue(oPlantCode);
@@ -126,22 +129,22 @@ sap.ui.define([
                     this._oMultiInputSN.removeAllTokens();
                     this._oMultiInputTN.removeAllTokens();
 
-                    if (oSerialList !== "") {
-                        var oSerialNosToken = oSerialList.split(",");
-                        for (var i = 0; i < oSerialNosToken.length; i++) {
+                    if (oSerialList.results.length > 0) {
+                        for (var i = 0; i < oSerialList.results.length; i++) {
+                            var oSerialNosToken = oSerialList.results[i].SerialNo;
                             var oSernrToken = new sap.m.Token({
-                                key: oSerialNosToken[i],
-                                text: oSerialNosToken[i]
+                                key: oSerialNosToken,
+                                text: oSerialNosToken
                             });
                             this._oMultiInputSN.addToken(oSernrToken);
                         }
                     }
-                    if (oTraceList !== "") {
-                        var oTrcNosToken = oTraceList.split(",");
-                        for (var j = 0; j < oTrcNosToken.length; j++) {
+                    if (oTraceList.results.length > 0) {
+                        for (var j = 0; j < oTraceList.results.length; j++) {
+                            var oTrcNosToken = oTraceList.results[j].TraceNo
                             var oTrcNoToken = new sap.m.Token({
-                                key: oTrcNosToken[j],
-                                text: oTrcNosToken[j]
+                                key: oTrcNosToken,
+                                text: oTrcNosToken
                             });
                             this._oMultiInputTN.addToken(oTrcNoToken);
                         }
@@ -989,112 +992,65 @@ sap.ui.define([
                         MessageBox.error(msg);
                     }
                 });
-            } else if ((oInpSerNo.getTokens().length > 1 && oInpTrcNo.getTokens().length === 1) || (oInpSerNo.getTokens().length > 1 && oInpTrcNo.getTokens().length === 0)) {
-                sap.ui.core.BusyIndicator.show();
-                this.getOwnerComponent().getModel().setUseBatch(true);
-                this.getOwnerComponent().getModel().setDeferredGroups(this.getOwnerComponent().getModel().getDeferredGroups().concat(["batchUpdate"]));
-                var mParameters = { groupId: "batchUpdate" };
-                var oTraceabilityNo = oInpTrcNo.getTokens().length === 1 ? oInpTrcNo.getTokens()[0].getKey() : "";
-                var payLoadHdrData = {};
-                for (var i = 0; i < oInpSerNo.getTokens().length; i++) {
-                    payLoadHdrData = {
-                        "NCStatus": oNcStatus,
-                        "NCType": oNcType,
-                        "NCPriority": oNcPriority,
-                        "NCArea": oNcArea,
-                        "PlantCode": oPlantCode,
-                        "ProductCode": oProductCode,
-                        "WorkInstruction": oWorkInst,
-                        "ProdOrder": oProdOrder,
-                        "SupercedesNC": oSupercedesNC,
-                        "SupercededByNC": oSupercededByNC,
-                        "ReferenceNC": oReferenceNC,
-                        // "ExistingATS": oExistingATS,
-                        "Aircraftno": oAircraftNo,
-                        "NCCreatedBy": oNCCreatedBy,
-                        "NCDetectedAt": oNCDetectedAt,
-                        "Binlocation": oBinLocation,
-                        "DropPoint": oDropPoint,
-                        "PartNumber": oPartNum,
-                        "PartDescription": oPartDesc,
-                        "SerialNo": oInpSerNo.getTokens()[i].getKey(),
-                        "TraceabilityNo": oTraceabilityNo
-                    }
-                    this.getOwnerComponent().getModel().update("/CreateNotificationHeaderSet('" + oNotifNo + "')", payLoadHdrData, mParameters);
+            } else {
+                var payLoadHdrData = {
+                    "NotificationNo": oNotifNo,
+                    "NCStatus": oNcStatus,
+                    "NCType": oNcType,
+                    "NCPriority": oNcPriority,
+                    "NCArea": oNcArea,
+                    "PlantCode": oPlantCode,
+                    "ProductCode": oProductCode,
+                    "WorkInstruction": oWorkInst,
+                    "ProdOrder": oProdOrder,
+                    "SupercedesNC": oSupercedesNC,
+                    "SupercededByNC": oSupercededByNC,
+                    "ReferenceNC": oReferenceNC,
+                    // "ExistingATS": oExistingATS,
+                    "Aircraftno": oAircraftNo,
+                    "NCCreatedBy": oNCCreatedBy,
+                    "NCDetectedAt": oNCDetectedAt,
+                    "Binlocation": oBinLocation,
+                    "DropPoint": oDropPoint,
+                    "PartNumber": oPartNum,
+                    "PartDescription": oPartDesc,
+                    "to_headerserial": [],
+                    "to_headertrace": [] 
                 }
-                this.getOwnerComponent().getModel().submitChanges({
-                    groupId: "batchUpdate",
+                if (oInpSerNo.getTokens().length >= 1){
+                    payLoadHdrData["to_headerserial"] = [];
+                    for (var i = 0; i < oInpSerNo.getTokens().length; i++) {
+                        var oSerialNo = oInpSerNo.getTokens()[i].getKey();
+                        payLoadHdrData["to_headerserial"].push({
+                            "SerialNo": oSerialNo
+                        });
+                    }
+                }
+
+                if (oInpTrcNo.getTokens().length >= 1){
+                    payLoadHdrData["to_headertrace"] = [];
+                    for (var j = 0; j < oInpTrcNo.getTokens().length; j++) {
+                        var oTraceNo = oInpTrcNo.getTokens()[j].getKey();
+                        payLoadHdrData["to_headertrace"].push({
+                            "TraceNo": oTraceNo
+                        });
+                    }
+                }
+
+                this.getOwnerComponent().getModel().create("/CreateNotificationHeaderSet", payLoadHdrData, {
                     success: function (odata, Response) {
                         sap.ui.core.BusyIndicator.hide();
                         // var msg = "The header data has been updated successfully.!";
-                        if (Response.data.__batchResponses.length > 0) {
-                            if (Response.data.__batchResponses[0].response) {
-                                var oMsg = JSON.parse(Response.data.__batchResponses[0].response.body).error.message.value;
-                                MessageBox.error(oMsg);
-                            }
-                            if (Response.data.__batchResponses[0].__changeResponses) {
-                                var oMsg = JSON.parse(Response.data.__batchResponses[0].__changeResponses[0].headers["sap-message"]).message;
+                        if (Response.headers["sap-message"]) {
+                            var oMsg = JSON.parse(Response.headers["sap-message"]).message;
+                            var oSeverity = JSON.parse(Response.headers["sap-message"]).severity;
+                            if(oSeverity == "success"){
                                 MessageBox.success(oMsg);
+                            }else{
+                                MessageBox.error(oMsg);
                             }
                         }
                         var sObjectPath = "CreateNotificationHeaderSet('" + oNotifNo + "')";
-                            this._bindView("/" + sObjectPath);
-                    }.bind(this),
-                    error: function (oError) {
-                        sap.ui.core.BusyIndicator.hide();
-                        var msg = JSON.parse(oError.responseText).error.message.value;
-                        MessageBox.error(msg);
-                    }.bind(this)
-                })
-            } else if ((oInpTrcNo.getTokens().length > 1 && oInpSerNo.getTokens().length === 1) || (oInpTrcNo.getTokens().length > 1 && oInpSerNo.getTokens().length === 0)) {
-                sap.ui.core.BusyIndicator.show();
-                this.getOwnerComponent().getModel().setUseBatch(true);
-                this.getOwnerComponent().getModel().setDeferredGroups(this.getOwnerComponent().getModel().getDeferredGroups().concat(["batchUpdate"]));
-                var mParameters = { groupId: "batchUpdate" };
-                var oInpSerNo = oInpSerNo.getTokens().length === 1 ? oInpSerNo.getTokens()[0].getKey() : "";
-                var payLoadHdrData = {};
-                for (var j = 0; i < oInpTrcNo.getTokens().length; j++) {
-                    payLoadHdrData = {
-                        "NCStatus": oNcStatus,
-                        "NCType": oNcType,
-                        "NCPriority": oNcPriority,
-                        "NCArea": oNcArea,
-                        "PlantCode": oPlantCode,
-                        "ProductCode": oProductCode,
-                        "WorkInstruction": oWorkInst,
-                        "ProdOrder": oProdOrder,
-                        "SupercedesNC": oSupercedesNC,
-                        "SupercededByNC": oSupercededByNC,
-                        "ReferenceNC": oReferenceNC,
-                        // "ExistingATS": oExistingATS,
-                        "Aircraftno": oAircraftNo,
-                        "NCCreatedBy": oNCCreatedBy,
-                        "NCDetectedAt": oNCDetectedAt,
-                        "Binlocation": oBinLocation,
-                        "DropPoint": oDropPoint,
-                        "PartNumber": oPartNum,
-                        "PartDescription": oPartDesc,
-                        "SerialNo": oInpSerNo,
-                        "TraceabilityNo": oTraceabilityNo.getTokens()[j].getKey()
-                    }
-                    this.getOwnerComponent().getModel().update("CreateNotificationHeaderSet('" + oNotifNo + "')", payLoadHdrData, mParameters);
-                }
-                this.getOwnerComponent().getModel().submitChanges({
-                    groupId: "batchUpdate",
-                    success: function (odata, Response) {
-                        sap.ui.core.BusyIndicator.hide();
-                        // var msg = "The header data has been updated successfully.!";
-                        if (Response.data.__batchResponses.length > 0) {
-                            if (Response.data.__batchResponses[0].response) {
-                                var oMsg = JSON.parse(Response.data.__batchResponses[0].response.body).error.message.value;
-                                MessageBox.error(oMsg);
-                            }
-                            if (Response.data.__batchResponses[0].__changeResponses) {
-                                var oMsg = JSON.parse(Response.data.__batchResponses[0].__changeResponses[0].headers["sap-message"]).message;
-                                MessageBox.success(oMsg);
-                            }
-                        }
-                        var sObjectPath = "/CreateNotificationHeaderSet('" + oNotifNo + "')";
                             this._bindView("/" + sObjectPath);
                     }.bind(this),
                     error: function (oError) {
