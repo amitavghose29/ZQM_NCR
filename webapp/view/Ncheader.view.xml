@@ -316,7 +316,7 @@
                                             </ColumnListItem>
                                         </items>
                                     </Table>
-                                    <upload:UploadSet
+                                    <!-- <upload:UploadSet
                                         instantUpload="true"
                                         showIcons="true"
                                         uploadEnabled="true"
@@ -356,7 +356,25 @@
                                                 </upload:statuses>
                                             </upload:UploadSetItem>
                                         </upload:items>
-                                    </upload:UploadSet>
+                                    </upload:UploadSet> -->
+                                    <UploadCollection
+                                        id="idHdrUploadCollection"
+                                        instantUpload="false"
+                                        maximumFilenameLength="55"
+                                        maximumFileSize="10"
+                                        multiple="true"
+                                        sameFilenameAllowed="true"
+                                        fileType="jpg,txt,doc,docx,xls,xlsx,pdf,png,msg"
+                                        noDataDescription="Drop files or use the &quot;Add&quot; button to keep files ready for upload"
+                                        change="onChangeAttachNCHeader"
+                                        fileDeleted="onFileDeletedNCHeader"
+                                        filenameLengthExceed="onFilenameLengthExceedNCHeader"
+                                        fileSizeExceed="onFileSizeExceedNCHeader"
+                                        typeMissmatch="onTypeMissMatchNCHeader"
+                                        uploadComplete="onUploadCompleteNCHeader"
+                                        beforeUploadStarts="onBeforeUploadStartsNCHeader"
+                                        uploadEnabled="true"
+                                    />
                                 </ScrollContainer>
                             </IconTabFilter>
                             <IconTabFilter id="iddiscrepancy" text="Discrepancy" key="Discre" visible="true">
@@ -404,7 +422,7 @@
                                                         <Label text="Partner / Suppilier #" />
                                                         <Input id="idDcIpPrtnr" showValueHelp="true" valueHelpRequest="onVHReqPartner" />
                                                         <Label text="Partner / Suppilier Name" />
-                                                        <Input id="idDcIpPrtnrNm" editable="false"/>
+                                                        <Input id="idDcIpPrtnrNm" editable="false" />
                                                         <Label text="Supersedes Item" />
                                                         <Input id="idDcIpSpsdsItm" showValueHelp="true" valueHelpRequest="onVHReqSupersedesItem" />
                                                         <Label text="Superseded by Item" />
@@ -436,23 +454,18 @@
                                                     columnsL="1"
                                                     columnsM="1"
                                                     singleContainerFullSize="false"
-                                                    class="sapUiSizeCompact"> 
+                                                    class="sapUiSizeCompact"
+                                                >
                                                     <f:content>
                                                         <Label labelFor="rbg4" text="Select" />
-                                                        <ComboBox id="cmbDescSelect" 
-                                                                width="200px" 
-                                                                items="{oSelectPartLocationModel>/}" 
-                                                                selectionChange="onDiscPartSelectLocation">
-                                                           <core:Item key="{oSelectPartLocationModel>Value}" text="{oSelectPartLocationModel>Value}" />
+                                                        <ComboBox id="cmbDescSelect" width="200px" items="{oSelectPartLocationModel>/}" selectionChange="onDiscPartSelectLocation">
+                                                            <core:Item key="{oSelectPartLocationModel>Value}" text="{oSelectPartLocationModel>Value}" />
                                                         </ComboBox>
-                                                        <ComboBox id="cmbDescSelect1"></ComboBox>
-                                                        
-                                                        <Button text="save" type="Emphasized" width="40%"/>
-                                                        
-                                                     </f:content>
-                                                </f:SimpleForm>
+                                                        <ComboBox id="cmbDescSelect1" />
 
- 
+                                                        <Button text="save" type="Emphasized" width="40%" press="onSavePartLocation" />
+                                                    </f:content>
+                                                </f:SimpleForm>
                                                 <FlexBox class="columns" direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Start">
                                                     <HBox id="idFuselage" visible="false" class="sapUiSizeCompact">
                                                         <VBox>
@@ -464,58 +477,58 @@
                                                             <CheckBox id="chbFuseOmlIml" text="OML / IML" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtFuseStation" text="at" />
-                                                            <RadioButton id="rbtFuseFStation" text="at" />
-                                                            <RadioButton id="rbtFuseString" text="at" />
-                                                            <RadioButton id="rbtFuseBLine" text="at" />
-                                                            <RadioButton id="rbtFuseWLine" text="at" />
-                                                            <CheckBox id="chbFuseOml" text="OML " />
+                                                            <RadioButton id="rbtFuseStation" text="at" groupName="rbtFuseSationG" />
+                                                            <RadioButton id="rbtFuseFStation" text="at" groupName="rbtFuseFStationG" />
+                                                            <RadioButton id="rbtFuseString" text="at" groupName="rbtFuseStringG" />
+                                                            <RadioButton id="rbtFuseBLine" text="at" groupName="rbtFuseBLineG" />
+                                                            <RadioButton id="rbtFuseWLine" text="at" groupName="rbtFuseWLineG" />
+                                                            <RadioButton id="rbtFuseOml" text="OML" groupName="chbFuseOmlIml" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtFuseStation1" text="b/w" />
-                                                            <RadioButton id="rbtFuseFStation1" text="b/w" />
-                                                            <RadioButton id="rbtFuseString1" text="b/w" />
-                                                            <RadioButton id="rbtFuseBLine1" text="b/w" />
-                                                            <RadioButton id="rbtFuseWLine1" text="b/w" />
-                                                            <CheckBox id="chbFuseIml" text="IML" />
+                                                            <RadioButton id="rbtFuseStation1" text="b/w" groupName="rbtFuseSationG" />
+                                                            <RadioButton id="rbtFuseFStation1" text="b/w" groupName="rbtFuseFStationG" />
+                                                            <RadioButton id="rbtFuseString1" text="b/w" groupName="rbtFuseStringG" />
+                                                            <RadioButton id="rbtFuseBLine1" text="b/w" groupName="rbtFuseBLineG" />
+                                                            <RadioButton id="rbtFuseWLine1" text="b/w" groupName="rbtFuseWLineG" />
+                                                            <RadioButton id="rbtFuseIml" text="IML" groupName="chbFuseOmlIml" />
                                                         </VBox>
                                                         <VBox class="sapUiSmallMarginBegin">
-                                                            <Input id="inpFuseStation"/>
-                                                            <Input id="inpFuseFStation"/>
-                                                            <Input id="inpFuseString"/>
-                                                            <Input id="inpFuseBLine"/>
-                                                            <Input id="inpFuseWLine"/>
+                                                            <Input id="inpFuseStation" />
+                                                            <Input id="inpFuseFStation" />
+                                                            <Input id="inpFuseString" />
+                                                            <Input id="inpFuseBLine" />
+                                                            <Input id="inpFuseWLine" />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
                                                             <Text />
-                                                            <HBox >
-                                                                <RadioButton id="rbtFuseStringL" text="L" />
-                                                                <RadioButton id="rbtFuseStringR" text="R" />
+                                                            <HBox>
+                                                                <RadioButton id="rbtFuseStringL" text="L" groupName="rbtFuseStringLRG" />
+                                                                <RadioButton id="rbtFuseStringR" text="R" groupName="rbtFuseStringLRG" />
                                                             </HBox>
-                                                            <HBox >
-                                                                <RadioButton id="rbtFuseBLineL" text="L" />
-                                                                <RadioButton id="rbtFuseBLineR" text="R" />
+                                                            <HBox>
+                                                                <RadioButton id="rbtFuseBLineL" text="L" groupName="rbtFuseBLineLRG" />
+                                                                <RadioButton id="rbtFuseBLineR" text="R" groupName="rbtFuseBLineLRG" />
                                                             </HBox>
                                                             <Text />
                                                         </VBox>
                                                         <VBox class="sapUiSmallMarginBegin">
-                                                           <Input id="inpFuseStation1"/>
-                                                            <Input id="inpFuseFStation1"/>
-                                                            <Input id="inpFuseString1"/>
-                                                            <Input id="inpFuseBLine1"/>
-                                                            <Input id="inpFuseWLine1"/>
+                                                            <Input id="inpFuseStation1" />
+                                                            <Input id="inpFuseFStation1" />
+                                                            <Input id="inpFuseString1" />
+                                                            <Input id="inpFuseBLine1" />
+                                                            <Input id="inpFuseWLine1" />
                                                         </VBox>
-                                                        <VBox >
-                                                             <Text />
+                                                        <VBox>
                                                             <Text />
-                                                            <HBox >
-                                                                <RadioButton id="rbtFuseStringL1" text="L" />
-                                                                <RadioButton id="rbtFuseStringR1" text="R" />
+                                                            <Text />
+                                                            <HBox>
+                                                                <RadioButton id="rbtFuseStringL1" text="L" groupName="rbtFuseStringLRG1" />
+                                                                <RadioButton id="rbtFuseStringR1" text="R" groupName="rbtFuseStringLRG1" />
                                                             </HBox>
-                                                            <HBox >
-                                                                <RadioButton id="rbtFuseBLineL1" text="L" />
-                                                                <RadioButton id="rbtFuseBLineR1" text="R" />
+                                                            <HBox>
+                                                                <RadioButton id="rbtFuseBLineL1" text="L" groupName="rbtFuseBLineLRG1" />
+                                                                <RadioButton id="rbtFuseBLineR1" text="R" groupName="rbtFuseBLineLRG1" />
                                                             </HBox>
                                                             <Text />
                                                         </VBox>
@@ -528,16 +541,16 @@
                                                             <CheckBox id="chbWingOmlIml" text="OML / IML" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtWingLhsRhsL" text="L" />
-                                                            <RadioButton id="rbtWingStationat" text="at" />
-                                                            <RadioButton id="rbtWingRibat" text="at" />
-                                                            <CheckBox id="chbWingOml" text="OML " />
+                                                            <RadioButton id="rbtWingLhsRhsL" text="L" groupName="rbtWingLhsRhsG" />
+                                                            <RadioButton id="rbtWingStationat" text="at" groupName="rbtWingStationG" />
+                                                            <RadioButton id="rbtWingRibat" text="at" groupName="rbtWingRibG" />
+                                                            <RadioButton id="rbtWingOml" text="OML " groupName="chbWingOmlImlG" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtWingLhsRhsR" text="R" />
-                                                            <RadioButton id="rbtWingStationbw" text="between" />
-                                                            <RadioButton id="rbtWingRibbw" text="between" />
-                                                            <CheckBox id="chbWingIml" text="IML" />
+                                                            <RadioButton id="rbtWingLhsRhsR" text="R" groupName="rbtWingLhsRhsG" />
+                                                            <RadioButton id="rbtWingStationbw" text="between" groupName="rbtWingStationG" />
+                                                            <RadioButton id="rbtWingRibbw" text="between" groupName="rbtWingRibG" />
+                                                            <RadioButton id="rbtWingIml" text="IML" groupName="chbWingOmlImlG" />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
@@ -546,10 +559,10 @@
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
-                                                           <Text/>
-                                                            <Text/>
-                                                            <Text/>
-                                                            <Text/>
+                                                            <Text />
+                                                            <Text />
+                                                            <Text />
+                                                            <Text />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
@@ -565,23 +578,23 @@
                                                         </VBox>
                                                     </HBox>
                                                     <HBox id="idVertical" visible="false" class="sapUiSizeCompact">
-                                                    <VBox>
-                                                             <CheckBox id="chbVerticalLhsRhs" text="LHS /RHS" />
+                                                        <VBox>
+                                                            <CheckBox id="chbVerticalLhsRhs" text="LHS /RHS" />
                                                             <CheckBox id="chbVerticalStation" text="Vertical Empennage Stations(ZV)" />
                                                             <CheckBox id="chbVerticalRib" text="Vertical Empennage Rib" />
                                                             <CheckBox id="chbVerticalOmlIml" text="OML / IML" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtVerticalLhsRhsL" text="L" />
-                                                            <RadioButton id="rbtVerticalStationat" text="at" />
-                                                            <RadioButton id="rbtVerticalRibat" text="at" />
-                                                            <CheckBox id="chbVerticalOml" text="OML " />
+                                                            <RadioButton id="rbtVerticalLhsRhsL" text="L" groupName="rbtVerticalLhsRhsG" />
+                                                            <RadioButton id="rbtVerticalStationat" text="at" groupName="rbtVerticalStationG" />
+                                                            <RadioButton id="rbtVerticalRibat" text="at" groupName="rbtVerticalRibG" />
+                                                            <RadioButton id="chbVerticalOml" text="OML" groupName="chbVerticalOmlG" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtVerticalLhsRhsR" text="R" />
-                                                            <RadioButton id="rbtVerticalStationbw" text="between" />
-                                                            <RadioButton id="rbtVerticalRibbw" text="between" />
-                                                            <CheckBox id="chbVerticalIml" text="IML" />
+                                                            <RadioButton id="rbtVerticalLhsRhsR" text="R" groupName="rbtVerticalLhsRhsG" />
+                                                            <RadioButton id="rbtVerticalStationbw" text="between" groupName="rbtVerticalStationG" />
+                                                            <RadioButton id="rbtVerticalRibbw" text="between" groupName="rbtVerticalRibG" />
+                                                            <RadioButton id="chbVerticalIml" text="IML" groupName="chbVerticalOmlG" />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
@@ -590,10 +603,10 @@
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
-                                                            <Text/>
-                                                            <Text/>
-                                                            <Text/>
-                                                            <Text/>
+                                                            <Text />
+                                                            <Text />
+                                                            <Text />
+                                                            <Text />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
@@ -602,32 +615,30 @@
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
-                                                           <Text/>
-                                                            <Text/>
-                                                            <Text/>
-                                                            <Text/>
+                                                            <Text />
+                                                            <Text />
+                                                            <Text />
+                                                            <Text />
                                                         </VBox>
-
                                                     </HBox>
                                                     <HBox id="idRudder" visible="false" class="sapUiSizeCompact">
-         
-							                            <VBox>
-                                                             <CheckBox id="chbRudderLhsRhs" text="LHS /RHS" />
+                                                        <VBox>
+                                                            <CheckBox id="chbRudderLhsRhs" text="LHS /RHS" />
                                                             <CheckBox id="chbRudderStation" text="Rudder Tail Stations(ZVS)" />
                                                             <CheckBox id="chbRudderRib" text="Rudder Rib" />
                                                             <CheckBox id="chbRudderOmlIml" text="OML / IML" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtRudderLhsRhsL" text="L" />
-                                                            <RadioButton id="rbtRudderStationat" text="at" />
-                                                            <RadioButton id="rbtRudderRibat" text="at" />
-                                                            <CheckBox id="chbRudderOml" text="OML " />
+                                                            <RadioButton id="rbtRudderLhsRhsL" text="L" groupName="rbtRudderLhsRhsG" />
+                                                            <RadioButton id="rbtRudderStationat" text="at" groupName="rbtRudderStationG" />
+                                                            <RadioButton id="rbtRudderRibat" text="at" groupName="rbtRudderRibG" />
+                                                            <RadioButton id="chbRudderOml" text="OML" groupName="chbRudderOmlImlG" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtRudderLhsRhsR" text="R" />
-                                                            <RadioButton id="rbtRudderStationbw" text="between" />
-                                                            <RadioButton id="rbtRudderRibbw" text="between" />
-                                                            <CheckBox id="chbRudderIml" text="IML" />
+                                                            <RadioButton id="rbtRudderLhsRhsR" text="R" groupName="rbtRudderLhsRhsG" />
+                                                            <RadioButton id="rbtRudderStationbw" text="between" groupName="rbtRudderStationG" />
+                                                            <RadioButton id="rbtRudderRibbw" text="between" groupName="rbtRudderRibG" />
+                                                            <RadioButton id="chbRudderIml" text="IML" groupName="chbRudderOmlImlG" />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
@@ -636,10 +647,10 @@
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
-                                                            <Text/>
-                                                            <Text/>
-                                                            <Text/>
-                                                            <Text/>
+                                                            <Text />
+                                                            <Text />
+                                                            <Text />
+                                                            <Text />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
@@ -653,38 +664,37 @@
                                                             <Text class="sapUiSmallMarginBeginEnd" />
                                                             <Text class="sapUiSmallMarginBeginEnd" />
                                                         </VBox>
-
                                                     </HBox>
                                                     <HBox id="idHorizontal" visible="false" class="sapUiSizeCompact">
-                        							<VBox>
-                                                             <CheckBox id="chbHorizontalLhsRhs" text="LHS /RHS" />
+                                                        <VBox>
+                                                            <CheckBox id="chbHorizontalLhsRhs" text="LHS /RHS" />
                                                             <CheckBox id="chbHorizontalStation" text="Horizontal Empennage Stations(HSS)" />
                                                             <CheckBox id="chbHorizontalRib" text="Horizontal Empennage Rib" />
                                                             <CheckBox id="chbHorizontalOmlIml" text="OML / IML" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtHorizontalLhsRhsL" text="L" />
-                                                            <RadioButton id="rbtHorizontalStationat" text="at" />
-                                                            <RadioButton id="rbtHorizontalRibat" text="at" />
-                                                            <CheckBox id="chbHorizontalOml" text="OML " />
+                                                            <RadioButton id="rbtHorizontalLhsRhsL" text="L" groupName="rbtHorizontalLhsRhsG" />
+                                                            <RadioButton id="rbtHorizontalStationat" text="at" groupName="rbtHorizontalStationG" />
+                                                            <RadioButton id="rbtHorizontalRibat" text="at" groupName="rbtHorizontalRibG" />
+                                                            <RadioButton id="rbtHorizontalOml" text="OML" groupName="chbHorizontalOmlIml" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtHorizontalLhsRhsR" text="R" />
-                                                            <RadioButton id="rbtHorizontalStationbw" text="between" />
-                                                            <RadioButton id="rbtHorizontalRibbw" text="between" />
-                                                            <CheckBox id="chbHorizontalIml" text="IML" />
+                                                            <RadioButton id="rbtHorizontalLhsRhsR" text="R" groupName="rbtHorizontalLhsRhsG" />
+                                                            <RadioButton id="rbtHorizontalStationbw" text="between" groupName="rbtHorizontalStationG" />
+                                                            <RadioButton id="rbtHorizontalRibbw" text="between" groupName="rbtHorizontalRibG" />
+                                                            <RadioButton id="rbtHorizontalIml" text="IML" groupName="chbHorizontalOmlIml" />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
-                                                            <Input width="50px" id="inpHorizontalStation"  class="sapUiSmallMarginBeginEnd" />
-                                                            <Input width="50px" id="inpHorizontalRib" class="sapUiSmallMarginBeginEnd"/>
+                                                            <Input width="50px" id="inpHorizontalStation" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input width="50px" id="inpHorizontalRib" class="sapUiSmallMarginBeginEnd" />
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
-                                                            <Text/>
-                                                            <Text/>
-                                                            <Text/>
-                                                            <Text/>
+                                                            <Text />
+                                                            <Text />
+                                                            <Text />
+                                                            <Text />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
@@ -693,12 +703,11 @@
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
-                                                            <Text/>
-                                                            <Text/>
-                                                           <Text/>
-                                                            <Text/>
+                                                            <Text />
+                                                            <Text />
+                                                            <Text />
+                                                            <Text />
                                                         </VBox>
-
                                                     </HBox>
                                                     <HBox id="idPlyon" visible="false" class="sapUiSizeCompact">
                                                         <VBox>
@@ -708,16 +717,16 @@
                                                             <CheckBox id="chbPlyonOmlIml" text="OML / IML" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtPlyonStationat" text="at" />
-                                                            <RadioButton id="rbtPlyonBLineat" text="at" />
-                                                            <RadioButton id ="rbtPlyonWLineat" text="at" />
-                                                            <CheckBox id="chbPlyonOml" text="OML " />
+                                                            <RadioButton id="rbtPlyonStationat" text="at" groupName="rbtPlyonStationG" />
+                                                            <RadioButton id="rbtPlyonBLineat" text="at" groupName="rbtPlyonBLineG" />
+                                                            <RadioButton id="rbtPlyonWLineat" text="at" groupName="rbtPlyonWLineG" />
+                                                            <RadioButton id="rbtPlyonOml" text="OML" groupName="chbPlyonOmlImlG" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtPlyonStationbw" text="b/w" />
-                                                            <RadioButton id="rbtPlyonBLinebw" text="b/w" />
-                                                            <RadioButton id ="rbtPlyonWLinebw" text="b/w" />
-                                                            <CheckBox id="chbPlyonIml" text="IML" />
+                                                            <RadioButton id="rbtPlyonStationbw" text="b/w" groupName="rbtPlyonStationG" />
+                                                            <RadioButton id="rbtPlyonBLinebw" text="b/w" groupName="rbtPlyonBLineG" />
+                                                            <RadioButton id="rbtPlyonWLinebw" text="b/w" groupName="rbtPlyonWLineG" />
+                                                            <RadioButton id="rbtPlyonIml" text="IML" groupName="chbPlyonOmlImlG" />
                                                         </VBox>
                                                         <VBox>
                                                             <Input id="inpPlyonStation" width="50px" class="sapUiSmallMarginBegin" />
@@ -735,7 +744,7 @@
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
-                                                             <Input id="inpPlyonStation1" width="50px" class="sapUiSmallMarginBegin" />
+                                                            <Input id="inpPlyonStation1" width="50px" class="sapUiSmallMarginBegin" />
                                                             <Input id="inpPlyonBLine1" width="50px" class="sapUiSmallMarginBegin" />
                                                             <Input id="inpPlyonWLine1" width="50px" class="sapUiSmallMarginBegin" />
                                                             <Text />
@@ -743,8 +752,8 @@
                                                         <VBox>
                                                             <Text />
                                                             <HBox>
-                                                             <RadioButton id="rbtPlyonBLineL1" text="L" />
-                                                             <RadioButton id="rbtPlyonBLineR1" text="R" />
+                                                                <RadioButton id="rbtPlyonBLineL1" text="L" />
+                                                                <RadioButton id="rbtPlyonBLineR1" text="R" />
                                                             </HBox>
                                                             <HBox />
                                                             <Text />
@@ -759,18 +768,18 @@
                                                             <CheckBox id="chbOthersOmlIml" text="OML / IML" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtOthersLhsRhsL" text="L" />
-                                                            <RadioButton id="rbtOthersFStationat" text="at" />
-                                                            <RadioButton id="rbtOthersBLineat" text="at" />
-                                                            <RadioButton id="rbtOthersWLineat" text="at" />
-                                                            <CheckBox id="chbOthersOml" text="OML " />
+                                                            <RadioButton id="rbtOthersLhsRhsL" text="L" groupName="rbtOthersLhsRhsG" />
+                                                            <RadioButton id="rbtOthersFStationat" text="at" groupName="rbtOthersFStationG" />
+                                                            <RadioButton id="rbtOthersBLineat" text="at" groupName="rbtOthersBLineG" />
+                                                            <RadioButton id="rbtOthersWLineat" text="at" groupName="rbtOthersWLineG" />
+                                                            <RadioButton id="rbtOthersOml" text="OML " groupName="chbOthersOmlImlG" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtOthersLhsRhsR" text="R" />
-                                                            <RadioButton id="rbtOthersFStationbw" text="between" />
-                                                            <RadioButton id="rbtOthersBLinebw" text="between" />
-                                                            <RadioButton id="rbtOthersWLinebw" text="between" />
-                                                            <CheckBox id="chbOthersIml" text="IML " />
+                                                            <RadioButton id="rbtOthersLhsRhsR" text="R" groupName="rbtOthersLhsRhsG" />
+                                                            <RadioButton id="rbtOthersFStationbw" text="between" groupName="rbtOthersFStationG" />
+                                                            <RadioButton id="rbtOthersBLinebw" text="between" groupName="rbtOthersBLineG" />
+                                                            <RadioButton id="rbtOthersWLinebw" text="between" groupName="rbtOthersWLineG" />
+                                                            <RadioButton id="rbtOthersIml" text="IML" groupName="chbOthersOmlImlG" />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
@@ -800,7 +809,7 @@
                                                             <Text />
                                                             <Text />
                                                             <HBox class="sapUiSmallMarginBeginEnd">
-                                                              <RadioButton id="rbtOthersBLineL1" text="L" />
+                                                                <RadioButton id="rbtOthersBLineL1" text="L" />
                                                                 <RadioButton id="rbtOthersBLineR1" text="R" />
                                                             </HBox>
                                                             <Text />
@@ -939,11 +948,11 @@
                                                     columnsM="2"
                                                     singleContainerFullSize="false"
                                                     class="sapUiSizeCompact"
-                                                    labelMinWidth="1px"                                                    
+                                                    labelMinWidth="1px"
                                                 >
                                                     <f:content>
-                                                        <Label/>
-                                                        <Button text="Stock Purge" width="130px" press="_onPressStockPurge"/>
+                                                        <Label />
+                                                        <Button id="idDcBtStkPrg" text="Stock Purge" width="130px" press="_onPressStockPurge" />
                                                         <Label text="Preliminary Investigation" />
                                                         <TextArea id="idDcTAPi" />
                                                         <Label text="Part Received in Quarantine(Z11):" width="125%" />
@@ -970,11 +979,11 @@
                                                         <Label text="Should be" />
                                                         <TextArea id="idDcTaSb" />
                                                         <Label text="Format" />
-                                                        <ComboBox id="idDcCobPcAsper" items="{discrepancyFormatModel>/}" >
+                                                        <ComboBox id="idDcCobPcAsper" items="{discrepancyFormatModel>/}" selectionChange="_onSelectingFormat">
                                                             <core:Item key="{discrepancyFormatModel>Value}" text="{discrepancyFormatModel>Value}" />
                                                         </ComboBox>
                                                         <Label text="As Per" />
-                                                        <Input id="idDcInpAp" />
+                                                        <TextArea id="idDcInpAp" />
                                                         <Label text="Incomplete Flag" />
                                                         <CheckBox id="idDcCbIf" class="sapUiLargeMarginBegin" selected="true" />
                                                     </f:content>

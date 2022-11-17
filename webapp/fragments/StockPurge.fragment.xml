@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-    <Dialog title="Stock Purge" contentHeight="200px" contentWidth="500px">
+    <Dialog id="idStkPrgeDlg" title="Stock Purge" contentHeight="200px" contentWidth="500px">
         <FlexBox height="200px" alignItems="Center" justifyContent="Center">
             <VBox>
                 <HBox>

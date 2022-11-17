@@ -2,19 +2,16 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     'sap/ui/core/Fragment',
     "sap/ui/model/json/JSONModel",
-    "sap/m/MessagePopover",
     "sap/m/MenuItem",
     "sap/m/Token",
     "sap/m/SearchField",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/m/Tokenizer",
-    "sap/m/MessageBox",
-    "sap/ui/model/type/String"
-], function (Controller, Fragment, JSONModel, MessagePopover, MenuItem, Token, SearchField, Filter, FilterOperator, Tokenizer, MessageBox, typeString) {
+    "sap/m/MessageBox"
+], function (Controller, Fragment, JSONModel, MenuItem, Token, SearchField, Filter, FilterOperator, Tokenizer, MessageBox) {
     "use strict";
-    var sObjectId;
-    var oNctype;
+    var sObjectId, oNctype, oDiscrepancy;
 
     return Controller.extend("com.airbus.ZQM_NCR.controller.Ncheader", {
 
@@ -28,6 +25,9 @@ sap.ui.define([
             var oRouter = this.getOwnerComponent().getRouter();
             oRouter.getRoute("Ncheader").attachMatched(this._onRouteMatched, this);
             this.addMultiInputValidator();
+            var oAttachModel = new JSONModel();
+            oAttachModel.setData([]);
+            this.getView().setModel(oAttachModel, "AttachmentModel")
         },
 
         // Added code for multiinput control id initialisation and validator
@@ -361,6 +361,7 @@ sap.ui.define([
                 } else {
                     text = "Discrepancy No: ";
                 }
+                this.getView().byId("idDcBtStkPrg").setVisible(false);
                 this.getView().byId("headertext").setText(text);
                 this._setDiscrepancyComboBox();
                 this._setPrelimCauseComboBox();
@@ -379,64 +380,512 @@ sap.ui.define([
                 this.getView().byId("idObjNCStatusDispo").setVisible(true);
             }
         },
-            // discrepancy part location combobox data select
-            onSelectDiscPartlocation:function(){
-                var oDataModel = this.getOwnerComponent().getModel();
-                var oModel = new JSONModel();
-                var oFilterPart = [];
-                oFilterPart.push(new Filter("Key", FilterOperator.EQ, "DISCSTATION"));
-                var sPath = "/f4_genericSet"
-                oDataModel.read(sPath, {
-                    filters: oFilterPart,
-                    success: function (oData, oResult) {
-                        sap.ui.core.BusyIndicator.hide();
-                        var data = oData.results;
-                        oModel.setData(data);
-                        this.getView().setModel(oModel, "oSelectPartLocationModel");
-                    }.bind(this),
-                    error: function (oError) {
-                        sap.ui.core.BusyIndicator.hide();
-                        var msg = JSON.parse(oError.responseText).error.message.value;
-                        MessageBox.error(msg);
+        // discrepancy part location combobox data select
+        onSelectDiscPartlocation: function () {
+            var oDataModel = this.getOwnerComponent().getModel();
+            var oModel = new JSONModel();
+            var oFilterPart = [];
+            oFilterPart.push(new Filter("Key", FilterOperator.EQ, "DISCSTATION"));
+            var sPath = "/f4_genericSet"
+            oDataModel.read(sPath, {
+                filters: oFilterPart,
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.results;
+                    oModel.setData(data);
+                    this.getView().setModel(oModel, "oSelectPartLocationModel");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
 
-                    }
-                });
-            },
-            //Based on location it will display location fields 
-            onDiscPartSelectLocation: function (oEvent) {
-                var rsel = oEvent.getSource().getSelectedKey();
-                this.getView().byId("idFuselage").setVisible(false);
-                this.getView().byId("idWing").setVisible(false);
-                this.getView().byId("idVertical").setVisible(false);
-                this.getView().byId("idRudder").setVisible(false);
-                this.getView().byId("idHorizontal").setVisible(false);
-                this.getView().byId("idPlyon").setVisible(false);
-                this.getView().byId("idOthers").setVisible(false);
-                switch (rsel) {
-
-                    case "WING":
-                        this.getView().byId("idWing").setVisible(true);
-                        break;
-                    case "VERTICAL EMPENNAGE":
-                        this.getView().byId("idVertical").setVisible(true);
-                        break;
-                    case "RUDDER":
-                        this.getView().byId("idRudder").setVisible(true);
-                        break;
-                    case "HORIZONTAL EMPENNAGE":
-                        this.getView().byId("idHorizontal").setVisible(true);
-                        break;
-                    case "PYLON / NACELLE":
-                        this.getView().byId("idPlyon").setVisible(true);
-                        break;
-                    case "OTHER":
-                        this.getView().byId("idOthers").setVisible(true);
-                        break;
-                    default:
-                        this.getView().byId("idFuselage").setVisible(true);
                 }
+            });
+        },
 
-            },
+        //Based on location it will display location fields 
+        onDiscPartSelectLocation: function (oEvent) {
+            var rsel = oEvent.getSource().getSelectedKey();
+            this.getView().byId("idFuselage").setVisible(false);
+            this.getView().byId("idWing").setVisible(false);
+            this.getView().byId("idVertical").setVisible(false);
+            this.getView().byId("idRudder").setVisible(false);
+            this.getView().byId("idHorizontal").setVisible(false);
+            this.getView().byId("idPlyon").setVisible(false);
+            this.getView().byId("idOthers").setVisible(false);
+            switch (rsel) {
+
+                case "WING":
+                    this.getView().byId("idWing").setVisible(true);
+                    break;
+                case "VERTICAL EMPENNAGE":
+                    this.getView().byId("idVertical").setVisible(true);
+                    break;
+                case "RUDDER":
+                    this.getView().byId("idRudder").setVisible(true);
+                    break;
+                case "HORIZONTAL EMPENNAGE":
+                    this.getView().byId("idHorizontal").setVisible(true);
+                    break;
+                case "PYLON / NACELLE":
+                    this.getView().byId("idPlyon").setVisible(true);
+                    break;
+                case "OTHER":
+                    this.getView().byId("idOthers").setVisible(true);
+                    break;
+                default:
+                    this.getView().byId("idFuselage").setVisible(true);
+            }
+
+        },
+
+        // Descrepancy part location save
+        onSavePartLocation:function(){
+            var obj = {};
+            var Arr =[];
+            var notificaitonno = sObjectId;
+            var locationKey = this.getView().byId("cmbDescSelect").getSelectedKey();
+                obj.NotificationNo = sObjectId;
+                obj.Location = locationKey;
+                // obj.DiscrepancyNo = 
+            if(locationKey == "FUSELAGE" ){
+                
+                //line1
+                obj.FuselageStation= this.getView().byId("chbFuseStation").getSelected();
+                var rbtFuseSation=this.getView().byId("rbtFuseStation").getSelected();
+               var rbtFuseSation1= this.getView().byId("rbtFuseStation1").getSelected();
+               var fstaSel =  rbtFuseSation === true ? "AT" : (rbtFuseSation1 === true ? "BETWEEN" : "");
+                obj.FuseStatnSel = fstaSel;
+                obj.FuseStatnVal1 = this.getView().byId("inpFuseStation").getValue();
+                obj.FuseStatnVal2 = this.getView().byId("inpFuseStation1").getValue();
+                //line2
+                obj.FuseFrame = this.getView().byId("chbFuseFStation").getSelected();
+                var rbtFuseFStation = this.getView().byId("rbtFuseFStation").getSelected();
+                var rbtFuseFStation1 = this.getView().byId("rbtFuseFStation1").getSelected();
+                var ffstation = rbtFuseFStation === true ? "AT" : (rbtFuseFStation1 === true ? "BETWEEN" : "");
+                obj.FuseFrameSel = ffstation;
+                obj.FuseFrameVal1 = this.getView().byId("inpFuseFStation").getValue();
+                obj.FuseFrameVal2 = this.getView().byId("inpFuseFStation1").getValue();
+                //line3
+                obj.FuseStringer = this.getView().byId("chbFuseString").getSelected();
+                var rbtFuseString = this.getView().byId("rbtFuseString").getSelected();
+                var rbtFuseString1 = this.getView().byId("rbtFuseString1").getSelected();
+                var ffstring = rbtFuseString === true ? "AT" : (rbtFuseString1 === true ? "BETWEEN" : "");
+                obj.FuseStringerSel = ffstring;
+                obj.FuseStringerVal1 = this.getView().byId("inpFuseString").getValue();
+                obj.FuseStringerVal2 = this.getView().byId("inpFuseString1").getValue();
+                //line4
+                obj.ButtockLine = this.getView().byId("chbFuseBLine").getSelected();
+                var rbtFuseBLine = this.getView().byId("rbtFuseBLine").getSelected();
+                var rbtFuseBLine1 = this.getView().byId("rbtFuseBLine1").getSelected();
+                var bLine = rbtFuseBLine === true ? "AT" : (rbtFuseBLine1 === true ? "BETWEEN" : "");
+                obj.ButtockLineSel = bLine;
+                obj.ButtockLineVal1 = this.getView().byId("inpFuseBLine").getValue();
+                obj.ButtockLineVal2 = this.getView().byId("inpFuseBLine1").getValue();
+                //line5
+                obj.WaterLine = this.getView().byId("chbFuseWLine").getSelected();
+                var rbtFuseWLine = this.getView().byId("rbtFuseWLine").getSelected();
+                var rbtFuseWLine1 = this.getView().byId("rbtFuseWLine1").getSelected();
+                var wLine = rbtFuseWLine === true ? "AT" : (rbtFuseWLine1 === true ? "BETWEEN" : "");
+                obj.WaterLineSel = wLine;
+                obj.WaterLineVal1 = this.getView().byId("inpFuseWLine").getValue();
+                obj.WaterLineVal2 = this.getView().byId("inpFuseWLine1").getValue();
+                //line6
+                obj.OmlIml = this.getView().byId("chbFuseOmlIml").getSelected();
+                var rbtFuseOml = this.getView().byId("rbtFuseOml").getSelected();
+               var rbtFuseIml = this.getView().byId("rbtFuseIml").getSelected();
+               var fuseomliml = rbtFuseOml === true ? "OML" : (rbtFuseIml === true ? "IML" : "");
+                obj.OmlImlValue = fuseomliml;
+              
+               obj.FuseFrameLhs1 = this.getView().byId("rbtFuseStringL").getSelected();
+               obj.FuseFrameRhs1 = this.getView().byId("rbtFuseStringR").getSelected();
+               obj.FuseFrameLhs2 = this.getView().byId("rbtFuseStringL1").getSelected();
+               obj.FuseFrameRhs2 = this.getView().byId("rbtFuseStringR1").getSelected();
+
+               obj.FuseStringLhs1 = this.getView().byId("rbtFuseBLineL").getSelected();
+               obj.FuseStringRhs1 = this.getView().byId("rbtFuseBLineR").getSelected();
+               obj.FuseStringLhs2 = this.getView().byId("rbtFuseBLineL1").getSelected();
+               obj.FuseStringRhs2 = this.getView().byId("rbtFuseBLineR1").getSelected();
+
+            }else if (locationKey == "HORIZONTAL EMPENNAGE"){
+                //line1
+                obj.Lhs_Rhs = this.getView().byId("chbHorizontalLhsRhs").getSelected();
+                obj.Lhs = this.getView().byId("rbtHorizontalLhsRhsL").getSelected();
+                obj.Rhs = this.getView().byId("rbtHorizontalLhsRhsR").getSelected();
+                //line2
+                obj.HorzRib= this.getView().byId("chbHorizontalRib").getSelected();
+                var rbtHorizontalRibat = this.getView().byId("rbtHorizontalRibat").getSelected();
+                var rbtHorizontalRibbw = this.getView().byId("rbtHorizontalRibbw").getSelected();
+                var horizRib = rbtHorizontalRibat === true ? "AT" : (rbtHorizontalRibbw === true ? "BETWEEN" : "");
+                obj.HorzRibSel= horizRib;
+                obj.HorzRibVal= this.getView().byId("inpHorizontalRib").getValue();
+                obj.HorzRibVal2= this.getView().byId("inpHorizontalRib1").getValue();
+                //line4    
+                obj.OmlIml = this.getView().byId("chbHorizontalOmlIml").getSelected();
+                var rbtHorizontalOml = this.getView().byId("rbtHorizontalOml").getSelected();
+                var rbtHorizontalIml = this.getView().byId("rbtHorizontalIml").getSelected();
+                var horizomliml = rbtHorizontalOml === true ? "OML":(rbtHorizontalIml === true ? "IML" : "");
+                obj.OmlImlValue = horizomliml;
+                //line3
+                obj.HorzStation = this.getView().byId("chbHorizontalStation").getSelected();
+                var rbtHorizontalStationat = this.getView().byId("rbtHorizontalStationat").getSelected();
+                var rbtHorizontalStationbw = this.getView().byId("rbtHorizontalStationbw").getSelected();
+                var horizStation = rbtHorizontalStationat === true ? "AT" : (rbtHorizontalStationbw === true ? "BETWEEN" : "");
+                obj.HorzStationSel = horizStation;
+                obj.HorzStationVal1 = this.getView().byId("inpHorizontalStation").getValue();
+                obj.HorzStationVal2= this.getView().byId("inpHorizontalStation1").getValue();
+                
+            }else if(locationKey == "VERTICAL EMPENNAGE"){
+
+                //line2
+                obj.VerticalEmpStation= this.getView().byId("chbVerticalStation").getSelected();
+                var rbtVerticalStationat = this.getView().byId("rbtVerticalStationat").getSelected();
+                var rbtVerticalStationbw = this.getView().byId("rbtVerticalStationbw").getSelected();
+                var vertStation = rbtVerticalStationat === true ? "AT" : (rbtVerticalStationbw === true ? "BETWEEN" : "");
+                obj.VerticalEmpStationSel= vertStation;
+                obj.VerticalEmpStationVal1= this.getView().byId("inpVerticalStation").getValue();
+                obj.VerticalEmpStationVal2= this.getView().byId("inpVerticalStation1").getValue();
+                //line3
+                obj.VerticalEmpRib= this.getView().byId("chbVerticalRib").getSelected();
+                var rbtVerticalRibat = this.getView().byId("rbtVerticalRibat").getSelected();
+                var rbtVerticalRibbw = this.getView().byId("rbtVerticalRibbw").getSelected();
+                var vertRib = rbtVerticalRibat === true ? "AT" : (rbtVerticalRibbw === true ? "BETWEEN" : "");
+                obj.VerticalEmpRibSel= vertRib;
+                obj.VerticalEmpRibVal1= this.getView().byId("inpVerticalRib").getValue();
+                obj.VerticalEmpRibVal2= this.getView().byId("inpVerticalRib1").getValue();
+                //line1
+                obj.Lhs_Rhs = this.getView().byId("chbVerticalLhsRhs").getSelected();
+                obj.Lhs = this.getView().byId("rbtVerticalLhsRhsL").getSelected();
+                obj.Rhs = this.getView().byId("rbtVerticalLhsRhsR").getSelected();
+               //line4
+                obj.OmlIml = this.getView().byId("chbVerticalOmlIml").getSelected();
+                var rbtVerticalOml = this.getView().byId("rbtVerticalOml").getSelected();
+                var rbtVerticalIml = this.getView().byId("rbtVerticalIml").getSelected();
+                var verticalomliml = rbtVerticalOml === true ? "OML" : (rbtVerticalIml === true ? "IML" : ""); 
+                obj.OmlImlValue = verticalomliml;
+
+            }else if(locationKey == "PYLON / NACELLE"){
+                //line1
+                obj.FuselageStation = this.getView().byId("chbPlyonStation").getSelected();
+                var rbtPlyonStationat = this.getView().byId("rbtPlyonStationat").getSelected();
+                var rbtPlyonStationbw = this.getView().byId("rbtPlyonStationbw").getSelected();
+                var ployonStation = rbtPlyonStationat === true ? "AT" : (rbtPlyonStationbw === true ? "BETWEEN" : "");
+                obj.FuseStatnSel = ployonStation;
+                obj.FuseStatnVal1 = this.getView().byId("inpPlyonStation").getValue();
+                obj.FuseStatnVal2 = this.getView().byId("inpPlyonStation1").getValue();
+                //line2
+                obj.ButtockLine = this.getView().byId("chbPlyonBLine").getSelected();
+                var rbtPlyonBLineat = this.getView().byId("rbtPlyonBLineat").getSelected();
+                var rbtPlyonBLinebw = this.getView().byId("rbtPlyonBLinebw").getSelected();
+                var plyonBLine = rbtPlyonBLineat === true ? "AT" : (rbtPlyonBLinebw === true ? "BETWEEN" : ""); 
+                obj.ButtockLineSel = plyonBLine;
+                obj.ButtockLineVal1 = this.getView().byId("inpPlyonBLine").getValue();
+                obj.ButtockLineLhs1 = this.getView().byId("rbtPlyonBLineL").getSelected();
+                obj.ButtockLineRhs1 = this.getView().byId("rbtPlyonBLineR").getSelected();
+                obj.ButtockLineVal2 = this.getView().byId("inpPlyonBLine1").getValue();
+                obj.ButtockLineLhs2 = this.getView().byId("rbtPlyonBLineL1").getSelected();
+                obj.ButtockLineRhs2 = this.getView().byId("rbtPlyonBLineR1").getSelected();
+                
+                //line3
+                obj.WaterLine = this.getView().byId("chbPlyonWLine").getSelected();
+                var rbtPlyonWLineat = this.getView().byId("rbtPlyonWLineat").getSelected();
+                var rbtPlyonWLinebw = this.getView().byId("rbtPlyonWLinebw").getSelected();
+                var plyonWLine = rbtPlyonWLineat === true ? "AT" : (rbtPlyonWLinebw === true ? "BETWEEN" : ""); 
+                obj.WaterLineSel = plyonWLine;
+                obj.WaterLineVal1 = this.getView().byId("inpPlyonWLine").getValue();
+                obj.WaterLineVal2 = this.getView().byId("inpPlyonWLine1").getValue();
+                //line4
+                obj.OmlIml = this.getView().byId("chbPlyonOmlIml").getSelected();
+                var rbtPlyonOml = this.getView().byId("rbtPlyonOml").getSelected();
+                var rbtPlyonIml = this.getView().byId("rbtPlyonIml").getSelected();
+                var plyonOmlIml = rbtPlyonOml === true ? "OML" : (rbtPlyonIml === true ? "IML" : "");
+                obj.OmlImlValue = plyonOmlIml;
+
+            }else if (locationKey == "WING"){
+              
+                //line2
+                obj.WingStation= this.getView().byId("chbWingStation").getSelected();
+                var rbtWingStationat = this.getView().byId("rbtWingStationat").getSelected();
+                var rbtWingStationbw = this.getView().byId("rbtWingStationbw").getSelected();
+                var wingstation = rbtWingStationat === true ? "AT" : (rbtWingStationbw === true ? "BETWEEN" : "");
+                obj.WingStationSel= wingstation;
+                obj.WingStationVal1= this.getView().byId("inpWingStation").getValue();
+                obj.WinfStationVal2= this.getView().byId("inpWingStation1").getValue();
+                //line3
+                obj.WingRib= this.getView().byId("chbWingRib").getSelected();
+                var rbtWingRibat = this.getView().byId("rbtWingRibat").getSelected();
+                var rbtWingRibbw = this.getView().byId("rbtWingRibbw").getSelected();
+                var wingRib = rbtWingRibat === true ? "AT" : (rbtWingRibbw === true ? "BETWEEN" : "");
+                obj.WingRibSel= wingRib;
+                obj.WingRibVal1= this.getView().byId("inpWingRib").getValue();
+                obj.WingRibVal2= this.getView().byId("inpWingRib1").getValue();
+
+                
+                obj.OmlIml = this.getView().byId("chbWingOmlIml").getSelected();
+                var rbtWingOml = this.getView().byId("rbtWingOml").getSelected();
+                var rbtWingIml = this.getView().byId("rbtWingIml").getSelected(); 
+                var wingomliml = rbtWingOml === true ? "OML" : (rbtWingIml === true ? "IML" : ""); 
+                obj.OmlImlValue = wingomliml;
+                
+                obj.Lhs_Rhs= this.getView().byId("chbWingLhsRhs").getSelected();
+                obj.Lhs = this.getView().byId("rbtWingLhsRhsL").getSelected();
+                obj.Rhs = this.getView().byId("rbtWingLhsRhsR").getSelected();
+                
+               
+            }else if (locationKey == "RUDDER"){
+                //line2
+                obj.RuderTailStation= this.getView().byId("chbRudderStation").getSelected();
+                var rbtRudderStationat = this.getView().byId("rbtRudderStationat").getSelected();
+                var rbtRudderStationbw = this.getView().byId("rbtRudderStationbw").getSelected();
+                var rudderStation = rbtRudderStationat === true ? "AT" : (rbtRudderStationbw === true ? "BETWEEN" : ""); 
+                obj.RuderTailStationSel= rudderStation;
+                obj.RuderTailStationVal= this.getView().byId("inpRudderStation").getValue();
+                obj.RuderTailStationVal1= this.getView().byId("inpRudderStation1").getValue();
+              //line3
+                obj.RuderRib= this.getView().byId("chbRudderRib").getSelected();
+                var rbtRudderRibat = this.getView().byId("rbtRudderRibat").getSelected();                    obj.RuderRibSel= "";
+                var rbtRudderRibbw = this.getView().byId("rbtRudderRibbw").getSelected();
+                var rudderRib = rbtRudderRibat === true ? "AT" : (rbtRudderRibbw === true ? "BETWEEN" : ""); 
+                obj.RuderRibSel = rudderRib;
+                obj.RuderRibVal1= this.getView().byId("inpRudderRib").getValue();;
+                obj.RuderRibVal2= this.getView().byId("inpRudderRib1").getValue();
+                //line4
+                
+                obj.Lhs_Rhs = this.getView().byId("chbRudderLhsRhs").getSelected();
+                obj.Lhs = this.getView().byId("rbtRudderLhsRhsL").getSelected();
+                obj.Rhs = this.getView().byId("rbtRudderLhsRhsR").getSelected();
+                
+                obj.OmlIml= this.getView().byId("chbRudderOmlIml").getSelected();
+                var rbtRudderOml = this.getView().byId("rbtRudderOml").getSelected();
+                var rbtRudderIml = this.getView().byId("rbtRudderIml").getSelected();
+                var rudderomliml = rbtRudderOml === true ? "OML" : (rbtRudderIml === true ? "IML" : ""); 
+                obj.OmlImlValue = rudderomliml;
+
+            }else if (locationKey == "OTHER"){
+                //line1
+                obj.Lhs_Rhs = this.getView().byId("chbOthersLhsRhs").getSelected();
+                obj.Lhs = this.getView().byId("rbtOthersLhsRhsL").getSelected();
+                obj.Rhs = this.getView().byId("rbtOthersLhsRhsR").getSelected();
+                //line2
+                obj.FuselageStation = this.getView().byId("chbOthersFStation").getSelected();
+                var rbtOthersFStationat = this.getView().byId("rbtOthersFStationat").getSelected();
+                var rbtOthersFStationbw = this.getView().byId("rbtOthersFStationbw").getSelected();
+                var otherStation = rbtOthersFStationat === true ? "AT" : (rbtOthersFStationbw === true ? "BETWEEN" : ""); 
+                obj.FuseStatnSel = otherStation;
+                obj.FuseStatnVal1 = this.getView().byId("inpOthersFStation").getValue();
+                obj.FuseStatnVal2 = this.getView().byId("inpOthersFStation1").getValue();
+                //line3
+                obj.ButtockLine = this.getView().byId("chbOthersBLine").getSelected();
+                var rbtOthersBLineat = this.getView().byId("rbtOthersBLineat").getSelected();
+                var rbtOthersBLinebw = this.getView().byId("rbtOthersBLinebw").getSelected();
+                var otherBLine = rbtOthersBLineat === true ? "AT" : (rbtOthersBLinebw === true ? "BETWEEN" : ""); 
+                obj.ButtockLineSel = otherBLine;
+                obj.ButtockLineVal1 = this.getView().byId("inpOthersBLine").getValue();
+                obj.ButtockLineVal2 = this.getView().byId("inpOthersBLine1").getValue();
+                //line4
+                obj.WaterLine = this.getView().byId("chbOthersWLine").getSelected();
+                var rbtOthersWLineat = this.getView().byId("rbtOthersWLineat").getSelected();
+                var rbtOthersWLinebw = this.getView().byId("rbtOthersWLinebw").getSelected();
+                var otherWLine = rbtOthersWLineat === true ? "AT" : (rbtOthersWLinebw === true ? "BETWEEN" : ""); 
+                obj.WaterLineSel = otherWLine;
+                obj.WaterLineVal1 = this.getView().byId("inpOthersWLine").getValue();
+                obj.WaterLineVal2 = this.getView().byId("inpOthersWLine1").getValue();
+
+                
+                obj.ButtockLineLhs1 = this.getView().byId("rbtOthersBLineL").getSelected();
+                obj.ButtockLineRhs1 = this.getView().byId("rbtOthersBLineR").getSelected();
+             
+                obj.ButtockLineLhs2 = this.getView().byId("rbtOthersBLineL1").getSelected();
+                obj.ButtockLineRhs2 = this.getView().byId("rbtOthersBLineR1").getSelected();
+                //line5
+                obj.OmlIml = this.getView().byId("chbOthersOmlIml").getSelected();
+                var rbtOthersOml = this.getView().byId("rbtOthersOml").getSelected();
+                var rbtOthersIml = this.getView().byId("rbtOthersIml").getSelected();
+                var otherOMLIML = rbtOthersOml === true ? "OML" : (rbtOthersIml === true ? "IML" : "");
+                obj.OmlImlValue = otherOMLIML;
+            }
+            var oModel = this.getOwnerComponent().getModel();
+            oModel.create("/DiscrepancyPartAircraftSet", obj, {
+                success: function (odata, Response) {
+                    debugger;
+                    this.onClearPartLocation();
+                    sap.ui.core.BusyIndicator.hide();
+                    if (Response.headers["sap-message"]) {
+                        var oMsg = JSON.parse(Response.headers["sap-message"]).message;
+                        var oSeverity = JSON.parse(Response.headers["sap-message"]).severity;
+                        if(oSeverity == "success"){
+                            MessageBox.success(oMsg);
+                        }else{
+                            MessageBox.error(oMsg);
+                        }
+                    }
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+
+        },
+
+        //part location clear the values
+        onClearPartLocation: function (oEvent) {
+            this.getView().byId("chbFuseStation").setSelected(false);
+            this.getView().byId("chbFuseFStation").setSelected(false);
+            this.getView().byId("chbFuseString").setSelected(false);
+            this.getView().byId("chbFuseBLine").setSelected(false);
+            this.getView().byId("chbFuseWLine").setSelected(false);
+            this.getView().byId("chbFuseOmlIml").setSelected(false);
+            this.getView().byId("rbtFuseStation").setSelected(false);
+            this.getView().byId("rbtFuseFStation").setSelected(false);
+            this.getView().byId("rbtFuseString").setSelected(false);
+            this.getView().byId("rbtFuseBLine").setSelected(false);
+            this.getView().byId("rbtFuseWLine").setSelected(false);
+            this.getView().byId("rbtFuseOml").setSelected(false);
+            this.getView().byId("rbtFuseStation1").setSelected(false);
+            this.getView().byId("rbtFuseFStation1").setSelected(false);
+            this.getView().byId("rbtFuseString1").setSelected(false);
+            this.getView().byId("rbtFuseBLine1").setSelected(false);
+            this.getView().byId("rbtFuseWLine1").setSelected(false);
+            this.getView().byId("rbtFuseIml").setSelected(false);
+            this.getView().byId("inpFuseStation").setValue();
+            this.getView().byId("inpFuseFStation").setValue();
+            this.getView().byId("inpFuseString").setValue();
+            this.getView().byId("inpFuseBLine").setValue();
+            this.getView().byId("inpFuseWLine").setValue();
+            this.getView().byId("rbtFuseStringL").setSelected(false);
+            this.getView().byId("rbtFuseStringR").setSelected(false);
+            this.getView().byId("rbtFuseBLineL").setSelected(false);
+            this.getView().byId("rbtFuseBLineR").setSelected(false);
+            this.getView().byId("inpFuseStation1").setValue();
+            this.getView().byId("inpFuseFStation1").setValue();
+            this.getView().byId("inpFuseString1").setValue();
+            this.getView().byId("inpFuseBLine1").setValue();
+            this.getView().byId("inpFuseWLine1").setValue();
+            this.getView().byId("rbtFuseStringL1").setSelected(false);
+            this.getView().byId("rbtFuseStringR1").setSelected(false);
+            this.getView().byId("rbtFuseBLineL1").setSelected(false);
+            this.getView().byId("rbtFuseBLineR1").setSelected(false);
+
+            this.getView().byId("chbWingLhsRhs").setSelected(false);
+            this.getView().byId("chbWingStation").setSelected(false);
+            this.getView().byId("chbWingRib").setSelected(false);
+            this.getView().byId("chbWingOmlIml").setSelected(false);
+            this.getView().byId("rbtWingLhsRhsL").setSelected(false);
+            this.getView().byId("rbtWingStationat").setSelected(false);
+            this.getView().byId("rbtWingRibat").setSelected(false);
+            this.getView().byId("rbtWingOml").setSelected(false);
+            this.getView().byId("rbtWingLhsRhsR").setSelected(false);
+            this.getView().byId("rbtWingStationbw").setSelected(false);
+            this.getView().byId("rbtWingRibbw").setSelected(false);
+            this.getView().byId("rbtWingRibbw").setSelected(false);
+            this.getView().byId("rbtWingIml").setSelected(false);
+            this.getView().byId("inpWingStation").setValue();
+            this.getView().byId("inpWingRib").setValue();
+            this.getView().byId("inpWingStation1").setValue();
+            this.getView().byId("inpWingRib1").setValue();
+
+            this.getView().byId("chbVerticalLhsRhs").setSelected(false);
+            this.getView().byId("chbVerticalStation").setSelected(false);
+            this.getView().byId("chbVerticalRib").setSelected(false);
+            this.getView().byId("chbVerticalOmlIml").setSelected(false);
+            this.getView().byId("rbtVerticalLhsRhsL").setSelected(false);
+            this.getView().byId("rbtVerticalStationat").setSelected(false);
+            this.getView().byId("rbtVerticalRibat").setSelected(false);
+            this.getView().byId("rbtVerticalOml").setSelected(false);
+            this.getView().byId("rbtVerticalLhsRhsR").setSelected(false);
+            this.getView().byId("rbtVerticalStationbw").setSelected(false);
+            this.getView().byId("rbtVerticalRibbw").setSelected(false);
+            this.getView().byId("rbtVerticalIml").setSelected(false);
+            this.getView().byId("inpVerticalStation").setValue();
+            this.getView().byId("inpVerticalRib").setValue();
+            this.getView().byId("inpVerticalStation1").setValue();
+            this.getView().byId("inpVerticalRib1").setValue();
+
+            this.getView().byId("chbRudderLhsRhs").setSelected(false);
+            this.getView().byId("chbRudderStation").setSelected(false);
+            this.getView().byId("chbRudderRib").setSelected(false);
+            this.getView().byId("chbRudderOmlIml").setSelected(false);
+            this.getView().byId("rbtRudderLhsRhsL").setSelected(false);
+            this.getView().byId("rbtRudderStationat").setSelected(false);
+            this.getView().byId("rbtRudderRibat").setSelected(false);
+            this.getView().byId("rbtRudderOml").setSelected(false);
+            this.getView().byId("rbtRudderLhsRhsR").setSelected(false);
+            this.getView().byId("rbtRudderStationbw").setSelected(false);
+            this.getView().byId("rbtRudderRibbw").setSelected(false);
+            this.getView().byId("rbtRudderIml").setSelected(false);
+            this.getView().byId("inpRudderStation").setValue();
+            this.getView().byId("inpRudderRib").setValue();
+            this.getView().byId("inpRudderStation1").setValue();
+            this.getView().byId("inpRudderRib1").setValue();
+
+            this.getView().byId("chbHorizontalLhsRhs").setSelected(false);
+            this.getView().byId("chbHorizontalStation").setSelected(false);
+            this.getView().byId("chbHorizontalRib").setSelected(false);
+            this.getView().byId("chbHorizontalOmlIml").setSelected(false);
+            this.getView().byId("rbtHorizontalLhsRhsL").setSelected(false);
+            this.getView().byId("rbtHorizontalStationat").setSelected(false);
+            this.getView().byId("rbtHorizontalRibat").setSelected(false);
+            this.getView().byId("rbtHorizontalOml").setSelected(false);
+            this.getView().byId("rbtHorizontalLhsRhsR").setSelected(false);
+            this.getView().byId("rbtHorizontalStationbw").setSelected(false);
+            this.getView().byId("rbtHorizontalRibbw").setSelected(false);
+            this.getView().byId("rbtHorizontalIml").setSelected(false);
+            this.getView().byId("inpHorizontalStation").setValue();
+            this.getView().byId("inpHorizontalRib").setValue();
+            this.getView().byId("inpHorizontalStation1").setValue();
+            this.getView().byId("inpHorizontalRib1").setValue();
+
+            this.getView().byId("chbPlyonStation").setSelected(false);
+            this.getView().byId("chbPlyonBLine").setSelected(false);
+            this.getView().byId("chbPlyonWLine").setSelected(false);
+            this.getView().byId("chbPlyonOmlIml").setSelected(false);
+            this.getView().byId("rbtPlyonStationat").setSelected(false);
+            this.getView().byId("rbtPlyonBLineat").setSelected(false);
+            this.getView().byId("rbtPlyonWLineat").setSelected(false);
+            this.getView().byId("omlPlyonOml").setSelected(false);
+            this.getView().byId("rbtPlyonStationbw").setSelected(false);
+            this.getView().byId("rbtPlyonBLinebw").setSelected(false);
+            this.getView().byId("rbtPlyonIml").setSelected(false);
+            this.getView().byId("inpPlyonStation").setValue();
+            this.getView().byId("inpPlyonBLine").setValue();
+            this.getView().byId("inpPlyonWLine").setValue();
+            this.getView().byId("rbtPlyonBLineL").setSelected(false);
+            this.getView().byId("rbtPlyonBLineR").setSelected(false);
+            this.getView().byId("inpPlyonStation1").setValue();
+            this.getView().byId("inpPlyonBLine1").setValue();
+            this.getView().byId("inpPlyonWLine1").setValue();
+            this.getView().byId("rbtPlyonBLineL1").setSelected(false);
+            this.getView().byId("rbtPlyonBLineR1").setSelected(false);
+
+            this.getView().byId("chbOthersLhsRhs").setSelected(false);
+            this.getView().byId("chbOthersFStation").setSelected(false);
+            this.getView().byId("chbOthersBLine").setSelected(false);
+            this.getView().byId("chbOthersWLine").setSelected(false);
+            this.getView().byId("chbOthersOmlIml").setSelected(false);
+            this.getView().byId("rbtOthersLhsRhsL").setSelected(false);
+            this.getView().byId("rbtOthersFStationat").setSelected(false);
+            this.getView().byId("rbtOthersBLineat").setSelected(false);
+            this.getView().byId("rbtOthersWLineat").setSelected(false);
+            this.getView().byId("rbtOthersOml").setSelected(false);
+            this.getView().byId("rbtOthersLhsRhsR").setSelected(false);
+            this.getView().byId("rbtOthersFStationbw").setSelected(false);
+            this.getView().byId("rbtOthersBLinebw").setSelected(false);
+            this.getView().byId("rbtOthersWLinebw").setSelected(false);
+            this.getView().byId("rbtOthersIml").setSelected(false);
+            this.getView().byId("inpOthersFStation").setValue();
+            this.getView().byId("inpOthersBLine").setValue();
+            this.getView().byId("inpOthersWLine").setValue();
+            this.getView().byId("rbtOthersBLineL").setSelected(false);
+            this.getView().byId("rbtOthersBLineR").setSelected(false);
+            this.getView().byId("inpOthersFStation1").setValue();
+            this.getView().byId("inpOthersBLine1").setValue();
+            this.getView().byId("inpOthersWLine1").setValue();
+            this.getView().byId("rbtOthersBLineL1").setSelected(false);
+            this.getView().byId("rbtOthersBLineR1").setSelected(false);
+        },
 
         onPressPrint: function () {
             // var ctrlstring = "width=500px,height=500px";
@@ -1043,7 +1492,7 @@ sap.ui.define([
                             MessageBox.success(oMsg);
                         }
                         var sObjectPath = "CreateNotificationHeaderSet('" + oNotifNo + "')";
-                            this._bindView("/" + sObjectPath);
+                        this._bindView("/" + sObjectPath);
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
@@ -1074,9 +1523,9 @@ sap.ui.define([
                     "PartNumber": oPartNum,
                     "PartDescription": oPartDesc,
                     "to_headerserial": [],
-                    "to_headertrace": [] 
+                    "to_headertrace": []
                 }
-                if (oInpSerNo.getTokens().length >= 1){
+                if (oInpSerNo.getTokens().length >= 1) {
                     payLoadHdrData["to_headerserial"] = [];
                     for (var i = 0; i < oInpSerNo.getTokens().length; i++) {
                         var oSerialNo = oInpSerNo.getTokens()[i].getKey();
@@ -1086,7 +1535,7 @@ sap.ui.define([
                     }
                 }
 
-                if (oInpTrcNo.getTokens().length >= 1){
+                if (oInpTrcNo.getTokens().length >= 1) {
                     payLoadHdrData["to_headertrace"] = [];
                     for (var j = 0; j < oInpTrcNo.getTokens().length; j++) {
                         var oTraceNo = oInpTrcNo.getTokens()[j].getKey();
@@ -1103,14 +1552,14 @@ sap.ui.define([
                         if (Response.headers["sap-message"]) {
                             var oMsg = JSON.parse(Response.headers["sap-message"]).message;
                             var oSeverity = JSON.parse(Response.headers["sap-message"]).severity;
-                            if(oSeverity == "success"){
+                            if (oSeverity == "success") {
                                 MessageBox.success(oMsg);
-                            }else{
+                            } else {
                                 MessageBox.error(oMsg);
                             }
                         }
                         var sObjectPath = "CreateNotificationHeaderSet('" + oNotifNo + "')";
-                            this._bindView("/" + sObjectPath);
+                        this._bindView("/" + sObjectPath);
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
@@ -1182,7 +1631,7 @@ sap.ui.define([
                                     this.getView().byId("idPurInfSupSCip").setValue(suppliercode);
                                     this.getView().byId("idPurInfSupPnip").setValue(supplierpartno);
                                     this.getView().byId("idPurInfSupPnDescip").setValue(supplierpartnodesc);
-                                    
+
                                 } else {
                                     this.getView().byId("idPurInfPurOrdip").setRequired(false);
                                     this.getView().byId("idPurInfPolnip").setRequired(false);
@@ -1253,8 +1702,8 @@ sap.ui.define([
         _setDiscrepancyComboBox: function () {
             this.getOwnerComponent().getModel().metadataLoaded().then(function () {
                 var sEntitypath = this.getOwnerComponent().getModel().createKey("CreateNotificationHeaderSet", {
-                    //NotificationNo: sObjectId
-                    NotificationNo: '200000032'
+                    NotificationNo: sObjectId
+                    // NotificationNo: '200000032'
                 });
                 sap.ui.core.BusyIndicator.show();
                 var oModel = new JSONModel();
@@ -1329,13 +1778,93 @@ sap.ui.define([
         },
         /**Function is triggered when Stock Purge Button is clicked*/
         _onPressStockPurge: function () {
-
             this._oStockPurgeDialog = sap.ui.xmlfragment(this.getView().getId(), "com.airbus.ZQM_NCR.fragments.StockPurge", this);
             this.getView().addDependent(this._oStockPurgeDialog);
             this._oStockPurgeDialog.open();
-
+            var discrepancyNo = this.getView().byId("idDcCobDscNo").getSelectedKey();
+            this.getOwnerComponent().getModel().metadataLoaded().then(function () {
+                var sEntitypath = this.getOwnerComponent().getModel().createKey("DiscrepancyStockPurgeSet", {
+                    NotificationNo: sObjectId,
+                    DiscrepancyNo: discrepancyNo
+                });
+                var sPath = "/" + sEntitypath
+                this.getView().byId("idStkPrgeDlg").bindElement({
+                    path: sPath,
+                    events: {
+                        dataReceived: function (dataRec) {
+                            if (dataRec.getParameters().data) {
+                                var data = dataRec.getParameters().data,
+                                    floorQtyNtGood = data.FloorQtyNtGood,
+                                    floorQtyGood = data.FloorQtyGood,
+                                    floorQtyTotal = data.FloorQtyTotal,
+                                    storeQtyNtGood = data.StoreQtyNtGood,
+                                    storeQtyGood = data.StoreQtyGood,
+                                    storeQtyTotal = data.StoreQtyTotal,
+                                    gtotalQtyNtGood = data.GtotalQtyNtGood,
+                                    gtotalQtyGood = data.GtotalQtyGood,
+                                    gtotalQtyTotal = data.GtotalQtyTotal
+                                this.getView().byId("idInpFlrQngd").setValue(floorQtyNtGood);
+                                this.getView().byId("idInpFlrQgd").setValue(floorQtyGood);
+                                this.getView().byId("idInpFlrQtot").setValue(floorQtyTotal);
+                                this.getView().byId("idInpStrQngd").setValue(storeQtyNtGood);
+                                this.getView().byId("idInpStrQgd").setValue(storeQtyGood);
+                                this.getView().byId("idInpStrQtot").setValue(storeQtyTotal);
+                                this.getView().byId("idInpGtotQngd").setValue(gtotalQtyNtGood);
+                                this.getView().byId("idInpGtotQgd").setValue(gtotalQtyGood);
+                                this.getView().byId("idInpGtotQtot").setValue(gtotalQtyTotal);
+                            }
+                        }.bind(this)
+                    }
+                });
+            }.bind(this));
         },
+
+        /**Function is triggered when clicked on Close button in Stock Purge Dilaog */
         onCloseStockPurge: function () {
+            this._oStockPurgeDialog.destroy();
+        },
+
+        /**Function is triggered when clicked on Save button in Stock Purge Dilaog */
+        onSaveStockPurge: function () {
+            var floorQtyNtGood = this.getView().byId("idInpFlrQngd").getValue(),
+                floorQtyGood = this.getView().byId("idInpFlrQgd").getValue(),
+                floorQtyTotal = this.getView().byId("idInpFlrQtot").getValue(),
+                storeQtyNtGood = this.getView().byId("idInpStrQngd").getValue(),
+                storeQtyGood = this.getView().byId("idInpStrQgd").getValue(),
+                storeQtyTotal = this.getView().byId("idInpStrQtot").getValue(),
+                gtotalQtyNtGood = this.getView().byId("idInpGtotQngd").getValue(),
+                gtotalQtyGood = this.getView().byId("idInpGtotQgd").getValue(),
+                gtotalQtyTotal = this.getView().byId("idInpGtotQtot").getValue();
+            var payloadDiscrepancyStockPurge = {
+                "NotificationNo": sObjectId,
+                "DiscrepancyNo": oDiscrepancy,
+                "FloorQtyNtGood": floorQtyNtGood,
+                "FloorQtyGood": floorQtyGood,
+                "FloorQtyTotal": floorQtyTotal,
+                "StoreQtyNtGood": storeQtyNtGood,
+                "StoreQtyGood": storeQtyGood,
+                "StoreQtyTotal": storeQtyTotal,
+                "GtotalQtyNtGood": gtotalQtyNtGood,
+                "GtotalQtyGood": gtotalQtyGood,
+                "GtotalQtyTotal": gtotalQtyTotal
+            };
+            var oModel = this.getOwnerComponent().getModel();
+            oModel.create("/DiscrepancyStockPurgeSet", payloadDiscrepancyStockPurge, {
+                method: "POST",
+                success: function (data, response) {
+                    sap.ui.core.BusyIndicator.hide();
+                    if (response.headers["sap-message"]) {
+                        var sMessg = JSON.parse(response.headers["sap-message"]).message;
+                        MessageBox.success(sMessg);
+                    }
+                    oModel.refresh();
+                },
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
             this._oStockPurgeDialog.destroy();
         },
 
@@ -1405,15 +1934,21 @@ sap.ui.define([
                 this.getView().byId("idIconTabBarHeader").setSelectedKey("Discre");
             } else {
                 var discrepancyNo = oEvent.getParameters("selectedItem").selectedItem.getKey();
+                oDiscrepancy = discrepancyNo;
             }
             if (discrepancyNo != "") {
+                if (oNctype == "STOCK PURGE") {
+                    this.getView().byId("idDcBtStkPrg").setVisible(true);
+                } else {
+                    this.getView().byId("idDcBtStkPrg").setVisible(false);
+                }
                 this.getOwnerComponent().getModel().metadataLoaded().then(function () {
                     var sEntitypath = this.getOwnerComponent().getModel().createKey("CreateNotificationHeaderSet", {
-                        //NotificationNo: sObjectId
-                        NotificationNo: '200000032',
+                        NotificationNo: sObjectId
+                        // NotificationNo: '200000032',
                     });
-                    //var sPath = "/" + sEntitypath + "/to_discrepancy(NotificationNo='"+sObjectId+"',DiscrepancyNo='"+discrepancyNo+"')";
-                    var sPath = "/" + sEntitypath + "/to_discrepancy(NotificationNo='" + 200000032 + "',DiscrepancyNo='" + discrepancyNo + "')";
+                    var sPath = "/" + sEntitypath + "/to_discrepancy(NotificationNo='" + sObjectId + "',DiscrepancyNo='" + discrepancyNo + "')";
+                    // var sPath = "/" + sEntitypath + "/to_discrepancy(NotificationNo='" + 200000032 + "',DiscrepancyNo='" + discrepancyNo + "')";
                     this.getView().bindElement({
                         path: sPath,
                         events: {
@@ -1526,6 +2061,35 @@ sap.ui.define([
             }
         },
 
+        /**Function is triggered on selection change of format ComboBox */
+        _onSelectingFormat: function (oEvent) {
+            var format = oEvent.getParameters("selectedItem").selectedItem.getKey();
+            sap.ui.core.BusyIndicator.show();
+            var oDataModel = this.getOwnerComponent().getModel();
+            var sPath = "/AsPerSet(Asper='" + format + "')";
+            oDataModel.read(sPath, {
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.AsperValue;
+                    const textArray = data.split("</n>");
+                    var rows = textArray.length;
+                    var text = "";
+                    for (var i = 0; i < rows; i++) {
+                        var text = text + textArray[i] + "\n";
+                    }
+                    this.getView().byId("idDcInpAp").setRows(rows);
+                    //this.getView().byId("idDcInpAp").setValue(textArray);
+                    //this.getView().byId("idDcInpAp").setValue(data);
+                    this.getView().byId("idDcInpAp").setValue(text);
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+        },
+
         handleAircraftChange: function () {
             var oInput = this.getView().byId("idInpAircraft").getValue();
             if (oInput !== "") {
@@ -1554,10 +2118,6 @@ sap.ui.define([
                     this.getView().byId("idCombNcType").setSelectedKey(oNctype);
                 }.bind(this)
             });
-            // if (ncr === "standard") {
-            // } else {
-            // }
-
         },
 
         inEnter: function () {
@@ -1619,7 +2179,6 @@ sap.ui.define([
                 this.getView().byId("idpono").setValueStateText("Enter PO Number");
                 this.getView().byId("idporder").setValueStateText("Enter Purchase Order Value");
             } else {
-
                 for (var i in ic.getItems()) {
                     ic.getItems()[i].setVisible(true);
                 }
@@ -2943,7 +3502,7 @@ sap.ui.define([
                 this.getView().byId("idInpStatPartDesc").setValue();
                 if (oMulInpSer.getTokens()) {
                     oMulInpSer.removeAllTokens();
-                } 
+                }
                 if (oMulInpTrc.getTokens()) {
                     oMulInpTrc.removeAllTokens();
                 }
@@ -4072,9 +4631,9 @@ sap.ui.define([
                 return;
             }
             oInput.setValue(oSelectedItem.getTitle());
-            if(oSelectedItem.getInfo()){
+            if (oSelectedItem.getInfo()) {
                 this.getView().byId("idDcIpPrtnrNm").setValue(oSelectedItem.getInfo());
-            } 
+            }
             this._oPartnerDialog.destroy();
         },
 
@@ -4126,7 +4685,7 @@ sap.ui.define([
 
         onSearchSupersedesItem: function (oEvent) {
             var oValue = oEvent.getParameter("value");
-            var oFilter = new Filter("Value", FilterOperator.Contains, oValue);
+            var oFilter = new Filter("Value1", FilterOperator.Contains, oValue);
             var oBinding = oEvent.getParameter("itemsBinding");
             oBinding.filter([oFilter]);
         },
@@ -4172,9 +4731,12 @@ sap.ui.define([
 
         onSearchSupersededbyItem: function (oEvent) {
             var oValue = oEvent.getParameter("value");
-            var oFilter = new Filter("Value", FilterOperator.Contains, oValue);
+            var aFilter = [], oFilter = [];
+            oFilter.push(new Filter("Value1", FilterOperator.Contains, oValue));
+            oFilter.push(new Filter("Value", FilterOperator.Contains, oValue));
+            aFilter.push(new Filter(oFilter, false));
             var oBinding = oEvent.getParameter("itemsBinding");
-            oBinding.filter([oFilter]);
+            oBinding.filter(aFilter);
         },
 
         handleChangeDiscPartNo: function () {
@@ -4291,6 +4853,7 @@ sap.ui.define([
                 oDiscCompSerialNo = oDiscCompSerialNo.length === 1 ? oDiscCompSerialNo[0].getKey() : "";
                 oDiscTraceNo = oDiscTraceNo.length === 1 ? oDiscTraceNo[0].getKey() : "";
                 var payloadCrtDisData = {
+                    "NotificationNo": oNotifNo,
                     "LinkedTo": oDisLinkedTo,
                     "Liability": oDiscLiability,
                     "Partner": oDiscPartner,
@@ -4324,10 +4887,11 @@ sap.ui.define([
                     success: function (odata, Response) {
                         debugger;
                         sap.ui.core.BusyIndicator.hide();
-                        // if (Response.headers["sap-message"]) {
-                        //     var oMsg = JSON.parse(Response.headers["sap-message"]).message;
-                        //     MessageBox.success(oMsg);
-                        // }
+                        if (Response.headers["sap-message"]) {
+                            var oMsg = JSON.parse(Response.headers["sap-message"]).message;
+                            MessageBox.success(oMsg);
+                        }
+                        this._setDiscrepancyComboBox();
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
@@ -4337,6 +4901,7 @@ sap.ui.define([
                 });
             } else {
                 var payloadCrtDisData = {
+                    "NotificationNo": oNotifNo,
                     "LinkedTo": oDisLinkedTo,
                     "Liability": oDiscLiability,
                     "Partner": oDiscPartner,
@@ -4394,6 +4959,10 @@ sap.ui.define([
                     success: function (odata, Response) {
                         debugger;
                         sap.ui.core.BusyIndicator.hide();
+                        if (Response.headers["sap-message"]) {
+                            var oMsg = JSON.parse(Response.headers["sap-message"]).message;
+                            MessageBox.success(oMsg);
+                        }
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
@@ -4572,6 +5141,89 @@ sap.ui.define([
             var oModel = this.getOwnerComponent().getModel("NCSaveModel");
             this.getView().setModel(oModel, "NCSaveModel");
             this.getView().setModel(this.getOwnerComponent().getModel());
+        },
+
+        onChangeAttachNCHeader: function (oEvent) {
+            var fileContent = oEvent.getParameter("files")[0];
+            var oUploadCollection = oEvent.getSource();
+            var oModel = this.getOwnerComponent().getModel();
+            var array = [];
+            array.push(oEvent.getParameters().files[0]);
+            oModel.refreshSecurityToken();
+            var oCustomHeaderToken = new sap.m.UploadCollectionParameter({
+                name: "x-csrf-token",
+                value: oModel.getSecurityToken()
+            });
+            oUploadCollection.addHeaderParameter(oCustomHeaderToken);
+
+            var obj = {
+                "FileContent": fileContent,
+                "FileID": Math.floor(Math.random() * 143143)
+            };
+
+            var oAttModel = this.getView().getModel("AttachmentModel").getData();
+            oAttModel.push(obj);
+            this.onUploadAttachNCHeader();
+        },
+
+        onUploadCompleteNCHeader: function (oEvent) {
+            var sUploadedFile = oEvent.getParameter("files")[0].fileName;
+            if (!sUploadedFile) {
+                var aUploadedFile = (oEvent.getParameters().getSource().getProperty("value")).split(/\" "/);
+                sUploadedFile = aUploadedFile[0];
+            }
+            oItem = {
+                "AttachID": jQuery.now().toString(),
+                "FileName": sUploadedFile
+            };
+        },
+
+        onBeforeUploadStartsNCHeader: function (oEvent) {
+            var data = this.getView().getModel("AttachmentModel").getData();
+            for (var k = 0; k < data.length; k++) {
+                var oCustomHeaderSlug = new sap.m.UploadCollectionParameter({
+                    name: "slug",
+                    value: oEvent.getParameter("fileName")
+                });
+                oEvent.getParameters().addHeaderParameter(oCustomHeaderSlug);
+            }
+        },
+
+        onUploadAttachNCHeader: function () {
+            var data = this.getView().getModel("AttachmentModel").getData();
+            for (var k = 0; k < data.length; k++) {
+                var p = 0;
+                var i = this.getView().getModel();
+                var c = new sap.m.UploadCollectionParameter({
+                    name: "x-csrf-token",
+                    value: i.getSecurityToken()
+                });
+                this.token = c.getProperty("value");
+                this.slug = data[k].FileContent.name + "|" + sObjectId + "|" + "0001";
+                this.oContentType = data[k].FileContent.type;
+                var e = {
+                    "x-csrf-token": this.token,
+                    slug: this.slug,
+                    "Content-type": this.oContentType
+                };
+                jQuery.ajax({
+                    type: "POST",
+                    url: this.getOwnerComponent().getModel().sServiceUrl + "/FileUploadSet",
+                    headers: e,
+                    cache: false,
+                    // contentType: this.oContentType,
+                    // datatype : "application/json",
+                    processData: false,
+                    data: data[k].FileContent,
+                    async: true,
+                    success: function (data, response) {
+                        debugger;
+                    },
+                    error: function (err) {
+                        debugger;
+                    }
+                })
+            }
         }
 
         /**
