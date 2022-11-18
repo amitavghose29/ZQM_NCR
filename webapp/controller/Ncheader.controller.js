@@ -349,29 +349,35 @@ sap.ui.define([
                 this.getView().byId("idObjNCStatus").setVisible(true);
                 this.getView().byId("idObjNCStatusDiscrep").setVisible(false);
                 this.getView().byId("idObjNCStatusDispo").setVisible(false);
+                var sObjectPath = "CreateNotificationHeaderSet('" + sObjectId + "')";
+                this._bindView("/" + sObjectPath);
+                this._bindTable("/" + sObjectPath);
             } else if (key === "log") {
                 text = "Traceability and History";
                 this.getView().byId("headertext").setText(text);
             } else if (key === "Purchase") {
                 this._setPurchaseInfoData();
             } else if (key === "Discre") {
-                if (this.getView().byId("idDcCobDscNo").getSelectedItem()) {
-                    var oDiscNo = this.getView().byId("idDcCobDscNo").getSelectedItem().getText();
-                    text = "Discrepancy No: " + oDiscNo + "";
-                } else {
-                    text = "Discrepancy No: ";
-                }
-                this.getView().byId("idDcBtStkPrg").setVisible(false);
-                this.getView().byId("headertext").setText(text);
+                // if (this.getView().byId("idDcCobDscNo").getSelectedItem()) {
+                //     var oDiscNo = this.getView().byId("idDcCobDscNo").getSelectedItem().getText();
+                //     text = "Discrepancy No: " + oDiscNo + "";
+                // } else {
+                //     text = "Discrepancy No: ";
+                // }                
+                // this.getView().byId("headertext").setText(text);
                 this._setDiscrepancyComboBox();
                 this._setPrelimCauseComboBox();
                 this._setFormatComboBox();
                 this.bindLinkedToDiscrepancy();
                 this.onSelectDiscPartlocation();
+                var oDiscrepancyNo = "";
+                this.bindDiscrepancyTab(oDiscrepancyNo);
+                this.bindSupplier();
                 this.getView().byId("idstatus").setVisible(true);
                 this.getView().byId("idObjNCStatus").setVisible(false);
                 this.getView().byId("idObjNCStatusDiscrep").setVisible(true);
                 this.getView().byId("idObjNCStatusDispo").setVisible(false);
+                this.getView().byId("idDcBtStkPrg").setVisible(false);
             } else if (key === "Dispo") {
                 this._setPurchaseInfoData();
                 this.getView().byId("idstatus").setVisible(true);
@@ -380,6 +386,29 @@ sap.ui.define([
                 this.getView().byId("idObjNCStatusDispo").setVisible(true);
             }
         },
+
+        bindSupplier: function(){
+            var oDataModel = this.getOwnerComponent().getModel();
+            var oModel = new JSONModel();
+            var sPath = "/GetDiscSupplierCodeSet('" + sObjectId + "')";
+            oDataModel.read(sPath, {
+                success: function (oData, oResult) {
+                    debugger;
+                    sap.ui.core.BusyIndicator.hide();
+                    var oDiscPartnerCode = oData.DiscPartnerCode,
+                        oDiscPartnerDesc = oData.DiscPartnerDesc;
+                    this.getView().byId("idDcIpPrtnr").setValue(oDiscPartnerCode);
+                    this.getView().byId("idDcIpPrtnrNm").setValue(oDiscPartnerDesc);
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+
+                }
+            });
+        },
+
         // discrepancy part location combobox data select
         onSelectDiscPartlocation: function () {
             var oDataModel = this.getOwnerComponent().getModel();
@@ -441,21 +470,25 @@ sap.ui.define([
         },
 
         // Descrepancy part location save
-        onSavePartLocation:function(){
+        onSavePartLocation: function () {
             var obj = {};
-            var Arr =[];
+            var Arr = [];
             var notificaitonno = sObjectId;
             var locationKey = this.getView().byId("cmbDescSelect").getSelectedKey();
-                obj.NotificationNo = sObjectId;
-                obj.Location = locationKey;
-                // obj.DiscrepancyNo = 
-            if(locationKey == "FUSELAGE" ){
-                
+            obj.NotificationNo = sObjectId;
+            obj.Location = locationKey;
+            obj.DiscrepancyNo = this.getView().byId("idDcCobDscNo").getSelectedKey();
+            if (obj.DiscrepancyNo == "") {
+                MessageBox.warning("Please Select DiscrepancyNo");
+                return
+            }
+            if (locationKey == "FUSELAGE") {
+
                 //line1
-                obj.FuselageStation= this.getView().byId("chbFuseStation").getSelected();
-                var rbtFuseSation=this.getView().byId("rbtFuseStation").getSelected();
-               var rbtFuseSation1= this.getView().byId("rbtFuseStation1").getSelected();
-               var fstaSel =  rbtFuseSation === true ? "AT" : (rbtFuseSation1 === true ? "BETWEEN" : "");
+                obj.FuselageStation = this.getView().byId("chbFuseStation").getSelected();
+                var rbtFuseSation = this.getView().byId("rbtFuseStation").getSelected();
+                var rbtFuseSation1 = this.getView().byId("rbtFuseStation1").getSelected();
+                var fstaSel = rbtFuseSation === true ? "AT" : (rbtFuseSation1 === true ? "BETWEEN" : "");
                 obj.FuseStatnSel = fstaSel;
                 obj.FuseStatnVal1 = this.getView().byId("inpFuseStation").getValue();
                 obj.FuseStatnVal2 = this.getView().byId("inpFuseStation1").getValue();
@@ -494,38 +527,38 @@ sap.ui.define([
                 //line6
                 obj.OmlIml = this.getView().byId("chbFuseOmlIml").getSelected();
                 var rbtFuseOml = this.getView().byId("rbtFuseOml").getSelected();
-               var rbtFuseIml = this.getView().byId("rbtFuseIml").getSelected();
-               var fuseomliml = rbtFuseOml === true ? "OML" : (rbtFuseIml === true ? "IML" : "");
+                var rbtFuseIml = this.getView().byId("rbtFuseIml").getSelected();
+                var fuseomliml = rbtFuseOml === true ? "OML" : (rbtFuseIml === true ? "IML" : "");
                 obj.OmlImlValue = fuseomliml;
-              
-               obj.FuseFrameLhs1 = this.getView().byId("rbtFuseStringL").getSelected();
-               obj.FuseFrameRhs1 = this.getView().byId("rbtFuseStringR").getSelected();
-               obj.FuseFrameLhs2 = this.getView().byId("rbtFuseStringL1").getSelected();
-               obj.FuseFrameRhs2 = this.getView().byId("rbtFuseStringR1").getSelected();
 
-               obj.FuseStringLhs1 = this.getView().byId("rbtFuseBLineL").getSelected();
-               obj.FuseStringRhs1 = this.getView().byId("rbtFuseBLineR").getSelected();
-               obj.FuseStringLhs2 = this.getView().byId("rbtFuseBLineL1").getSelected();
-               obj.FuseStringRhs2 = this.getView().byId("rbtFuseBLineR1").getSelected();
+                obj.FuseFrameLhs1 = this.getView().byId("rbtFuseStringL").getSelected();
+                obj.FuseFrameRhs1 = this.getView().byId("rbtFuseStringR").getSelected();
+                obj.FuseFrameLhs2 = this.getView().byId("rbtFuseStringL1").getSelected();
+                obj.FuseFrameRhs2 = this.getView().byId("rbtFuseStringR1").getSelected();
 
-            }else if (locationKey == "HORIZONTAL EMPENNAGE"){
+                obj.FuseStringLhs1 = this.getView().byId("rbtFuseBLineL").getSelected();
+                obj.FuseStringRhs1 = this.getView().byId("rbtFuseBLineR").getSelected();
+                obj.FuseStringLhs2 = this.getView().byId("rbtFuseBLineL1").getSelected();
+                obj.FuseStringRhs2 = this.getView().byId("rbtFuseBLineR1").getSelected();
+
+            } else if (locationKey == "HORIZONTAL EMPENNAGE") {
                 //line1
                 obj.Lhs_Rhs = this.getView().byId("chbHorizontalLhsRhs").getSelected();
                 obj.Lhs = this.getView().byId("rbtHorizontalLhsRhsL").getSelected();
                 obj.Rhs = this.getView().byId("rbtHorizontalLhsRhsR").getSelected();
                 //line2
-                obj.HorzRib= this.getView().byId("chbHorizontalRib").getSelected();
+                obj.HorzRib = this.getView().byId("chbHorizontalRib").getSelected();
                 var rbtHorizontalRibat = this.getView().byId("rbtHorizontalRibat").getSelected();
                 var rbtHorizontalRibbw = this.getView().byId("rbtHorizontalRibbw").getSelected();
                 var horizRib = rbtHorizontalRibat === true ? "AT" : (rbtHorizontalRibbw === true ? "BETWEEN" : "");
-                obj.HorzRibSel= horizRib;
-                obj.HorzRibVal= this.getView().byId("inpHorizontalRib").getValue();
-                obj.HorzRibVal2= this.getView().byId("inpHorizontalRib1").getValue();
+                obj.HorzRibSel = horizRib;
+                obj.HorzRibVal = this.getView().byId("inpHorizontalRib").getValue();
+                obj.HorzRibVal2 = this.getView().byId("inpHorizontalRib1").getValue();
                 //line4    
                 obj.OmlIml = this.getView().byId("chbHorizontalOmlIml").getSelected();
                 var rbtHorizontalOml = this.getView().byId("rbtHorizontalOml").getSelected();
                 var rbtHorizontalIml = this.getView().byId("rbtHorizontalIml").getSelected();
-                var horizomliml = rbtHorizontalOml === true ? "OML":(rbtHorizontalIml === true ? "IML" : "");
+                var horizomliml = rbtHorizontalOml === true ? "OML" : (rbtHorizontalIml === true ? "IML" : "");
                 obj.OmlImlValue = horizomliml;
                 //line3
                 obj.HorzStation = this.getView().byId("chbHorizontalStation").getSelected();
@@ -534,38 +567,38 @@ sap.ui.define([
                 var horizStation = rbtHorizontalStationat === true ? "AT" : (rbtHorizontalStationbw === true ? "BETWEEN" : "");
                 obj.HorzStationSel = horizStation;
                 obj.HorzStationVal1 = this.getView().byId("inpHorizontalStation").getValue();
-                obj.HorzStationVal2= this.getView().byId("inpHorizontalStation1").getValue();
-                
-            }else if(locationKey == "VERTICAL EMPENNAGE"){
+                obj.HorzStationVal2 = this.getView().byId("inpHorizontalStation1").getValue();
+
+            } else if (locationKey == "VERTICAL EMPENNAGE") {
 
                 //line2
-                obj.VerticalEmpStation= this.getView().byId("chbVerticalStation").getSelected();
+                obj.VerticalEmpStation = this.getView().byId("chbVerticalStation").getSelected();
                 var rbtVerticalStationat = this.getView().byId("rbtVerticalStationat").getSelected();
                 var rbtVerticalStationbw = this.getView().byId("rbtVerticalStationbw").getSelected();
                 var vertStation = rbtVerticalStationat === true ? "AT" : (rbtVerticalStationbw === true ? "BETWEEN" : "");
-                obj.VerticalEmpStationSel= vertStation;
-                obj.VerticalEmpStationVal1= this.getView().byId("inpVerticalStation").getValue();
-                obj.VerticalEmpStationVal2= this.getView().byId("inpVerticalStation1").getValue();
+                obj.VerticalEmpStationSel = vertStation;
+                obj.VerticalEmpStationVal1 = this.getView().byId("inpVerticalStation").getValue();
+                obj.VerticalEmpStationVal2 = this.getView().byId("inpVerticalStation1").getValue();
                 //line3
-                obj.VerticalEmpRib= this.getView().byId("chbVerticalRib").getSelected();
+                obj.VerticalEmpRib = this.getView().byId("chbVerticalRib").getSelected();
                 var rbtVerticalRibat = this.getView().byId("rbtVerticalRibat").getSelected();
                 var rbtVerticalRibbw = this.getView().byId("rbtVerticalRibbw").getSelected();
                 var vertRib = rbtVerticalRibat === true ? "AT" : (rbtVerticalRibbw === true ? "BETWEEN" : "");
-                obj.VerticalEmpRibSel= vertRib;
-                obj.VerticalEmpRibVal1= this.getView().byId("inpVerticalRib").getValue();
-                obj.VerticalEmpRibVal2= this.getView().byId("inpVerticalRib1").getValue();
+                obj.VerticalEmpRibSel = vertRib;
+                obj.VerticalEmpRibVal1 = this.getView().byId("inpVerticalRib").getValue();
+                obj.VerticalEmpRibVal2 = this.getView().byId("inpVerticalRib1").getValue();
                 //line1
                 obj.Lhs_Rhs = this.getView().byId("chbVerticalLhsRhs").getSelected();
                 obj.Lhs = this.getView().byId("rbtVerticalLhsRhsL").getSelected();
                 obj.Rhs = this.getView().byId("rbtVerticalLhsRhsR").getSelected();
-               //line4
+                //line4
                 obj.OmlIml = this.getView().byId("chbVerticalOmlIml").getSelected();
                 var rbtVerticalOml = this.getView().byId("rbtVerticalOml").getSelected();
                 var rbtVerticalIml = this.getView().byId("rbtVerticalIml").getSelected();
-                var verticalomliml = rbtVerticalOml === true ? "OML" : (rbtVerticalIml === true ? "IML" : ""); 
+                var verticalomliml = rbtVerticalOml === true ? "OML" : (rbtVerticalIml === true ? "IML" : "");
                 obj.OmlImlValue = verticalomliml;
 
-            }else if(locationKey == "PYLON / NACELLE"){
+            } else if (locationKey == "PYLON / NACELLE") {
                 //line1
                 obj.FuselageStation = this.getView().byId("chbPlyonStation").getSelected();
                 var rbtPlyonStationat = this.getView().byId("rbtPlyonStationat").getSelected();
@@ -578,7 +611,7 @@ sap.ui.define([
                 obj.ButtockLine = this.getView().byId("chbPlyonBLine").getSelected();
                 var rbtPlyonBLineat = this.getView().byId("rbtPlyonBLineat").getSelected();
                 var rbtPlyonBLinebw = this.getView().byId("rbtPlyonBLinebw").getSelected();
-                var plyonBLine = rbtPlyonBLineat === true ? "AT" : (rbtPlyonBLinebw === true ? "BETWEEN" : ""); 
+                var plyonBLine = rbtPlyonBLineat === true ? "AT" : (rbtPlyonBLinebw === true ? "BETWEEN" : "");
                 obj.ButtockLineSel = plyonBLine;
                 obj.ButtockLineVal1 = this.getView().byId("inpPlyonBLine").getValue();
                 obj.ButtockLineLhs1 = this.getView().byId("rbtPlyonBLineL").getSelected();
@@ -586,12 +619,12 @@ sap.ui.define([
                 obj.ButtockLineVal2 = this.getView().byId("inpPlyonBLine1").getValue();
                 obj.ButtockLineLhs2 = this.getView().byId("rbtPlyonBLineL1").getSelected();
                 obj.ButtockLineRhs2 = this.getView().byId("rbtPlyonBLineR1").getSelected();
-                
+
                 //line3
                 obj.WaterLine = this.getView().byId("chbPlyonWLine").getSelected();
                 var rbtPlyonWLineat = this.getView().byId("rbtPlyonWLineat").getSelected();
                 var rbtPlyonWLinebw = this.getView().byId("rbtPlyonWLinebw").getSelected();
-                var plyonWLine = rbtPlyonWLineat === true ? "AT" : (rbtPlyonWLinebw === true ? "BETWEEN" : ""); 
+                var plyonWLine = rbtPlyonWLineat === true ? "AT" : (rbtPlyonWLinebw === true ? "BETWEEN" : "");
                 obj.WaterLineSel = plyonWLine;
                 obj.WaterLineVal1 = this.getView().byId("inpPlyonWLine").getValue();
                 obj.WaterLineVal2 = this.getView().byId("inpPlyonWLine1").getValue();
@@ -602,67 +635,67 @@ sap.ui.define([
                 var plyonOmlIml = rbtPlyonOml === true ? "OML" : (rbtPlyonIml === true ? "IML" : "");
                 obj.OmlImlValue = plyonOmlIml;
 
-            }else if (locationKey == "WING"){
-              
+            } else if (locationKey == "WING") {
+
                 //line2
-                obj.WingStation= this.getView().byId("chbWingStation").getSelected();
+                obj.WingStation = this.getView().byId("chbWingStation").getSelected();
                 var rbtWingStationat = this.getView().byId("rbtWingStationat").getSelected();
                 var rbtWingStationbw = this.getView().byId("rbtWingStationbw").getSelected();
                 var wingstation = rbtWingStationat === true ? "AT" : (rbtWingStationbw === true ? "BETWEEN" : "");
-                obj.WingStationSel= wingstation;
-                obj.WingStationVal1= this.getView().byId("inpWingStation").getValue();
-                obj.WinfStationVal2= this.getView().byId("inpWingStation1").getValue();
+                obj.WingStationSel = wingstation;
+                obj.WingStationVal1 = this.getView().byId("inpWingStation").getValue();
+                obj.WinfStationVal2 = this.getView().byId("inpWingStation1").getValue();
                 //line3
-                obj.WingRib= this.getView().byId("chbWingRib").getSelected();
+                obj.WingRib = this.getView().byId("chbWingRib").getSelected();
                 var rbtWingRibat = this.getView().byId("rbtWingRibat").getSelected();
                 var rbtWingRibbw = this.getView().byId("rbtWingRibbw").getSelected();
                 var wingRib = rbtWingRibat === true ? "AT" : (rbtWingRibbw === true ? "BETWEEN" : "");
-                obj.WingRibSel= wingRib;
-                obj.WingRibVal1= this.getView().byId("inpWingRib").getValue();
-                obj.WingRibVal2= this.getView().byId("inpWingRib1").getValue();
+                obj.WingRibSel = wingRib;
+                obj.WingRibVal1 = this.getView().byId("inpWingRib").getValue();
+                obj.WingRibVal2 = this.getView().byId("inpWingRib1").getValue();
 
-                
+
                 obj.OmlIml = this.getView().byId("chbWingOmlIml").getSelected();
                 var rbtWingOml = this.getView().byId("rbtWingOml").getSelected();
-                var rbtWingIml = this.getView().byId("rbtWingIml").getSelected(); 
-                var wingomliml = rbtWingOml === true ? "OML" : (rbtWingIml === true ? "IML" : ""); 
+                var rbtWingIml = this.getView().byId("rbtWingIml").getSelected();
+                var wingomliml = rbtWingOml === true ? "OML" : (rbtWingIml === true ? "IML" : "");
                 obj.OmlImlValue = wingomliml;
-                
-                obj.Lhs_Rhs= this.getView().byId("chbWingLhsRhs").getSelected();
+
+                obj.Lhs_Rhs = this.getView().byId("chbWingLhsRhs").getSelected();
                 obj.Lhs = this.getView().byId("rbtWingLhsRhsL").getSelected();
                 obj.Rhs = this.getView().byId("rbtWingLhsRhsR").getSelected();
-                
-               
-            }else if (locationKey == "RUDDER"){
+
+
+            } else if (locationKey == "RUDDER") {
                 //line2
-                obj.RuderTailStation= this.getView().byId("chbRudderStation").getSelected();
+                obj.RuderTailStation = this.getView().byId("chbRudderStation").getSelected();
                 var rbtRudderStationat = this.getView().byId("rbtRudderStationat").getSelected();
                 var rbtRudderStationbw = this.getView().byId("rbtRudderStationbw").getSelected();
-                var rudderStation = rbtRudderStationat === true ? "AT" : (rbtRudderStationbw === true ? "BETWEEN" : ""); 
-                obj.RuderTailStationSel= rudderStation;
-                obj.RuderTailStationVal= this.getView().byId("inpRudderStation").getValue();
-                obj.RuderTailStationVal1= this.getView().byId("inpRudderStation1").getValue();
-              //line3
-                obj.RuderRib= this.getView().byId("chbRudderRib").getSelected();
-                var rbtRudderRibat = this.getView().byId("rbtRudderRibat").getSelected();                    obj.RuderRibSel= "";
+                var rudderStation = rbtRudderStationat === true ? "AT" : (rbtRudderStationbw === true ? "BETWEEN" : "");
+                obj.RuderTailStationSel = rudderStation;
+                obj.RuderTailStationVal = this.getView().byId("inpRudderStation").getValue();
+                obj.RuderTailStationVal1 = this.getView().byId("inpRudderStation1").getValue();
+                //line3
+                obj.RuderRib = this.getView().byId("chbRudderRib").getSelected();
+                var rbtRudderRibat = this.getView().byId("rbtRudderRibat").getSelected(); obj.RuderRibSel = "";
                 var rbtRudderRibbw = this.getView().byId("rbtRudderRibbw").getSelected();
-                var rudderRib = rbtRudderRibat === true ? "AT" : (rbtRudderRibbw === true ? "BETWEEN" : ""); 
+                var rudderRib = rbtRudderRibat === true ? "AT" : (rbtRudderRibbw === true ? "BETWEEN" : "");
                 obj.RuderRibSel = rudderRib;
-                obj.RuderRibVal1= this.getView().byId("inpRudderRib").getValue();;
-                obj.RuderRibVal2= this.getView().byId("inpRudderRib1").getValue();
+                obj.RuderRibVal1 = this.getView().byId("inpRudderRib").getValue();;
+                obj.RuderRibVal2 = this.getView().byId("inpRudderRib1").getValue();
                 //line4
-                
+
                 obj.Lhs_Rhs = this.getView().byId("chbRudderLhsRhs").getSelected();
                 obj.Lhs = this.getView().byId("rbtRudderLhsRhsL").getSelected();
                 obj.Rhs = this.getView().byId("rbtRudderLhsRhsR").getSelected();
-                
-                obj.OmlIml= this.getView().byId("chbRudderOmlIml").getSelected();
+
+                obj.OmlIml = this.getView().byId("chbRudderOmlIml").getSelected();
                 var rbtRudderOml = this.getView().byId("rbtRudderOml").getSelected();
                 var rbtRudderIml = this.getView().byId("rbtRudderIml").getSelected();
-                var rudderomliml = rbtRudderOml === true ? "OML" : (rbtRudderIml === true ? "IML" : ""); 
+                var rudderomliml = rbtRudderOml === true ? "OML" : (rbtRudderIml === true ? "IML" : "");
                 obj.OmlImlValue = rudderomliml;
 
-            }else if (locationKey == "OTHER"){
+            } else if (locationKey == "OTHER") {
                 //line1
                 obj.Lhs_Rhs = this.getView().byId("chbOthersLhsRhs").getSelected();
                 obj.Lhs = this.getView().byId("rbtOthersLhsRhsL").getSelected();
@@ -671,7 +704,7 @@ sap.ui.define([
                 obj.FuselageStation = this.getView().byId("chbOthersFStation").getSelected();
                 var rbtOthersFStationat = this.getView().byId("rbtOthersFStationat").getSelected();
                 var rbtOthersFStationbw = this.getView().byId("rbtOthersFStationbw").getSelected();
-                var otherStation = rbtOthersFStationat === true ? "AT" : (rbtOthersFStationbw === true ? "BETWEEN" : ""); 
+                var otherStation = rbtOthersFStationat === true ? "AT" : (rbtOthersFStationbw === true ? "BETWEEN" : "");
                 obj.FuseStatnSel = otherStation;
                 obj.FuseStatnVal1 = this.getView().byId("inpOthersFStation").getValue();
                 obj.FuseStatnVal2 = this.getView().byId("inpOthersFStation1").getValue();
@@ -679,7 +712,7 @@ sap.ui.define([
                 obj.ButtockLine = this.getView().byId("chbOthersBLine").getSelected();
                 var rbtOthersBLineat = this.getView().byId("rbtOthersBLineat").getSelected();
                 var rbtOthersBLinebw = this.getView().byId("rbtOthersBLinebw").getSelected();
-                var otherBLine = rbtOthersBLineat === true ? "AT" : (rbtOthersBLinebw === true ? "BETWEEN" : ""); 
+                var otherBLine = rbtOthersBLineat === true ? "AT" : (rbtOthersBLinebw === true ? "BETWEEN" : "");
                 obj.ButtockLineSel = otherBLine;
                 obj.ButtockLineVal1 = this.getView().byId("inpOthersBLine").getValue();
                 obj.ButtockLineVal2 = this.getView().byId("inpOthersBLine1").getValue();
@@ -687,15 +720,15 @@ sap.ui.define([
                 obj.WaterLine = this.getView().byId("chbOthersWLine").getSelected();
                 var rbtOthersWLineat = this.getView().byId("rbtOthersWLineat").getSelected();
                 var rbtOthersWLinebw = this.getView().byId("rbtOthersWLinebw").getSelected();
-                var otherWLine = rbtOthersWLineat === true ? "AT" : (rbtOthersWLinebw === true ? "BETWEEN" : ""); 
+                var otherWLine = rbtOthersWLineat === true ? "AT" : (rbtOthersWLinebw === true ? "BETWEEN" : "");
                 obj.WaterLineSel = otherWLine;
                 obj.WaterLineVal1 = this.getView().byId("inpOthersWLine").getValue();
                 obj.WaterLineVal2 = this.getView().byId("inpOthersWLine1").getValue();
 
-                
+
                 obj.ButtockLineLhs1 = this.getView().byId("rbtOthersBLineL").getSelected();
                 obj.ButtockLineRhs1 = this.getView().byId("rbtOthersBLineR").getSelected();
-             
+
                 obj.ButtockLineLhs2 = this.getView().byId("rbtOthersBLineL1").getSelected();
                 obj.ButtockLineRhs2 = this.getView().byId("rbtOthersBLineR1").getSelected();
                 //line5
@@ -708,15 +741,15 @@ sap.ui.define([
             var oModel = this.getOwnerComponent().getModel();
             oModel.create("/DiscrepancyPartAircraftSet", obj, {
                 success: function (odata, Response) {
-                    debugger;
-                    this.onClearPartLocation();
+
                     sap.ui.core.BusyIndicator.hide();
                     if (Response.headers["sap-message"]) {
                         var oMsg = JSON.parse(Response.headers["sap-message"]).message;
                         var oSeverity = JSON.parse(Response.headers["sap-message"]).severity;
-                        if(oSeverity == "success"){
+                        if (oSeverity == "success") {
                             MessageBox.success(oMsg);
-                        }else{
+                            this.onClearPartLocation();
+                        } else {
                             MessageBox.error(oMsg);
                         }
                     }
@@ -1019,11 +1052,6 @@ sap.ui.define([
             // is only called from within the loaded dialog itself.
             this.byId("myPopover").close();
             //sap.m.MessageToast.show("Action has been pressed");
-        },
-
-        onDiscrepancy: function () {
-            this.getView().byId("idIconTabBarHeader").setSelectedKey("Discre");
-
         },
 
         onCopyDiscrepancy: function () {
@@ -1421,11 +1449,12 @@ sap.ui.define([
                     this.updatePurchaseInfoData(payloadPurchInfData);
                 }
             } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre") {
-                if (this.getView().byId("idDcCobDscNo").getValue() === "") {
-                    this.createDiscrepancyData();
-                } else {
-                    this.updateDiscrepancyData();
-                }
+                // if (this.getView().byId("idDcCobDscNo").getValue() === "") {
+                this.IsUserMRBCertifiedCheck();
+                // this.createDiscrepancyData();
+                // } else {
+                // this.updateDiscrepancyData();
+                // }
             }
         },
 
@@ -1493,6 +1522,7 @@ sap.ui.define([
                         }
                         var sObjectPath = "CreateNotificationHeaderSet('" + oNotifNo + "')";
                         this._bindView("/" + sObjectPath);
+                        this._bindTable("/" + sObjectPath);
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
@@ -1560,6 +1590,7 @@ sap.ui.define([
                         }
                         var sObjectPath = "CreateNotificationHeaderSet('" + oNotifNo + "')";
                         this._bindView("/" + sObjectPath);
+                        this._bindTable("/" + sObjectPath);
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
@@ -1572,107 +1603,201 @@ sap.ui.define([
 
         /**Function is triggered when clicked on Purchase Info Tab */
         _setPurchaseInfoData: function () {
-            this.getOwnerComponent().getModel().metadataLoaded().then(function () {
-                var sEntitypath = this.getOwnerComponent().getModel().createKey("CreatePurchaseInfoSet", {
-                    NotificationNo: sObjectId
-                });
-                var sPath = "/" + sEntitypath;
-                this.getView().byId("idSmplFrmPurInf").bindElement({
-                    path: sPath,
-                    events: {
-                        dataReceived: function (dataRec) {
-                            if (dataRec.getParameters().data) {
-                                var data = dataRec.getParameters().data,
-                                    nctype = data.NCType,
-                                    subcategory = data.NCSubCat,
-                                    subcatseq = data.NCSubCatSeq,
-                                    ponumber = data.NCPoNumber,
-                                    polinenum = data.NCPoLineNo,
-                                    podate = data.NCPoDate,
-                                    suppliercode = data.NCSupplierCode,
-                                    suppliername = data.NCSupplierName,
-                                    supplierpartno = data.NCSupplierPartNo,
-                                    supplierpartnodesc = data.NCSupplierPartNoDesc,
-                                    mrpcontroller = data.NCMRPNo,
-                                    mrpcntrlrname = data.NCMRPName,
-                                    pckgslp = data.NCPackSlip,
-                                    wayblnum = data.NCWayBillNo,
-                                    grnum = data.NCGRNo,
-                                    grqty = data.NCGRQnty,
-                                    gritem = data.NCGRLineNo,
-                                    gryear = data.NCGRYear,
-                                    uom = data.NCGRUOM;
-
-                                if (nctype == "SUPPLIER") {
-
-                                    this.getView().byId("idLblGrn").setVisible(false);
-                                    this.getView().byId("idPurInfGrip").setVisible(false);
-                                    this.getView().byId("idInpPurInfGritm").setVisible(false);
-                                    this.getView().byId("idInpPurInfGryr").setVisible(false);
-                                    this.getView().byId("idLblGrqty").setVisible(false);
-                                    this.getView().byId("idPurInfGrQtyip").setVisible(false);
-                                    this.getView().byId("idPurInfGrUom").setVisible(false);
-                                    this.getView().byId("idLblMrpctrlr").setVisible(false);
-                                    this.getView().byId("idPurInfMrpcrip").setVisible(false);
-                                    this.getView().byId("idLblMrpCtrlrNm").setVisible(false);
-                                    this.getView().byId("idPurInfMrpcrnmip").setVisible(false);
-                                    this.getView().byId("idLblWblNo").setVisible(false);
-                                    this.getView().byId("idPurInfWBNip").setVisible(false);
-                                    this.getView().byId("idLblPcgslp").setVisible(false);
-                                    this.getView().byId("idPurInfPcgslip").setVisible(false);
-
-                                    this.getView().byId("idPurInfPurOrdip").setRequired(true);
-                                    this.getView().byId("idPurInfPolnip").setRequired(true);
-
-                                    this.getView().byId("idPurInfPurOrdip").setValue(ponumber);
-                                    this.getView().byId("idPurInfPolnip").setValue(polinenum);
-                                    //this.getView().byId("idPurInfPoDtdp").setValue(podate);
-                                    this.getView().byId("idPurInfSupNmip").setValue(suppliername);
-                                    this.getView().byId("idPurInfSupSCip").setValue(suppliercode);
-                                    this.getView().byId("idPurInfSupPnip").setValue(supplierpartno);
-                                    this.getView().byId("idPurInfSupPnDescip").setValue(supplierpartnodesc);
-
-                                } else {
-                                    this.getView().byId("idPurInfPurOrdip").setRequired(false);
-                                    this.getView().byId("idPurInfPolnip").setRequired(false);
-
-                                    this.getView().byId("idLblGrn").setVisible(true);
-                                    this.getView().byId("idPurInfGrip").setVisible(true);
-                                    this.getView().byId("idInpPurInfGritm").setVisible(true);
-                                    this.getView().byId("idInpPurInfGryr").setVisible(true);
-                                    this.getView().byId("idLblGrqty").setVisible(true);
-                                    this.getView().byId("idPurInfGrQtyip").setVisible(true);
-                                    this.getView().byId("idPurInfGrUom").setVisible(true);
-                                    this.getView().byId("idLblMrpctrlr").setVisible(true);
-                                    this.getView().byId("idPurInfMrpcrip").setVisible(true);
-                                    this.getView().byId("idLblMrpCtrlrNm").setVisible(true);
-                                    this.getView().byId("idPurInfMrpcrnmip").setVisible(true);
-                                    this.getView().byId("idLblWblNo").setVisible(true);
-                                    this.getView().byId("idPurInfWBNip").setVisible(true);
-                                    this.getView().byId("idLblPcgslp").setVisible(true);
-                                    this.getView().byId("idPurInfPcgslip").setVisible(true);
-                                    this.getView().byId("idPurInfGrip").setValue(grnum);
-                                    this.getView().byId("idPurInfGrQtyip").setValue(grqty);
-                                    this.getView().byId("idPurInfGrUom").setValue(uom);
-                                    this.getView().byId("idInpPurInfGritm").setValue(gritem);
-                                    this.getView().byId("idInpPurInfGryr").setValue(gryear);
-                                    this.getView().byId("idPurInfPurOrdip").setValue(ponumber);
-                                    this.getView().byId("idPurInfPolnip").setValue(polinenum);
-                                    //this.getView().byId("idPurInfPoDtdp").setValue(podate);
-                                    this.getView().byId("idPurInfSupNmip").setValue(suppliername);
-                                    this.getView().byId("idPurInfSupSCip").setValue(suppliercode);
-                                    this.getView().byId("idPurInfSupPnip").setValue(supplierpartno);
-                                    this.getView().byId("idPurInfSupPnDescip").setValue(supplierpartnodesc);
-                                    this.getView().byId("idPurInfMrpcrip").setValue(mrpcontroller);
-                                    this.getView().byId("idPurInfMrpcrnmip").setValue(mrpcntrlrname);
-                                    this.getView().byId("idPurInfWBNip").setValue(wayblnum);
-                                    this.getView().byId("idPurInfPcgslip").setValue(pckgslp);
-                                }
-                            }
-                        }.bind(this)
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new JSONModel();
+            oModel.setSizeLimit(10000);
+            var oDataModel = this.getOwnerComponent().getModel();
+            var sPath = "/CreatePurchaseInfoSet('" + sObjectId + "')";
+            oDataModel.read(sPath, {
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData;
+                    var nctype = data.NCType,
+                        subcategory = data.NCSubCat,
+                        subcatseq = data.NCSubCatSeq,
+                        ponumber = data.NCPoNumber,
+                        polinenum = data.NCPoLineNo,
+                        podate = data.NCPoDate,
+                        suppliercode = data.NCSupplierCode,
+                        suppliername = data.NCSupplierName,
+                        supplierpartno = data.NCSupplierPartNo,
+                        supplierpartnodesc = data.NCSupplierPartNoDesc,
+                        mrpcontroller = data.NCMRPNo,
+                        mrpcntrlrname = data.NCMRPName,
+                        pckgslp = data.NCPackSlip,
+                        wayblnum = data.NCWayBillNo,
+                        grnum = data.NCGRNo,
+                        grqty = data.NCGRQnty,
+                        gritem = data.NCGRLineNo,
+                        gryear = data.NCGRYear,
+                        uom = data.NCGRUOM;
+                    if (nctype == "SUPPLIER") {
+                        this.getView().byId("idLblGrn").setVisible(false);
+                        this.getView().byId("idPurInfGrip").setVisible(false);
+                        this.getView().byId("idInpPurInfGritm").setVisible(false);
+                        this.getView().byId("idInpPurInfGryr").setVisible(false);
+                        this.getView().byId("idLblGrqty").setVisible(false);
+                        this.getView().byId("idPurInfGrQtyip").setVisible(false);
+                        this.getView().byId("idPurInfGrUom").setVisible(false);
+                        this.getView().byId("idLblMrpctrlr").setVisible(false);
+                        this.getView().byId("idPurInfMrpcrip").setVisible(false);
+                        this.getView().byId("idLblMrpCtrlrNm").setVisible(false);
+                        this.getView().byId("idPurInfMrpcrnmip").setVisible(false);
+                        this.getView().byId("idLblWblNo").setVisible(false);
+                        this.getView().byId("idPurInfWBNip").setVisible(false);
+                        this.getView().byId("idLblPcgslp").setVisible(false);
+                        this.getView().byId("idPurInfPcgslip").setVisible(false);
+                        this.getView().byId("idPurInfPurOrdip").setRequired(true);
+                        this.getView().byId("idPurInfPolnip").setRequired(true);
+                        this.getView().byId("idPurInfPurOrdip").setValue(ponumber);
+                        this.getView().byId("idPurInfPolnip").setValue(polinenum);
+                        //this.getView().byId("idPurInfPoDtdp").setValue(podate);
+                        this.getView().byId("idPurInfSupNmip").setValue(suppliername);
+                        this.getView().byId("idPurInfSupSCip").setValue(suppliercode);
+                        this.getView().byId("idPurInfSupPnip").setValue(supplierpartno);
+                        this.getView().byId("idPurInfSupPnDescip").setValue(supplierpartnodesc);
+                    } else {
+                        this.getView().byId("idPurInfPurOrdip").setRequired(false);
+                        this.getView().byId("idPurInfPolnip").setRequired(false);
+                        this.getView().byId("idLblGrn").setVisible(true);
+                        this.getView().byId("idPurInfGrip").setVisible(true);
+                        this.getView().byId("idInpPurInfGritm").setVisible(true);
+                        this.getView().byId("idInpPurInfGryr").setVisible(true);
+                        this.getView().byId("idLblGrqty").setVisible(true);
+                        this.getView().byId("idPurInfGrQtyip").setVisible(true);
+                        this.getView().byId("idPurInfGrUom").setVisible(true);
+                        this.getView().byId("idLblMrpctrlr").setVisible(true);
+                        this.getView().byId("idPurInfMrpcrip").setVisible(true);
+                        this.getView().byId("idLblMrpCtrlrNm").setVisible(true);
+                        this.getView().byId("idPurInfMrpcrnmip").setVisible(true);
+                        this.getView().byId("idLblWblNo").setVisible(true);
+                        this.getView().byId("idPurInfWBNip").setVisible(true);
+                        this.getView().byId("idLblPcgslp").setVisible(true);
+                        this.getView().byId("idPurInfPcgslip").setVisible(true);
+                        this.getView().byId("idPurInfGrip").setValue(grnum);
+                        this.getView().byId("idPurInfGrQtyip").setValue(grqty);
+                        this.getView().byId("idPurInfGrUom").setValue(uom);
+                        this.getView().byId("idInpPurInfGritm").setValue(gritem);
+                        this.getView().byId("idInpPurInfGryr").setValue(gryear);
+                        this.getView().byId("idPurInfPurOrdip").setValue(ponumber);
+                        this.getView().byId("idPurInfPolnip").setValue(polinenum);
+                        //this.getView().byId("idPurInfPoDtdp").setValue(podate);
+                        this.getView().byId("idPurInfSupNmip").setValue(suppliername);
+                        this.getView().byId("idPurInfSupSCip").setValue(suppliercode);
+                        this.getView().byId("idPurInfSupPnip").setValue(supplierpartno);
+                        this.getView().byId("idPurInfSupPnDescip").setValue(supplierpartnodesc);
+                        this.getView().byId("idPurInfMrpcrip").setValue(mrpcontroller);
+                        this.getView().byId("idPurInfMrpcrnmip").setValue(mrpcntrlrname);
+                        this.getView().byId("idPurInfWBNip").setValue(wayblnum);
+                        this.getView().byId("idPurInfPcgslip").setValue(pckgslp);
                     }
-                });
-            }.bind(this));
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+            //     var sEntitypath = this.getOwnerComponent().getModel().createKey("CreatePurchaseInfoSet", {
+            //         NotificationNo: sObjectId
+            //     });
+            //     var sPath = "/" + sEntitypath;
+            //     this.getView().byId("idSmplFrmPurInf").bindElement({
+            //         path: sPath,
+            //         events: {
+            //             dataReceived: function (dataRec) {
+            //                 if (dataRec.getParameters().data) {
+            //                     var data = dataRec.getParameters().data,
+            //                         nctype = data.NCType,
+            //                         subcategory = data.NCSubCat,
+            //                         subcatseq = data.NCSubCatSeq,
+            //                         ponumber = data.NCPoNumber,
+            //                         polinenum = data.NCPoLineNo,
+            //                         podate = data.NCPoDate,
+            //                         suppliercode = data.NCSupplierCode,
+            //                         suppliername = data.NCSupplierName,
+            //                         supplierpartno = data.NCSupplierPartNo,
+            //                         supplierpartnodesc = data.NCSupplierPartNoDesc,
+            //                         mrpcontroller = data.NCMRPNo,
+            //                         mrpcntrlrname = data.NCMRPName,
+            //                         pckgslp = data.NCPackSlip,
+            //                         wayblnum = data.NCWayBillNo,
+            //                         grnum = data.NCGRNo,
+            //                         grqty = data.NCGRQnty,
+            //                         gritem = data.NCGRLineNo,
+            //                         gryear = data.NCGRYear,
+            //                         uom = data.NCGRUOM;
+
+            //                     if (nctype == "SUPPLIER") {
+
+            //                         this.getView().byId("idLblGrn").setVisible(false);
+            //                         this.getView().byId("idPurInfGrip").setVisible(false);
+            //                         this.getView().byId("idInpPurInfGritm").setVisible(false);
+            //                         this.getView().byId("idInpPurInfGryr").setVisible(false);
+            //                         this.getView().byId("idLblGrqty").setVisible(false);
+            //                         this.getView().byId("idPurInfGrQtyip").setVisible(false);
+            //                         this.getView().byId("idPurInfGrUom").setVisible(false);
+            //                         this.getView().byId("idLblMrpctrlr").setVisible(false);
+            //                         this.getView().byId("idPurInfMrpcrip").setVisible(false);
+            //                         this.getView().byId("idLblMrpCtrlrNm").setVisible(false);
+            //                         this.getView().byId("idPurInfMrpcrnmip").setVisible(false);
+            //                         this.getView().byId("idLblWblNo").setVisible(false);
+            //                         this.getView().byId("idPurInfWBNip").setVisible(false);
+            //                         this.getView().byId("idLblPcgslp").setVisible(false);
+            //                         this.getView().byId("idPurInfPcgslip").setVisible(false);
+
+            //                         this.getView().byId("idPurInfPurOrdip").setRequired(true);
+            //                         this.getView().byId("idPurInfPolnip").setRequired(true);
+
+            //                         this.getView().byId("idPurInfPurOrdip").setValue(ponumber);
+            //                         this.getView().byId("idPurInfPolnip").setValue(polinenum);
+            //                         //this.getView().byId("idPurInfPoDtdp").setValue(podate);
+            //                         this.getView().byId("idPurInfSupNmip").setValue(suppliername);
+            //                         this.getView().byId("idPurInfSupSCip").setValue(suppliercode);
+            //                         this.getView().byId("idPurInfSupPnip").setValue(supplierpartno);
+            //                         this.getView().byId("idPurInfSupPnDescip").setValue(supplierpartnodesc);
+
+            //                     } else {
+            //                         this.getView().byId("idPurInfPurOrdip").setRequired(false);
+            //                         this.getView().byId("idPurInfPolnip").setRequired(false);
+
+            //                         this.getView().byId("idLblGrn").setVisible(true);
+            //                         this.getView().byId("idPurInfGrip").setVisible(true);
+            //                         this.getView().byId("idInpPurInfGritm").setVisible(true);
+            //                         this.getView().byId("idInpPurInfGryr").setVisible(true);
+            //                         this.getView().byId("idLblGrqty").setVisible(true);
+            //                         this.getView().byId("idPurInfGrQtyip").setVisible(true);
+            //                         this.getView().byId("idPurInfGrUom").setVisible(true);
+            //                         this.getView().byId("idLblMrpctrlr").setVisible(true);
+            //                         this.getView().byId("idPurInfMrpcrip").setVisible(true);
+            //                         this.getView().byId("idLblMrpCtrlrNm").setVisible(true);
+            //                         this.getView().byId("idPurInfMrpcrnmip").setVisible(true);
+            //                         this.getView().byId("idLblWblNo").setVisible(true);
+            //                         this.getView().byId("idPurInfWBNip").setVisible(true);
+            //                         this.getView().byId("idLblPcgslp").setVisible(true);
+            //                         this.getView().byId("idPurInfPcgslip").setVisible(true);
+            //                         this.getView().byId("idPurInfGrip").setValue(grnum);
+            //                         this.getView().byId("idPurInfGrQtyip").setValue(grqty);
+            //                         this.getView().byId("idPurInfGrUom").setValue(uom);
+            //                         this.getView().byId("idInpPurInfGritm").setValue(gritem);
+            //                         this.getView().byId("idInpPurInfGryr").setValue(gryear);
+            //                         this.getView().byId("idPurInfPurOrdip").setValue(ponumber);
+            //                         this.getView().byId("idPurInfPolnip").setValue(polinenum);
+            //                         //this.getView().byId("idPurInfPoDtdp").setValue(podate);
+            //                         this.getView().byId("idPurInfSupNmip").setValue(suppliername);
+            //                         this.getView().byId("idPurInfSupSCip").setValue(suppliercode);
+            //                         this.getView().byId("idPurInfSupPnip").setValue(supplierpartno);
+            //                         this.getView().byId("idPurInfSupPnDescip").setValue(supplierpartnodesc);
+            //                         this.getView().byId("idPurInfMrpcrip").setValue(mrpcontroller);
+            //                         this.getView().byId("idPurInfMrpcrnmip").setValue(mrpcntrlrname);
+            //                         this.getView().byId("idPurInfWBNip").setValue(wayblnum);
+            //                         this.getView().byId("idPurInfPcgslip").setValue(pckgslp);
+            //                     }
+            //                 }
+            //             }.bind(this)
+            //         }
+            //     });
+            // }.bind(this));
         },
 
         /**Function is triggered when saving or updating Purchase Info Data */
@@ -1926,15 +2051,24 @@ sap.ui.define([
             var iconKey = this.getView().byId("idIconTabBarHeader").getSelectedKey();
             if (iconKey == "Hdata") {
                 var hdatatab = this.getView().byId("idHeaderDiscTable").getSelectedItems();
-                if (hdatatab == null || hdatatab.length > 1) {
-                    MessageBox.warning("Please Select Line Item");
-                    return
+                if (hdatatab.length == 0) {
+                    MessageBox.warning("Please select a line item to copy Discrepancy details.");
+                    return;
+                } else {
+                    if (this.getView().byId("idHeaderDiscTable").getSelectedItem().getBindingContext("oHeaderDiscTable")) {
+                        var discrepancyNo = this.getView().byId("idHeaderDiscTable").getSelectedItem().getBindingContext("oHeaderDiscTable").getProperty("DiscrepancyNo");
+                        this.getView().byId("idIconTabBarHeader").setSelectedKey("Discre");
+                        this.getView().byId("idHeaderDiscTable").removeSelections();
+                    }
                 }
-                var discrepancyNo = hdatatab.getCells()[0].getText();
-                this.getView().byId("idIconTabBarHeader").setSelectedKey("Discre");
             } else {
-                var discrepancyNo = oEvent.getParameters("selectedItem").selectedItem.getKey();
-                oDiscrepancy = discrepancyNo;
+                if (oEvent.getParameters("selectedItem").selectedItem) {
+                    var discrepancyNo = oEvent.getParameters("selectedItem").selectedItem.getKey();
+                    oDiscrepancy = discrepancyNo;
+                } else {
+                    var discrepancyNo = "";
+                    oDiscrepancy = discrepancyNo;
+                }
             }
             if (discrepancyNo != "") {
                 if (oNctype == "STOCK PURGE") {
@@ -1942,123 +2076,125 @@ sap.ui.define([
                 } else {
                     this.getView().byId("idDcBtStkPrg").setVisible(false);
                 }
-                this.getOwnerComponent().getModel().metadataLoaded().then(function () {
-                    var sEntitypath = this.getOwnerComponent().getModel().createKey("CreateNotificationHeaderSet", {
-                        NotificationNo: sObjectId
-                        // NotificationNo: '200000032',
-                    });
-                    var sPath = "/" + sEntitypath + "/to_discrepancy(NotificationNo='" + sObjectId + "',DiscrepancyNo='" + discrepancyNo + "')";
-                    // var sPath = "/" + sEntitypath + "/to_discrepancy(NotificationNo='" + 200000032 + "',DiscrepancyNo='" + discrepancyNo + "')";
-                    this.getView().bindElement({
-                        path: sPath,
-                        events: {
-                            dataReceived: function (dataRec) {
-                                if (dataRec.getParameters().data) {
-                                    var data = dataRec.getParameters().data,
-                                        discstatus = data.Status,
-                                        linkedTo = data.LinkedTo,
-                                        liability = data.Liability,
-                                        partner = data.Partner,
-                                        partnerName = data.PartnerName,
-                                        supercedesItem = data.SupercedesItem,
-                                        supercededByItem = data.SupercededByItem,
-                                        dropShip2 = data.DropShip2,
-                                        aircraft = data.Aircraft,
-                                        openDate = data.OpenDate,
-                                        partNumber = data.PartNumber,
-                                        partDesc = data.PartDesc,
-                                        inspQnty = data.InspQnty,
-                                        rejectQnty = data.RejectQnty,
-                                        qntyUOM = data.QntyUOM,
-                                        compSerialNo = data.CompSerialNo,
-                                        traceNo = data.TraceNo,
-                                        prelimInvest = data.PrelimInvest,
-                                        partQuarantine = data.PartQuarantine,
-                                        mesIssue = data.MESissue,
-                                        csmsIssue = data.CsmsIssue,
-                                        prelimCause = data.PrelimCause,
-                                        defectCode = data.DefectCode,
-                                        defect = data.Defect,
-                                        defectCodeDesc = data.DefectCodeDesc,
-                                        dropPoint = data.DropPoint,
-                                        is = data.Is,
-                                        shouldbe = data.Shouldbe,
-                                        asPer = data.AsPer,
-                                        incompletion = data.Incompletion;
-                                    //setting values in General Info Screen
-                                    this.getView().byId("idObjNCStatusDiscrep").setText(discstatus);
-                                    this.getView().byId("headertext").setText("Discrepancy No: " + data.DiscrepancyNo + "");
-                                    this.getView().byId("idDiscPartNumber").setValue(partNumber);
-                                    this.getView().byId("idDiscPartDesc").setValue(partDesc);
-                                    this.getView().byId("idDiscQtyIns").setValue(inspQnty);
-                                    this.getView().byId("idDiscUomIns").setValue(qntyUOM);
-                                    this.getView().byId("idDiscQtyRej").setValue(rejectQnty);
-                                    this.getView().byId("idDiscUomRej").setValue(qntyUOM);
-                                    if (compSerialNo !== "") {
-                                        var oSerialNosToken = compSerialNo.split(",");
-                                        for (var i = 0; i < oSerialNosToken.length; i++) {
-                                            var oSernrToken = new sap.m.Token({
-                                                key: oSerialNosToken[i],
-                                                text: oSerialNosToken[i]
-                                            });
-                                            this._oMultiInputDiscSN.addToken(oSernrToken);
-                                        }
-                                    }
-                                    if (traceNo !== "") {
-                                        var oTrcNosToken = oTraceList.split(",");
-                                        for (var j = 0; j < oTrcNosToken.length; j++) {
-                                            var oTrcNoToken = new sap.m.Token({
-                                                key: oTrcNosToken[j],
-                                                text: oTrcNosToken[j]
-                                            });
-                                            this._oMultiInputDiscTN.addToken(oTrcNoToken);
-                                        }
-                                    }
-                                    if (linkedTo != "") {
-                                        this.getView().byId("idComBoxDiscLinkTo").setSelectedKey(linkedTo);
-                                    }
-                                    this.getView().byId("idDcIpLblty").setValue(liability);
-                                    this.getView().byId("idDcIpPrtnr").setValue(partner);
-                                    this.getView().byId("idDcIpPrtnrNm").setValue(partnerName);
-                                    this.getView().byId("idDcIpSpsdsItm").setValue(supercedesItem);
-                                    this.getView().byId("idDcIpSpsdbyItm").setValue(supercededByItem);
-                                    this.getView().byId("idDcTxtCdt").setText();
-                                    if (dropShip2) {
-                                        this.getView().byId("idDcCbDs2").setSelected(true);
-                                    }
-                                    this.getView().byId("idDiscAircraft").setValue(aircraft);
-                                    this.getView().byId("idDcIpOdt").setValue(openDate);
-
-                                    //setting values in descripancy details 
-                                    this.getView().byId("idDcTAPi").setValue(prelimInvest);
-                                    if (partQuarantine) {
-                                        this.getView().byId("idDcCbPrq").setSelected(true);
-                                    }
-                                    if (mesIssue) {
-                                        this.getView().byId("idDcCbMesi").setSelected(true);
-                                    }
-                                    if (csmsIssue) {
-                                        this.getView().byId("idDcCbCsmsi").setSelected(true);
-                                    }
-                                    if (prelimCause != "") {
-                                        this.getView().byId("idDcCobPc").setSelectedKey(prelimCause);
-                                    }
-                                    this.getView().byId("idDcIpDc").setValue(defectCode);
-                                    this.getView().byId("idDcTxtDc").setText(defectCodeDesc);
-                                    this.getView().byId("idDcIpDcVal1").setValue(defect);
-                                    this.getView().byId("idDcIpDp").setValue(dropPoint);
-                                    this.getView().byId("idDcTxtIs").setValue(is);
-                                    this.getView().byId("idDcTaSb").setValue(shouldbe);
-                                    this.getView().byId("idDcInpAp").setValue(asPer);
-                                    if (!incompletion) {
-                                        this.getView().byId("idDcCbIf").setSelected(false);
-                                    }
-                                }
-                            }.bind(this)
-                        }
-                    });
-                }.bind(this));
             }
+            this.bindDiscrepancyTab(discrepancyNo);
+        },
+
+        bindDiscrepancyTab: function (discrepancyNo) {
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new JSONModel();
+            oModel.setSizeLimit(10000);
+            var oDataModel = this.getOwnerComponent().getModel();
+            var sPath = "/CreateNotificationHeaderSet('" + sObjectId + "')/to_discrepancy(NotificationNo='" + sObjectId + "',DiscrepancyNo='" + discrepancyNo + "')";
+            oDataModel.read(sPath, {
+                urlParameters: {
+                    "$expand": "to_serials,to_traces"
+                },
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData;
+                    var discstatus = data.Status,
+                        discrepancyNum = data.DiscrepancyNo == 0 ? "" : data.DiscrepancyNo,
+                        linkedTo = data.LinkedTo,
+                        liability = data.Liability,
+                        liabilitytext = data.LiabilityText,
+                        partner = data.Partner,
+                        partnerName = data.PartnerName,
+                        supercedesItem = data.SupercedesItem == 0 ? "" : data.SupercedesItem,
+                        supercededByItem = data.SupercededByItem == 0 ? "" : data.SupercededByItem,
+                        dropShip2 = data.DropShip2,
+                        aircraft = data.Aircraft,
+                        openDate = data.OpenDate,
+                        partNumber = data.PartNumber,
+                        partDesc = data.PartDesc,
+                        inspQnty = data.InspQnty == 0 ? "" : data.InspQnty,
+                        rejectQnty = data.RejectQnty == 0 ? "" : data.RejectQnty,
+                        qntyUOM = data.QntyUOM,
+                        compSerialNo = data.to_serials,
+                        traceNo = data.to_traces,
+                        prelimInvest = data.PrelimInvest,
+                        partQuarantine = data.PartQuarantine,
+                        mesIssue = data.MESissue,
+                        csmsIssue = data.CsmsIssue,
+                        prelimCause = data.PrelimCause,
+                        defectCode = data.DefectCode,
+                        defect = data.Defect,
+                        defectCodeDesc = data.DefectCodeDesc,
+                        dropPoint = data.DropPoint == 0 ? "" : data.DropPoint,
+                        is = data.Is,
+                        shouldbe = data.Shouldbe,
+                        asPer = data.AsPer,
+                        incompletion = data.Incompletion;
+                    //setting values in General Info Screen
+                    this.getView().byId("idObjNCStatusDiscrep").setText(discstatus);
+                    this.getView().byId("headertext").setText("Discrepancy No: " + discrepancyNum + "");
+                    this.getView().byId("idDiscPartNumber").setValue(partNumber);
+                    this.getView().byId("idDiscPartDesc").setValue(partDesc);
+                    this.getView().byId("idDiscQtyIns").setValue(inspQnty);
+                    this.getView().byId("idDiscUomIns").setText(qntyUOM);
+                    this.getView().byId("idDiscQtyRej").setValue(rejectQnty);
+                    this.getView().byId("idDiscUomRej").setText(qntyUOM);
+                    this.getView().byId("idDcCobDscNo").setValue(discrepancyNum);
+                    this.getView().byId("idDcCobDscNo").setSelectedKey(discrepancyNum);
+                    this.getView().byId("idDiscLbltyTxt").setValue(liabilitytext);
+                    this._oMultiInputDiscSN.removeAllTokens();
+                    this._oMultiInputDiscTN.removeAllTokens();
+                    if (compSerialNo.results.length > 0) {
+                        for (var i = 0; i < compSerialNo.results.length; i++) {
+                            var oSerialNosDiscToken = compSerialNo.results[i].SerialNo;
+                            var oSernrDiscToken = new sap.m.Token({
+                                key: oSerialNosDiscToken,
+                                text: oSerialNosDiscToken
+                            });
+                            this._oMultiInputDiscSN.addToken(oSernrDiscToken);
+                        }
+                    }
+                    if (traceNo.results.length > 0) {
+                        for (var j = 0; j < traceNo.results.length; j++) {
+                            var oTraceNosDiscToken = traceNo.results[j].TraceNo;
+                            var oTraceDiscToken = new sap.m.Token({
+                                key: oTraceNosDiscToken,
+                                text: oTraceNosDiscToken
+                            });
+                            this._oMultiInputDiscTN.addToken(oTraceDiscToken);
+                        }
+                    }
+                    if (linkedTo != "") {
+                        this.getView().byId("idComBoxDiscLinkTo").setValue(linkedTo);
+                    } else {
+                        this.getView().byId("idComBoxDiscLinkTo").setValue(linkedTo);
+                    }
+                    this.getView().byId("idDcIpLblty").setValue(liability);
+                    this.getView().byId("idDcIpPrtnr").setValue(partner);
+                    this.getView().byId("idDcIpPrtnrNm").setValue(partnerName);
+                    this.getView().byId("idDcIpSpsdsItm").setValue(supercedesItem);
+                    this.getView().byId("idDcIpSpsdbyItm").setValue(supercededByItem);
+                    this.getView().byId("idDcTxtCdt").setText();
+                    this.getView().byId("idDcCbDs2").setSelected(true);
+                    this.getView().byId("idDiscAircraft").setValue(aircraft);
+                    this.getView().byId("idDcIpOdt").setValue(openDate);
+
+                    //setting values in descripancy details 
+                    this.getView().byId("idDcTAPi").setValue(prelimInvest);
+                    this.getView().byId("idDcCbPrq").setSelected(partQuarantine);
+                    this.getView().byId("idDcCbMesi").setSelected(mesIssue);
+                    this.getView().byId("idDcCbCsmsi").setSelected(csmsIssue);
+                    this.getView().byId("idDcCobPc").setSelectedKey(prelimCause);
+                    this.getView().byId("idDcIpDc").setValue(defectCode);
+                    this.getView().byId("idDcTxtDc").setText(defectCodeDesc);
+                    this.getView().byId("idDcIpDcVal1").setValue(defect);
+                    this.getView().byId("idDcIpDp").setValue(dropPoint);
+                    this.getView().byId("idDcTxtIs").setValue(is);
+                    this.getView().byId("idDcTaSb").setValue(shouldbe);
+                    this.getView().byId("idDcInpAp").setValue(asPer);
+                    this.getView().byId("idDcCbIf").setSelected(false);
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
         },
 
         /**Function is triggered on selection change of format ComboBox */
@@ -4457,6 +4593,14 @@ sap.ui.define([
             this._oRMANoFBDialog.destroy();
         },
 
+        handleAddDiscrepancy: function () {
+            var oDiscrepancyNo = "";
+            this.bindDiscrepancyTab(oDiscrepancyNo);
+            this.bindSupplier();
+            this.getView().byId("idIconTabBarHeader").setSelectedKey("Discre");
+            this.getView().byId("idHeaderDiscTable").removeSelections();
+        },
+
         bindLinkedToDiscrepancy: function () {
             sap.ui.core.BusyIndicator.show();
             var oModel = new JSONModel();
@@ -4510,6 +4654,9 @@ sap.ui.define([
                 oInput = this.getView().byId("idDiscPartNumber");
             var oPartDesc = oEvent.getParameter("selectedItem").getInfo();
             this.getView().byId("idDiscPartDesc").setValue(oPartDesc);
+            var oUnitOfMeas = oSelectedItem.getBindingContext("PartNoDiscModel").getProperty("UOM");
+            this.getView().byId("idDiscUomIns").setText(oUnitOfMeas);
+            this.getView().byId("idDiscUomRej").setText(oUnitOfMeas);
 
             if (!oSelectedItem) {
                 oInput.resetProperty("value");
@@ -4758,11 +4905,8 @@ sap.ui.define([
                 oMulInpTrc.setEditable(true);
                 sap.ui.core.BusyIndicator.show();
                 var oDataModel = this.getOwnerComponent().getModel();
-                // var oFilter = [];
-                // oFilter.push(new Filter("Key", FilterOperator.EQ, "PRT"));
                 var sPath = "/DiscrepancyPartSet";
                 oDataModel.read(sPath, {
-                    // filters: oFilter,
                     success: function (oData, oResult) {
                         sap.ui.core.BusyIndicator.hide();
                         var data = oData.results;
@@ -4812,12 +4956,103 @@ sap.ui.define([
             }
         },
 
+        IsUserMRBCertifiedCheck: function () {
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new JSONModel();
+            oModel.setSizeLimit(10000);
+            var oDataModel = this.getOwnerComponent().getModel();
+            var oWrkGrp = this.getView().byId("idworkgroup").getText();
+            var sPath = "/IsUserMRBCertifiedSet(Bname='',Workgroup='" + oWrkGrp + "')";
+            oDataModel.read(sPath, {
+                success: function (oData, oResult) {
+                    debugger;
+                    sap.ui.core.BusyIndicator.hide();
+                    // oData.MRBCertified = true;
+                    if (oData.MRBCertified === false && this.getView().byId("idDcCobDscNo").getValue() === "") {
+                        this.createDiscrepancyData();
+                    } else if (oData.MRBCertified === false && this.getView().byId("idDcCobDscNo").getValue() !== "") {
+                        this.updateDiscrepancyData();
+                    } else if (oData.MRBCertified === true) {
+                        MessageBox.show(
+                            "Do you wish to go to the other workgroup and save.!", {
+                            icon: MessageBox.Icon.INFORMATION,
+                            title: "MRB certified User",
+                            actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+                            onClose: function (oAction) {
+                                if (oAction === "YES") {
+                                    this.initialiseWorkGroupDialog();
+                                } else {
+                                    if (this.getView().byId("idDcCobDscNo").getValue() === "") {
+                                        this.createDiscrepancyData();
+                                    } else if (this.getView().byId("idDcCobDscNo").getValue() !== "") {
+                                        this.updateDiscrepancyData();
+                                    }
+                                }
+                            }.bind(this)
+                        }
+                        );
+                    }
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+        },
+
+        initialiseWorkGroupDialog: function () {
+            this._oWrkOrdDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.WorkGroupMRBDialog", this);
+            this.getView().addDependent(this._oWrkOrdDialog);
+            this._oWrkOrdDialog.open();
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new JSONModel();
+            oModel.setSizeLimit(10000);
+            var oDataModel = this.getOwnerComponent().getModel();
+            var sPath = "/UserWorkGroupS";
+            oDataModel.read(sPath, {
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.results;
+                    oModel.setData(data);
+                    this._oWrkOrdDialog.setModel(oModel, "WorkGroupModel");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+        },
+
+        onWorkGrpItemSel: function (oEvent) {
+            var oSelectedWrkGrp = oEvent.getParameters().listItem.getBindingContext("WorkGroupModel").getProperty("WorkGroup");
+            this._oWrkOrdDialog.close();
+            this.getView().byId("idworkgroup").setText(oSelectedWrkGrp);
+            if (this.getView().byId("idDcCobDscNo").getValue() === "") {
+                this.createDiscrepancyData();
+            } else if (this.getView().byId("idDcCobDscNo").getValue() !== "") {
+                this.updateDiscrepancyData();
+            }
+        },
+
+        onCloseWrkGrpMRB: function(){
+            this._oWrkOrdDialog.close();
+            this._oWrkOrdDialog.destroy();
+            if (this.getView().byId("idDcCobDscNo").getValue() === "") {
+                this.createDiscrepancyData();
+            } else if (this.getView().byId("idDcCobDscNo").getValue() !== "") {
+                this.updateDiscrepancyData();
+            }
+        },
+
         createDiscrepancyData: function () {
             var oModel = this.getOwnerComponent().getModel();
             var oNotifNo = sObjectId;
             var oDiscrepancyNo = this.getView().byId("idDcCobDscNo").getValue();
             var oDisLinkedTo = this.getView().byId("idComBoxDiscLinkTo").getValue();
             var oDiscLiability = this.getView().byId("idDcIpLblty").getValue();
+            var oLiabilityText = this.getView().byId("idDiscLbltyTxt").getValue();
             var oDiscPartner = this.getView().byId("idDcIpPrtnr").getValue();
             var oDiscPartnerName = this.getView().byId("idDcIpPrtnrNm").getValue();
             var oDiscSupercedesItem = this.getView().byId("idDcIpSpsdsItm").getValue();
@@ -4828,7 +5063,7 @@ sap.ui.define([
             var oDiscPartDesc = this.getView().byId("idDiscPartDesc").getValue();
             var oDiscInspQnty = this.getView().byId("idDiscQtyIns").getValue();
             var oDiscRejectQnty = this.getView().byId("idDiscQtyRej").getValue();
-            var oDiscQntyUOM = this.getView().byId("idDiscUomIns").getValue();
+            var oDiscQntyUOM = this.getView().byId("idDiscUomIns").getText();
             var oDiscCompSerialNo = this.getView().byId("idMulInpDiscSerNo").getTokens();
             var oDiscTraceNo = this.getView().byId("idMulInpDiscTrcNo").getTokens();
             var oDiscPrelimInvest = this.getView().byId("idDcTAPi").getValue();
@@ -4856,6 +5091,7 @@ sap.ui.define([
                     "NotificationNo": oNotifNo,
                     "LinkedTo": oDisLinkedTo,
                     "Liability": oDiscLiability,
+                    "LiabilityText": oLiabilityText,
                     "Partner": oDiscPartner,
                     "PartnerName": oDiscPartnerName,
                     "SupercedesItem": oDiscSupercedesItem,
@@ -4885,13 +5121,14 @@ sap.ui.define([
                 }
                 oModel.create("/NotificationDiscrepancySet", payloadCrtDisData, {
                     success: function (odata, Response) {
-                        debugger;
                         sap.ui.core.BusyIndicator.hide();
                         if (Response.headers["sap-message"]) {
                             var oMsg = JSON.parse(Response.headers["sap-message"]).message;
                             MessageBox.success(oMsg);
                         }
-                        this._setDiscrepancyComboBox();
+                        // this.getView().byId("idDcCobDscNo").setValue(odata.DiscrepancyNo);
+                        var oDiscrepancyNo = odata.DiscrepancyNo;
+                        this.bindDiscrepancyTab(oDiscrepancyNo);
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
@@ -4904,6 +5141,7 @@ sap.ui.define([
                     "NotificationNo": oNotifNo,
                     "LinkedTo": oDisLinkedTo,
                     "Liability": oDiscLiability,
+                    "LiabilityText": oLiabilityText,
                     "Partner": oDiscPartner,
                     "PartnerName": oDiscPartnerName,
                     "SupercedesItem": oDiscSupercedesItem,
@@ -4957,12 +5195,13 @@ sap.ui.define([
 
                 oModel.create("/NotificationDiscrepancySet", payloadCrtDisData, {
                     success: function (odata, Response) {
-                        debugger;
                         sap.ui.core.BusyIndicator.hide();
                         if (Response.headers["sap-message"]) {
                             var oMsg = JSON.parse(Response.headers["sap-message"]).message;
                             MessageBox.success(oMsg);
                         }
+                        var oDiscrepancyNo = odata.DiscrepancyNo;
+                        this.bindDiscrepancyTab(oDiscrepancyNo);
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
@@ -4979,6 +5218,7 @@ sap.ui.define([
             var oDiscrepancyNo = this.getView().byId("idDcCobDscNo").getValue();
             var oDisLinkedTo = this.getView().byId("idComBoxDiscLinkTo").getValue();
             var oDiscLiability = this.getView().byId("idDcIpLblty").getValue();
+            var oLiabilityText = this.getView().byId("idDiscLbltyTxt").getValue();
             var oDiscPartner = this.getView().byId("idDcIpPrtnr").getValue();
             var oDiscPartnerName = this.getView().byId("idDcIpPrtnrNm").getValue();
             var oDiscSupercedesItem = this.getView().byId("idDcIpSpsdsItm").getValue();
@@ -4989,7 +5229,7 @@ sap.ui.define([
             var oDiscPartDesc = this.getView().byId("idDiscPartDesc").getValue();
             var oDiscInspQnty = this.getView().byId("idDiscQtyIns").getValue();
             var oDiscRejectQnty = this.getView().byId("idDiscQtyRej").getValue();
-            var oDiscQntyUOM = this.getView().byId("idDiscUomIns").getValue();
+            var oDiscQntyUOM = this.getView().byId("idDiscUomIns").getText();
             var oDiscCompSerialNo = this.getView().byId("idMulInpDiscSerNo").getTokens();
             var oDiscTraceNo = this.getView().byId("idMulInpDiscTrcNo").getTokens();
             var oDiscPrelimInvest = this.getView().byId("idDcTAPi").getValue();
@@ -5014,8 +5254,11 @@ sap.ui.define([
                 oDiscCompSerialNo = oDiscCompSerialNo.length === 1 ? oDiscCompSerialNo[0].getKey() : "";
                 oDiscTraceNo = oDiscTraceNo.length === 1 ? oDiscTraceNo[0].getKey() : "";
                 var payloadUpdDisData = {
+                    "NotificationNo": oNotifNo,
+                    "DiscrepancyNo": oDiscrepancyNo,
                     "LinkedTo": oDisLinkedTo,
                     "Liability": oDiscLiability,
+                    "LiabilityText": oLiabilityText,
                     "Partner": oDiscPartner,
                     "PartnerName": oDiscPartnerName,
                     "SupercedesItem": oDiscSupercedesItem,
@@ -5045,8 +5288,13 @@ sap.ui.define([
                 }
                 oModel.create("/NotificationDiscrepancySet", payloadUpdDisData, {
                     success: function (odata, Response) {
-                        debugger;
                         sap.ui.core.BusyIndicator.hide();
+                        if (Response.headers["sap-message"]) {
+                            var oMsg = JSON.parse(Response.headers["sap-message"]).message;
+                            MessageBox.success(oMsg);
+                        }
+                        var oDiscrepancyNo = odata.DiscrepancyNo;
+                        this.bindDiscrepancyTab(oDiscrepancyNo);
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
@@ -5056,8 +5304,11 @@ sap.ui.define([
                 });
             } else {
                 var payloadUpdDisData = {
+                    "NotificationNo": oNotifNo,
+                    "DiscrepancyNo": oDiscrepancyNo,
                     "LinkedTo": oDisLinkedTo,
                     "Liability": oDiscLiability,
+                    "LiabilityText": oLiabilityText,
                     "Partner": oDiscPartner,
                     "PartnerName": oDiscPartnerName,
                     "SupercedesItem": oDiscSupercedesItem,
@@ -5109,10 +5360,15 @@ sap.ui.define([
                     }
                 }
 
-                oModel.update("/NotificationDiscrepancySet", payloadUpdDisData, {
+                oModel.create("/NotificationDiscrepancySet", payloadUpdDisData, {
                     success: function (odata, Response) {
-                        debugger;
                         sap.ui.core.BusyIndicator.hide();
+                        if (Response.headers["sap-message"]) {
+                            var oMsg = JSON.parse(Response.headers["sap-message"]).message;
+                            MessageBox.success(oMsg);
+                        }
+                        var oDiscrepancyNo = odata.DiscrepancyNo;
+                        this.bindDiscrepancyTab(oDiscrepancyNo);
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();

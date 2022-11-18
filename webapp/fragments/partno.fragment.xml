@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:fb="sap.ui.comp.filterbar">
-    <Dialog title="{i18n>SelectPartNumTitle}" class="vhdialogPOSearchstyle">
+    <Dialog title="{i18n>SelectPartNumTitle}" class="vhdialogPartNostyle">
     <VBox class="sapUiSizeCompact">
         <fb:FilterBar id="idFBLotNum" visible="false" reset="onReset" search="_onPartSearchWithLotNum" showRestoreButton="true" showClearButton="true">
             <fb:filterGroupItems>
@@ -14,7 +14,7 @@
                 </fb:FilterGroupItem>
             </fb:filterGroupItems>
         </fb:FilterBar>
-        <SearchField liveChange="onSearchPartNumTab" width="100%" class="sapUiTinyMarginBottom" />
+        <SearchField liveChange="onSearchPartNumTab" width="100%" class="sapUiTinyMargin" />
         <Table id="idPartnumTab" items="{PartNumModel>/}" mode="SingleSelectMaster" selectionChange="onSelectPartnum">
             <columns>
                 <Column>

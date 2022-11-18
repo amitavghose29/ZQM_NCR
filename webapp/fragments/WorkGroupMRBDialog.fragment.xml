@@ -1,0 +1,32 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" class="sapUiSizeCompact">
+	<Dialog title="WorkGroup" resizable="true" contentHeight="200px" contentWidth="100px">
+        <Table id="idWrkGrpMRB" items="{WorkGroupModel>/}" itemPress="onWorkGrpItemSel">
+            <columns>
+                <Column minScreenWidth="Tablet" demandPopin="true"> 
+                    <Text text="WorkGroup" />
+                </Column>
+				<Column minScreenWidth="Tablet" demandPopin="true">
+                    <Text text="" />
+                </Column>
+            </columns>
+            <items>
+                <ColumnListItem type="Active">
+                    <cells>
+                        <Text text="{WorkGroupModel>WorkGroup}" />
+						<Text text="{=${WorkGroupModel>Default} === true ? 'Default' : ''}" />
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+        <endButton>
+            <Button text="Close" press="onCloseWrkGrpMRB" />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>
+	<!-- <Dialog title="WorkGroup">
+    items="{WorkGroupModel>/}" liveChange="onAircraftliveSearch" confirm="_confirmAircraftValueHelpDialog"
+		cancel="_handleAircraftValueHelpClose"
+        <List>
+        </List>
+		<StandardListItem  title="{WorkGroupModel>WorkGroup}"/>
+	</Dialog> -->

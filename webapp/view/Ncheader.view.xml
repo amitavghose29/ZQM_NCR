@@ -62,7 +62,7 @@
                                                         </ComboBox>
                                                         <Label text="Prioity" />
                                                         <ComboBox id="idComBoxPriority" selectedKey="normal" showSecondaryValues="true" items="{oPriorityModel>/}">
-                                                            <core:ListItem key="{oPriorityModel>Key}" text="{oPriorityModel>Value}" additionalText="{oPriorityModel>Description}" />
+                                                            <core:ListItem key="{oPriorityModel>Key}" text="{oPriorityModel>Description}" additionalText="{oPriorityModel>Value}" />
                                                         </ComboBox>
                                                         <Label id="idtype" text="In Which Area" />
                                                         <ComboBox id="idCombInWhArea" items="{AreaModel>/}" change="onNcrArea">
@@ -262,13 +262,13 @@
                                     </l:BlockLayout>
                                     <!--	</VBox>-->
                                     <!--</HBox>-->
-                                    <Table id="idHeaderDiscTable" items="{oHeaderDiscTable>/}" class="formcolor1" growing="true" mode="MultiSelect" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
+                                    <Table id="idHeaderDiscTable" items="{oHeaderDiscTable>/}" class="formcolor1" growing="true" mode="SingleSelectLeft" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
                                         <headerToolbar>
                                             <Toolbar>
                                                 <Title text="Discrepancy" level="H2" />
                                                 <ToolbarSpacer />
                                                 <Button type="Emphasized" icon="sap-icon://copy" press="_onSelectingDiscrepancy" />
-                                                <Button type="Emphasized" icon="sap-icon://add" press="onDiscrepancy" />
+                                                <Button type="Emphasized" icon="sap-icon://add" press="handleAddDiscrepancy" />
                                             </Toolbar>
                                         </headerToolbar>
                                         <columns>
@@ -279,7 +279,7 @@
                                                 <Text text="Status" />
                                             </Column>
                                             <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
-                                                <Text text="Part # Affected" />
+                                                <Text text="Part Affected" />
                                             </Column>
                                             <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
                                                 <Text text="Part Description" />
@@ -310,7 +310,7 @@
                                                     <Text text="{oHeaderDiscTable>RejectQnty}" />
                                                     <Text text="{oHeaderDiscTable>SupercededByItem}" />
                                                     <Text text="{oHeaderDiscTable>OpenDate}" />
-                                                    <Text text="{oHeaderDiscTable>}" />
+                                                    <Text text="" />
                                                     <Button icon="sap-icon://log" />
                                                 </cells>
                                             </ColumnListItem>
@@ -385,7 +385,7 @@
                                         <ComboBox id="idDcCobDscNo" width="100px" items="{discrepancyDropdownModel>/results}" selectionChange="_onSelectingDiscrepancy">
                                             <core:Item key="{discrepancyDropdownModel>DiscrepancyNo}" text="{discrepancyDropdownModel>DiscrepancyNo}" />
                                         </ComboBox>
-                                        <Button type="Emphasized" icon="sap-icon://add" press="onaddDispostion" />
+                                        <Button type="Emphasized" icon="sap-icon://add" press="handleAddDiscrepancy" />
                                     </Toolbar>
                                     <l:BlockLayout background="Light">
                                         <l:BlockLayoutRow>
@@ -419,7 +419,7 @@
                                                             <Input id="idDcIpLblty" showValueHelp="true" valueHelpRequest="onVHReqLiability" />
                                                             <TextArea rows="3" width="100%" id="idDiscLbltyTxt" />
                                                         </VBox>
-                                                        <Label text="Partner / Suppilier #" />
+                                                        <Label text="Partner / Suppilier" />
                                                         <Input id="idDcIpPrtnr" showValueHelp="true" valueHelpRequest="onVHReqPartner" />
                                                         <Label text="Partner / Suppilier Name" />
                                                         <Input id="idDcIpPrtnrNm" editable="false" />
@@ -435,6 +435,8 @@
                                                         <Input id="idDiscAircraft" showValueHelp="true" valueHelpRequest="onVHReqAircraft" />
                                                         <Label text="Open Date" />
                                                         <Input id="idDcIpOdt" />
+                                                        <Label text="Close Date" />
+                                                        <Input id="idDcIpCdt" />
                                                     </f:content>
                                                 </f:SimpleForm>
                                                 <f:SimpleForm
@@ -588,13 +590,13 @@
                                                             <RadioButton id="rbtVerticalLhsRhsL" text="L" groupName="rbtVerticalLhsRhsG" />
                                                             <RadioButton id="rbtVerticalStationat" text="at" groupName="rbtVerticalStationG" />
                                                             <RadioButton id="rbtVerticalRibat" text="at" groupName="rbtVerticalRibG" />
-                                                            <RadioButton id="chbVerticalOml" text="OML" groupName="chbVerticalOmlG" />
+                                                            <RadioButton id="rbtVerticalOml" text="OML" groupName="chbVerticalOmlG" />
                                                         </VBox>
                                                         <VBox>
                                                             <RadioButton id="rbtVerticalLhsRhsR" text="R" groupName="rbtVerticalLhsRhsG" />
                                                             <RadioButton id="rbtVerticalStationbw" text="between" groupName="rbtVerticalStationG" />
                                                             <RadioButton id="rbtVerticalRibbw" text="between" groupName="rbtVerticalRibG" />
-                                                            <RadioButton id="chbVerticalIml" text="IML" groupName="chbVerticalOmlG" />
+                                                            <RadioButton id="rbtVerticalIml" text="IML" groupName="chbVerticalOmlG" />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
@@ -632,13 +634,13 @@
                                                             <RadioButton id="rbtRudderLhsRhsL" text="L" groupName="rbtRudderLhsRhsG" />
                                                             <RadioButton id="rbtRudderStationat" text="at" groupName="rbtRudderStationG" />
                                                             <RadioButton id="rbtRudderRibat" text="at" groupName="rbtRudderRibG" />
-                                                            <RadioButton id="chbRudderOml" text="OML" groupName="chbRudderOmlImlG" />
+                                                            <RadioButton id="rbtRudderOml" text="OML" groupName="chbRudderOmlImlG" />
                                                         </VBox>
                                                         <VBox>
                                                             <RadioButton id="rbtRudderLhsRhsR" text="R" groupName="rbtRudderLhsRhsG" />
                                                             <RadioButton id="rbtRudderStationbw" text="between" groupName="rbtRudderStationG" />
                                                             <RadioButton id="rbtRudderRibbw" text="between" groupName="rbtRudderRibG" />
-                                                            <RadioButton id="chbRudderIml" text="IML" groupName="chbRudderOmlImlG" />
+                                                            <RadioButton id="rbtRudderIml" text="IML" groupName="chbRudderOmlImlG" />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
@@ -737,8 +739,8 @@
                                                         <VBox>
                                                             <Text />
                                                             <HBox>
-                                                                <RadioButton id="rbtPlyonBLineL" text="L" />
-                                                                <RadioButton id="rbtPlyonBLineR" text="R" />
+                                                                <RadioButton id="rbtPlyonBLineL" text="L" groupName="rbtPlyonBLineG" />
+                                                                <RadioButton id="rbtPlyonBLineR" text="R" groupName="rbtPlyonBLineG" />
                                                             </HBox>
                                                             <HBox />
                                                             <Text />
@@ -752,8 +754,8 @@
                                                         <VBox>
                                                             <Text />
                                                             <HBox>
-                                                                <RadioButton id="rbtPlyonBLineL1" text="L" />
-                                                                <RadioButton id="rbtPlyonBLineR1" text="R" />
+                                                                <RadioButton id="rbtPlyonBLineL1" text="L" groupName="rbtPlyonBLineG1" />
+                                                                <RadioButton id="rbtPlyonBLineR1" text="R" groupName="rbtPlyonBLineG1" />
                                                             </HBox>
                                                             <HBox />
                                                             <Text />
@@ -847,13 +849,29 @@
                                                         <Input id="idDiscPartDesc" editable="false" />
                                                         <Label text="Quantity Inspected" />
                                                         <HBox>
-                                                            <Input id="idDiscQtyIns" />
-                                                            <Input id="idDiscUomIns" class="sapUiSmallMarginBegin" placeholder="UOM" />
+                                                            <Input id="idDiscQtyIns">
+                                                                <layoutData>
+                                                                    <FlexItemData growFactor="1" baseSize="0" />
+                                                                </layoutData>
+                                                            </Input>
+                                                            <Text id="idDiscUomIns" class="sapUiSmallMarginBegin">
+                                                                <layoutData>
+                                                                    <FlexItemData growFactor="1" baseSize="0" />
+                                                                </layoutData>
+                                                            </Text>
                                                         </HBox>
                                                         <Label text="Quantity Rejected" />
                                                         <HBox>
-                                                            <Input id="idDiscQtyRej" />
-                                                            <Input id="idDiscUomRej" class="sapUiSmallMarginBegin" placeholder="UOM" />
+                                                            <Input id="idDiscQtyRej">
+                                                                <layoutData>
+                                                                    <FlexItemData growFactor="1" baseSize="0" />
+                                                                </layoutData>
+                                                            </Input>
+                                                            <Text id="idDiscUomRej" class="sapUiSmallMarginBegin">
+                                                                <layoutData>
+                                                                    <FlexItemData growFactor="1" baseSize="0" />
+                                                                </layoutData>
+                                                            </Text>
                                                         </HBox>
                                                         <Label text="Serial No" />
                                                         <MultiInput id="idMulInpDiscSerNo" showValueHelp="true" valueHelpRequest=".onOpenVHSerNo" tokenUpdate="_onTokenUpdateSN" />
@@ -1289,7 +1307,7 @@
                                                         <Text text=" DAMAGE (other than skins) - N/A - BROKEN EDGE " />
                                                         <!--<Label text="Liability"/>-->
                                                         <!--<Input width="230px"/>-->
-                                                        <Label text="Partner / Supplier#" />
+                                                        <Label text="Partner / Supplier" />
                                                         <Input width="230px" />
                                                         <Label text="Partner / Supplier Name" />
                                                         <Text />

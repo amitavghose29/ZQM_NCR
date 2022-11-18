@@ -65,7 +65,7 @@
                     </fb:FilterGroupItem>
                 </fb:filterGroupItems>
             </fb:FilterBar>
-            <Table id="idPurOrdTable" inset="false" items="{oPrModel>/}" mode="SingleSelectMaster" itemPress="handlePurOrdItemSelection">
+            <Table id="idPurOrdTable" inset="false" items="{oPrModel>/}" mode="SingleSelectMaster" itemPress="handlePurOrdItemSelection" growing="true" growingThreshold="20">
                 <columns>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="{i18n>POID}"/>

@@ -207,9 +207,14 @@ sapUiFormContainerTitle>.sapUiFormTitleH1,
     width: 1200px !important;
 }
 
+.vhdialogPartNostyle {
+    min-width: 40rem;
+    width: 600px !important;
+}
+
 .vhdialogGRSearchstyle {
     min-width: 40rem;
-    width: 900px !important;
+    width: 1000px !important;
 }
 /* Added custom class for styling the width of value help dialog opened on click of serial no and traceability multi input fields - Code End*/
 
