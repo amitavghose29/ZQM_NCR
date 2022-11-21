@@ -102,6 +102,7 @@ sap.ui.define([
                         oProdOrder = data.ProdOrder,
                         oProductCode = data.ProductCode,
                         oReferenceNC = data.ReferenceNC,
+                        oCreateDate = data.CreateDate,
                         oSupercededByNC = data.SupercededByNC,
                         oSupercedesNC = data.SupercedesNC,
                         oWorkInstruction = data.WorkInstruction,
@@ -123,6 +124,7 @@ sap.ui.define([
                     this.getView().byId("idInpPrdOrd").setValue(oProdOrder);
                     this.getView().byId("idInpProdCode").setValue(oProductCode);
                     this.getView().byId("idInpRefNC").setValue(oReferenceNC);
+                    this.getView().byId("ncHdrDPCrtDate").setDateValue(oCreateDate);
                     this.getView().byId("idInpSupBy").setValue(oSupercededByNC);
                     this.getView().byId("idInpSupNC").setValue(oSupercedesNC);
                     this.getView().byId("idInpWrkIns").setValue(oWorkInstruction);
@@ -378,6 +380,8 @@ sap.ui.define([
                 this.getView().byId("idObjNCStatusDiscrep").setVisible(true);
                 this.getView().byId("idObjNCStatusDispo").setVisible(false);
                 this.getView().byId("idDcBtStkPrg").setVisible(false);
+                // this.byId("idDcIpOdt").setDateValue(new Date());
+                // this.byId("idDcIpCdt").setDateValue(new Date());
             } else if (key === "Dispo") {
                 this._setPurchaseInfoData();
                 this.getView().byId("idstatus").setVisible(true);
@@ -1351,20 +1355,22 @@ sap.ui.define([
             //Manadatory Validations for Prchase info input fields - Added by Venkata 09.09.2022 - Code End
 
             if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata") {
-                var oNCType = this.getView().byId("idCombNcType").getSelectedKey();
-                if (oNCType == "SUPPLIER" && this.getView().byId("idMNInputSN").getTokens().length === 0) {
-                    this.getView().byId("idMNInputSN").setValueState("Error");
-                    this.getView().byId("idMNInputSN").setValueStateText("Please Enter Serial Number");
+                var oNCType = this.getView().byId("idCombNcType").getValue();
+                if (oNCType == "SUPPLIER" && this.getView().byId("idMNInputSN").getTokens().length === 0 && this.getView().byId("idMNInputTN").getTokens().length === 0) {
+                    // this.getView().byId("idMNInputSN").setValueState("Error");
+                    // this.getView().byId("idMNInputSN").setValueStateText("Please Enter Serial Number");
+                    MessageBox.warning("Please enter Serial or Traceability Number.!");
                 }
-                if (oNCType == "SUPPLIER" && this.getView().byId("idMNInputTN").getTokens().length === 0) {
-                    this.getView().byId("idMNInputTN").setValueState("Error");
-                    this.getView().byId("idMNInputTN").setValueStateText("Please Enter Traceability Number");
-                }
+                // if (oNCType == "SUPPLIER" && this.getView().byId("idMNInputTN").getTokens().length === 0) {
+                //     this.getView().byId("idMNInputTN").setValueState("Error");
+                //     this.getView().byId("idMNInputTN").setValueStateText("Please Enter Traceability Number");
+                // }
 
-                if (Number(this.getOwnerComponent().getModel("NCSaveModel").getData().Category) == "002") {
+                if (Number(this.getOwnerComponent().getModel("NCSaveModel").getData().Category) == "002" || this.getView().byId("idInpWrkIns").getValue() !== "") {
                     if (this.getView().byId("idInpAircraft").getValue() !== "") {
                         this.getView().byId("idInpAircraft").setValueState("None");
                         this.getView().byId("idInpAircraft").setValueStateText("");
+                        this.updateHeaderData();
                     } else {
                         this.getView().byId("idInpAircraft").setValueState("Error");
                         this.getView().byId("idInpAircraft").setValueStateText("Please Enter Aircraft Number");
@@ -1373,7 +1379,7 @@ sap.ui.define([
                     this.updateHeaderData();
                 }
             } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Purchase") {
-                var oNCType = this.getView().byId("idCombNcType").getSelectedKey();
+                var oNCType = this.getView().byId("idCombNcType").getValue();
                 if (oNCType == "SUPPLIER") {
                     var updateFlag = true;
 
@@ -1944,6 +1950,17 @@ sap.ui.define([
             }.bind(this));
         },
 
+        onDispoistionMRB: function () {
+            this._oMRBDialog = sap.ui.xmlfragment(this.getView().getId(), "com.airbus.ZQM_NCR.fragments.MRBDisposition", this);
+            this.getView().addDependent(this._oMRBDialog);
+            this._oMRBDialog.open();
+        },
+
+        onCloseMRBRequestOut: function(){
+            this._oMRBDialog.close();
+            this._oMRBDialog.destroy();
+        },
+
         /**Function is triggered when clicked on Close button in Stock Purge Dilaog */
         onCloseStockPurge: function () {
             this._oStockPurgeDialog.destroy();
@@ -2105,6 +2122,7 @@ sap.ui.define([
                         dropShip2 = data.DropShip2,
                         aircraft = data.Aircraft,
                         openDate = data.OpenDate,
+                        closeDate = data.CloseDate,
                         partNumber = data.PartNumber,
                         partDesc = data.PartDesc,
                         inspQnty = data.InspQnty == 0 ? "" : data.InspQnty,
@@ -2169,11 +2187,16 @@ sap.ui.define([
                     this.getView().byId("idDcIpPrtnrNm").setValue(partnerName);
                     this.getView().byId("idDcIpSpsdsItm").setValue(supercedesItem);
                     this.getView().byId("idDcIpSpsdbyItm").setValue(supercededByItem);
-                    this.getView().byId("idDcTxtCdt").setText();
+                    // this.getView().byId("idDcTxtCdt").setText();
                     this.getView().byId("idDcCbDs2").setSelected(true);
                     this.getView().byId("idDiscAircraft").setValue(aircraft);
-                    this.getView().byId("idDcIpOdt").setValue(openDate);
-
+                    if(openDate){
+                        this.getView().byId("idDcIpOdt").setValue(openDate);
+                    }
+                    if(closeDate){
+                        this.getView().byId("idDcIpCdt").setValue(closeDate);
+                    }                  
+                    this.getView().byId("idDcCbDs2").setSelected(dropShip2);
                     //setting values in descripancy details 
                     this.getView().byId("idDcTAPi").setValue(prelimInvest);
                     this.getView().byId("idDcCbPrq").setSelected(partQuarantine);
@@ -2187,7 +2210,11 @@ sap.ui.define([
                     this.getView().byId("idDcTxtIs").setValue(is);
                     this.getView().byId("idDcTaSb").setValue(shouldbe);
                     this.getView().byId("idDcInpAp").setValue(asPer);
-                    this.getView().byId("idDcCbIf").setSelected(false);
+                    if(this.getView().byId("idDcCobDscNo").getValue() === ""){
+                        this.getView().byId("idDcCbIf").setSelected(true);
+                    }else{
+                        this.getView().byId("idDcCbIf").setSelected(incompletion);
+                    }
                 }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
@@ -5059,6 +5086,8 @@ sap.ui.define([
             var oDiscSupercededByItem = this.getView().byId("idDcIpSpsdbyItm").getValue();
             var oDiscDropShip2 = this.getView().byId("idDcCbDs2").getSelected();
             var oDiscAircraft = this.getView().byId("idDiscAircraft").getValue();
+            // var oDiscOpenDate = this.fnFormatDate(this.getView().byId("idDcIpOdt").getDateValue());
+            // var oDiscCloseDate = this.fnFormatDate(this.getView().byId("idDcIpCdt").getDateValue());
             var oDiscPartNumber = this.getView().byId("idDiscPartNumber").getValue();
             var oDiscPartDesc = this.getView().byId("idDiscPartDesc").getValue();
             var oDiscInspQnty = this.getView().byId("idDiscQtyIns").getValue();
@@ -5098,10 +5127,12 @@ sap.ui.define([
                     "SupercededByItem": oDiscSupercededByItem,
                     "DropShip2": oDiscDropShip2,
                     "Aircraft": oDiscAircraft,
+                    // "OpenDate": oDiscOpenDate,
+                    // "CloseDate": oDiscCloseDate,
                     "PartNumber": oDiscPartNumber,
                     "PartDesc": oDiscPartDesc,
-                    "InspQnty": oDiscInspQnty,
-                    "RejectQnty": oDiscRejectQnty,
+                    "InspQnty": oDiscInspQnty === "" ? "0" : oDiscInspQnty,
+                    "RejectQnty": oDiscRejectQnty === "" ? "0" : oDiscRejectQnty,
                     "QntyUOM": oDiscQntyUOM,
                     "CompSerialNo": oDiscCompSerialNo,
                     "TraceNo": oDiscTraceNo,
@@ -5148,10 +5179,12 @@ sap.ui.define([
                     "SupercededByItem": oDiscSupercededByItem,
                     "DropShip2": oDiscDropShip2,
                     "Aircraft": oDiscAircraft,
+                    // "OpenDate": oDiscOpenDate,
+                    // "CloseDate": oDiscCloseDate,
                     "PartNumber": oDiscPartNumber,
                     "PartDesc": oDiscPartDesc,
-                    "InspQnty": oDiscInspQnty,
-                    "RejectQnty": oDiscRejectQnty,
+                    "InspQnty": oDiscInspQnty === "" ? "0" : oDiscInspQnty,
+                    "RejectQnty": oDiscRejectQnty === "" ? "0" : oDiscRejectQnty,
                     "QntyUOM": oDiscQntyUOM,
                     "to_serials": [],
                     "to_traces": [],
@@ -5225,6 +5258,8 @@ sap.ui.define([
             var oDiscSupercededByItem = this.getView().byId("idDcIpSpsdbyItm").getValue();
             var oDiscDropShip2 = this.getView().byId("idDcCbDs2").getSelected();
             var oDiscAircraft = this.getView().byId("idDiscAircraft").getValue();
+            // var oDiscOpenDate = this.fnFormatDate(this.getView().byId("idDcIpOdt").getDateValue());
+            // var oDiscCloseDate = this.fnFormatDate(this.getView().byId("idDcIpCdt").getDateValue());    
             var oDiscPartNumber = this.getView().byId("idDiscPartNumber").getValue();
             var oDiscPartDesc = this.getView().byId("idDiscPartDesc").getValue();
             var oDiscInspQnty = this.getView().byId("idDiscQtyIns").getValue();
@@ -5265,9 +5300,11 @@ sap.ui.define([
                     "SupercededByItem": oDiscSupercededByItem,
                     "DropShip2": oDiscDropShip2,
                     "Aircraft": oDiscAircraft,
+                    // "OpenDate": oDiscOpenDate,
+                    // "CloseDate": oDiscCloseDate,
                     "PartNumber": oDiscPartNumber,
-                    "PartDesc": oDiscPartDesc,
-                    "InspQnty": oDiscInspQnty,
+                    "PartDesc": oDiscPartDesc === "" ? "0" : oDiscPartDesc,
+                    "InspQnty": oDiscInspQnty === "" ? "0" : oDiscInspQnty,
                     "RejectQnty": oDiscRejectQnty,
                     "QntyUOM": oDiscQntyUOM,
                     "CompSerialNo": oDiscCompSerialNo,
@@ -5315,10 +5352,12 @@ sap.ui.define([
                     "SupercededByItem": oDiscSupercededByItem,
                     "DropShip2": oDiscDropShip2,
                     "Aircraft": oDiscAircraft,
+                    // "OpenDate": oDiscOpenDate,
+                    // "CloseDate": oDiscCloseDate,
                     "PartNumber": oDiscPartNumber,
                     "PartDesc": oDiscPartDesc,
-                    "InspQnty": oDiscInspQnty,
-                    "RejectQnty": oDiscRejectQnty,
+                    "InspQnty": oDiscInspQnty === "" ? "0" : oDiscInspQnty,
+                    "RejectQnty": oDiscRejectQnty === "" ? "0" : oDiscRejectQnty,
                     "QntyUOM": oDiscQntyUOM,
                     "to_serials": [],
                     "to_traces": [],

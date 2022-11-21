@@ -60,7 +60,7 @@
                                                         <ComboBox id="idCombNcType" items="{/NCTYPE_SOSet}" change="onNcrchange" showSecondaryValues="true">
                                                             <core:ListItem key="{Nctype}" text="{Nctype}" additionalText="{NctypeDesc}" />
                                                         </ComboBox>
-                                                        <Label text="Prioity" />
+                                                        <Label text="Priority" />
                                                         <ComboBox id="idComBoxPriority" selectedKey="normal" showSecondaryValues="true" items="{oPriorityModel>/}">
                                                             <core:ListItem key="{oPriorityModel>Key}" text="{oPriorityModel>Description}" additionalText="{oPriorityModel>Value}" />
                                                         </ComboBox>
@@ -87,9 +87,9 @@
                                                         <Label text="Reference NC" />
                                                         <Input id="idInpRefNC" value="{ReferenceNC}" valueHelpRequest="onVHReqRefNC" showValueHelp="true" />
                                                         <Label text="Create Date" />
-                                                        <DatePicker value="{path:'CreateDate', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'medium', strictParsing: true}}" editable="false" />
+                                                        <DatePicker id="ncHdrDPCrtDate" value="{path:'CreateDate', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'medium', strictParsing: true}}" editable="false" />
                                                         <Label text="Closed Date" />
-                                                        <Text text="{CloseDate}" />
+                                                        <Text id="ncHdrDPClsDate" text="{CloseDate}" />
                                                         <!-- <Label text="Existing ATS"/>
 														<Switch id="idSwitchExstATS" state="{ExistingATS}" customTextOn="Yes" customTextOff="No"> -->
                                                         <!--<layoutData>-->
@@ -252,7 +252,7 @@
                                                         <Label text="NC Detected At Work Centre" />
                                                         <MultiInput id="idInpNCDetAt" value="{NCDetectedAt}" valueHelpRequest=".onOpenVHNCDetected" showValueHelp="true" />
                                                         <Label text="Bin Location" />
-                                                        <Input id="idInpBinLoc" value="{Binlocation}" valueHelpRequest=".onOpenVHBinLoc" showValueHelp="true" />
+                                                        <Input id="idInpBinLoc" value="{Binlocation}" valueHelpRequest=".onOpenVHBinLoc" showValueHelp="false" />
                                                         <Label text="Drop Point" />
                                                         <Input id="idInpDrpPt" value="{DropPoint}" valueHelpRequest=".onOpenVHDrpPt" showValueHelp="true" />
                                                     </f:content>
@@ -427,16 +427,18 @@
                                                         <Input id="idDcIpSpsdsItm" showValueHelp="true" valueHelpRequest="onVHReqSupersedesItem" />
                                                         <Label text="Superseded by Item" />
                                                         <Input id="idDcIpSpsdbyItm" showValueHelp="true" valueHelpRequest="onVHReqSupersededbyItem" />
-                                                        <Label text="Closed Date" />
-                                                        <Text id="idDcTxtCdt" text="" />
+                                                        <!-- <Label text="Closed Date" />
+                                                        <Text id="idDcTxtCdt" text="" /> -->
                                                         <Label text="2nd Drop Ship" />
                                                         <CheckBox id="idDcCbDs2" />
                                                         <Label text="Aircraft" />
                                                         <Input id="idDiscAircraft" showValueHelp="true" valueHelpRequest="onVHReqAircraft" />
                                                         <Label text="Open Date" />
-                                                        <Input id="idDcIpOdt" />
+                                                        <!-- <Input /> -->
+                                                        <DatePicker id="idDcIpOdt" value="{path:'OpenDate', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'medium', strictParsing: true}}" editable="false" />
                                                         <Label text="Close Date" />
-                                                        <Input id="idDcIpCdt" />
+                                                        <!-- <Input  /> -->
+                                                        <DatePicker id="idDcIpCdt" value="{path:'CloseDate', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'medium', strictParsing: true}}" editable="false" />
                                                     </f:content>
                                                 </f:SimpleForm>
                                                 <f:SimpleForm
@@ -1226,7 +1228,7 @@
                                             <l:BlockLayoutCell backgroundColorShade="ShadeA" backgroundColorSet="ColorSet1" width="100" class="formcolor">
                                                 <f:SimpleForm
                                                     editable="true"
-                                                    title="General Information"
+                                                    title="Disposition General Information"
                                                     labelSpanXL="4"
                                                     labelSpanL="4"
                                                     labelSpanM="12"
@@ -1262,7 +1264,8 @@
                                                         <CheckBox text="" />
                                                         <Label text="Customer Support Notification" />
                                                         <Switch state="true" customTextOn="Yes" customTextOff="No" />
-                                                        <!--<CheckBox/>-->
+                                                        <Label text = "MRB"/>
+                                                        <Button id="idBtnMRBDisp" type="Emphasized" width = "10%" icon="sap-icon://popup-window" press="onDispoistionMRB"/>
                                                     </f:content>
                                                 </f:SimpleForm>
                                             </l:BlockLayoutCell>
