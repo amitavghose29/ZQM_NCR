@@ -1961,6 +1961,17 @@ sap.ui.define([
             this._oMRBDialog.destroy();
         },
 
+        onDispoistionPressRTV: function () {
+            this._oRTVDialog = sap.ui.xmlfragment(this.getView().getId(), "com.airbus.ZQM_NCR.fragments.RTVDisposition", this);
+            this.getView().addDependent(this._oRTVDialog);
+            this._oRTVDialog.open();
+        },
+
+        onCloseRTVPopout: function(){
+            this._oRTVDialog.close();
+            this._oRTVDialog.destroy();
+        },
+
         /**Function is triggered when clicked on Close button in Stock Purge Dilaog */
         onCloseStockPurge: function () {
             this._oStockPurgeDialog.destroy();

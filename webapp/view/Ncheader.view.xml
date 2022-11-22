@@ -1331,7 +1331,9 @@
                                         <headerToolbar>
                                             <Toolbar>
                                                 <Title text="Disposition Details" level="H2" />
+
                                                 <ToolbarSpacer />
+                                                <Button type="Emphasized" text = "RTV" press="onDispoistionPressRTV" />
                                                 <Button type="Emphasized" icon="sap-icon://copy" press="onDispoistionCopy" />
                                                 <Button type="Emphasized" icon="sap-icon://add" press="onDispoistionAdd" />
                                             </Toolbar>
