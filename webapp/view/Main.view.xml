@@ -78,18 +78,18 @@
                                         <l:GridData span="XL2 L3 M6 S4" />
                                     </layoutData> -->
                                 </ComboBox>
-                                <Input id="idsubcno" valueHelpRequest="_onVHReqSubCategory" visible="true" showValueHelp="true" liveChange="poEnter" change="onChangeWI">
+                                <Input id="idsubcno" valueHelpRequest="_onVHReqSubCategory" visible="true" showValueHelp="true" change="onChangeWI">
                                     <!-- <layoutData>
                                         <l:GridData span="XL2 L3 M6 S4" />
                                     </layoutData> -->
                                 </Input>
-                                <Input id="idsubsubno" showValueHelp="false" visible="true">
+                                <Input id="idsubsubno" showValueHelp="true" visible="true" valueHelpRequest="_onVHReqSubItemCategory">
                                     <!-- <layoutData>
                                         <l:GridData span="XL2 L3 M6 S4" />
                                     </layoutData> -->
                                 </Input>
                                 <Label text="{i18n>Binlocation}" />
-                                <Input id="idInpBinLoc" maxLength="10" valueHelpRequest="onBinhelpRequest" showValueHelp="true" liveChange="poEnter" />
+                                <Input id="idInpBinLoc" maxLength="10" valueHelpRequest="onBinhelpRequest" showValueHelp="false" />
                                 <Label text="{i18n>Aircraftnumber}" />
                                 <Input id="idAirCraftNum" showValueHelp="true" valueHelpRequest="onAircrafthelpRequest" />
                             </f:content>

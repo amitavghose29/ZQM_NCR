@@ -97,7 +97,7 @@
                                                         <!--</layoutData>-->
                                                         <!-- </Switch> -->
                                                         <Label text="Link to Aircraft" />
-                                                        <CheckBox id="idChkBoxLinkAircraft" enabled="false" />
+                                                        <CheckBox id="idChkBoxLinkAircraft" editable="false" />
                                                         <Label text="Aircraft" />
                                                         <Input id="idInpAircraft" value="{Aircraftno}" valueHelpRequest="onVHReqAircraft" showValueHelp="true" change="handleAircraftChange" />
                                                         <Label text="QSR" />
@@ -262,7 +262,7 @@
                                     </l:BlockLayout>
                                     <!--	</VBox>-->
                                     <!--</HBox>-->
-                                    <Table id="idHeaderDiscTable" items="{oHeaderDiscTable>/}" class="formcolor1" growing="true" mode="SingleSelectLeft" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
+                                    <Table id="idHeaderDiscTable" items="{oHeaderDiscTable>/}" class="formcolor1" growing="true" mode="SingleSelectLeft" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true" itemPress="handleDiscItemSelection">
                                         <headerToolbar>
                                             <Toolbar>
                                                 <Title text="Discrepancy" level="H2" />
@@ -301,7 +301,7 @@
                                             </Column>
                                         </columns>
                                         <items>
-                                            <ColumnListItem>
+                                            <ColumnListItem type="Navigation">
                                                 <cells>
                                                     <Text text="{oHeaderDiscTable>DiscrepancyNo}" />
                                                     <Text text="{oHeaderDiscTable>Status}" />

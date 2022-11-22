@@ -72,6 +72,13 @@ sap.ui.define([
                 this._bindView("/" + sObjectPath);
                 this._bindTable("/" + sObjectPath);
             }.bind(this));
+            /*** Date-22.11.2022 * Added startupParams for Working Queue display mode functionality*/
+             var startupParams = this.getOwnerComponent().getComponentData().startupParameters;
+             var workingQueueMode="";
+             if ((startupParams.mode && startupParams.mode[0])) {
+                 workingQueueMode=startupParams.mode[0];
+             }
+            /*** End*/
         },
 
         _bindView: function (sObjectPath) {
@@ -102,6 +109,7 @@ sap.ui.define([
                         oProdOrder = data.ProdOrder,
                         oProductCode = data.ProductCode,
                         oReferenceNC = data.ReferenceNC,
+                        oLinkToAircraft = data.Aircraft,
                         oCreateDate = data.CreateDate,
                         oSupercededByNC = data.SupercededByNC,
                         oSupercedesNC = data.SupercedesNC,
@@ -124,6 +132,7 @@ sap.ui.define([
                     this.getView().byId("idInpPrdOrd").setValue(oProdOrder);
                     this.getView().byId("idInpProdCode").setValue(oProductCode);
                     this.getView().byId("idInpRefNC").setValue(oReferenceNC);
+                    this.getView().byId("idChkBoxLinkAircraft").setSelected(oLinkToAircraft);
                     this.getView().byId("ncHdrDPCrtDate").setDateValue(oCreateDate);
                     this.getView().byId("idInpSupBy").setValue(oSupercededByNC);
                     this.getView().byId("idInpSupNC").setValue(oSupercedesNC);
@@ -2108,6 +2117,26 @@ sap.ui.define([
             this.bindDiscrepancyTab(discrepancyNo);
         },
 
+        handleDiscItemSelection: function(oEvent){
+            debugger;
+            var discrepancyNo;
+            if (oEvent.getParameters().listItem.getBindingContext("oHeaderDiscTable")) {
+                discrepancyNo = oEvent.getParameters().listItem.getBindingContext("oHeaderDiscTable").getProperty("DiscrepancyNo");
+            } else {
+                discrepancyNo = "";
+            }
+            if (discrepancyNo != "") {
+                if (oNctype == "STOCK PURGE") {
+                    this.getView().byId("idDcBtStkPrg").setVisible(true);
+                } else {
+                    this.getView().byId("idDcBtStkPrg").setVisible(false);
+                }
+            }
+            this.bindDiscrepancyTab(discrepancyNo);
+            this.getView().byId("idIconTabBarHeader").setSelectedKey("Discre");
+            this.getView().byId("idHeaderDiscTable").removeSelections();
+        },
+
         bindDiscrepancyTab: function (discrepancyNo) {
             sap.ui.core.BusyIndicator.show();
             var oModel = new JSONModel();
@@ -2168,6 +2197,24 @@ sap.ui.define([
                     this.getView().byId("idDiscLbltyTxt").setValue(liabilitytext);
                     this._oMultiInputDiscSN.removeAllTokens();
                     this._oMultiInputDiscTN.removeAllTokens();
+                    this.getView().byId("idComBoxDiscLinkTo").setValue(linkedTo);
+                    if (linkedTo == "AIRCRAFT") {
+                        this.getView().byId("idDiscPartNumber").setValueHelpOnly(false);
+                        this.getView().byId("idDiscPartDesc").setEditable(true);
+                    } else if (linkedTo == "DETAIL") {
+                        this.getView().byId("idDiscPartNumber").setValueHelpOnly(false);
+                        this.getView().byId("idDiscPartDesc").setEditable(true);
+                    } else {
+                        this.getView().byId("idDiscPartNumber").setValueHelpOnly(true);
+                        this.getView().byId("idDiscPartDesc").setEditable(false);
+                    }
+                    if (partNumber !== "") {
+                        this._oMultiInputDiscSN.setEditable(true);
+                        this._oMultiInputDiscTN.setEditable(true);
+                    } else {
+                        this._oMultiInputDiscSN.setEditable(false);
+                        this._oMultiInputDiscTN.setEditable(false);
+                    }
                     if (compSerialNo.results.length > 0) {
                         for (var i = 0; i < compSerialNo.results.length; i++) {
                             var oSerialNosDiscToken = compSerialNo.results[i].SerialNo;
@@ -2188,11 +2235,7 @@ sap.ui.define([
                             this._oMultiInputDiscTN.addToken(oTraceDiscToken);
                         }
                     }
-                    if (linkedTo != "") {
-                        this.getView().byId("idComBoxDiscLinkTo").setValue(linkedTo);
-                    } else {
-                        this.getView().byId("idComBoxDiscLinkTo").setValue(linkedTo);
-                    }
+                    
                     this.getView().byId("idDcIpLblty").setValue(liability);
                     this.getView().byId("idDcIpPrtnr").setValue(partner);
                     this.getView().byId("idDcIpPrtnrNm").setValue(partnerName);
@@ -2436,6 +2479,14 @@ sap.ui.define([
                 var oDataModel = this.getOwnerComponent().getModel();
                 var oFilter = [];
                 oFilter.push(new Filter("Key", FilterOperator.EQ, "SERNR"));
+                if(this.getView().byId("idInpPartNo").getValue() !== ""){
+                    var oMatNo = this.getView().byId("idInpPartNo").getValue();
+                    oFilter.push(new Filter("Value", FilterOperator.EQ, oMatNo));
+                }
+                if(this.getView().byId("idDiscPartNumber").getValue() !== ""){
+                    var oDiscMatNo = this.getView().byId("idDiscPartNumber").getValue();
+                    oFilter.push(new Filter("Value", FilterOperator.EQ, oDiscMatNo));
+                }
                 var sPath = "/f4_genericSet";
                 oDataModel.read(sPath, {
                     filters: oFilter,
@@ -2683,6 +2734,10 @@ sap.ui.define([
                     var oDataModel = this.getOwnerComponent().getModel();
                     var oFilter = [];
                     oFilter.push(new Filter("Key", FilterOperator.EQ, "SERNR"));
+                    if(this.getView().byId("idInpPartNo").getValue() !== ""){
+                        var oMaterNo = this.getView().byId("idInpPartNo").getValue();
+                        oFilter.push(new Filter("Value", FilterOperator.EQ, oMaterNo));
+                    } 
                     var sPath = "/f4_genericSet";
                     oDataModel.read(sPath, {
                         filters: oFilter,
@@ -2731,6 +2786,10 @@ sap.ui.define([
                     var oDataModel = this.getOwnerComponent().getModel();
                     var oFilter = [];
                     oFilter.push(new Filter("Key", FilterOperator.EQ, "SERNR"));
+                    if(this.getView().byId("idDiscPartNumber").getValue() !== ""){
+                        var oMaterNo = this.getView().byId("idDiscPartNumber").getValue();
+                        oFilter.push(new Filter("Value", FilterOperator.EQ, oMaterNo));
+                    }              
                     var sPath = "/f4_genericSet";
                     oDataModel.read(sPath, {
                         filters: oFilter,
@@ -4701,6 +4760,8 @@ sap.ui.define([
                 return;
             }
             oInput.setValue(oSelectedItem.getTitle());
+            this.getView().byId("idMulInpDiscSerNo").setEditable(true);
+            this.getView().byId("idMulInpDiscTrcNo").setEditable(true);
             this._oPartNoDiscDialog.destroy();
         },
 
@@ -4950,8 +5011,8 @@ sap.ui.define([
                         var data = oData.results;
                         var bFlag;
                         for (var i = 0; i < data.length; i++) {
-                            var oPartNo = data[i].Value;
-                            var oPartDesc = data[i].Description;
+                            var oPartNo = data[i].PartNumber;
+                            var oPartDesc = data[i].PartName;
                             if (oPartNo == oInpPartNo.getValue()) {
                                 bFlag = false;
                                 break;
@@ -4962,12 +5023,10 @@ sap.ui.define([
                         if (bFlag === true) {
                             this.getView().byId("idDiscPartDesc").setEditable(true);
                             this.getView().byId("idDiscPartDesc").setValue();
-                            if (this.getView().byId("idComBoxDiscLinkTo").getSelectedItem()) {
-                                if (this.getView().byId("idComBoxDiscLinkTo").getSelectedItem().getText() == "AIRCRAFT") {
-                                    var oMessage = "No matching Part master records found.!";
-                                } else if (this.getView().byId("idComBoxDiscLinkTo").getSelectedItem().getText() == "DETAIL") {
-                                    var oMessage = "No matching Part master records found, please contact the responsible team.!";
-                                }
+                            if (this.getView().byId("idComBoxDiscLinkTo").getValue() == "AIRCRAFT") {
+                                var oMessage = "No matching Part master records found.!";
+                            } else if (this.getView().byId("idComBoxDiscLinkTo").getValue() == "DETAIL") {
+                                var oMessage = "No matching Part master records found, please contact the responsible team.!";
                             }
                             MessageBox.warning(
                                 oMessage, {
@@ -5314,9 +5373,9 @@ sap.ui.define([
                     // "OpenDate": oDiscOpenDate,
                     // "CloseDate": oDiscCloseDate,
                     "PartNumber": oDiscPartNumber,
-                    "PartDesc": oDiscPartDesc === "" ? "0" : oDiscPartDesc,
+                    "PartDesc": oDiscPartDesc,
                     "InspQnty": oDiscInspQnty === "" ? "0" : oDiscInspQnty,
-                    "RejectQnty": oDiscRejectQnty,
+                    "RejectQnty": oDiscRejectQnty === "" ? "0" : oDiscRejectQnty,
                     "QntyUOM": oDiscQntyUOM,
                     "CompSerialNo": oDiscCompSerialNo,
                     "TraceNo": oDiscTraceNo,

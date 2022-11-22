@@ -115,6 +115,11 @@ sap.ui.define([
                 this.getView().byId("SimpleFormNcCreate").setVisible(true);
                 this.getView().byId("idncrnumber").setVisible(false);
             }
+            this.getView().byId("idlinksubc").setValue();
+            this.getView().byId("idsubcno").setValue();
+            this.getView().byId("idsubsubno").setValue();
+            this.getView().byId("idInpBinLoc").setValue();
+            this.getView().byId("idAirCraftNum").setValue();
         },
 
         /**
@@ -1106,6 +1111,83 @@ sap.ui.define([
             }
         },
 
+        /**
+        * Function is triggered when the value help indicator for Sub Item Category is clicked
+        * @function
+        */
+        _onVHReqSubItemCategory: function(){
+            this._oSubItemCategDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.subsubcategory", this);
+            this.getView().addDependent(this._oSubItemCategDialog);
+            this._oSubItemCategDialog.open();
+            sap.ui.core.BusyIndicator.show();
+            var oDataModel = this.getOwnerComponent().getModel();
+            var oSubCat = this.getView().byId("idlinksubc").getSelectedKey();
+            var oSelItem = this.getView().byId("idsubcno").getValue();
+            var oSubItemModel = new JSONModel();
+            var oFilter = [];
+                oFilter.push(new Filter("Value", FilterOperator.EQ, oSelItem));
+            if (Number(oSubCat) == "0001") {
+                oFilter.push(new Filter("Flag", FilterOperator.EQ, "O"));
+            }else if(Number(oSubCat) == "0003"){
+                oFilter.push(new Filter("Flag", FilterOperator.EQ, "G"));
+            }else if(Number(oSubCat) == "0004"){
+                oFilter.push(new Filter("Flag", FilterOperator.EQ, "P"));
+            }
+            var sPath = "/Subcat_SubItemSet"
+            oDataModel.read(sPath, {
+                filters: oFilter,
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.results;
+                        oSubItemModel.setData(data);
+                    this._oSubItemCategDialog.setModel(oSubItemModel, "subItemCategoryModel")
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+        },
+
+        /**
+        * Function is fired when the Purchase Order is confirmed by selecting an item 
+        * @function
+        * @param {sap.ui.base.Event} oEvent item being selected is returned 
+        */
+         _configVHDialogSubItemCateg: function (oEvent) {
+            var oSelectedItem = oEvent.getParameter("selectedItem"),
+                oInput;
+                oInput = this.getView().byId("idsubsubno");
+
+            if (!oSelectedItem) {
+                oInput.resetProperty("value");
+                return;
+            }
+            oInput.setValue(oSelectedItem.getTitle());
+            this._oSubItemCategDialog.destroy();
+        },
+
+        /**
+        * Function is executed when the search for part number as in filter bar field for different sub categories is triggered
+        * @function
+        * @param {sap.ui.base.Event} oEvent object of the user input
+        */
+         onSearchSubItemCateg: function (oEvent) {
+            var sValue = oEvent.getParameter("value");
+            var oFilter = new Filter("ResultRet", FilterOperator.Contains, sValue);
+            var oBinding = oEvent.getParameter("itemsBinding");
+            oBinding.filter([oFilter]);
+        },
+
+        /**
+        * Function is executed when the value help dialog for sub item category is closed
+        * @function
+        */
+        _handleValueHelpCloseSubItemCateg: function () {
+            this._oSubItemCategDialog.destroy();
+        },
+
 		/**
         * Function is triggered when the value help indicator for Work Instruction as in filter bar field of Production Order Value Help is clicked
         * @function
@@ -2026,7 +2108,11 @@ sap.ui.define([
         * @function
         */
         onNCAreaChange: function () {
-            this.getView().byId("idsubcno").setValue("");
+            this.getView().byId("idlinksubc").setValue();
+            this.getView().byId("idsubcno").setValue();
+            this.getView().byId("idsubsubno").setValue();
+            this.getView().byId("idInpBinLoc").setValue();
+            this.getView().byId("idAirCraftNum").setValue();
         },
 
         /**
@@ -2095,6 +2181,11 @@ sap.ui.define([
         * @function
         */
         onNCTypeChange: function () {
+            this.getView().byId("idlinksubc").setValue();
+            this.getView().byId("idsubcno").setValue();
+            this.getView().byId("idsubsubno").setValue();
+            this.getView().byId("idInpBinLoc").setValue();
+            this.getView().byId("idAirCraftNum").setValue();
             this.bindSubCategory();
             var ncType = this.getView().byId("idncr").getSelectedKey();
             sap.ui.core.BusyIndicator.show();
