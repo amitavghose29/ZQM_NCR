@@ -72,11 +72,11 @@ sap.ui.define([
                 this._bindView("/" + sObjectPath);
                 this._bindTable("/" + sObjectPath);
             }.bind(this));
-            /*** Date-22.11.2022 * Added startupParams for Working Queue display mode functionality*/
-             var startupParams = this.getOwnerComponent().getComponentData().startupParameters;
+            /*** Date-22.11.2022 * Added Working Queue display mode functionality*/
+             
              var workingQueueMode="";
-             if ((startupParams.mode && startupParams.mode[0])) {
-                 workingQueueMode=startupParams.mode[0];
+             if ((sap.ui.getCore().getModel("modeModel").oData.ModeBtn!="") && (sap.ui.getCore().getModel("modeModel")!=undefined)) {
+                workingQueueMode=sap.ui.getCore().getModel("modeModel").oData.ModeBtn;
              }
             /*** End*/
         },
@@ -5589,15 +5589,19 @@ sap.ui.define([
                     }
                 })
             }
-        }
+        },
 
         /**
          * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
          * @memberOf com.airbus.ZQM_NCR.view.Ncheader
          */
-        //	onExit: function() {
-        //
-        //	}
+         onExit: function () {
+            var modeData = {};
+            modeData.ModeBtn = "";
+            var modeModel = new JSONModel();
+            modeModel.setData(modeData);
+            sap.ui.getCore().setModel(modeModel, "modeModel");
+		}
 
     });
 });

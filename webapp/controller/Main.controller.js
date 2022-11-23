@@ -2175,6 +2175,13 @@ sap.ui.define([
             this._oPODialog.destroy();
             this.getView().byId("idsubcno").setValue();
         },
+        onExit: function () {
+            var modeData = {};
+            modeData.ModeBtn = "";
+            var modeModel = new JSONModel();
+            modeModel.setData(modeData);
+            sap.ui.getCore().setModel(modeModel, "modeModel");
+		},
 
         /**
         * Function is triggered when the value of NC Type input field is changed
