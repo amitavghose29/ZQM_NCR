@@ -163,6 +163,7 @@ sap.ui.define([
                     if (oPartNumber !== "") {
                         this._oMultiInputSN.setEditable(true);
                         this._oMultiInputTN.setEditable(true);
+                        this.handleChangePartNo();
                     } else {
                         this._oMultiInputSN.setEditable(false);
                         this._oMultiInputTN.setEditable(false);
@@ -301,6 +302,29 @@ sap.ui.define([
             });
         },
 
+        bindSupplierFromPurInfo: function () {
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new JSONModel();
+            oModel.setSizeLimit(10000);
+            var oDataModel = this.getOwnerComponent().getModel();
+            var sPath = "/CreatePurchaseInfoSet('" + sObjectId + "')";
+            oDataModel.read(sPath, {
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData;
+                    var oSupplierCode = data.NCSupplierCode,
+                        oSupplierName = data.NCSupplierName;
+                    this.getView().byId("idDcIpPrtnr").setValue(oSupplierCode);
+                    this.getView().byId("idDcIpPrtnrNm").setValue(oSupplierName);
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+        },
+
         _bindTable: function (sObjectPath) {
             var oHeaderDisTabModel = new JSONModel();
             var that = this;
@@ -392,7 +416,6 @@ sap.ui.define([
                 // this.byId("idDcIpOdt").setDateValue(new Date());
                 // this.byId("idDcIpCdt").setDateValue(new Date());
             } else if (key === "Dispo") {
-                this._setPurchaseInfoData();
                 this.getView().byId("idstatus").setVisible(true);
                 this.getView().byId("idObjNCStatus").setVisible(false);
                 this.getView().byId("idObjNCStatusDiscrep").setVisible(false);
@@ -408,10 +431,15 @@ sap.ui.define([
                 success: function (oData, oResult) {
                     debugger;
                     sap.ui.core.BusyIndicator.hide();
-                    var oDiscPartnerCode = oData.DiscPartnerCode,
-                        oDiscPartnerDesc = oData.DiscPartnerDesc;
-                    this.getView().byId("idDcIpPrtnr").setValue(oDiscPartnerCode);
-                    this.getView().byId("idDcIpPrtnrNm").setValue(oDiscPartnerDesc);
+                    if(oData.DiscPartnerCode !== ""){
+                        var oDiscPartnerCode = oData.DiscPartnerCode,
+                            oDiscPartnerDesc = oData.DiscPartnerDesc;
+                            this.getView().byId("idDcIpPrtnr").setValue(oDiscPartnerCode);
+                            this.getView().byId("idDcIpPrtnrNm").setValue(oDiscPartnerDesc);
+                    }else{
+                        this.bindSupplierFromPurInfo();
+                    }
+                    
                 }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
@@ -2742,20 +2770,25 @@ sap.ui.define([
                     oDataModel.read(sPath, {
                         filters: oFilter,
                         success: function (oData, oResult) {
+                            sap.ui.core.BusyIndicator.hide();
                             var data = oData.results;
                             oModel.setData(data);
                             for (i = 0; i < aTokens.length; i++) {
                                 this.getView().byId("idMNInputSN").setValueState("None");
                                 this.getView().byId("idMNInputSN").setValueStateText("");
                                 sTokensText = aTokens[i].getText();
-
-                                for (j = 0; j < oModel.getData().length; j++) {
-                                    sNo = oModel.getData()[j].Value;
-                                    if (sTokensText === sNo) {
-                                        bFlag = true;
-                                        break;
-                                    } else {
-                                        bFlag = false;
+                                if(oModel.getData().length === 0){
+                                    bFlag = false;
+                                    break;
+                                } else{
+                                    for (j = 0; j < oModel.getData().length; j++) {
+                                        sNo = oModel.getData()[j].Value;
+                                        if (sTokensText === sNo) {
+                                            bFlag = true;
+                                            break;
+                                        } else {
+                                            bFlag = false;
+                                        }
                                     }
                                 }
                             }
@@ -2768,7 +2801,6 @@ sap.ui.define([
                                     }
                                 );
                             }
-                            sap.ui.core.BusyIndicator.hide();
                         }.bind(this),
                         error: function (oError) {
                             sap.ui.core.BusyIndicator.hide();
@@ -2794,17 +2826,23 @@ sap.ui.define([
                     oDataModel.read(sPath, {
                         filters: oFilter,
                         success: function (oData, oResult) {
+                            sap.ui.core.BusyIndicator.hide();
                             var data = oData.results;
                             oModel.setData(data);
                             for (i = 0; i < aTokens.length; i++) {
                                 sTokensText = aTokens[i].getText();
-                                for (j = 0; j < oModel.getData().length; j++) {
-                                    sNo = oModel.getData()[j].Value;
-                                    if (sTokensText === sNo) {
-                                        bFlag = true;
-                                        break;
-                                    } else {
-                                        bFlag = false;
+                                if(oModel.getData().length === 0){
+                                    bFlag = false;
+                                    break;
+                                } else{
+                                    for (j = 0; j < oModel.getData().length; j++) {
+                                        sNo = oModel.getData()[j].Value;
+                                        if (sTokensText === sNo) {
+                                            bFlag = true;
+                                            break;
+                                        } else {
+                                            bFlag = false;
+                                        }
                                     }
                                 }
                             }
@@ -2817,7 +2855,6 @@ sap.ui.define([
                                     }
                                 );
                             }
-                            sap.ui.core.BusyIndicator.hide();
                         }.bind(this),
                         error: function (oError) {
                             sap.ui.core.BusyIndicator.hide();
@@ -2858,25 +2895,29 @@ sap.ui.define([
                             oModel.setData(data);
                             for (i = 0; i < aTokens.length; i++) {
                                 sTokensText = aTokens[i].getText();
-                                for (j = 0; j < oModel.getData().length; j++) {
-                                    tNo = oModel.getData()[j].Value;
-                                    if (sTokensText === tNo) {
-                                        bFlag = true;
-                                        break;
-                                    } else {
-                                        bFlag = false;
+                                if(oModel.getData().length === 0){
+                                    bFlag = false;
+                                    break;
+                                }else{
+                                    for (j = 0; j < oModel.getData().length; j++) {
+                                        tNo = oModel.getData()[j].Value;
+                                        if (sTokensText === tNo) {
+                                            bFlag = true;
+                                            break;
+                                        } else {
+                                            bFlag = false;
+                                        }
                                     }
                                 }
-
-                                if (bFlag === false) {
-                                    var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
-                                    MessageBox.information(
-                                        "Traceability Number not available in SAP.!",
-                                        {
-                                            styleClass: bCompact ? "sapUiSizeCompact" : ""
-                                        }
-                                    );
-                                }
+                            }
+                            if (bFlag === false) {
+                                var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
+                                MessageBox.information(
+                                    "Traceability Number not available in SAP.!",
+                                    {
+                                        styleClass: bCompact ? "sapUiSizeCompact" : ""
+                                    }
+                                );
                             }
                         }.bind(this),
                         error: function (oError) {
@@ -2904,25 +2945,29 @@ sap.ui.define([
                             oModel.setData(data);
                             for (i = 0; i < aTokens.length; i++) {
                                 sTokensText = aTokens[i].getText();
-                                for (j = 0; j < oModel.getData().length; j++) {
-                                    tNo = oModel.getData()[j].Value;
-                                    if (sTokensText === tNo) {
-                                        bFlag = true;
-                                        break;
-                                    } else {
-                                        bFlag = false;
+                                if(oModel.getData().length === 0){
+                                    bFlag = false;
+                                    break;
+                                }else{
+                                    for (j = 0; j < oModel.getData().length; j++) {
+                                        tNo = oModel.getData()[j].Value;
+                                        if (sTokensText === tNo) {
+                                            bFlag = true;
+                                            break;
+                                        } else {
+                                            bFlag = false;
+                                        }
                                     }
                                 }
-
-                                if (bFlag === false) {
-                                    var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
-                                    MessageBox.information(
-                                        "Traceability Number not available in SAP.!",
-                                        {
-                                            styleClass: bCompact ? "sapUiSizeCompact" : ""
-                                        }
-                                    );
-                                }
+                            }
+                            if (bFlag === false) {
+                                var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
+                                MessageBox.information(
+                                    "Traceability Number not available in SAP.!",
+                                    {
+                                        styleClass: bCompact ? "sapUiSizeCompact" : ""
+                                    }
+                                );
                             }
                         }.bind(this),
                         error: function (oError) {
@@ -3668,16 +3713,20 @@ sap.ui.define([
                     oInput = this.getView().byId("idInpPartNo");
                     var oPartDesc = oEvent.getParameter("selectedItem").getInfo();
                     this.getView().byId("idInpStatPartDesc").setValue(oPartDesc);
+                    this.getView().byId("idMNInputSN").setEditable(true);
+                    this.getView().byId("idMNInputTN").setEditable(true);
                 }
 
                 if (!oSelectedItem) {
                     oInput.resetProperty("value");
                     return;
                 }
-                oInput.setValue(oSelectedItem.getTitle());
-                this.getView().byId("idMNInputSN").setEditable(true);
-                this.getView().byId("idMNInputTN").setEditable(true);
-                this._oPartNoDialog.destroy();
+                oInput.setValue(oSelectedItem.getTitle());  
+                if (this.oPartNoInput.includes("idFlBarPrOrdVhPartNo")) {
+                    this._oPrtNoFBDialog.destroy();
+                } else if (this.oPartNoInput.includes("idInpPartNo")) {
+                    this._oPartNoDialog.destroy();
+                }                       
             } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Purchase") {
                 var oSelectedItem = oEvent.getParameter("selectedItem"),
                     oInput;
@@ -3753,16 +3802,21 @@ sap.ui.define([
                         sap.ui.core.BusyIndicator.hide();
                         var data = oData.results;
                         var bFlag;
-                        for (var i = 0; i < data.length; i++) {
-                            var oPartNo = data[i].Value;
-                            var oPartDesc = data[i].Description;
-                            if (oPartNo == oInpPartNo.getValue()) {
-                                bFlag = false;
-                                break;
-                            } else {
-                                bFlag = true;
+                        if(data.length === 0){
+                            bFlag = true;
+                        }else{
+                            for (var i = 0; i < data.length; i++) {
+                                var oPartNo = data[i].Value;
+                                var oPartDesc = data[i].Description;
+                                if (oPartNo == oInpPartNo.getValue()) {
+                                    bFlag = false;
+                                    break;
+                                } else {
+                                    bFlag = true;
+                                }
                             }
                         }
+
                         if (bFlag === true) {
                             this.getView().byId("idInpStatPartDesc").setEditable(true);
                             this.getView().byId("idInpStatPartDesc").setValue();
@@ -5010,16 +5064,21 @@ sap.ui.define([
                         sap.ui.core.BusyIndicator.hide();
                         var data = oData.results;
                         var bFlag;
-                        for (var i = 0; i < data.length; i++) {
-                            var oPartNo = data[i].PartNumber;
-                            var oPartDesc = data[i].PartName;
-                            if (oPartNo == oInpPartNo.getValue()) {
-                                bFlag = false;
-                                break;
-                            } else {
-                                bFlag = true;
+                        if(data.length === 0){
+                            bFlag = true;
+                        }else{
+                            for (var i = 0; i < data.length; i++) {
+                                var oPartNo = data[i].PartNumber;
+                                var oPartDesc = data[i].PartName;
+                                if (oPartNo == oInpPartNo.getValue()) {
+                                    bFlag = false;
+                                    break;
+                                } else {
+                                    bFlag = true;
+                                }
                             }
                         }
+                        
                         if (bFlag === true) {
                             this.getView().byId("idDiscPartDesc").setEditable(true);
                             this.getView().byId("idDiscPartDesc").setValue();

@@ -958,7 +958,6 @@ sap.ui.define([
                             sap.ui.core.BusyIndicator.hide();
                             var msg = JSON.parse(oError.responseText).error.message.value;
                             MessageBox.error(msg);
-
                         }
                     });
                     //Inbound delivery ShowSuggestion s
@@ -977,7 +976,6 @@ sap.ui.define([
                             sap.ui.core.BusyIndicator.hide();
                             var msg = JSON.parse(oError.responseText).error.message.value;
                             MessageBox.error(msg);
-
                         }
                     });
                     //Part Number ShowSuggestion s
@@ -1058,7 +1056,6 @@ sap.ui.define([
 
                         }
                     });
-
                 } else if (Number(oSubCat) == "000005") {
                     //Value Help Code for Part Number(005)
                     var area = this.getView().byId("idiwa").getSelectedItem();
@@ -1066,7 +1063,6 @@ sap.ui.define([
                         MessageBox.alert("Please enter a value in In Which Area");
                         sap.ui.core.BusyIndicator.hide();
                     } else {
-
                         var value1 = area.getText();
                         var key = "PART";
                         var aFilter = [];
@@ -1079,17 +1075,14 @@ sap.ui.define([
                             this._oPrtNoDialog = sap.ui.xmlfragment(this.getView().getId(), "com.airbus.ZQM_NCR.fragments.partno", this);
                             this.getView().addDependent(this._oPrtNoDialog);
                         }
-
                         if (value1 == "LOST") {
                             this.getView().byId("idFBLotNum").setVisible(true);
 
                         } else {
                             this.getView().byId("idFBLotNum").setVisible(false);
                         }
-
                         var oModel = this.getOwnerComponent().getModel();
                         var oJSONMOdel = new JSONModel();
-
                         oModel.read("/f4_genericSet", {
                             filters: aFilter,
                             success: function (data) {
@@ -1105,7 +1098,6 @@ sap.ui.define([
                             }
                         });
                         this._oPrtNoDialog.open();
-
                     }
                 }
             }
@@ -2108,7 +2100,7 @@ sap.ui.define([
         * @function
         */
         onNCAreaChange: function () {
-            this.getView().byId("idlinksubc").setValue();
+            // this.getView().byId("idlinksubc").setValue();
             this.getView().byId("idsubcno").setValue();
             this.getView().byId("idsubsubno").setValue();
             this.getView().byId("idInpBinLoc").setValue();
@@ -2127,7 +2119,7 @@ sap.ui.define([
         * Function is executed when the value of Work Instruction input field is changed
         * @function
         */
-        onChangeWI: function () {
+         onChangeSubCategory: function () {
             var subcatSelected = this.getView().byId("idlinksubc").getSelectedItem();
             if (subcatSelected && subcatSelected.getText() === "WORK INSTRUCTION") {
                 var WIvalue = this.getView().byId("idsubcno").getValue();
@@ -2163,6 +2155,63 @@ sap.ui.define([
                         MessageBox.error(msg);
                     }
                 });
+            } else if(subcatSelected && subcatSelected.getText() === "PART NUMBER"){
+                var inWhichArea = this.getView().byId("idiwa").getSelectedItem();
+                if (inWhichArea === null || inWhichArea === '' || inWhichArea === "") {
+                    MessageBox.alert("Please enter a value in In Which Area");
+                    this.getView().byId("idsubcno").setValue();
+                }else{
+                    sap.ui.core.BusyIndicator.show();
+                    var oDataModel = this.getOwnerComponent().getModel();
+                    var value1 = inWhichArea.getText();
+                    var key = "PART";
+                    var aFilter = [];
+                    var oFilter1 = new Filter("Key", "EQ", key);
+                    var oFilter2 = new Filter("Value1", "EQ", value1);
+                        aFilter.push(oFilter1);
+                        aFilter.push(oFilter2);
+                    var sPath = "/f4_genericSet";
+                    oDataModel.read(sPath, {
+                        filters: aFilter,
+                        success: function (oData, oResult) {
+                            sap.ui.core.BusyIndicator.hide();
+                            var data = oData.results;
+                            var bFlag;
+                            if(data.length === 0){
+                                bFlag = true;
+                            }else{
+                                for (var i = 0; i < data.length; i++) {
+                                    var oPartNo = data[i].Value;
+                                    if (oPartNo == this.getView().byId("idsubcno").getValue()) {
+                                        bFlag = false;
+                                        break;
+                                    } else {
+                                        bFlag = true;
+                                    }
+                                }
+                            }
+    
+                            if (bFlag === true) {
+                                MessageBox.warning(
+                                    "No matching Part master records found..!", {
+                                    icon: MessageBox.Icon.WARNING,
+                                    title: "Information",
+                                    actions: [MessageBox.Action.OK],
+                                    emphasizedAction: MessageBox.Action.OK,
+                                    initialFocus: MessageBox.Action.OK,
+                                    onClose: function (sAction) {
+                                        if (sAction == MessageBox.Action.OK) { }
+                                    }.bind(this)
+                                });
+                            }
+                        }.bind(this),
+                        error: function (oError) {
+                            sap.ui.core.BusyIndicator.hide();
+                            var msg = JSON.parse(oError.responseText).error.message.value;
+                            MessageBox.error(msg);
+                        }
+                    });
+                }
             }
         },
 
@@ -2188,7 +2237,7 @@ sap.ui.define([
         * @function
         */
         onNCTypeChange: function () {
-            this.getView().byId("idlinksubc").setValue();
+            // this.getView().byId("idlinksubc").setValue();
             this.getView().byId("idsubcno").setValue();
             this.getView().byId("idsubsubno").setValue();
             this.getView().byId("idInpBinLoc").setValue();

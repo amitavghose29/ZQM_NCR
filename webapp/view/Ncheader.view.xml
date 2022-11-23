@@ -1219,7 +1219,7 @@
                                 <ScrollContainer height="100%" width="100%" horizontal="false" vertical="true">
                                     <Toolbar class="sapUiSizeCompact">
                                         <ToolbarSpacer />
-                                        <Label text="Dispo. No." design="Bold" />
+                                        <Label text="" design="Bold" />
                                         <ComboBox width="100px" />
                                         <Button type="Emphasized" icon="sap-icon://add" press="onaddDispostion" />
                                     </Toolbar>
@@ -1264,6 +1264,10 @@
                                                         <CheckBox text="" />
                                                         <Label text="Customer Support Notification" />
                                                         <Switch state="true" customTextOn="Yes" customTextOff="No" />
+                                                        <Label text="Partner / Supplier" />
+                                                        <Input width="230px" />
+                                                        <Label text="Partner / Supplier Name" />
+                                                        <Text />
                                                         <Label text = "MRB"/>
                                                         <Button id="idBtnMRBDisp" type="Emphasized" width = "10%" icon="sap-icon://popup-window" press="onDispoistionMRB"/>
                                                     </f:content>
@@ -1310,10 +1314,6 @@
                                                         <Text text=" DAMAGE (other than skins) - N/A - BROKEN EDGE " />
                                                         <!--<Label text="Liability"/>-->
                                                         <!--<Input width="230px"/>-->
-                                                        <Label text="Partner / Supplier" />
-                                                        <Input width="230px" />
-                                                        <Label text="Partner / Supplier Name" />
-                                                        <Text />
                                                         <!--<Label text="Link To"/>-->
                                                         <!--<Input width="230px"/>-->
                                                         <Label text="Is" />
