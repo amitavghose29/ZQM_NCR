@@ -82,7 +82,7 @@
 														<Input width="230px"/>-->
                                                         <Label text="Supersedes NC" />
                                                         <Input id="idInpSupNC" value="{SupercedesNC}" valueHelpRequest="onVHReqSupNC" showValueHelp="true" />
-                                                        <Label text="Superseded By" />
+                                                        <Label text="Superseded By NC" />
                                                         <Input id="idInpSupBy" value="{SupercededByNC}" valueHelpRequest="onVHReqSupBy" showValueHelp="true" />
                                                         <Label text="Reference NC" />
                                                         <Input id="idInpRefNC" value="{ReferenceNC}" valueHelpRequest="onVHReqRefNC" showValueHelp="true" />
@@ -1005,7 +1005,7 @@
                                                         <Label text="As Per" />
                                                         <TextArea id="idDcInpAp" />
                                                         <Label text="Incomplete Flag" />
-                                                        <CheckBox id="idDcCbIf" class="sapUiLargeMarginBegin" selected="true" />
+                                                        <CheckBox id="idDcCbIf" class="sapUiLargeMarginBegin" selected="true" select="handleIncompleteFlagCheck"/>
                                                     </f:content>
                                                 </f:SimpleForm>
                                             </l:BlockLayoutCell>
@@ -1221,7 +1221,7 @@
                                         <ToolbarSpacer />
                                         <Label text="" design="Bold" />
                                         <ComboBox width="100px" />
-                                        <Button type="Emphasized" icon="sap-icon://add" press="onaddDispostion" />
+                                        <!-- <Button type="Emphasized" icon="sap-icon://add" press="onaddDispostion" /> -->
                                     </Toolbar>
                                     <l:BlockLayout background="Light">
                                         <l:BlockLayoutRow>
@@ -1327,7 +1327,7 @@
                                             </l:BlockLayoutCell>
                                         </l:BlockLayoutRow>
                                     </l:BlockLayout>
-                                    <Table items="" mode="MultiSelect" class="formcolor1" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
+                                    <Table items="{}" id="idTableDisposition" mode="SingleSelectLeft" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true" class="formcolor1" >
                                         <headerToolbar>
                                             <Toolbar>
                                                 <Title text="Disposition Details" level="H2" />
@@ -1335,7 +1335,7 @@
                                                 <ToolbarSpacer />
                                                 <Button type="Emphasized" text = "RTV" press="onDispoistionPressRTV" />
                                                 <Button type="Emphasized" icon="sap-icon://copy" press="onDispoistionCopy" />
-                                                <Button type="Emphasized" icon="sap-icon://add" press="onDispoistionAdd" />
+                                                <Button type="Emphasized" icon="sap-icon://add" press="onAddDispositionLineItem" />
                                             </Toolbar>
                                         </headerToolbar>
                                         <columns>
@@ -1375,7 +1375,7 @@
                                         </columns>
                                         <items>
                                             <ColumnListItem>
-                                                <cells>
+                                                <!-- <cells>
                                                     <Input value="" />
                                                     <Input value="" />
                                                     <Input value="" />
@@ -1385,11 +1385,9 @@
                                                     <Input value="" />
                                                     <Input value="" />
                                                     <Input value="" />
-                                                    <!--<Text text=""/>-->
                                                     <Input value="" />
                                                     <Input value="" />
-                                                    <!--	<Button icon="sap-icon://attachment" press="handleValueHelp"/>-->
-                                                </cells>
+                                                </cells> -->
                                             </ColumnListItem>
                                         </items>
                                     </Table>

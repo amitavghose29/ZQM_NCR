@@ -429,7 +429,6 @@ sap.ui.define([
             var sPath = "/GetDiscSupplierCodeSet('" + sObjectId + "')";
             oDataModel.read(sPath, {
                 success: function (oData, oResult) {
-                    debugger;
                     sap.ui.core.BusyIndicator.hide();
                     if(oData.DiscPartnerCode !== ""){
                         var oDiscPartnerCode = oData.DiscPartnerCode,
@@ -2146,7 +2145,6 @@ sap.ui.define([
         },
 
         handleDiscItemSelection: function(oEvent){
-            debugger;
             var discrepancyNo;
             if (oEvent.getParameters().listItem.getBindingContext("oHeaderDiscTable")) {
                 discrepancyNo = oEvent.getParameters().listItem.getBindingContext("oHeaderDiscTable").getProperty("DiscrepancyNo");
@@ -3109,6 +3107,7 @@ sap.ui.define([
             oInput.setValue(oSelectedItem.getTitle());
             this._oGRDialog.destroy();
         },
+        
         _confirmPOValueHelpDialog: function (oEvent) {
             var oSelectedItem = oEvent.getParameter("selectedItem"),
                 oInput = this.getView().byId("idPurInfPurOrdip");
@@ -3120,29 +3119,36 @@ sap.ui.define([
             oInput.setValue(oSelectedItem.getTitle());
             this._oPODialog.destroy();
         },
+
         _confirmSSCValueHelpDialog: function (oEvent) {
             var oSelectedItem = oEvent.getParameter("selectedItem"),
-                oInput = this.getView().byId("idPurInfSupSCip");
+                oInput = this.getView().byId("idPurInfSupSCip"),
+                oInpDesc = this.getView().byId("idPurInfSupNmip");
             if (!oSelectedItem) {
                 oInput.resetProperty("value");
                 return;
             }
 
             oInput.setValue(oSelectedItem.getTitle());
+            oInpDesc.setValue(oSelectedItem.getInfo());
             this._oSSCDialog.destroy();
         },
+
         _handleGRValueHelpClose: function () {
             //this._oGRDialog.close();
             this._oGRDialog.destroy();
         },
+
         _handlePOValueHelpClose: function () {
             //this._oPODialog.close();
             this._oPODialog.destroy();
         },
+
         _handleSSCValueHelpClose: function () {
             //this._oSSCDialog.close();
             this._oSSCDialog.destroy();
         },
+
         //Added Code for Value help for GR , Purchase Order and SAP Supplier Code Fields- Code End
 
         // Added code for various VH's in NC Header screen, associated events and other validations - Code Start
@@ -5032,11 +5038,11 @@ sap.ui.define([
         onSearchSupersededbyItem: function (oEvent) {
             var oValue = oEvent.getParameter("value");
             var aFilter = [], oFilter = [];
-            oFilter.push(new Filter("Value1", FilterOperator.Contains, oValue));
-            oFilter.push(new Filter("Value", FilterOperator.Contains, oValue));
-            aFilter.push(new Filter(oFilter, false));
+                oFilter.push(new Filter("Value1", FilterOperator.Contains, oValue));
+                oFilter.push(new Filter("Value", FilterOperator.Contains, oValue));
+                aFilter.push(new Filter(oFilter, false));
             var oBinding = oEvent.getParameter("itemsBinding");
-            oBinding.filter(aFilter);
+                oBinding.filter(aFilter);
         },
 
         handleChangeDiscPartNo: function () {
@@ -5121,7 +5127,6 @@ sap.ui.define([
             var sPath = "/IsUserMRBCertifiedSet(Bname='',Workgroup='" + oWrkGrp + "')";
             oDataModel.read(sPath, {
                 success: function (oData, oResult) {
-                    debugger;
                     sap.ui.core.BusyIndicator.hide();
                     // oData.MRBCertified = true;
                     if (oData.MRBCertified === false && this.getView().byId("idDcCobDscNo").getValue() === "") {
@@ -5200,6 +5205,32 @@ sap.ui.define([
             } else if (this.getView().byId("idDcCobDscNo").getValue() !== "") {
                 this.updateDiscrepancyData();
             }
+        },
+
+        handleIncompleteFlagCheck: function(){
+            sap.ui.core.BusyIndicator.show();
+            var oDataModel = this.getOwnerComponent().getModel();
+            var oNotifNum = sObjectId;
+            var oDiscrepacyNo = this.getView().byId("idDcCobDscNo").getValue();
+            var oLinkTo = this.getView().byId("idComBoxDiscLinkTo").getValue();
+            var sPath = "/DiscrepancyIncompleteCheckSet(NotificationNo='" + oNotifNum + "',DiscrepancyNo='" + oDiscrepacyNo + "',Linkto='" + oLinkTo + "')";
+            oDataModel.read(sPath, {
+                success: function (oData, oResult) {
+                    debugger;
+                    sap.ui.core.BusyIndicator.hide();
+                    if(oData.IncompleteCheck === false && oData.Message === ""){
+                        this.getView().byId("idDcCbIf").setSelected(oData.IncompleteCheck);
+                    }else if(oData.IncompleteCheck === true && oData.Message !== ""){
+                        MessageBox.information(oData.Message);
+                        this.getView().byId("idDcCbIf").setSelected(oData.IncompleteCheck);
+                    }
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
         },
 
         createDiscrepancyData: function () {
@@ -5660,7 +5691,27 @@ sap.ui.define([
             var modeModel = new JSONModel();
             modeModel.setData(modeData);
             sap.ui.getCore().setModel(modeModel, "modeModel");
-		}
+		},
+
+        onAddDispositionLineItem: function(){
+            var oItem = new sap.m.ColumnListItem({
+                cells: [new sap.m.Input(),
+                        new sap.m.Input(),
+                        new sap.m.Input(),
+                        new sap.m.Input(),
+                        new sap.m.Input(),
+                        new sap.m.Input(),
+                        new sap.m.Input(),
+                        new sap.m.Input(),
+                        new sap.m.Input(),
+                        new sap.m.Input(),
+                        new sap.m.Input()
+                ]
+            });
+
+            var oDispositionTable = this.getView().byId("idTableDisposition");
+                oDispositionTable.addItem(oItem);
+        }
 
     });
 });
