@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" class="sapUiSizeCompact">
 	<Dialog title="WorkGroup" resizable="true" contentHeight="200px" contentWidth="100px">
-        <Table id="idWrkGrpMRB" items="{WorkGroupModel>/}" itemPress="onWorkGrpItemSel">
+        <Table items="{WorkGroupModel>/}" itemPress="onWorkGrpItemSel">
             <columns>
                 <Column minScreenWidth="Tablet" demandPopin="true"> 
                     <Text text="WorkGroup" />

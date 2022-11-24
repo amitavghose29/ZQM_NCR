@@ -262,13 +262,16 @@
                                     </l:BlockLayout>
                                     <!--	</VBox>-->
                                     <!--</HBox>-->
-                                    <Table id="idHeaderDiscTable" items="{oHeaderDiscTable>/}" class="formcolor1" growing="true" mode="SingleSelectLeft" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true" itemPress="handleDiscItemSelection">
+                                    <Table id="idHeaderDiscTable" items="{oHeaderDiscTable>/}" class="formcolor1" growing="true" mode="SingleSelectLeft" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
                                         <headerToolbar>
                                             <Toolbar>
                                                 <Title text="Discrepancy" level="H2" />
                                                 <ToolbarSpacer />
-                                                <Button type="Emphasized" icon="sap-icon://copy" press="_onSelectingDiscrepancy" />
-                                                <Button type="Emphasized" icon="sap-icon://add" press="handleAddDiscrepancy" />
+                                                <Button type="Emphasized" icon="sap-icon://navigation-right-arrow" press="handleNavToDiscrepancy" tooltip="Navigate to Discrepancy" />
+                                                <Button type="Emphasized" icon="sap-icon://copy" press="_onSelectingDiscrepancy" tooltip="Copy Discrepancy" />
+                                                <Button type="Emphasized" icon="sap-icon://add" press="handleAddDiscrepancy" tooltip="Create Discrepancy" />
+                                                <Button type="Emphasized" icon="sap-icon://navigation-right-arrow" press="handleNavToDisposition" tooltip="Navigate to Disposition" />
+                                                <!-- itemPress="handleDiscItemSelection" -->
                                             </Toolbar>
                                         </headerToolbar>
                                         <columns>
@@ -301,7 +304,7 @@
                                             </Column>
                                         </columns>
                                         <items>
-                                            <ColumnListItem type="Navigation">
+                                            <ColumnListItem type="Active">
                                                 <cells>
                                                     <Text text="{oHeaderDiscTable>DiscrepancyNo}" />
                                                     <Text text="{oHeaderDiscTable>Status}" />
@@ -381,7 +384,7 @@
                                 <ScrollContainer height="100%" width="100%" horizontal="false" vertical="true">
                                     <Toolbar class="sapUiSizeCompact">
                                         <ToolbarSpacer />
-                                        <Label text="Disc. No." design="Bold" class="discrepancyHeader" />
+                                        <Label text="Disc. No." design="Bold" />
                                         <ComboBox id="idDcCobDscNo" width="100px" items="{discrepancyDropdownModel>/results}" selectionChange="_onSelectingDiscrepancy">
                                             <core:Item key="{discrepancyDropdownModel>DiscrepancyNo}" text="{discrepancyDropdownModel>DiscrepancyNo}" />
                                         </ComboBox>
@@ -1005,7 +1008,7 @@
                                                         <Label text="As Per" />
                                                         <TextArea id="idDcInpAp" />
                                                         <Label text="Incomplete Flag" />
-                                                        <CheckBox id="idDcCbIf" class="sapUiLargeMarginBegin" selected="true" select="handleIncompleteFlagCheck"/>
+                                                        <CheckBox id="idDcCbIf" class="sapUiLargeMarginBegin" selected="true" select="handleIncompleteFlagCheck" />
                                                     </f:content>
                                                 </f:SimpleForm>
                                             </l:BlockLayoutCell>
@@ -1219,8 +1222,10 @@
                                 <ScrollContainer height="100%" width="100%" horizontal="false" vertical="true">
                                     <Toolbar class="sapUiSizeCompact">
                                         <ToolbarSpacer />
-                                        <Label text="" design="Bold" />
-                                        <ComboBox width="100px" />
+                                        <Label text="Disc. No." design="Bold" />
+                                        <ComboBox id="idDispCobDscNo" width="100px" items="{discrepancyDropdownModel>/results}" selectionChange="_onSelectingDiscrepancy">
+                                            <core:Item key="{discrepancyDropdownModel>DiscrepancyNo}" text="{discrepancyDropdownModel>DiscrepancyNo}" />
+                                        </ComboBox>
                                         <!-- <Button type="Emphasized" icon="sap-icon://add" press="onaddDispostion" /> -->
                                     </Toolbar>
                                     <l:BlockLayout background="Light">
@@ -1248,10 +1253,10 @@
                                                     <f:content>
                                                         <!--<core:Title text="General Information"/>-->
                                                         <Label text="Part Number" />
-                                                        <Input value="79000-750-002-29780" width="230px" />
+                                                        <Input id="idInpDispPrtNo" width="230px" enabled="false" />
                                                         <Label text="Part Description" />
                                                         <!--<TextArea value="Hose Assembly" editable="false"/>-->
-                                                        <ObjectStatus class="sapUiSmallMarginBottom" text="Hose Assembly" state="Information" />
+                                                        <ObjectStatus id="idOsDispPrtDesc" class="sapUiSmallMarginBottom" state="Information" />
                                                         <Label text="Inter Chargeability Affected" />
                                                         <CheckBox text="" />
                                                         <Label text="Major/Minor NC" />
@@ -1268,8 +1273,8 @@
                                                         <Input width="230px" />
                                                         <Label text="Partner / Supplier Name" />
                                                         <Text />
-                                                        <Label text = "MRB"/>
-                                                        <Button id="idBtnMRBDisp" type="Emphasized" width = "10%" icon="sap-icon://popup-window" press="onDispoistionMRB"/>
+                                                        <Label text="MRB" />
+                                                        <Button id="idBtnMRBDisp" type="Emphasized" width="10%" icon="sap-icon://popup-window" press="onDispoistionMRB" />
                                                     </f:content>
                                                 </f:SimpleForm>
                                             </l:BlockLayoutCell>
@@ -1294,46 +1299,46 @@
                                                     labelMinWidth="1px"
                                                 >
                                                     <f:content>
-                                                        <!--<core:Title text="Discrepancy Details"/>-->
-                                                        <Label text="Part Received in Quarantine (Z11)" width="200%" />
-                                                        <CheckBox class="sapUiLargeMarginBegin" />
-                                                        <!--<Label text="Bin Location"/>
-												<Input width="230px"/> Might be Unnecessary when bin location fielld in for detail NC-->
+                                                        <Label text="Preliminary Investigation" />
+                                                        <TextArea id="idDispTAPi" enabled="false" />
+                                                        <Label text="Part Received in Quarantine(Z11):" width="125%" />
+                                                        <CheckBox id="idDispCbPrq" class="sapUiLargeMarginBegin" enabled="false" />
                                                         <Label text="MES Issue" />
-                                                        <Input width="200px" />
+                                                        <CheckBox id="idDispCbMesi" class="sapUiLargeMarginBegin" enabled="false" />
                                                         <Label text="CSMS Issue" />
-                                                        <Input width="200px" />
+                                                        <CheckBox id="idDispCbCsmsi" class="sapUiLargeMarginBegin" enabled="false" />
                                                         <Label text="Preliminary Cause" />
-                                                        <ComboBox items="" width="200px">
-                                                            <core:Item text="Human" />
-                                                            <core:Item text="Technical" />
+                                                        <ComboBox id="idDispCobPc" items="{preliminarycauseModel>/}" enabled="false">
+                                                            <core:Item key="{preliminarycauseModel>Value}" text="{preliminarycauseModel>Value}" />
                                                         </ComboBox>
                                                         <Label text="Defect Code" />
-                                                        <Input value="37A4" showValueHelp="true" valueHelpRequest="handleValueHelp" width="100px" />
-                                                        <Label text="" />
-                                                        <Text text=" DAMAGE (other than skins) - N/A - BROKEN EDGE " />
-                                                        <!--<Label text="Liability"/>-->
-                                                        <!--<Input width="230px"/>-->
-                                                        <!--<Label text="Link To"/>-->
-                                                        <!--<Input width="230px"/>-->
+                                                        <FlexBox direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Start">
+                                                            <Input id="idDispIpDc" enabled="false" width="100px" />
+                                                            <Input id="idDispIpDcVal1" width="100px" enabled="false" class="sapUiTinyMarginBegin" />
+                                                            <Text id="idDispTxtDc" class="sapUiTinyMarginBegin" />
+                                                        </FlexBox>
+                                                        <Label text="Drop Point" />
+                                                        <Input id="idDispIpDp" enabled="false" />
                                                         <Label text="Is" />
-                                                        <TextArea />
+                                                        <TextArea id="idDispTxtIs" enabled="false" />
                                                         <Label text="Should be" />
-                                                        <TextArea />
+                                                        <TextArea id="idDispTaSb" enabled="false" />
                                                         <Label text="As Per" />
-                                                        <Input width="230px" />
+                                                        <TextArea id="idDispInpAp" enabled="false" />
+                                                        <Label text="Incomplete Flag" />
+                                                        <CheckBox id="idDispCbIf" class="sapUiLargeMarginBegin" enabled="false" />
                                                     </f:content>
                                                 </f:SimpleForm>
                                             </l:BlockLayoutCell>
                                         </l:BlockLayoutRow>
                                     </l:BlockLayout>
-                                    <Table items="{}" id="idTableDisposition" mode="SingleSelectLeft" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true" class="formcolor1" >
+                                    <Table items="{}" id="idTableDisposition" mode="SingleSelectLeft" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true" class="formcolor1">
                                         <headerToolbar>
                                             <Toolbar>
                                                 <Title text="Disposition Details" level="H2" />
 
                                                 <ToolbarSpacer />
-                                                <Button type="Emphasized" text = "RTV" press="onDispoistionPressRTV" />
+                                                <Button type="Emphasized" text="RTV" press="onDispoistionPressRTV" />
                                                 <Button type="Emphasized" icon="sap-icon://copy" press="onDispoistionCopy" />
                                                 <Button type="Emphasized" icon="sap-icon://add" press="onAddDispositionLineItem" />
                                             </Toolbar>
