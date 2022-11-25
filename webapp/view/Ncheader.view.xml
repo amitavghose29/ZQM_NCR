@@ -15,7 +15,7 @@
                         <ToolbarSpacer />
                         <Text text="" id="headertext" class="icontabtext font" />
                         <ToolbarSpacer />
-                        <Button id="button" press="handleSwitchWorkGroup" icon="sap-icon://group-2" tooltip="Switch Workgroup" />
+                        <Button id="btnWorkGrp" press="handleSwitchWorkGroup" icon="sap-icon://group-2" tooltip="Switch Workgroup" />
                         <!--<Button icon="sap-icon://group-2" class="sapUiSmallMargin" press=".onButtonPress" ariaHasPopup="Menu">-->
                         <!--	<dependents>-->
                         <!--		<core:Fragment fragmentName="com.airbus.ZQM_NCR.fragments.notespopup" type="XML"/>-->
@@ -1258,21 +1258,22 @@
                                                         <!--<TextArea value="Hose Assembly" editable="false"/>-->
                                                         <ObjectStatus id="idOsDispPrtDesc" class="sapUiSmallMarginBottom" state="Information" />
                                                         <Label text="Inter Chargeability Affected" />
-                                                        <CheckBox text="" />
+                                                        <CheckBox id="dispGenInterCharge" text="" />
                                                         <Label text="Major/Minor NC" />
-                                                        <Input width="50%" />
+                                                        <Input id="dispGenMajorMinorNC" width="50%" />
                                                         <Label text="Rework Order" />
-                                                        <Input width="50%" />
+                                                        <Input id="dispGenReworkOrder" width="50%" />
                                                         <Label text="Drop Point" />
-                                                        <Input width="50%" />
+                                                        <Input id="dispGenDropPoint" width="50%" />
                                                         <Label text="Restricted Part" />
-                                                        <CheckBox text="" />
+                                                        <CheckBox id="dispGenRestrictPart" text="" />
                                                         <Label text="Customer Support Notification" />
-                                                        <Switch state="true" customTextOn="Yes" customTextOff="No" />
+                                                        <Switch id="dispGenCSN" state="true" customTextOn="Yes" customTextOff="No" />
                                                         <Label text="Partner / Supplier" />
-                                                        <Input width="230px" />
+                                                        <Input id="dispGenPartSuppName" width="230px" />
                                                         <Label text="Partner / Supplier Name" />
-                                                        <Text />
+                                                        <Text id="dispGenPartSuppDesc" />
+
                                                         <Label text="MRB" />
                                                         <Button id="idBtnMRBDisp" type="Emphasized" width="10%" icon="sap-icon://popup-window" press="onDispoistionMRB" />
                                                     </f:content>

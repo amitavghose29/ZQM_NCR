@@ -20,29 +20,29 @@
         >
             <f:content>
                 <Label text="MRB Request Number" />
-                <Input value="" width="230px" />
+                <Input id="idmrbReqno" value="" width="230px" />
                 <Label text="Part Number" />
-                <Input value="" />
+                <Input id="idmrbPartno" value="" />
                 <Label text="Order Number" />
-                <Input value="" width="100px" />
+                <Input id="idmrbOrderno" value="" width="100px" />
                 <Label text="Quantity" />
-                <Input value="" width="50%" />
+                <Input id="idmrbQuantity" value="" width="50%" />
                 <Label text="A/C Number" />
-                <Input width="50%" />
+                <Input id="idmrACno" width="50%" />
                 <Label text="Project Stock? Yes or No" />
-                <Switch state="true" customTextOn="Yes" customTextOff="No" />
+                <Switch id="idmrbProjectStock" state="true" customTextOn="Yes" customTextOff="No" />
                 <Label text="Work Center" />
-                <Input width="50%" />
+                <Input id="idmrbWorkCenter" width="50%" />
                 <Label text="Drop Point" />
-                <Input width="50%" />
+                <Input id="idmrbDropPoint" width="50%" />
                 <Label text="To the Attention of Name" />
-                <Input width="50%" />
+                <Input id="idmrbTotheAtt" width="50%" />
                 <Label text="Additional Information" />
-                <Input width="50%" />
+                <Input id="idmrbAddInfo" width="50%" />
             </f:content>
         </f:SimpleForm>
         <buttons>
-            <Button text="Save" press="onSaveMRBRequestOut" />
+            <Button text="Save" press="onPressSaveMRBRequestOut" />
             <Button text="Close" press="onCloseMRBRequestOut" />
         </buttons>
     </Dialog>
