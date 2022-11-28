@@ -23,6 +23,7 @@ sap.ui.define([
         onInit: function () {
             //this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
             var oRouter = this.getOwnerComponent().getRouter();
+            this.workingQueueMode=""; 
             oRouter.getRoute("Ncheader").attachMatched(this._onRouteMatched, this);
             this.addMultiInputValidator();
             var oAttachModel = new JSONModel();
@@ -74,10 +75,10 @@ sap.ui.define([
             }.bind(this));
             /*** Date-22.11.2022 * Added Working Queue display mode functionality*/
 
-            var workingQueueMode = "";
+            //var workingQueueMode = "";
             if (sap.ui.getCore().getModel("modeModel")) {
                 if ((sap.ui.getCore().getModel("modeModel").oData.ModeBtn != "")) {  //&& (sap.ui.getCore().getModel("modeModel") != undefined)
-                    workingQueueMode = sap.ui.getCore().getModel("modeModel").oData.ModeBtn;
+                    this.workingQueueMode = sap.ui.getCore().getModel("modeModel").oData.ModeBtn;
                 }
             }
             /*** End*/
@@ -1194,38 +1195,54 @@ sap.ui.define([
                 this.getView().byId("idworkorder").setValue();
                 this.getView().byId("idlast").setValue();
                 this.getView().byId("idncr").setValue();*/
-            this.getOwnerComponent().getRouter().navTo("TargetMain");
-            this.getView().byId("idCombNcType").setValue();
-            this.getView().byId("idCombInWhArea").setValue();
-            this.getView().byId("idPlntCodeHdr").setValue();
-            this.getView().byId("idInpProdCode").setValue();
-            this.getView().byId("idInpWrkIns").setValue();
-            this.getView().byId("idInpPrdOrd").setValue();
-            this.getView().byId("idInpSupNC").setValue();
-            this.getView().byId("idInpSupBy").setValue();
-            this.getView().byId("idInpRefNC").setValue();
-            this.getView().byId("idInpAircraft").setValue();
-            this.getView().byId("idMNInputSN").removeAllTokens();
-            this.getView().byId("idMNInputTN").removeAllTokens();
-            this.getView().byId("idInpNCCrtBy").removeAllTokens();
-            this.getView().byId("idInpNCDetAt").removeAllTokens();
-            this.getView().byId("idInpBinLoc").setValue();
-            this.getView().byId("idInpDrpPt").setValue();
-            /**Cancelling Values in Purchase Info*/
-            this.getView().byId("idPurInfPurOrdip").setValue();
-            this.getView().byId("idPurInfPolnip").setValue();
-            this.getView().byId("idPurInfSupSCip").setValue();
-            this.getView().byId("idPurInfSupNmip").setValue();
-            this.getView().byId("idPurInfSupPnip").setValue();
-            this.getView().byId("idPurInfMrpcrip").setValue();
-            this.getView().byId("idPurInfMrpcrnmip").setValue();
-            this.getView().byId("idPurInfPcgslip").setValue();
-            this.getView().byId("idPurInfWBNip").setValue();
-            this.getView().byId("idPurInfGrip").setValue();
-            this.getView().byId("idPurInfGrQtyip").setValue();
-            this.getView().byId("idInpPurInfGritm").setValue();
-            this.getView().byId("idInpPurInfGryr").setValue();
-            this.getView().byId("idPurInfGrUom").setValue();
+            if(this.workingQueueMode== "EDIT"){
+                var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation"); // get a handle on the global XAppNav service
+			    var hash = (oCrossAppNavigator && oCrossAppNavigator.hrefForExternal({
+			     target: {
+			     semanticObject: "zwrkque",
+			     action: "display"
+		     	}
+			   })) || "";
+			   oCrossAppNavigator.toExternal({
+			     target: {
+			     shellHash: hash
+			    }
+			   });
+            }else{
+                this.getOwnerComponent().getRouter().navTo("TargetMain");
+                this.getView().byId("idCombNcType").setValue();
+                this.getView().byId("idCombInWhArea").setValue();
+                this.getView().byId("idPlntCodeHdr").setValue();
+                this.getView().byId("idInpProdCode").setValue();
+                this.getView().byId("idInpWrkIns").setValue();
+                this.getView().byId("idInpPrdOrd").setValue();
+                this.getView().byId("idInpSupNC").setValue();
+                this.getView().byId("idInpSupBy").setValue();
+                this.getView().byId("idInpRefNC").setValue();
+                this.getView().byId("idInpAircraft").setValue();
+                this.getView().byId("idMNInputSN").removeAllTokens();
+                this.getView().byId("idMNInputTN").removeAllTokens();
+                this.getView().byId("idInpNCCrtBy").removeAllTokens();
+                this.getView().byId("idInpNCDetAt").removeAllTokens();
+                this.getView().byId("idInpBinLoc").setValue();
+                this.getView().byId("idInpDrpPt").setValue();
+                /**Cancelling Values in Purchase Info*/
+                this.getView().byId("idPurInfPurOrdip").setValue();
+                this.getView().byId("idPurInfPolnip").setValue();
+                this.getView().byId("idPurInfSupSCip").setValue();
+                this.getView().byId("idPurInfSupNmip").setValue();
+                this.getView().byId("idPurInfSupPnip").setValue();
+                this.getView().byId("idPurInfMrpcrip").setValue();
+                this.getView().byId("idPurInfMrpcrnmip").setValue();
+                this.getView().byId("idPurInfPcgslip").setValue();
+                this.getView().byId("idPurInfWBNip").setValue();
+                this.getView().byId("idPurInfGrip").setValue();
+                this.getView().byId("idPurInfGrQtyip").setValue();
+                this.getView().byId("idInpPurInfGritm").setValue();
+                this.getView().byId("idInpPurInfGryr").setValue();
+                this.getView().byId("idPurInfGrUom").setValue();
+            }
+           
         },
 
         onNcrPressSave: function () {
