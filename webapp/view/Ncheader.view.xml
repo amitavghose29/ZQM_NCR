@@ -975,7 +975,7 @@
                                                 >
                                                     <f:content>
                                                         <Label />
-                                                        <Button id="idDcBtStkPrg" text="Stock Purge" width="130px" press="_onPressStockPurge" />
+                                                        <Button id="idDcBtStkPrg" text="Stock Purge" width="130px" press="_onPressStockPurge" visible="false"/>
                                                         <Label text="Preliminary Investigation" />
                                                         <TextArea id="idDcTAPi" />
                                                         <Label text="Part Received in Quarantine(Z11):" width="125%" />
