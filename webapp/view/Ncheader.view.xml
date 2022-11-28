@@ -13,7 +13,7 @@
                         <ObjectStatus id="idObjNCStatusDiscrep" class="sapUiSmallMarginCenter" />
                         <ObjectStatus id="idObjNCStatusDispo" class="sapUiSmallMarginCenter" />
                         <ToolbarSpacer />
-                        <Text text="" id="headertext" class="icontabtext font" />
+                        <Text text="" id="headertext" class="icontabtext" />
                         <ToolbarSpacer />
                         <Button id="btnWorkGrp" press="handleSwitchWorkGroup" icon="sap-icon://group-2" tooltip="Switch Workgroup" />
                         <!--<Button icon="sap-icon://group-2" class="sapUiSmallMargin" press=".onButtonPress" ariaHasPopup="Menu">-->
@@ -21,7 +21,7 @@
                         <!--		<core:Fragment fragmentName="com.airbus.ZQM_NCR.fragments.notespopup" type="XML"/>-->
                         <!--	</dependents>-->
                         <!--</Button>-->
-                        <Button icon="sap-icon://cancel" />
+                        <Button icon="sap-icon://cancel" press="handlePressCancel"/>
                         <!-- <Button icon="sap-icon://print" press="onPressPrint"/> -->
                     </Toolbar>
                 </subHeader>
@@ -270,7 +270,7 @@
                                                 <Button type="Emphasized" icon="sap-icon://navigation-right-arrow" press="handleNavToDiscrepancy" tooltip="Navigate to Discrepancy" />
                                                 <Button type="Emphasized" icon="sap-icon://copy" press="_onSelectingDiscrepancy" tooltip="Copy Discrepancy" />
                                                 <Button type="Emphasized" icon="sap-icon://add" press="handleAddDiscrepancy" tooltip="Create Discrepancy" />
-                                                <Button type="Emphasized" icon="sap-icon://navigation-right-arrow" press="handleNavToDisposition" tooltip="Navigate to Disposition" />
+                                                <Button type="Emphasized" icon="sap-icon://open-command-field" press="handleNavToDisposition" tooltip="Navigate to Disposition" />
                                                 <!-- itemPress="handleDiscItemSelection" -->
                                             </Toolbar>
                                         </headerToolbar>
@@ -423,7 +423,7 @@
                                                             <TextArea rows="3" width="100%" id="idDiscLbltyTxt" />
                                                         </VBox>
                                                         <Label text="Partner / Suppilier" />
-                                                        <Input id="idDcIpPrtnr" showValueHelp="true" valueHelpRequest="onVHReqPartner" />
+                                                        <Input id="idDcIpPrtnr" showValueHelp="true" valueHelpRequest="onVHReqPartner" change="handleChangeSupplierName" />
                                                         <Label text="Partner / Suppilier Name" />
                                                         <Input id="idDcIpPrtnrNm" editable="false" />
                                                         <Label text="Supersedes Item" />
@@ -1264,16 +1264,15 @@
                                                         <Label text="Rework Order" />
                                                         <Input id="dispGenReworkOrder" width="50%" />
                                                         <Label text="Drop Point" />
-                                                        <Input id="dispGenDropPoint" width="50%" />
+                                                        <Input id="dispGenDropPoint" showValueHelp="true" valueHelpRequest="onOpenVHDrpPt"  width="50%" />
                                                         <Label text="Restricted Part" />
                                                         <CheckBox id="dispGenRestrictPart" text="" />
                                                         <Label text="Customer Support Notification" />
                                                         <Switch id="dispGenCSN" state="true" customTextOn="Yes" customTextOff="No" />
                                                         <Label text="Partner / Supplier" />
-                                                        <Input id="dispGenPartSuppName" width="230px" />
+                                                        <Input id="dispGenPartSuppName" showValueHelp="true" valueHelpRequest="onVHReqPartner"  width="230px" />
                                                         <Label text="Partner / Supplier Name" />
-                                                        <Text id="dispGenPartSuppDesc" />
-
+                                                        <Input id="dispGenPartSuppDesc" editable="false"/>
                                                         <Label text="MRB" />
                                                         <Button id="idBtnMRBDisp" type="Emphasized" width="10%" icon="sap-icon://popup-window" press="onDispoistionMRB" />
                                                     </f:content>
@@ -1377,6 +1376,12 @@
                                             </Column>
                                             <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
                                                 <Text text="Date in Working" />
+                                            </Column>
+                                            <Column hAlign="Right" width="5%">
+                                                <Text text="" />
+                                            </Column>
+                                            <Column width="5%">
+                                                <Text text="" />
                                             </Column>
                                         </columns>
                                         <items>
@@ -1524,7 +1529,7 @@
                                                         <Label text="Supplier Name" />
                                                         <Input width="230px" id="idPurInfSupNmip" editable="false" />
                                                         <Label text="Supplier SAP Code" />
-                                                        <Input width="230px" id="idPurInfSupSCip" valueHelpRequest="onSuppSAPCodehelpRequest" showValueHelp="true" />
+                                                        <Input width="230px" id="idPurInfSupSCip" valueHelpRequest="onSuppSAPCodehelpRequest" showValueHelp="true" change="handleChangeSupplierSapCode" />
                                                         <Label text="Part Number" />
                                                         <Input width="230px" id="idPurInfSupPnip" editable="false" />
                                                         <Label text="Part Number Description" />

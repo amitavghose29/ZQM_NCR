@@ -60,14 +60,14 @@ sap.ui.define([
                             this.getView().byId("idncr").setSelectedKey(nctypekey);
                         }
                         if (areakey) {
-                            this.onNCTypeChange();
                             this.getView().byId("idiwa").setSelectedKey(areakey);
                         }
                         if (subcatkey) {
                             this.getView().byId("idlinksubc").setSelectedKey(subcatkey);
                         }
                     }
-                    this.bindSubCategory();
+                    this.onNCTypeChange();
+                    this.onChngSubCat();
                 }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
@@ -78,7 +78,6 @@ sap.ui.define([
         },
 
         bindSubCategory: function(){
-            //debugger;
             sap.ui.core.BusyIndicator.show();
             var oModel = new JSONModel();
             oModel.setSizeLimit(10000);
@@ -115,11 +114,6 @@ sap.ui.define([
                 this.getView().byId("SimpleFormNcCreate").setVisible(true);
                 this.getView().byId("idncrnumber").setVisible(false);
             }
-            this.getView().byId("idlinksubc").setValue();
-            this.getView().byId("idsubcno").setValue();
-            this.getView().byId("idsubsubno").setValue();
-            this.getView().byId("idInpBinLoc").setValue();
-            this.getView().byId("idAirCraftNum").setValue();
         },
 
         /**
@@ -2100,11 +2094,7 @@ sap.ui.define([
         * @function
         */
         onNCAreaChange: function () {
-            // this.getView().byId("idlinksubc").setValue();
-            this.getView().byId("idsubcno").setValue();
-            this.getView().byId("idsubsubno").setValue();
-            this.getView().byId("idInpBinLoc").setValue();
-            this.getView().byId("idAirCraftNum").setValue();
+
         },
 
         /**
@@ -2237,11 +2227,6 @@ sap.ui.define([
         * @function
         */
         onNCTypeChange: function () {
-            // this.getView().byId("idlinksubc").setValue();
-            this.getView().byId("idsubcno").setValue();
-            this.getView().byId("idsubsubno").setValue();
-            this.getView().byId("idInpBinLoc").setValue();
-            this.getView().byId("idAirCraftNum").setValue();
             this.bindSubCategory();
             var ncType = this.getView().byId("idncr").getSelectedKey();
             sap.ui.core.BusyIndicator.show();
