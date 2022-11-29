@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog  title="Disposition Code" items="{DispositionCodeModel>/}" liveChange="onSearchDispositionCode" confirm="_configDispoCodeVHDialog"
+		cancel="_handleDispoCodeVHClose" contentHeight="150px" draggable="true" >
+		<StandardListItem title="{DispositionCodeModel>Value}" info="{DispositionCodeModel>Description}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

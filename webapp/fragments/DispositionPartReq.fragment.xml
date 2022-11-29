@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog  title="Parts Required" items="{DispositionPartReqModel>/}" liveChange="onSearchDispoPartReq" confirm="_configDispoPartReqVHDialog"
+		cancel="_handleDispoPartReqVHClose" contentHeight="100px" draggable="true" >
+		<StandardListItem title="{DispositionPartReqModel>Value}" />
+	</SelectDialog>
+</core:FragmentDefinition>

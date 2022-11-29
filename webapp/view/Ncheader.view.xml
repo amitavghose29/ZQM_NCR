@@ -417,7 +417,7 @@
                                                         <ComboBox id="idComBoxDiscLinkTo" items="{LinkToModel>/}" change="onChangeLinkedTo">
                                                             <core:ListItem key="{LinkToModel>Key}" text="{LinkToModel>Value}" />
                                                         </ComboBox>
-                                                        <Label text="Liability" />
+                                                        <Label id="idLblDiscLiability" text="Liability" labelFor="idDcIpLblty"/>
                                                         <VBox>
                                                             <Input id="idDcIpLblty" showValueHelp="true" valueHelpRequest="onVHReqLiability" />
                                                             <TextArea rows="3" width="100%" id="idDiscLbltyTxt" />
@@ -435,7 +435,7 @@
                                                         <Label text="2nd Drop Ship" />
                                                         <CheckBox id="idDcCbDs2" />
                                                         <Label text="Aircraft" />
-                                                        <Input id="idDiscAircraft" showValueHelp="true" valueHelpRequest="onVHReqAircraft" />
+                                                        <Input id="idDiscAircraft" showValueHelp="true" valueHelpRequest="onVHReqAircraft" change="handleChangeDiscAircraft" />
                                                         <Label text="Open Date" />
                                                         <!-- <Input /> -->
                                                         <DatePicker id="idDcIpOdt" value="{path:'OpenDate', type:'sap.ui.model.type.DateTime', formatOptions: { style: 'medium', strictParsing: true}}" editable="false" />
@@ -852,7 +852,7 @@
                                                         <Input id="idDiscPartNumber" showValueHelp="true" valueHelpRequest=".onOpenVHPartNoDisc" valueHelpOnly="true" change="handleChangeDiscPartNo" />
                                                         <Label text="Part Description" />
                                                         <Input id="idDiscPartDesc" editable="false" />
-                                                        <Label text="Quantity Inspected" />
+                                                        <Label id="idLblDiscQtyIns" text="Quantity Inspected" />
                                                         <HBox>
                                                             <Input id="idDiscQtyIns">
                                                                 <layoutData>
@@ -865,7 +865,7 @@
                                                                 </layoutData>
                                                             </Text>
                                                         </HBox>
-                                                        <Label text="Quantity Rejected" />
+                                                        <Label id="idLblDiscQtyRej" text="Quantity Rejected" />
                                                         <HBox>
                                                             <Input id="idDiscQtyRej">
                                                                 <layoutData>
@@ -989,7 +989,7 @@
                                                         <ComboBox id="idDcCobPc" items="{preliminarycauseModel>/}">
                                                             <core:Item key="{preliminarycauseModel>Value}" text="{preliminarycauseModel>Value}" />
                                                         </ComboBox>
-                                                        <Label text="Defect Code" />
+                                                        <Label id="idLblDiscDefCode" text="Defect Code" />
                                                         <FlexBox direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Start">
                                                             <Input id="idDcIpDc" showValueHelp="true" valueHelpRequest="_handleValueHelpDefCode" width="100px" />
                                                             <Input id="idDcIpDcVal1" width="100px" enabled="false" class="sapUiTinyMarginBegin" />

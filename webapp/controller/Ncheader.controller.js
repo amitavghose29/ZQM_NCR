@@ -1208,6 +1208,21 @@ sap.ui.define([
 			     shellHash: hash
 			    }
 			   });
+            }else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre") {
+                this.getView().byId("idIconTabBarHeader").setSelectedKey("Hdata");
+                this.handleIconbarSelect();
+            }else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Dispo") {
+                this.getView().byId("idIconTabBarHeader").setSelectedKey("Hdata");
+                this.handleIconbarSelect();
+            }else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Purchase") {
+                this.getView().byId("idIconTabBarHeader").setSelectedKey("Hdata");
+                this.handleIconbarSelect();
+            }else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Signoff") {
+                this.getView().byId("idIconTabBarHeader").setSelectedKey("Hdata");
+                this.handleIconbarSelect();
+            }else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "log") {
+                this.getView().byId("idIconTabBarHeader").setSelectedKey("Hdata");
+                this.handleIconbarSelect();
             }else{
                 this.getOwnerComponent().getRouter().navTo("TargetMain");
                 this.getView().byId("idCombNcType").setValue();
@@ -1432,6 +1447,7 @@ sap.ui.define([
                         this.getView().byId("idInpAircraft").setValueStateText("");
                         this.updateHeaderData();
                     } else {
+                        MessageBox.information("Please enter data in all mandatory fields.!");
                         this.getView().byId("idInpAircraft").setValueState("Error");
                         this.getView().byId("idInpAircraft").setValueStateText("Please Enter Aircraft Number");
                     }
@@ -1515,12 +1531,58 @@ sap.ui.define([
                     this.updatePurchaseInfoData(payloadPurchInfData);
                 }
             } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre") {
-                // if (this.getView().byId("idDcCobDscNo").getValue() === "") {
-                this.IsUserMRBCertifiedCheck();
-                // this.createDiscrepancyData();
-                // } else {
-                // this.updateDiscrepancyData();
-                // }
+                if(oNctype == "STOCK PURGE"){
+                    if(this.getView().byId("idDiscAircraft").getValue() == ""){
+                        MessageBox.information("Please enter data in all mandatory fields.!");
+                        this.getView().byId("idDiscAircraft").setValueState("Warning");
+                        this.getView().byId("idDiscAircraft").setValueStateText("Please Enter Aircraft Number.");
+                    } else{
+                        this.getView().byId("idDiscAircraft").setValueState("None");
+                        this.getView().byId("idDiscAircraft").setValueStateText();
+                        this.IsUserMRBCertifiedCheck();
+                    }
+                }else if(this.getView().byId("idComBoxDiscLinkTo").getValue() == "AIRCRAFT" || this.getView().byId("idComBoxDiscLinkTo").getValue() == "ASSEMBLY"){
+                    if(this.getView().byId("idDiscAircraft").getValue() == "" || this.getView().byId("idDcIpLblty").getValue() == ""
+                    || this.getView().byId("idDiscQtyIns").getValue() == "" || this.getView().byId("idDiscQtyRej").getValue() == ""
+                    || this.getView().byId("idDcIpDc").getValue() == "" || this.getView().byId("idDcTxtIs").getValue() == ""){
+                        MessageBox.information("Please enter data in all mandatory fields.!");
+                        this.getView().byId("idDiscAircraft").getValue() === "" ? this.getView().byId("idDiscAircraft").setValueState("Warning") : "";
+                        this.getView().byId("idDiscAircraft").getValue() === "" ? this.getView().byId("idDiscAircraft").setValueStateText("Please Enter Aircraft Number") : "";
+                        this.getView().byId("idDcIpLblty").getValue() === "" ? this.getView().byId("idDcIpLblty").setValueState("Warning") : "";
+                        this.getView().byId("idDcIpLblty").getValue() === "" ? this.getView().byId("idDcIpLblty").setValueStateText("Please Enter Liability") : "";
+                        this.getView().byId("idDiscQtyIns").getValue() === "" ? this.getView().byId("idDiscQtyIns").setValueState("Warning") : "";
+                        this.getView().byId("idDiscQtyIns").getValue() === "" ? this.getView().byId("idDiscQtyIns").setValueStateText("Please Enter Quantity Inspected") : "";
+                        this.getView().byId("idDiscQtyRej").getValue() === "" ? this.getView().byId("idDiscQtyRej").setValueState("Warning") : "";
+                        this.getView().byId("idDiscQtyRej").getValue() === "" ? this.getView().byId("idDiscQtyRej").setValueStateText("Please Enter Quantity Rejected") : "";
+                        this.getView().byId("idDcIpDc").getValue() === "" ? this.getView().byId("idDcIpDc").setValueState("Warning") : "";
+                        this.getView().byId("idDcIpDc").getValue() === "" ? this.getView().byId("idDcIpDc").setValueStateText("Please Enter Defect Code") : "";
+                        this.getView().byId("idDcTxtIs").getValue() === "" ? this.getView().byId("idDcTxtIs").setValueState("Warning") : "";
+                        this.getView().byId("idDcTxtIs").getValue() === "" ? this.getView().byId("idDcTxtIs").setValueStateText("Please Enter Is Text") : "";
+                    } else{
+                        this.getView().byId("idDiscAircraft").setValueState("None");
+                        this.getView().byId("idDcIpLblty").setValueState("None");
+                        this.getView().byId("idDiscQtyIns").setValueState("None");
+                        this.getView().byId("idDiscQtyRej").setValueState("None");
+                        this.getView().byId("idDcIpDc").setValueState("None");
+                        this.getView().byId("idDcTxtIs").setValueState("None");
+                        this.getView().byId("idDiscAircraft").setValueStateText();
+                        this.getView().byId("idDcIpLblty").setValueStateText();
+                        this.getView().byId("idDiscQtyIns").setValueStateText();
+                        this.getView().byId("idDiscQtyRej").setValueStateText();
+                        this.getView().byId("idDcIpDc").setValueStateText();
+                        this.getView().byId("idDcTxtIs").setValueStateText();
+                        this.IsUserMRBCertifiedCheck();
+                    }
+                }else{
+                    this.IsUserMRBCertifiedCheck();
+                }             
+            }
+        },
+
+        handleChangeDiscAircraft: function(){
+            if(this.getView().byId("idDiscAircraft").getValue() !== ""){
+                this.getView().byId("idDiscAircraft").setValueState("None");
+                this.getView().byId("idDiscAircraft").setValueStateText();
             }
         },
 
@@ -2064,7 +2126,10 @@ sap.ui.define([
                         this.getView().byId("idIconTabBarHeader").setSelectedKey("Discre");
                         this.getView().byId("idHeaderDiscTable").removeSelections();
                         this.bindDiscrepancyTab(discrepancyNo);
-                        this.handleIconbarSelect();
+                        this.getView().byId("idstatus").setVisible(true);
+                        this.getView().byId("idObjNCStatus").setVisible(false);
+                        this.getView().byId("idObjNCStatusDiscrep").setVisible(true);
+                        this.getView().byId("idObjNCStatusDispo").setVisible(false);
                     }
                 }
             } else if (iconKey == "Discre") {
@@ -2298,6 +2363,40 @@ sap.ui.define([
                             this.getView().byId("idDcBtStkPrg").setVisible(false);
                         }
                     }
+                    if(oNctype == "STOCK PURGE"){
+                        this.getView().byId("idDiscAircraft").setRequired(true);
+                    }else{
+                        this.getView().byId("idDiscAircraft").setRequired(false);
+                    }
+
+                    if(linkedTo == "AIRCRAFT" || linkedTo == "ASSEMBLY"){
+                        this.getView().byId("idDiscAircraft").setRequired(true);
+                        this.getView().byId("idLblDiscLiability").setRequired(true);
+                        this.getView().byId("idLblDiscQtyIns").setRequired(true);
+                        this.getView().byId("idLblDiscQtyRej").setRequired(true);
+                        this.getView().byId("idLblDiscDefCode").setRequired(true);
+                        this.getView().byId("idDcTxtIs").setRequired(true);
+                    } else{
+                        this.getView().byId("idDiscAircraft").setRequired(false);
+                        this.getView().byId("idLblDiscLiability").setRequired(false);
+                        this.getView().byId("idLblDiscQtyIns").setRequired(false);
+                        this.getView().byId("idLblDiscQtyRej").setRequired(false);
+                        this.getView().byId("idLblDiscDefCode").setRequired(false);
+                        this.getView().byId("idDcTxtIs").setRequired(false);
+                    }
+                    this.getView().byId("idDiscAircraft").setValueState("None");
+                    this.getView().byId("idDcIpLblty").setValueState("None");
+                    this.getView().byId("idDiscQtyIns").setValueState("None");
+                    this.getView().byId("idDiscQtyRej").setValueState("None");
+                    this.getView().byId("idDcIpDc").setValueState("None");
+                    this.getView().byId("idDcTxtIs").setValueState("None");
+
+                    this.getView().byId("idDiscAircraft").setValueStateText();
+                    this.getView().byId("idDcIpLblty").setValueStateText();
+                    this.getView().byId("idDiscQtyIns").setValueStateText();
+                    this.getView().byId("idDiscQtyRej").setValueStateText();
+                    this.getView().byId("idDcIpDc").setValueStateText();
+                    this.getView().byId("idDcTxtIs").setValueStateText();
                 }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
@@ -2646,6 +2745,20 @@ sap.ui.define([
                 var oDataModel = this.getOwnerComponent().getModel();
                 var oFilter = [];
                 oFilter.push(new Filter("Key", FilterOperator.EQ, "TRACE"));
+                if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata") {
+                    if (this.getView().byId("idInpPartNo").getValue() !== "") {
+                        var oMatNo = this.getView().byId("idInpPartNo").getValue();
+                        oFilter.push(new Filter("Value", FilterOperator.EQ, oMatNo));
+                    }
+                }
+
+                if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre") {
+                    if (this.getView().byId("idDiscPartNumber").getValue() !== "") {
+                        var oDiscMatNo = this.getView().byId("idDiscPartNumber").getValue();
+                        oFilter.push(new Filter("Value", FilterOperator.EQ, oDiscMatNo));
+                    }
+                }
+                
                 var sPath = "/f4_genericSet";
                 oDataModel.read(sPath, {
                     filters: oFilter,
@@ -2894,6 +3007,12 @@ sap.ui.define([
                     var oDataModel = this.getOwnerComponent().getModel();
                     var oFilter = [];
                     oFilter.push(new Filter("Key", FilterOperator.EQ, "TRACE"));
+                    if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata") {
+                        if (this.getView().byId("idInpPartNo").getValue() !== "") {
+                            var oMatNo = this.getView().byId("idInpPartNo").getValue();
+                            oFilter.push(new Filter("Value", FilterOperator.EQ, oMatNo));
+                        }
+                    }
                     var sPath = "/f4_genericSet";
                     oDataModel.read(sPath, {
                         filters: oFilter,
@@ -2943,7 +3062,13 @@ sap.ui.define([
                     var oModel = new sap.ui.model.json.JSONModel();
                     var oDataModel = this.getOwnerComponent().getModel();
                     var oFilter = [];
-                    oFilter.push(new Filter("Key", FilterOperator.EQ, "TRACE"));
+                    oFilter.push(new Filter("Key", FilterOperator.EQ, "TRACE"));    
+                    if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre") {
+                        if (this.getView().byId("idDiscPartNumber").getValue() !== "") {
+                            var oDiscMatNo = this.getView().byId("idDiscPartNumber").getValue();
+                            oFilter.push(new Filter("Value", FilterOperator.EQ, oDiscMatNo));
+                        }
+                    }
                     var sPath = "/f4_genericSet";
                     oDataModel.read(sPath, {
                         filters: oFilter,
@@ -3684,9 +3809,16 @@ sap.ui.define([
             oInput.setValue(oSelectedItem.getTitle());
             this._oAircraftDialog.destroy();
 
-            if (this.getView().byId("idInpAircraft").getValue() !== "") {
-                this.getView().byId("idInpAircraft").setValueState("None");
-                this.getView().byId("idInpAircraft").setValueStateText("");
+            if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata") {
+                if (this.getView().byId("idInpAircraft").getValue() !== "") {
+                    this.getView().byId("idInpAircraft").setValueState("None");
+                    this.getView().byId("idInpAircraft").setValueStateText("");
+                }
+            } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre") {
+                if(this.getView().byId("idDiscAircraft").getValue() !== ""){
+                    this.getView().byId("idDiscAircraft").setValueState("None");
+                    this.getView().byId("idDiscAircraft").setValueStateText();
+                }
             }
         },
 
@@ -4816,6 +4948,7 @@ sap.ui.define([
             this.bindSupplier();
             this.getView().byId("idIconTabBarHeader").setSelectedKey("Discre");
             this.getView().byId("idHeaderDiscTable").removeSelections();
+            this.getView().byId("idDcCobPcAsper").setSelectedKey();
         },
 
         bindLinkedToDiscrepancy: function () {
@@ -4870,10 +5003,11 @@ sap.ui.define([
             var oSelectedItem = oEvent.getParameter("selectedItem"),
                 oInput = this.getView().byId("idDiscPartNumber");
             var oPartDesc = oEvent.getParameter("selectedItem").getInfo();
-            this.getView().byId("idDiscPartDesc").setValue(oPartDesc);
+                this.getView().byId("idDiscPartDesc").setValue(oPartDesc);
             var oUnitOfMeas = oSelectedItem.getBindingContext("PartNoDiscModel").getProperty("UOM");
-            this.getView().byId("idDiscUomIns").setText(oUnitOfMeas);
-            this.getView().byId("idDiscUomRej").setText(oUnitOfMeas);
+                this.getView().byId("idDiscUomIns").setText(oUnitOfMeas);
+                this.getView().byId("idDiscUomRej").setText(oUnitOfMeas);
+                this.getView().byId("idDiscPartDesc").setEditable(false);
 
             if (!oSelectedItem) {
                 oInput.resetProperty("value");
@@ -4916,6 +5050,22 @@ sap.ui.define([
             } else {
                 this.getView().byId("idDiscPartNumber").setValueHelpOnly(true);
                 this.getView().byId("idDiscPartDesc").setEditable(false);
+            }
+
+            if(oSelLinkToTxt == "AIRCRAFT" || oSelLinkToTxt == "ASSEMBLY"){
+                this.getView().byId("idDiscAircraft").setRequired(true);
+                this.getView().byId("idLblDiscLiability").setRequired(true);
+                this.getView().byId("idLblDiscQtyIns").setRequired(true);
+                this.getView().byId("idLblDiscQtyRej").setRequired(true);
+                this.getView().byId("idLblDiscDefCode").setRequired(true);
+                this.getView().byId("idDcTxtIs").setRequired(true);
+            }else{
+                this.getView().byId("idDiscAircraft").setRequired(false);
+                this.getView().byId("idLblDiscLiability").setRequired(false);
+                this.getView().byId("idLblDiscQtyIns").setRequired(false);
+                this.getView().byId("idLblDiscQtyRej").setRequired(false);
+                this.getView().byId("idLblDiscDefCode").setRequired(false);
+                this.getView().byId("idDcTxtIs").setRequired(false);
             }
         },
 
@@ -5161,6 +5311,8 @@ sap.ui.define([
                         if (bFlag === true) {
                             this.getView().byId("idDiscPartDesc").setEditable(true);
                             this.getView().byId("idDiscPartDesc").setValue();
+                            this.getView().byId("idDiscUomIns").setText();
+                            this.getView().byId("idDiscUomRej").setText();
                             if (this.getView().byId("idComBoxDiscLinkTo").getValue() == "AIRCRAFT") {
                                 var oMessage = "No matching Part master records found.!";
                             } else if (this.getView().byId("idComBoxDiscLinkTo").getValue() == "DETAIL") {
@@ -5282,22 +5434,52 @@ sap.ui.define([
         },
 
         handleIncompleteFlagCheck: function () {
+            if(this.getView().byId("idDcCobDscNo").getValue() === ""){
+                this.getView().byId("idDcCbIf").setSelected(true);
+            }else{
+                sap.ui.core.BusyIndicator.show();
+                var oDataModel = this.getOwnerComponent().getModel();
+                var oNotifNum = sObjectId;
+                var oDiscrepacyNo = this.getView().byId("idDcCobDscNo").getValue();
+                var oLinkTo = this.getView().byId("idComBoxDiscLinkTo").getValue();
+                var sPath = "/DiscrepancyIncompleteCheckSet(NotificationNo='" + oNotifNum + "',DiscrepancyNo='" + oDiscrepacyNo + "',Linkto='" + oLinkTo + "')";
+                oDataModel.read(sPath, {
+                    success: function (oData, oResult) {
+                        debugger;
+                        sap.ui.core.BusyIndicator.hide();
+                        if (oData.IncompleteCheck === false && oData.Message === "") {
+                            this.getView().byId("idDcCbIf").setSelected(oData.IncompleteCheck);
+                            this.initiatePasswordCheck(oData.IncompleteCheck);
+                        } else if (oData.IncompleteCheck === true && oData.Message !== "") {
+                            MessageBox.information(oData.Message);
+                            this.getView().byId("idDcCbIf").setSelected(oData.IncompleteCheck);
+                        }
+                    }.bind(this),
+                    error: function (oError) {
+                        sap.ui.core.BusyIndicator.hide();
+                        var msg = JSON.parse(oError.responseText).error.message.value;
+                        MessageBox.error(msg);
+                    }
+                });
+            }
+        },
+
+        initiatePasswordCheck: function(bFlag){
+            this._oPwdChkDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.PasswordCheck", this);
+            this.getView().addDependent(this._oPwdChkDialog);
+            this._oPwdChkDialog.open();
+            this.oFlag = bFlag;
+        },
+
+        onSubmitPwdCheck: function(){
             sap.ui.core.BusyIndicator.show();
             var oDataModel = this.getOwnerComponent().getModel();
-            var oNotifNum = sObjectId;
-            var oDiscrepacyNo = this.getView().byId("idDcCobDscNo").getValue();
-            var oLinkTo = this.getView().byId("idComBoxDiscLinkTo").getValue();
-            var sPath = "/DiscrepancyIncompleteCheckSet(NotificationNo='" + oNotifNum + "',DiscrepancyNo='" + oDiscrepacyNo + "',Linkto='" + oLinkTo + "')";
+            var oPassWord = sap.ui.getCore().byId("passwordInput").getValue();
+            var sPath = "/PasswordCheckSet(PASSWORD='" + oPassWord + "')";
             oDataModel.read(sPath, {
                 success: function (oData, oResult) {
                     debugger;
                     sap.ui.core.BusyIndicator.hide();
-                    if (oData.IncompleteCheck === false && oData.Message === "") {
-                        this.getView().byId("idDcCbIf").setSelected(oData.IncompleteCheck);
-                    } else if (oData.IncompleteCheck === true && oData.Message !== "") {
-                        MessageBox.information(oData.Message);
-                        this.getView().byId("idDcCbIf").setSelected(oData.IncompleteCheck);
-                    }
                 }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
@@ -5305,6 +5487,12 @@ sap.ui.define([
                     MessageBox.error(msg);
                 }
             });
+        },
+
+        onCancelPwdCheck: function(){
+            this._oPwdChkDialog.close();
+            this._oPwdChkDialog.destroy();
+            this.getView().byId("idDcCbIf").setSelected(!this.oFlag);
         },
 
         createDiscrepancyData: function () {
@@ -5806,11 +5994,20 @@ sap.ui.define([
         onAddDispositionLineItem: function () {
             var oItem = new sap.m.ColumnListItem({
                 cells: [new sap.m.Input(),
+                new sap.m.Input({
+                    showValueHelp: true,
+                    valueHelpRequest: [this.onOpenVHDispositionType, this]
+                }),
+                new sap.m.Input({
+                    showValueHelp: true,
+                    valueHelpRequest: [this.onOpenVHDispositionCode, this]
+                }),
                 new sap.m.Input(),
                 new sap.m.Input(),
-                new sap.m.Input(),
-                new sap.m.Input(),
-                new sap.m.Input(),
+                new sap.m.Input({
+                    showValueHelp: true,
+                    valueHelpRequest: [this.onOpenVHDispoPartReq, this]
+                }),
                 new sap.m.Input(),
                 new sap.m.Input(),
                 new sap.m.Input(),
@@ -5839,6 +6036,151 @@ sap.ui.define([
 			var oTable = this.getView().byId("idTableDisposition");
 			    oTable.removeItem(oEvent.getSource().getParent());
 		},
+
+        onOpenVHDispositionType: function(oEvent){
+            this._oDispoTypeDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.DispositionType", this);
+            this.getView().addDependent(this._oDispoTypeDialog);
+            this._oDispoTypeDialog.open();
+            this.oDispoTypeInp = oEvent.getSource();
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new JSONModel();
+            oModel.setSizeLimit(10000);
+            var oDataModel = this.getOwnerComponent().getModel();
+            var oFilter = [];
+            oFilter.push(new Filter("Key", FilterOperator.EQ, "DISPOTYPE"));
+            var sPath = "/f4_genericSet";
+            oDataModel.read(sPath, {
+                filters: oFilter,
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.results;
+                    oModel.setData(data);
+                    this._oDispoTypeDialog.setModel(oModel, "DispositionTypeModel");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+        },
+
+        _configDispTypeVHDialog: function (oEvent) {
+            var oSelectedItem = oEvent.getParameter("selectedItem"),
+                oInput = this.oDispoTypeInp;
+
+            if (!oSelectedItem) {
+                oInput.resetProperty("value");
+                return;
+            }
+
+            oInput.setValue(oSelectedItem.getTitle());
+            this._oDispoTypeDialog.destroy();
+        },
+
+        onSearchDispositionType: function (oEvent) {
+            var sValue = oEvent.getParameter("value");
+            var oFilter = new Filter("Value", FilterOperator.Contains, sValue);
+            var oBinding = oEvent.getParameter("itemsBinding");
+            oBinding.filter([oFilter]);
+        },
+
+        onOpenVHDispositionCode: function(oEvent){
+            this._oDispoCodeDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.DispositionCode", this);
+            this.getView().addDependent(this._oDispoCodeDialog);
+            this._oDispoCodeDialog.open();
+            this.oDispoCodeInp = oEvent.getSource();
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new JSONModel();
+            oModel.setSizeLimit(10000);
+            var oDataModel = this.getOwnerComponent().getModel();
+            var oFilter = [];
+            oFilter.push(new Filter("Key", FilterOperator.EQ, "DISPOCODE"));
+            var sPath = "/f4_genericSet";
+            oDataModel.read(sPath, {
+                filters: oFilter,
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.results;
+                    oModel.setData(data);
+                    this._oDispoCodeDialog.setModel(oModel, "DispositionCodeModel");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+        },
+
+        _configDispoCodeVHDialog: function (oEvent) {
+            var oSelectedItem = oEvent.getParameter("selectedItem"),
+                oInput = this.oDispoCodeInp;
+
+            if (!oSelectedItem) {
+                oInput.resetProperty("value");
+                return;
+            }
+
+            oInput.setValue(oSelectedItem.getTitle());
+            this._oDispoCodeDialog.destroy();
+        },
+
+        onSearchDispositionCode: function (oEvent) {
+            var sValue = oEvent.getParameter("value");
+            var oFilter = new Filter("Value", FilterOperator.Contains, sValue);
+            var oBinding = oEvent.getParameter("itemsBinding");
+            oBinding.filter([oFilter]);
+        },
+
+        onOpenVHDispoPartReq: function(oEvent){
+            this._oDispoPartReqDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.DispositionPartReq", this);
+            this.getView().addDependent(this._oDispoPartReqDialog);
+            this._oDispoPartReqDialog.open();
+            this.oDispoPartReqInp = oEvent.getSource();
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new JSONModel();
+            oModel.setSizeLimit(10000);
+            var oDataModel = this.getOwnerComponent().getModel();
+            var oFilter = [];
+            oFilter.push(new Filter("Key", FilterOperator.EQ, "DISPOPRTREQ"));
+            var sPath = "/f4_genericSet";
+            oDataModel.read(sPath, {
+                filters: oFilter,
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.results;
+                    oModel.setData(data);
+                    this._oDispoPartReqDialog.setModel(oModel, "DispositionPartReqModel");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+        },
+
+        _configDispoPartReqVHDialog: function (oEvent) {
+            var oSelectedItem = oEvent.getParameter("selectedItem"),
+                oInput = this.oDispoPartReqInp;
+
+            if (!oSelectedItem) {
+                oInput.resetProperty("value");
+                return;
+            }
+
+            oInput.setValue(oSelectedItem.getTitle());
+            this._oDispoCodeDialog.destroy();
+        },
+
+        onSearchDispoPartReq: function (oEvent) {
+            var sValue = oEvent.getParameter("value");
+            var oFilter = new Filter("Value", FilterOperator.Contains, sValue);
+            var oBinding = oEvent.getParameter("itemsBinding");
+            oBinding.filter([oFilter]);
+        },
+
         /**
          * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
          * (NOT before the first rendering! onInit() is used for that one!).
