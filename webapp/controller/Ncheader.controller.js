@@ -1195,7 +1195,7 @@ sap.ui.define([
                 this.getView().byId("idworkorder").setValue();
                 this.getView().byId("idlast").setValue();
                 this.getView().byId("idncr").setValue();*/
-            if(this.workingQueueMode== "EDIT"){
+            if((this.workingQueueMode== "EDIT") || (this.workingQueueMode== "COPY")){
                 var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation"); // get a handle on the global XAppNav service
 			    var hash = (oCrossAppNavigator && oCrossAppNavigator.hrefForExternal({
 			     target: {

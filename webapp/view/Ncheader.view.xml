@@ -476,7 +476,7 @@
                                                 <FlexBox class="columns" direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Start">
                                                     <HBox id="idFuselage" visible="false" class="sapUiSizeCompact">
                                                         <VBox>
-                                                            <CheckBox id="chbFuseStation" text="Fuselage Station(FX)(X)" />
+                                                            <CheckBox id="chbFuseStation" text="Fuselage Station(FS)(X)" />
                                                             <CheckBox id="chbFuseFStation" text="Fuselage Frame Station(FR)" />
                                                             <CheckBox id="chbFuseString" text="Fuselage Stringer" />
                                                             <CheckBox id="chbFuseBLine" text="Buttock Line(BL)(Y)" />
