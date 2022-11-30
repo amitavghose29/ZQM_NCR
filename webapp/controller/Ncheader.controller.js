@@ -1576,6 +1576,8 @@ sap.ui.define([
                 }else{
                     this.IsUserMRBCertifiedCheck();
                 }             
+            } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Dispo") {
+                // this.createDisposition();
             }
         },
 
@@ -2286,15 +2288,19 @@ sap.ui.define([
                     this._oMultiInputDiscTN.removeAllTokens();
                     this.getView().byId("idComBoxDiscLinkTo").setValue(linkedTo);
                     if (linkedTo == "AIRCRAFT") {
-                        this.getView().byId("idDiscPartNumber").setValueHelpOnly(false);
+                        // this.getView().byId("idDiscPartNumber").setValueHelpOnly(false);
                         this.getView().byId("idDiscPartDesc").setEditable(true);
                     } else if (linkedTo == "DETAIL") {
-                        this.getView().byId("idDiscPartNumber").setValueHelpOnly(false);
+                        // this.getView().byId("idDiscPartNumber").setValueHelpOnly(false);
                         this.getView().byId("idDiscPartDesc").setEditable(true);
-                    } else {
-                        this.getView().byId("idDiscPartNumber").setValueHelpOnly(true);
+                    } else if (linkedTo == "ASSEMBLY") {
+                        // this.getView().byId("idDiscPartNumber").setValueHelpOnly(true);
                         this.getView().byId("idDiscPartDesc").setEditable(false);
+                    } else {
+                        // this.getView().byId("idDiscPartNumber").setValueHelpOnly(false);
+                        this.getView().byId("idDiscPartDesc").setEditable(true);
                     }
+                    
                     if (partNumber !== "") {
                         this._oMultiInputDiscSN.setEditable(true);
                         this._oMultiInputDiscTN.setEditable(true);
@@ -3909,14 +3915,20 @@ sap.ui.define([
                     if (oEvent.getParameter("value").includes("*") === true) {
                         var oValue = oEvent.getParameter("value");
                         var oSplitVal = oValue.split("*")[1];
-                        var oFilter = new Filter("Value", FilterOperator.Contains, oSplitVal);
+                        var aFilter = [], oFilter = [];
+                            oFilter.push(new Filter("Value", FilterOperator.Contains, oSplitVal));
+                            oFilter.push(new Filter("Description", FilterOperator.Contains, oSplitVal));
+                            aFilter.push(new Filter(oFilter, false));
                         var oBinding = oEvent.getParameter("itemsBinding");
-                        oBinding.filter([oFilter]);
+                            oBinding.filter(aFilter);
                     } else {
                         var oValue = oEvent.getParameter("value");
-                        var oFilter = new Filter("Value", FilterOperator.Contains, oValue);
+                        var aFilter = [], oFilter = [];
+                            oFilter.push(new Filter("Value", FilterOperator.Contains, oValue));
+                            oFilter.push(new Filter("Description", FilterOperator.Contains, oValue));
+                            aFilter.push(new Filter(oFilter, false));
                         var oBinding = oEvent.getParameter("itemsBinding");
-                        oBinding.filter([oFilter]);
+                            oBinding.filter(aFilter);
                     }
                 }
             } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Purchase") {
@@ -5023,14 +5035,20 @@ sap.ui.define([
             if (oEvent.getParameter("value").includes("*") === true) {
                 var oValue = oEvent.getParameter("value");
                 var oSplitVal = oValue.split("*")[1];
-                var oFilter = new Filter("PartNumber", FilterOperator.Contains, oSplitVal);
+                var aFilter = [], oFilter = [];
+                    oFilter.push(new Filter("PartNumber", FilterOperator.Contains, oSplitVal));
+                    oFilter.push(new Filter("PartName", FilterOperator.Contains, oSplitVal));
+                    aFilter.push(new Filter(oFilter, false));
                 var oBinding = oEvent.getParameter("itemsBinding");
-                oBinding.filter([oFilter]);
+                    oBinding.filter(aFilter);
             } else {
                 var oValue = oEvent.getParameter("value");
-                var oFilter = new Filter("PartNumber", FilterOperator.Contains, oValue);
+                var aFilter = [], oFilter = [];
+                    oFilter.push(new Filter("PartNumber", FilterOperator.Contains, oValue));
+                    oFilter.push(new Filter("PartName", FilterOperator.Contains, oValue));
+                    aFilter.push(new Filter(oFilter, false));
                 var oBinding = oEvent.getParameter("itemsBinding");
-                oBinding.filter([oFilter]);
+                    oBinding.filter(aFilter);
             }
         },
 
@@ -5042,16 +5060,19 @@ sap.ui.define([
                 this.getView().byId("idDiscPartDesc").setValue();
             }
             if (oSelLinkToTxt == "AIRCRAFT") {
-                this.getView().byId("idDiscPartNumber").setValueHelpOnly(false);
+                // this.getView().byId("idDiscPartNumber").setValueHelpOnly(false);
                 this.getView().byId("idDiscPartDesc").setEditable(true);
             } else if (oSelLinkToTxt == "DETAIL") {
-                this.getView().byId("idDiscPartNumber").setValueHelpOnly(false);
+                // this.getView().byId("idDiscPartNumber").setValueHelpOnly(false);
                 this.getView().byId("idDiscPartDesc").setEditable(true);
-            } else {
-                this.getView().byId("idDiscPartNumber").setValueHelpOnly(true);
+            } else if(oSelLinkToTxt == "ASSEMBLY") {
+                // this.getView().byId("idDiscPartNumber").setValueHelpOnly(true);
                 this.getView().byId("idDiscPartDesc").setEditable(false);
+            } else {
+                // this.getView().byId("idDiscPartNumber").setValueHelpOnly(false);
+                this.getView().byId("idDiscPartDesc").setEditable(true);
             }
-
+            
             if(oSelLinkToTxt == "AIRCRAFT" || oSelLinkToTxt == "ASSEMBLY"){
                 this.getView().byId("idDiscAircraft").setRequired(true);
                 this.getView().byId("idLblDiscLiability").setRequired(true);
@@ -5261,11 +5282,11 @@ sap.ui.define([
         onSearchSupersededbyItem: function (oEvent) {
             var oValue = oEvent.getParameter("value");
             var aFilter = [], oFilter = [];
-            oFilter.push(new Filter("Value1", FilterOperator.Contains, oValue));
-            oFilter.push(new Filter("Value", FilterOperator.Contains, oValue));
-            aFilter.push(new Filter(oFilter, false));
+                oFilter.push(new Filter("Value1", FilterOperator.Contains, oValue));
+                oFilter.push(new Filter("Value", FilterOperator.Contains, oValue));
+                aFilter.push(new Filter(oFilter, false));
             var oBinding = oEvent.getParameter("itemsBinding");
-            oBinding.filter(aFilter);
+                oBinding.filter(aFilter);
         },
 
         handleChangeDiscPartNo: function () {
@@ -5315,20 +5336,32 @@ sap.ui.define([
                             this.getView().byId("idDiscUomRej").setText();
                             if (this.getView().byId("idComBoxDiscLinkTo").getValue() == "AIRCRAFT") {
                                 var oMessage = "No matching Part master records found.!";
+                                MessageBox.warning(
+                                    oMessage, {
+                                    icon: MessageBox.Icon.WARNING,
+                                    title: "Information",
+                                    actions: [MessageBox.Action.OK],
+                                    emphasizedAction: MessageBox.Action.OK,
+                                    initialFocus: MessageBox.Action.OK,
+                                    onClose: function (sAction) {
+                                        if (sAction == MessageBox.Action.OK) { }
+                                    }.bind(this)
+                                });
                             } else if (this.getView().byId("idComBoxDiscLinkTo").getValue() == "DETAIL") {
                                 var oMessage = "No matching Part master records found, please contact the responsible team.!";
+                                MessageBox.warning(
+                                    oMessage, {
+                                    icon: MessageBox.Icon.WARNING,
+                                    title: "Information",
+                                    actions: [MessageBox.Action.OK],
+                                    emphasizedAction: MessageBox.Action.OK,
+                                    initialFocus: MessageBox.Action.OK,
+                                    onClose: function (sAction) {
+                                        if (sAction == MessageBox.Action.OK) { }
+                                    }.bind(this)
+                                });
                             }
-                            MessageBox.warning(
-                                oMessage, {
-                                icon: MessageBox.Icon.WARNING,
-                                title: "Information",
-                                actions: [MessageBox.Action.OK],
-                                emphasizedAction: MessageBox.Action.OK,
-                                initialFocus: MessageBox.Action.OK,
-                                onClose: function (sAction) {
-                                    if (sAction == MessageBox.Action.OK) { }
-                                }.bind(this)
-                            });
+                            
                         } else {
                             this.getView().byId("idDiscPartDesc").setEditable(false);
                             this.getView().byId("idDiscPartDesc").setValue(oPartDesc);
@@ -5992,43 +6025,45 @@ sap.ui.define([
         },
 
         onAddDispositionLineItem: function () {
-            var oItem = new sap.m.ColumnListItem({
-                cells: [new sap.m.Input(),
-                new sap.m.Input({
-                    showValueHelp: true,
-                    valueHelpRequest: [this.onOpenVHDispositionType, this]
-                }),
-                new sap.m.Input({
-                    showValueHelp: true,
-                    valueHelpRequest: [this.onOpenVHDispositionCode, this]
-                }),
-                new sap.m.Input(),
-                new sap.m.Input(),
-                new sap.m.Input({
-                    showValueHelp: true,
-                    valueHelpRequest: [this.onOpenVHDispoPartReq, this]
-                }),
-                new sap.m.Input(),
-                new sap.m.Input(),
-                new sap.m.Input(),
-                new sap.m.Input(),
-                new sap.m.Input(),
-                new sap.m.Button({
-					icon: "sap-icon://add",
-					type: "Accept",
-                    tooltip: "Add a new Disposition"
-				}),
-                new sap.m.Button({
-					icon: "sap-icon://delete",
-					type: "Reject",
-                    tooltip: "Delete Line Item",
-					press: [this.remove, this]
-				}),
-                ]
-            });
-
-            var oDispositionTable = this.getView().byId("idTableDisposition");
-            oDispositionTable.addItem(oItem);
+            if(this.getView().byId("idTableDisposition").getItems().length === 0){
+                var oItem = new sap.m.ColumnListItem({
+                    cells: [new sap.m.Text(),
+                    new sap.m.Input({
+                        showValueHelp: true,
+                        valueHelpRequest: [this.onOpenVHDispositionType, this]
+                    }),
+                    new sap.m.Input({
+                        showValueHelp: true,
+                        valueHelpRequest: [this.onOpenVHDispositionCode, this]
+                    }),
+                    new sap.m.Text(),
+                    new sap.m.Input(),
+                    new sap.m.Input({
+                        showValueHelp: true,
+                        valueHelpRequest: [this.onOpenVHDispoPartReq, this]
+                    }),
+                    new sap.m.Text(),
+                    new sap.m.Text(),
+                    new sap.m.Text(),
+                    new sap.m.Text(),
+                    new sap.m.Text(),
+                    new sap.m.Button({
+                        icon: "sap-icon://add",
+                        type: "Accept",
+                        tooltip: "Add a new Disposition"
+                    })
+                    // new sap.m.Button({
+                    // 	icon: "sap-icon://delete",
+                    // 	type: "Reject",
+                    //     tooltip: "Delete Line Item",
+                    // 	press: [this.remove, this]
+                    // }),
+                    ]
+                });
+    
+                var oDispositionTable = this.getView().byId("idTableDisposition");
+                oDispositionTable.addItem(oItem);
+            }
         },
 
 
@@ -6179,6 +6214,60 @@ sap.ui.define([
             var oFilter = new Filter("Value", FilterOperator.Contains, sValue);
             var oBinding = oEvent.getParameter("itemsBinding");
             oBinding.filter([oFilter]);
+        },
+
+        createDisposition: function(){
+            debugger;
+            var oModel = this.getOwnerComponent().getModel();
+            var oNotifNo = sObjectId;
+            var oDiscrepancyNo = this.getView().byId("idDispCobDscNo").getValue();
+            var oParentDispoNo = "";
+            var oChildDispoNo = "";
+            var oDispositionParentflag = "";
+            var oDispositionChildflag = "";
+            var oDispositionCode = "";
+            var oDispositionType = "";
+            var oDispositionPartReq = "";
+            var oDispositionQnty = "";
+            var oDispositionBadge = "";
+            var oDispositionGroup = "";
+            var oDispositionCreateDate = "";
+            var oDispositionCSN = this.getView().byId("dispGenCSN").getState();
+            var oDispositionRestrictPart = this.getView().byId("dispGenRestrictPart").getSelected();
+            var oDispositionIntCharge = this.getView().byId("dispGenInterCharge").getSelected();
+            var oDispositionDropPoint = this.getView().byId("dispGenDropPoint").getValue();
+            var oDispositionStatus = "";
+            var oDispositionPartner = this.getView().byId("dispGenPartSuppName").getValue();
+            var oDispositionPartnerName = this.getView().byId("dispGenPartSuppDesc").getValue();
+            var oDispositionSerialNo = "";
+
+            if (this.getView().byId("idTableDisposition").getItems()) {
+                sap.ui.core.BusyIndicator.show();
+                oDiscCompSerialNo = oDiscCompSerialNo.length === 1 ? oDiscCompSerialNo[0].getKey() : "";
+                oDiscTraceNo = oDiscTraceNo.length === 1 ? oDiscTraceNo[0].getKey() : "";
+                var payloadDispoData = {
+                    "NotificationNo": oNotifNo,
+                    "DiscrepancyNo": oDiscrepancyNo
+                    
+                }
+                oModel.create("/NotificationDispositionSet", payloadDispoData, {
+                    success: function (odata, Response) {
+                        sap.ui.core.BusyIndicator.hide();
+                        if (Response.headers["sap-message"]) {
+                            var oMsg = JSON.parse(Response.headers["sap-message"]).message;
+                            MessageBox.success(oMsg);
+                        }
+                        var oDiscrepancyNo = odata.DiscrepancyNo;
+                        this.bindDiscrepancyTab(oDiscrepancyNo);
+                    }.bind(this),
+                    error: function (oError) {
+                        sap.ui.core.BusyIndicator.hide();
+                        var msg = JSON.parse(oError.responseText).error.message.value;
+                        MessageBox.error(msg);
+                    }
+                });
+            }
+            
         },
 
         /**

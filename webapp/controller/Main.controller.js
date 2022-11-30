@@ -685,19 +685,19 @@ sap.ui.define([
         * @param {sap.ui.base.Event} oEvent item being selected is returned 
         */
         handleConfirmPartnerCode: function (oEvent) {
-            var oSelProdCode = oEvent.getParameters().selectedItem.getBindingContext().getProperty("ParentPartNumber");
-            var oSelProdFrom = oEvent.getParameters().selectedItem.getBindingContext().getProperty("ProductSeqFrom");
-            var oSelProdTo = oEvent.getParameters().selectedItem.getBindingContext().getProperty("ProductSeqTo");
-            var oSelProdseqRange = oSelProdFrom+","+oSelProdTo;
+            var oSelProdCode = oEvent.getParameters().selectedItem.getBindingContext().getProperty("ParentPartNumber");
+            var oSelProdFrom = oEvent.getParameters().selectedItem.getBindingContext().getProperty("ProductSeqFrom");
+            var oSelProdTo = oEvent.getParameters().selectedItem.getBindingContext().getProperty("ProductSeqTo");
+            var oSelProdseqRange = oSelProdFrom+","+oSelProdTo;
             if (oSelProdCode !== "") {
                 sap.ui.core.BusyIndicator.show();
                 var oModel = new JSONModel();
                 oModel.setSizeLimit(10000);
                 var oDataModel = this.getOwnerComponent().getModel();
                 var oFilter = [];
-                oFilter.push(new Filter("Key", FilterOperator.EQ, "PRO"));
-                oFilter.push(new Filter("ParentPartNo", FilterOperator.EQ, oSelProdCode));
-                oFilter.push(new Filter("ProductSequence", FilterOperator.EQ, oSelProdseqRange));
+                oFilter.push(new Filter("Key", FilterOperator.EQ, "PRO"));
+                oFilter.push(new Filter("ParentPartNo", FilterOperator.EQ, oSelProdCode));
+                oFilter.push(new Filter("ProductSequence", FilterOperator.EQ, oSelProdseqRange));
                 var sPath = "/Rep_ProdOrdSearchSet"
                 oDataModel.read(sPath, {
                     filters: oFilter,
@@ -1309,10 +1309,13 @@ sap.ui.define([
         */
         onSearchPartNumTab: function (oEvent) {
             var sValue = oEvent.getSource().getValue();
-            var oFilter = new Filter("Value", FilterOperator.Contains, sValue);
+            var aFilter = [], oFilter = [];
+                oFilter.push(new Filter("Value", FilterOperator.Contains, sValue));
+                oFilter.push(new Filter("Description", FilterOperator.Contains, sValue));
+                aFilter.push(new Filter(oFilter, false));
             var oTab = this.getView().byId("idPartnumTab");
             var oBinding = oTab.getBinding("items");
-            oBinding.filter([oFilter]);
+                oBinding.filter(aFilter);
         },
 
         /**

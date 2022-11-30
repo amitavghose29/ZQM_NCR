@@ -849,7 +849,7 @@
                                                     <f:content>
                                                         <!--<core:Title text="Discrepancy Parts"/>-->
                                                         <Label text="Part Number" />
-                                                        <Input id="idDiscPartNumber" showValueHelp="true" valueHelpRequest=".onOpenVHPartNoDisc" valueHelpOnly="true" change="handleChangeDiscPartNo" />
+                                                        <Input id="idDiscPartNumber" showValueHelp="true" valueHelpRequest=".onOpenVHPartNoDisc" change="handleChangeDiscPartNo" />
                                                         <Label text="Part Description" />
                                                         <Input id="idDiscPartDesc" editable="false" />
                                                         <Label id="idLblDiscQtyIns" text="Quantity Inspected" />
@@ -1380,9 +1380,9 @@
                                             <Column hAlign="Right" width="5%">
                                                 <Text text="" />
                                             </Column>
-                                            <Column width="5%">
+                                            <!-- <Column width="5%">
                                                 <Text text="" />
-                                            </Column>
+                                            </Column> -->
                                         </columns>
                                         <items>
                                             <ColumnListItem>

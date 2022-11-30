@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-	<SelectDialog title="{i18n>PartNumTitle}" items="{PartNoDiscModel>/}" liveChange="onSearchPartNoFB" confirm="_configValueHelpDialogPartNoDisc"
+	<SelectDialog title="{i18n>PartNumTitle}" items="{PartNoDiscModel>/}" liveChange="onSearchPartNoDisc" confirm="_configValueHelpDialogPartNoDisc"
 		cancel="_handleValueHelpClosePartNoDisc" search="onSearchPartNoDisc">
 		<StandardListItem title="{PartNoDiscModel>PartNumber}" info="{PartNoDiscModel>PartName}" />
 	</SelectDialog>
