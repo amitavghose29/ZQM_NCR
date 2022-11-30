@@ -4958,6 +4958,7 @@ sap.ui.define([
             var oDiscrepancyNo = "";
             this.bindDiscrepancyTab(oDiscrepancyNo);
             this.bindSupplier();
+            this.bindLinkedToDiscrepancy();
             this.getView().byId("idIconTabBarHeader").setSelectedKey("Discre");
             this.getView().byId("idHeaderDiscTable").removeSelections();
             this.getView().byId("idDcCobPcAsper").setSelectedKey();
