@@ -8,8 +8,9 @@ sap.ui.define([
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/m/Tokenizer",
-    "sap/m/MessageBox"
-], function (Controller, Fragment, JSONModel, MenuItem, Token, SearchField, Filter, FilterOperator, Tokenizer, MessageBox) {
+    "sap/m/MessageBox",
+    "../utils/Utils"
+], function (Controller, Fragment, JSONModel, MenuItem, Token, SearchField, Filter, FilterOperator, Tokenizer, MessageBox, Utils) {
     "use strict";
     var sObjectId, oNctype, oDiscrepancy;
 
@@ -180,6 +181,11 @@ sap.ui.define([
                         this.getView().byId("idInpStatPartDesc").setEditable(false);
                     }
                     oNctype = this.getView().byId("idCombNcType").getValue();
+                    if(this.workingQueueMode=="EDIT"){
+                        var hdrODataArray =["NCType","NCPriority"];
+                        var oROModel=Utils.getReadonlyPropField(hdrODataArray,"Hdata");
+                            this.getView().byId("idPageNCHeader").setModel(oROModel, "oROPropModel");                       
+                    }
                     this.bindHeaderData();
                 }.bind(this),
                 error: function (oError) {
@@ -1918,6 +1924,7 @@ sap.ui.define([
                 }
             });
         },
+
         /**Function is triggered when clicked on Discrepancy tab to set Preliminary cause dropdown */
         _setFormatComboBox: function () {
             sap.ui.core.BusyIndicator.show();
@@ -1942,6 +1949,7 @@ sap.ui.define([
                 }
             });
         },
+
         /**Function is triggered when Stock Purge Button is clicked*/
         _onPressStockPurge: function () {
             this._oStockPurgeDialog = sap.ui.xmlfragment(this.getView().getId(), "com.airbus.ZQM_NCR.fragments.StockPurge", this);
@@ -4975,6 +4983,8 @@ sap.ui.define([
             this.bindDiscrepancyTab(oDiscrepancyNo);
             this.bindSupplier();
             this.bindLinkedToDiscrepancy();
+            this._setPrelimCauseComboBox();
+            this._setFormatComboBox();
             this.getView().byId("idIconTabBarHeader").setSelectedKey("Discre");
             this.getView().byId("idHeaderDiscTable").removeSelections();
             this.getView().byId("idDcCobPcAsper").setSelectedKey();
@@ -6010,7 +6020,7 @@ sap.ui.define([
                     if (discrepancyNum === "") {
                         this.getView().byId("headertext").setText();
                     } else {
-                        this.getView().byId("headertext").setText(discrepancyNum + "/");
+                        this.getView().byId("headertext").setText("Discrepancy/Disposition No: " + discrepancyNum + "/");
                     }
                     this.getView().byId("idDispCobDscNo").setValue(discrepancyNum);
                     this.getView().byId("idDispCobDscNo").setSelectedKey(discrepancyNum);

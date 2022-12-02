@@ -79,7 +79,7 @@
 							visibleInFilterBar="false"
 						>
 						<fb:control>
-							<Input id="idFBNCCrtByStation" name="Station" showValueHelp="true"/>
+							<Input id="idFBNCCrtByStation" name="Station" />
 						</fb:control>
 					</fb:FilterGroupItem>
 				

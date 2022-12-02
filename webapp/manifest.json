@@ -84,43 +84,12 @@
 				"type": "sap.ui.model.json.JSONModel",
 				"settings": {},
 				"preload": false
-			},
-			"sample": {
-				"type": "sap.ui.model.json.JSONModel",
-				"settings": {},
-				"preload": false,
-				"uri": "localjson/sampledata.json"
-			},
-            "bin": {
-				"type": "sap.ui.model.json.JSONModel",
-				"settings": {},
-				"preload": false,
-				"uri": "localjson/binlocations.json"
-			},
-            "aircraft": {
-				"type": "sap.ui.model.json.JSONModel",
-				"settings": {},
-				"preload": false,
-				"uri": "localjson/aircraftnumbers.json"
-			},
-            "podata": {
-				"type": "sap.ui.model.json.JSONModel",
-				"settings": {},
-				"preload": false,
-				"uri": "localjson/podata.json"
-			},
-            "suppsapcode": {
-				"type": "sap.ui.model.json.JSONModel",
-				"settings": {},
-				"preload": false,
-				"uri": "localjson/suppsapcode.json"
 			},            
             "NCSaveModel" :{
 	                "type": "sap.ui.model.json.JSONModel",
 	                "settings": {},
 	                "preload": false
 	        }
-
 		},
 		"services": {
 			"ShellUIService": {

@@ -13,11 +13,6 @@ sap.ui.define([], function () {
                 var pDate = oDateFormat.format(podate);
             }
             return pDate;
-        },
-
-        getReadonlyPropField: function (oModel,oSelectedTab){
-            return "";
         }
-
     };
 });

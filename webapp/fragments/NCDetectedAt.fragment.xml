@@ -80,7 +80,7 @@
 							visibleInFilterBar="false"
 						>
 						<fb:control>
-							<Input id="idFBNCDetAtStation" name="Station" showValueHelp="true"/>
+							<Input id="idFBNCDetAtStation" name="Station" />
 						</fb:control>
 					</fb:FilterGroupItem>
 				
