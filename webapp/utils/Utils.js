@@ -6,7 +6,7 @@ sap.ui.define([ "sap/ui/model/json/JSONModel"
         getScreenFieldPropsOnSelectedTab: function (oSelectedTab) {
             switch (oSelectedTab) {
             case "Hdata":
-               return ["NCType","NCPriority","PlantCode","ProductCode","WorkInstruction","ProdOrder","SupercedesNC","PartNumber","PartDescription","SerialNo","TraceabilityNo","SupercededByNC","ReferenceNC","Aircraft","Binlocation","DropPoint"];
+               return ["NCType","NCPriority","NCArea","PlantCode","ProductCode","WorkInstruction","ProdOrder","SupercedesNC","PartNumber","PartDescription","SerialNo","TraceabilityNo","SupercededByNC","ReferenceNC","Aircraft","Binlocation","DropPoint"];
             case "Discre":
                return ["LinkedTo","Liability","Partner","SupersedesItem","SupersedesByItem","Aircraft","PartNumber","InspQnty","PrelimInvest","PrelimCause","DropPoint","Is","Shouldbe","AsPer","Select"];
             case "Signoff":

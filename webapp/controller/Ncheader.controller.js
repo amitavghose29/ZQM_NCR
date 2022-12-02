@@ -184,7 +184,7 @@ sap.ui.define([
                     if(this.workingQueueMode=="EDIT"){
                         var hdrODataArray =["NCType","NCPriority"];
                         var oROModel=Utils.getReadonlyPropField(hdrODataArray,"Hdata");
-                            this.getView().byId("idPageNCHeader").setModel(oROModel, "oROPropModel");                       
+                        this.bindROHeaderProps(oROModel);                       
                     }
                     this.bindHeaderData();
                 }.bind(this),
@@ -195,6 +195,12 @@ sap.ui.define([
                 }
             });
         },
+
+        bindROHeaderProps: function(oROModel){
+            this.getView().byId("idCombNcType").setEnabled(oROModel.oData.NCType);
+            this.getView().byId("idPlntCodeHdr").setEnabled(oROModel.oData.PlantCode);
+        },
+  
 
         bindHeaderData: function () {
             this.handleMandatFields();
