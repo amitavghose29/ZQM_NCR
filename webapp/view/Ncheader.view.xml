@@ -1262,13 +1262,14 @@
                                                         <Label text="Major/Minor NC" />
                                                         <Input id="dispGenMajorMinorNC" />
                                                         <Label text="Rework Order" />
-                                                        <Input id="dispGenReworkOrder" />
+                                                        <!-- <Input id="dispGenReworkOrder" /> -->
+                                                        <MultiInput id="idMulInpDispoRewrkOrd" showValueHelp="true"  />
                                                         <Label text="Drop Point" />
                                                         <Input id="dispGenDropPoint" showValueHelp="true" valueHelpRequest="onOpenVHDrpPt" />
                                                         <Label text="Restricted Part" />
                                                         <CheckBox id="dispGenRestrictPart" text="" />
                                                         <Label text="Customer Support Notification" />
-                                                        <Switch id="dispGenCSN" state="true" customTextOn="Yes" customTextOff="No" />
+                                                        <Switch id="dispGenCSN" state="false" customTextOn="Yes" customTextOff="No" />
                                                         <Label text="Partner / Supplier" />
                                                         <Input id="dispGenPartSuppName" showValueHelp="true" valueHelpRequest="onVHReqPartner" />
                                                         <Label text="Partner / Supplier Name" />
@@ -1389,7 +1390,7 @@
                                         <items>
                                             <ColumnListItem>
                                                 <cells>
-                                                    <Text text="{DispositionDetails>DispositionSerialNo}" />
+                                                    <Text text="{DispositionDetails>ParentDispoNo}" />
                                                     <Input value="{DispositionDetails>DispostionType}" showValueHelp="true" valueHelpRequest="onOpenVHDispositionType" />
                                                     <Input value="{DispositionDetails>DispositionCode}" showValueHelp="true" valueHelpRequest="onOpenVHDispositionCode" />
                                                     <Text text="{DispositionDetails>DispositionStatus}" />
@@ -1399,8 +1400,8 @@
                                                     <Text text="{DispositionDetails>DispositionCreateBy}" />
                                                     <Text text="{DispositionDetails>DispositionBadge}" />
                                                     <Text text="{DispositionDetails>DispositionGroup}" />
-                                                    <Text text="{}" />
-                                                    <Button icon="sap-icon://add" type="Accept" tooltip="Add a new Disposition" enabled="{= ${DispositionDetails>DispositionChildflag === true} ? true : false }" />
+                                                    <Text text="{DispositionDetails>DispositionDateinWorking}" />
+                                                    <Button icon="sap-icon://add" type="Accept" tooltip="Add a new Disposition" enabled="{= ${DispositionDetails>DispositionParentflag === true} ? true : false }" press="handleAddSubDisposition" />
                                                 </cells>
                                             </ColumnListItem>
                                         </items>
