@@ -39,14 +39,14 @@ sap.ui.define([ "sap/ui/model/json/JSONModel"
                     oReadOnlyPropsData[oFieldValue]=false;
                 }
              }
-             oReadOnlyPropsData["button"]=true;
+             oReadOnlyPropsData["Button"]=true;
 
             }else{
                 for(i=0;i<oScreenFieldArray.length;i++){
                     oReadOnlyPropsData[oScreenFieldArray[i]]=false; 
 
                 }
-                oReadOnlyPropsData["button"]=false;
+                oReadOnlyPropsData["Button"]=false;
             }
             oReadOnlyPropsModel.setData(oReadOnlyPropsData);
             return oReadOnlyPropsModel;

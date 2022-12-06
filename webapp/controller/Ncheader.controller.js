@@ -229,7 +229,7 @@ sap.ui.define([
             this.getView().byId("idInpNCDetAt").setEditable(oROModel.oData.NCDetectedAt);
             this.getView().byId("idInpBinLoc").setEditable(oROModel.oData.Binlocation);
             this.getView().byId("idInpDrpPt").setEditable(oROModel.oData.DropPoint);
-            this.getView().byId("idncrsave").setEnabled(oROModel.oData.Button);
+            this.getView().byId("idncrsave").setVisible(oROModel.oData.Button);
         },
 
 
@@ -1903,7 +1903,7 @@ sap.ui.define([
             this.getView().byId("idPurInfSupSCip").setEditable(oROModel.oData.NCSupplierCode);
             this.getView().byId("idPurInfWBNip").setEditable(oROModel.oData.NCWayBillNo);
             this.getView().byId("idPurInfPcgslip").setEditable(oROModel.oData.NCPackSlip);
-            this.getView().byId("idncrsave").setEnabled(oROModel.oData.Button);
+            this.getView().byId("idncrsave").setVisible(oROModel.oData.Button);
         },
 
         /**Function is triggered when saving or updating Purchase Info Data */
@@ -2545,7 +2545,7 @@ sap.ui.define([
             //this.getView().byId("idDcCobPcAsper").setEnabled(oROModel.oData.);
             this.getView().byId("idDcInpAp").setEditable(oROModel.oData.AsPer);
             this.getView().byId("idDcCbIf").setEnabled(oROModel.oData.Incompletion);
-            this.getView().byId("idncrsave").setEnabled(oROModel.oData.Button);
+            this.getView().byId("idncrsave").setVisible(oROModel.oData.Button);
         },
 
         /**Function is triggered on selection change of format ComboBox */
