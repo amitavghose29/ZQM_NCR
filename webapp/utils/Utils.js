@@ -12,7 +12,7 @@ sap.ui.define([ "sap/ui/model/json/JSONModel"
             case "Signoff":
                return [];
             case "Dispo":
-               return ["DispositionPartner","DispositionQnty","DispositionDropPoint"];
+               return ["DispositionPartner","DispositionQnty","DispostionType","DispositionCode","DispositionPartReq","DispositionDropPoint","DispositionIntCharge","DispositionDropPoint","DispositionRestrictPart","DispositionCSN","DispositionPartner"];
             case "Purchase":
                return ["NCGRNo","NCPoNumber","NCPoLineNo","NCSupplierCode","NCWayBillNo","NCPackSlip"];  
             }

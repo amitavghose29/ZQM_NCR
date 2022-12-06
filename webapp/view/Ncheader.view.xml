@@ -21,8 +21,8 @@
                         <!--		<core:Fragment fragmentName="com.airbus.ZQM_NCR.fragments.notespopup" type="XML"/>-->
                         <!--	</dependents>-->
                         <!--</Button>-->
-                        <Button icon="sap-icon://cancel" press="handlePressCancel" />
-                        <!-- <Button icon="sap-icon://print" press="onPressPrint"/> -->
+                        <Button icon="sap-icon://cancel" press="handlePressCancel" class="sapUiSmallMarginEnd" />
+                        <Button icon="sap-icon://print" press="onPressPrint" visible="false" />
                     </Toolbar>
                 </subHeader>
                 <content>
@@ -468,8 +468,9 @@
                                                         <ComboBox id="cmbDescSelect" width="200px" items="{oSelectPartLocationModel>/}" selectionChange="onDiscPartSelectLocation">
                                                             <core:Item key="{oSelectPartLocationModel>Value}" text="{oSelectPartLocationModel>Value}" />
                                                         </ComboBox>
-                                                        <ComboBox id="cmbDescSelect1" />
-
+                                                        <ComboBox id="cmbDescSelect1" width="200px" items="{oSelectPartLocationListModel>/}" selectionChange="onDiscPartSelectLocationList">
+                                                            <core:Item key="{oSelectPartLocationListModel>SequenceNo}" text="{oSelectPartLocationListModel>SequenceNo}" />
+                                                        </ComboBox>
                                                         <Button text="save" type="Emphasized" width="40%" press="onSavePartLocation" />
                                                     </f:content>
                                                 </f:SimpleForm>
@@ -1260,10 +1261,12 @@
                                                         <Label text="Inter Chargeability Affected" />
                                                         <CheckBox id="dispGenInterCharge" text="" />
                                                         <Label text="Major/Minor NC" />
-                                                        <Input id="dispGenMajorMinorNC" />
+                                                        <ComboBox id="dispGenMajorMinorNC" items="{DispoMajMinNCModel>/}" showSecondaryValues="true">
+                                                            <core:ListItem key="{DispoMajMinNCModel>DISPIMPACT}" text="{DispoMajMinNCModel>Value}" additionalText="{DispoMajMinNCModel>Description}" />
+                                                        </ComboBox>
                                                         <Label text="Rework Order" />
                                                         <!-- <Input id="dispGenReworkOrder" /> -->
-                                                        <MultiInput id="idMulInpDispoRewrkOrd" showValueHelp="true"  />
+                                                        <MultiInput id="idMulInpDispoRewrkOrd" showValueHelp="true" valueHelpRequest="onOpenVHDispoRewrkOrd" />
                                                         <Label text="Drop Point" />
                                                         <Input id="dispGenDropPoint" showValueHelp="true" valueHelpRequest="onOpenVHDrpPt" />
                                                         <Label text="Restricted Part" />
@@ -1271,13 +1274,15 @@
                                                         <Label text="Customer Support Notification" />
                                                         <Switch id="dispGenCSN" state="false" customTextOn="Yes" customTextOff="No" />
                                                         <Label text="Partner / Supplier" />
-                                                        <Input id="dispGenPartSuppName" showValueHelp="true" valueHelpRequest="onVHReqPartner" />
+                                                        <Input id="dispGenPartSuppName" editable="false" showValueHelp="false" valueHelpRequest="onVHReqPartner" />
                                                         <Label text="Partner / Supplier Name" />
                                                         <Input id="dispGenPartSuppDesc" editable="false" />
                                                         <Label text="MRB" />
                                                         <Button id="idBtnMRBDisp" type="Emphasized" width="10%" icon="sap-icon://popup-window" press="onDispoistionMRB" />
                                                         <Label text="Serial Number" />
                                                         <MultiInput id="idMulInpDispoSerNo" showValueHelp="true" valueHelpRequest=".onOpenVHDispoSerNo" tokenUpdate="_onTokenUpdateDispoSN" />
+                                                        <Label text="Incomplete Flag" />
+                                                        <CheckBox id="idDispoGenInfoIncompFlag" selected="true" />
                                                     </f:content>
                                                 </f:SimpleForm>
                                             </l:BlockLayoutCell>
@@ -1335,15 +1340,15 @@
                                             </l:BlockLayoutCell>
                                         </l:BlockLayoutRow>
                                     </l:BlockLayout>
-                                    <Table items="{DispositionDetails>/}" id="idTableDisposition" mode="SingleSelectLeft" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true" class="formcolor1" selectionChange="onDispoLineItemSelection">
+                                    <Table items="{path: 'DispositionDetails>/'}" id="idTableDisposition" mode="SingleSelectLeft" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true" class="formcolor1" selectionChange="onDispoLineItemSelection">
                                         <headerToolbar>
                                             <Toolbar>
                                                 <Title text="Disposition Details" level="H2" />
 
                                                 <ToolbarSpacer />
-                                                <Button type="Emphasized" text="RTV" press="onDispoistionPressRTV" />
-                                                <Button type="Emphasized" icon="sap-icon://copy" press="onDispoistionCopy" />
-                                                <Button type="Emphasized" icon="sap-icon://add" press="onAddDispositionLineItem" />
+                                                <Button id="idBtnDispositionRTV" type="Emphasized" text="RTV" press="onPressDispositionRTV" enabled="false" />
+                                                <Button id="idBtnDispositionCopy" type="Emphasized" icon="sap-icon://copy" press="onPressDispositionCopy" enabled="false" />
+                                                <Button id="idBtnDispositionAdd" type="Emphasized" icon="sap-icon://add" press="onAddDispositionLineItem" />
                                             </Toolbar>
                                         </headerToolbar>
                                         <columns>
@@ -1383,25 +1388,22 @@
                                             <Column hAlign="Right" width="5%">
                                                 <Text text="" />
                                             </Column>
-                                            <!-- <Column width="5%">
-                                                <Text text="" />
-                                            </Column> -->
                                         </columns>
                                         <items>
                                             <ColumnListItem>
                                                 <cells>
                                                     <Text text="{DispositionDetails>ParentDispoNo}" />
-                                                    <Input value="{DispositionDetails>DispostionType}" showValueHelp="true" valueHelpRequest="onOpenVHDispositionType" />
-                                                    <Input value="{DispositionDetails>DispositionCode}" showValueHelp="true" valueHelpRequest="onOpenVHDispositionCode" />
+                                                    <Input value="{DispositionDetails>DispostionType}" showValueHelp="true" valueHelpRequest="onOpenVHDispositionType" editable="{DispositionDetails>DispostionTypeRO}" />
+                                                    <Input value="{DispositionDetails>DispositionCode}" showValueHelp="true" valueHelpRequest="onOpenVHDispositionCode" editable="{DispositionDetails>DispositionCodeRO}" />
                                                     <Text text="{DispositionDetails>DispositionStatus}" />
-                                                    <Input value="{DispositionDetails>DispositionQnty}" />
-                                                    <Input value="{DispositionDetails>DispositionPartReq}" showValueHelp="true" valueHelpRequest="onOpenVHDispoPartReq" />
+                                                    <Input value="{DispositionDetails>DispositionQnty}" editable="{DispositionDetails>DispositionQntyRO}" />
+                                                    <Input value="{DispositionDetails>DispositionPartReq}" showValueHelp="true" valueHelpRequest="onOpenVHDispoPartReq" editable="{DispositionDetails>DispositionPartReqRO}" />
                                                     <Text text="{DispositionDetails>DispositionAttchement}" />
                                                     <Text text="{DispositionDetails>DispositionCreateBy}" />
                                                     <Text text="{DispositionDetails>DispositionBadge}" />
                                                     <Text text="{DispositionDetails>DispositionGroup}" />
                                                     <Text text="{DispositionDetails>DispositionDateinWorking}" />
-                                                    <Button icon="sap-icon://add" type="Accept" tooltip="Add a new Disposition" enabled="{= ${DispositionDetails>DispositionParentflag === true} ? true : false }" press="handleAddSubDisposition" />
+                                                    <Button icon="sap-icon://add" tooltip="Add a new Disposition" enabled="{= ${DispositionDetails>DispositionParentflag} === true}" press="handleAddSubDisposition" />
                                                 </cells>
                                             </ColumnListItem>
                                         </items>

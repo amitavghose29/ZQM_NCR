@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog  title="Order Type" items="{DispoOrdTypeModel>/}" liveChange="onSearchDispoOrdType" confirm="_configDispoOrdTypeVHDialog"
+		cancel="_handleDispoOrdTypeVHClose">
+		<StandardListItem title="{DispoOrdTypeModel>Value}" />
+	</SelectDialog>
+</core:FragmentDefinition>

@@ -1,0 +1,58 @@
+<core:FragmentDefinition
+	xmlns="sap.ui.comp.valuehelpdialog"
+	xmlns:core="sap.ui.core" 
+    xmlns:fb="sap.ui.comp.filterbar" 
+    xmlns:m="sap.m" xmlns:ui="sap.ui.table">
+	<ValueHelpDialog class=""
+		title="Rework Orders"
+		ok=".onVHDispoRewrkOrdPress"
+		cancel=".onVHDispoRewrkOrdCancelPress"
+		afterClose=".onVHDispoRewrkOrdAfterClose"
+		key="OrderNo" descriptionKey="Description" >
+        <filterBar>
+			<fb:FilterBar advancedMode="true" search="onFBSearchDispoRewrkOrd">
+				<fb:filterGroupItems>
+					<fb:FilterGroupItem
+						groupName="__$INTERNAL$"
+						name="OrderNo"
+						label="Order Number"
+						visibleInFilterBar="true">
+						<fb:control>
+							<m:Input name="OrderNo" />
+						</fb:control>
+					</fb:FilterGroupItem>
+
+					<fb:FilterGroupItem
+						groupName="__$INTERNAL$"
+						name="Area"
+						label="Controlling Area"
+						visibleInFilterBar="true">
+						<fb:control>
+							<m:Input name="Area" showValueHelp="true" valueHelpRequest="onVHReqDispoControlArea"  />
+						</fb:control>
+					</fb:FilterGroupItem>
+
+                    <fb:FilterGroupItem
+						groupName="__$INTERNAL$"
+						name="Group"
+						label="Processing Group"
+						visibleInFilterBar="true">
+						<fb:control>
+							<m:Input name="Group" showValueHelp="true" valueHelpRequest="onVHReqDispoProcessGrp" />
+						</fb:control>
+					</fb:FilterGroupItem>
+
+                    <fb:FilterGroupItem
+						groupName="__$INTERNAL$"
+						name="OrderType"
+						label="Order Type"
+						visibleInFilterBar="true">
+						<fb:control>
+							<m:Input name="OrderType"  showValueHelp="true" valueHelpRequest="onVHReqDispoOrderType" />
+						</fb:control>
+					</fb:FilterGroupItem>
+				</fb:filterGroupItems>
+			</fb:FilterBar>
+		</filterBar>
+	</ValueHelpDialog>
+</core:FragmentDefinition>

@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog  title="Processing Group" items="{DispoProcessGrpModel>/}" liveChange="onSearchDispoProGrp" confirm="_configDispoProGrpVHDialog"
+		cancel="_handleDispoProGrpVHClose">
+		<StandardListItem title="{DispoProcessGrpModel>Value}" />
+	</SelectDialog>
+</core:FragmentDefinition>

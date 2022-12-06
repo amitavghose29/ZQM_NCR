@@ -1,0 +1,24 @@
+{
+	"cols": [
+		{
+			"label": "Order Number",
+			"template": "OrderNo"
+		},
+        {
+			"label": "Order Description",
+			"template": "OrderText"
+		},
+        {
+			"label": "Controlling Area",
+			"template": "Area"
+		},
+        {
+			"label": "Processing Group",
+			"template": "Group"
+		},
+        {
+			"label": "Order Type",
+			"template": "OrderType"
+		}
+	]
+}
