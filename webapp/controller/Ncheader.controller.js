@@ -6210,11 +6210,8 @@ sap.ui.define([
                 },
                 success: function (oData, oResult) {
                     sap.ui.core.BusyIndicator.hide();
-                    var data = oData.to_disposition.results;
-                    oModel.setData(data);
-                    this.getView().byId("idTableDisposition").setModel(oModel, "DispositionDetails");
-                    /*** Working Queue*/
-                    if (oData.to_disposition.results.length > 0) {
+                      /*** Working Queue*/
+                      if (oData.to_disposition.results.length > 0) {
                         if (this.workingQueueMode == "EDIT") {
                             var dispLineItemODataArray = [];
                             var oROLineItemModel;
@@ -6243,6 +6240,12 @@ sap.ui.define([
                             }
                         }
                     }
+                    /**
+                     * Working queue end
+                     */
+                    var data = oData.to_disposition.results;
+                    oModel.setData(data);
+                    this.getView().byId("idTableDisposition").setModel(oModel, "DispositionDetails");
                 }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
