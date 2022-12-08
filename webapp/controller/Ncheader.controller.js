@@ -483,7 +483,6 @@ sap.ui.define([
                 this._setDiscrepancyComboBox();
                 var oDiscrepancyNo = "";
                 this.bindDispositionTab(oDiscrepancyNo);
-                this.bindDispositionDetails();
                 this.bindMajorMinorNc();
                 this.getView().byId("idstatus").setVisible(true);
                 this.getView().byId("idObjNCStatus").setVisible(false);
@@ -577,6 +576,36 @@ sap.ui.define([
                     this.getView().byId("idFuselage").setVisible(true);
             }
             this.onSelectDiscPartlocationList();
+        },
+
+        onDiscPartSelectLocationList:function(){
+            var oDataModel = this.getOwnerComponent().getModel();
+            var oModel = new JSONModel();        
+            var sDiscrepancy = this.getView().byId("idDispCobDscNo").getValue();
+            if (sDiscrepancy == "") {
+                var sDisp = this.getView().byId("headertext").getText();
+                var len = sDisp.search(":");
+                var sDiscrepancy = sDisp.slice(Number(len) + 1);
+            } else {
+                var sDiscrepancy = sDiscrepancy;
+            }
+            var sSequence = this.getView().byId("cmbDescSelect1").getSelectedKey();
+            var sStation = this.getView().byId("cmbDescSelect").getSelectedKey();          
+            // var sPath = "/DiscrepancyPartAircraftSet(NotificationNo='200001061',DiscrepancyNo='0100',Location='FUSELAGE',SequenceNo='11')"
+            var sPath = "/DiscrepancyPartAircraftSet(NotificationNo='"+sObjectId+"',DiscrepancyNo='"+sDiscrepancy+"',Location='"+sStation+"',SequenceNo='"+sSequence+"')"
+            oDataModel.read(sPath, {
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData;
+                    oModel.setData(data);
+                    this.getView().setModel(oModel, "oPartLocationList");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });   
         },
 
         onSelectDiscPartlocationList: function () {
@@ -1527,14 +1556,14 @@ sap.ui.define([
             if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata") {
                 var oNCType = this.getView().byId("idCombNcType").getValue();
                 if (oNCType == "SUPPLIER" && this.getView().byId("idMNInputSN").getTokens().length === 0 && this.getView().byId("idMNInputTN").getTokens().length === 0) {
-                    MessageBox.warning("Please enter Serial or Traceability Number.!");
+                    MessageBox.warning("Please enter Serial or Traceability Number.");
                 } else if (Number(this.getOwnerComponent().getModel("NCSaveModel").getData().Category) == "002" || this.getView().byId("idInpWrkIns").getValue() !== "") {
                     if (this.getView().byId("idInpAircraft").getValue() !== "") {
                         this.getView().byId("idInpAircraft").setValueState("None");
                         this.getView().byId("idInpAircraft").setValueStateText("");
                         this.updateHeaderData();
                     } else {
-                        MessageBox.information("Please enter data in all mandatory fields.!");
+                        MessageBox.information("Please enter data in all mandatory fields.");
                         this.getView().byId("idInpAircraft").setValueState("Error");
                         this.getView().byId("idInpAircraft").setValueStateText("Please Enter Aircraft Number");
                     }
@@ -1620,7 +1649,7 @@ sap.ui.define([
             } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre") {
                 if (oNctype == "STOCK PURGE") {
                     if (this.getView().byId("idDiscAircraft").getValue() == "") {
-                        MessageBox.information("Please enter data in all mandatory fields.!");
+                        MessageBox.information("Please enter data in all mandatory fields.");
                         this.getView().byId("idDiscAircraft").setValueState("Warning");
                         this.getView().byId("idDiscAircraft").setValueStateText("Please Enter Aircraft Number.");
                     } else {
@@ -1632,7 +1661,7 @@ sap.ui.define([
                     if (this.getView().byId("idDiscAircraft").getValue() == "" || this.getView().byId("idDcIpLblty").getValue() == ""
                         || this.getView().byId("idDiscQtyIns").getValue() == "" || this.getView().byId("idDiscQtyRej").getValue() == ""
                         || this.getView().byId("idDcIpDc").getValue() == "" || this.getView().byId("idDcTxtIs").getValue() == "") {
-                        MessageBox.information("Please enter data in all mandatory fields.!");
+                        MessageBox.information("Please enter data in all mandatory fields.");
                         this.getView().byId("idDiscAircraft").getValue() === "" ? this.getView().byId("idDiscAircraft").setValueState("Warning") : "";
                         this.getView().byId("idDiscAircraft").getValue() === "" ? this.getView().byId("idDiscAircraft").setValueStateText("Please Enter Aircraft Number") : "";
                         this.getView().byId("idDcIpLblty").getValue() === "" ? this.getView().byId("idDcIpLblty").setValueState("Warning") : "";
@@ -2233,6 +2262,7 @@ sap.ui.define([
                         this.getView().byId("idHeaderDiscTable").removeSelections();
                         var bFlag = "Copy Discrepancy";
                         this.bindDiscrepancyTab(discrepancyNo, bFlag);
+                        this.onSelectDiscPartlocation();
                         this.getView().byId("idstatus").setVisible(true);
                         this.getView().byId("idObjNCStatus").setVisible(false);
                         this.getView().byId("idObjNCStatusDiscrep").setVisible(true);
@@ -2272,7 +2302,7 @@ sap.ui.define([
             if (iconKey == "Hdata") {
                 var hdatatab = this.getView().byId("idHeaderDiscTable").getSelectedItems();
                 if (hdatatab.length == 0) {
-                    MessageBox.warning("Please select a line item to navigate to Discrepancy.!");
+                    MessageBox.warning("Please select a line item to navigate to Discrepancy.");
                     return;
                 } else {
                     if (this.getView().byId("idHeaderDiscTable").getSelectedItem().getBindingContext("oHeaderDiscTable")) {
@@ -2300,7 +2330,7 @@ sap.ui.define([
             if (iconKey == "Hdata") {
                 var hdatatab = this.getView().byId("idHeaderDiscTable").getSelectedItems();
                 if (hdatatab.length == 0) {
-                    MessageBox.warning("Please select a line item to navigate to Discrepancy.!");
+                    MessageBox.warning("Please select a line item to navigate to Discrepancy.");
                     return;
                 } else {
                     if (this.getView().byId("idHeaderDiscTable").getSelectedItem().getBindingContext("oHeaderDiscTable")) {
@@ -3089,7 +3119,7 @@ sap.ui.define([
                             if (bFlag === false) {
                                 var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
                                 MessageBox.information(
-                                    "Serial Number not available in SAP.!",
+                                    "Serial Number not available in SAP.",
                                     {
                                         styleClass: bCompact ? "sapUiSizeCompact" : ""
                                     }
@@ -3143,7 +3173,7 @@ sap.ui.define([
                             if (bFlag === false) {
                                 var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
                                 MessageBox.information(
-                                    "Serial Number not available in SAP.!",
+                                    "Serial Number not available in SAP.",
                                     {
                                         styleClass: bCompact ? "sapUiSizeCompact" : ""
                                     }
@@ -3213,7 +3243,7 @@ sap.ui.define([
                             if (bFlag === false) {
                                 var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
                                 MessageBox.information(
-                                    "Traceability Number not available in SAP.!",
+                                    "Traceability Number not available in SAP.",
                                     {
                                         styleClass: bCompact ? "sapUiSizeCompact" : ""
                                     }
@@ -3269,7 +3299,7 @@ sap.ui.define([
                             if (bFlag === false) {
                                 var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
                                 MessageBox.information(
-                                    "Traceability Number not available in SAP.!",
+                                    "Traceability Number not available in SAP.",
                                     {
                                         styleClass: bCompact ? "sapUiSizeCompact" : ""
                                     }
@@ -3696,7 +3726,7 @@ sap.ui.define([
                         "idFlBarPrOrdVhPartNo").getValue() === "" && sap.ui.getCore().byId("idFlBarPrOrdVhnlp").getValue() === "" && sap.ui.getCore()
                             .byId("idFlBarPrOrdVhWrkIns").getValue() === "") {
                         MessageBox.warning(
-                            "No data found.! Please try to search using filter bar fields provided.!", {
+                            "No data found.! Please try to search using filter bar fields provided.", {
                             icon: MessageBox.Icon.WARNING,
                             title: "No matching order found",
                             actions: [MessageBox.Action.OK],
@@ -4196,7 +4226,7 @@ sap.ui.define([
                             this.getView().byId("idInpStatPartDesc").setEditable(true);
                             this.getView().byId("idInpStatPartDesc").setValue();
                             MessageBox.warning(
-                                "No matching Part master records found..!", {
+                                "No matching Part master records found.", {
                                 icon: MessageBox.Icon.WARNING,
                                 title: "Information",
                                 actions: [MessageBox.Action.OK],
@@ -5128,6 +5158,7 @@ sap.ui.define([
             this.bindLinkedToDiscrepancy();
             this._setPrelimCauseComboBox();
             this._setFormatComboBox();
+            this.onSelectDiscPartlocation();
             this.getView().byId("idIconTabBarHeader").setSelectedKey("Discre");
             this.getView().byId("idHeaderDiscTable").removeSelections();
             this.getView().byId("idDcCobPcAsper").setSelectedKey();
@@ -5537,7 +5568,7 @@ sap.ui.define([
                             this.getView().byId("idDiscUomIns").setText();
                             this.getView().byId("idDiscUomRej").setText();
                             if (this.getView().byId("idComBoxDiscLinkTo").getValue() == "AIRCRAFT") {
-                                var oMessage = "No matching Part master records found.!";
+                                var oMessage = "No matching Part master records found.";
                                 MessageBox.warning(
                                     oMessage, {
                                     icon: MessageBox.Icon.WARNING,
@@ -5550,7 +5581,20 @@ sap.ui.define([
                                     }.bind(this)
                                 });
                             } else if (this.getView().byId("idComBoxDiscLinkTo").getValue() == "DETAIL") {
-                                var oMessage = "No matching Part master records found, please contact the responsible team.!";
+                                var oMessage = "No matching Part master records found, please contact the responsible team.";
+                                MessageBox.warning(
+                                    oMessage, {
+                                    icon: MessageBox.Icon.WARNING,
+                                    title: "Information",
+                                    actions: [MessageBox.Action.OK],
+                                    emphasizedAction: MessageBox.Action.OK,
+                                    initialFocus: MessageBox.Action.OK,
+                                    onClose: function (sAction) {
+                                        if (sAction == MessageBox.Action.OK) { }
+                                    }.bind(this)
+                                });
+                            } else{
+                                var oMessage = "No matching Part master records found.";
                                 MessageBox.warning(
                                     oMessage, {
                                     icon: MessageBox.Icon.WARNING,
@@ -5563,7 +5607,6 @@ sap.ui.define([
                                     }.bind(this)
                                 });
                             }
-
                         } else {
                             this.getView().byId("idDiscPartDesc").setEditable(false);
                             this.getView().byId("idDiscPartDesc").setValue(oPartDesc);
@@ -5595,7 +5638,7 @@ sap.ui.define([
                         this.updateDiscrepancyData();
                     } else if (oData.MRBCertified === true) {
                         MessageBox.show(
-                            "Do you wish to go to the other workgroup and save.!", {
+                            "Do you wish to go to the other workgroup and save.", {
                             icon: MessageBox.Icon.INFORMATION,
                             title: "MRB certified User",
                             actions: [MessageBox.Action.YES, MessageBox.Action.NO],
@@ -6197,6 +6240,7 @@ sap.ui.define([
                     }
                     this.getView().byId("idDispCobDscNo").setValue(discrepancyNum);
                     this.getView().byId("idDispCobDscNo").setSelectedKey(discrepancyNum);
+                    this.getView().byId("idObjNCStatusDispo").setText();
                     //setting values in General Info Screen                    
                     this.getView().byId("idInpDispPrtNo").setValue(partNumber);
                     this.getView().byId("idOsDispPrtDesc").setText(partDesc);
@@ -6224,6 +6268,7 @@ sap.ui.define([
                     this.getView().byId("idDispTaSb").setValue(shouldbe);
                     this.getView().byId("idDispInpAp").setValue(asPer);
                     this.getView().byId("idDispCbIf").setSelected(incompletion);
+                    this.bindDispositionDetails();
                 }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
@@ -6474,7 +6519,7 @@ sap.ui.define([
                         if (bFlag === false) {
                             var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
                             MessageBox.information(
-                                "Serial Number not available in SAP.!",
+                                "Serial Number not available in SAP.",
                                 {
                                     styleClass: bCompact ? "sapUiSizeCompact" : ""
                                 }
@@ -6733,11 +6778,12 @@ sap.ui.define([
                 this.getView().byId("dispGenDropPoint").setValue();
                 this.getView().byId("dispGenRestrictPart").setSelected(false);
                 this.getView().byId("dispGenCSN").setState(false);
-                this.getView().byId("dispGenPartSuppName").setValue();
-                this.getView().byId("dispGenPartSuppDesc").setValue();
+                // this.getView().byId("dispGenPartSuppName").setValue();
+                // this.getView().byId("dispGenPartSuppDesc").setValue();
                 this.getView().byId("dispGenMajorMinorNC").setSelectedKey();
                 this.getView().byId("dispGenMajorMinorNC").setValue();
                 this.getView().byId("idTableDisposition").removeSelections(true);
+                this.getView().byId("idObjNCStatusDispo").setText();
                 var oDiscNo = this.getView().byId("idDispCobDscNo").getValue();
                 this.getView().byId("headertext").setText("Discrepancy/Disposition No: " + oDiscNo + "/");
                 this._oMultiInputDispoSN.removeAllTokens();
@@ -6772,7 +6818,7 @@ sap.ui.define([
                     }
                 }
                 if (bFlag === false) {
-                    MessageBox.warning("User can create single disposition at a time, please use existing line item entry in table.!");
+                    MessageBox.warning("User can create single disposition at a time, please use existing line item entry in table.");
                 } else {
                     oDispoTableModel.push({
                         "ParentDispoNo": "",
@@ -6953,7 +6999,7 @@ sap.ui.define([
             if (oDiscrepancyNo) {
                 if (this.getView().byId("idTableDisposition").getModel("DispositionDetails").getData().length === 0) {
                     if (this.getView().byId("idTableDisposition").getModel("DispositionDetails").getData().length === 0) {
-                        MessageBox.warning("Please add a line item to create disposition.!");
+                        MessageBox.warning("Please add a line item to create disposition.");
                         return;
                     } else {
                         sap.ui.core.BusyIndicator.show();
@@ -7078,7 +7124,7 @@ sap.ui.define([
                             }
                         }
                     } else {
-                        MessageBox.warning("Please add a line item to create disposition.!");
+                        MessageBox.warning("Please add a line item to create disposition.");
                         return;
                     }
                 }
@@ -7102,7 +7148,7 @@ sap.ui.define([
                     }
                 });
             } else {
-                MessageBox.warning("Please select a discrepancy number using dropdown to create a disposition.!");
+                MessageBox.warning("Please select a discrepancy number using dropdown to create a disposition.");
             }
         },
 
@@ -7211,10 +7257,11 @@ sap.ui.define([
             this.getView().byId("dispGenDropPoint").setValue();
             this.getView().byId("dispGenRestrictPart").setSelected(false);
             this.getView().byId("dispGenCSN").setState(false);
-            this.getView().byId("dispGenPartSuppName").setValue();
-            this.getView().byId("dispGenPartSuppDesc").setValue();
+            // this.getView().byId("dispGenPartSuppName").setValue();
+            // this.getView().byId("dispGenPartSuppDesc").setValue();
             this.getView().byId("dispGenMajorMinorNC").setSelectedKey();
             this.getView().byId("dispGenMajorMinorNC").setValue();
+            this.getView().byId("idObjNCStatusDispo").setText();
             this._oMultiInputDispoSN.removeAllTokens();
             this._oMultiInputDispoRewrkOrd.removeAllTokens();
         },
@@ -7248,6 +7295,7 @@ sap.ui.define([
                         this._oMultiInputDispoSN.removeAllTokens();
                         this._oMultiInputDispoRewrkOrd.removeAllTokens();
                         var oSerialData = oData.to_disposerial.results,
+                            oDispoStatus = oData.DispositionStatus,
                             oReworkOrdData = oData.to_disporework.results,
                             oDispositionIntCharge = oData.DispositionIntCharge,
                             oDispositionDropPoint = oData.DispositionDropPoint,
@@ -7258,6 +7306,7 @@ sap.ui.define([
                             oDispositionMajorMinor = oData.DispositionMajorMinor,
                             oDispositionROProp = oData.DispoChangeFields;
 
+                        this.getView().byId("idObjNCStatusDispo").setText(oDispoStatus);    
                         if (oSerialData.length > 0) {
                             for (var i = 0; i < oSerialData.length; i++) {
                                 var oSerialNosToken = oSerialData[i].SerialNo;
@@ -7306,10 +7355,11 @@ sap.ui.define([
                     }
                 });
             } else {
-                MessageBox.warning("The line item can not be selected since no Disposition Number is generated..!");
+                MessageBox.warning("The line item can not be selected since no Disposition Number is generated.");
                 this.getView().byId("idTableDisposition").removeSelections(true);
                 this.getView().byId("idBtnDispositionCopy").setEnabled(false);
                 this.getView().byId("idBtnDispositionDlt").setEnabled(false);
+                this.resetDispositionGenInfoFields();
             }
         },
 

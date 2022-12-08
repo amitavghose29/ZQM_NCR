@@ -477,105 +477,105 @@
                                                 <FlexBox class="columns" direction="{= ${device>/system/phone} ? 'Column' : 'Inherit' }" alignItems="Start" justifyContent="Start">
                                                     <HBox id="idFuselage" visible="false" class="sapUiSizeCompact">
                                                         <VBox>
-                                                            <CheckBox id="chbFuseStation" text="Fuselage Station(FS)(X)" />
-                                                            <CheckBox id="chbFuseFStation" text="Fuselage Frame Station(FR)" />
-                                                            <CheckBox id="chbFuseString" text="Fuselage Stringer" />
-                                                            <CheckBox id="chbFuseBLine" text="Buttock Line(BL)(Y)" />
-                                                            <CheckBox id="chbFuseWLine" text="Water Line(WL)(Z)" />
-                                                            <CheckBox id="chbFuseOmlIml" text="OML / IML" />
+                                                            <CheckBox id="chbFuseStation" text="Fuselage Station(FS)(X)" selected="{oPartLocationList>/FuselageStation}" />
+                                                            <CheckBox id="chbFuseFStation" text="Fuselage Frame Station(FR)" selected="{oPartLocationList>/FuseFrame}" />
+                                                            <CheckBox id="chbFuseString" text="Fuselage Stringer" selected="{oPartLocationList>/FuseStringer}" />
+                                                            <CheckBox id="chbFuseBLine" text="Buttock Line(BL)(Y)" selected="{oPartLocationList>/ButtockLine}" />
+                                                            <CheckBox id="chbFuseWLine" text="Water Line(WL)(Z)" selected="{oPartLocationList>/WaterLine}" />
+                                                            <CheckBox id="chbFuseOmlIml" text="OML / IML" selected="{oPartLocationList>/OmlIml}" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtFuseStation" text="at" groupName="rbtFuseSationG" />
-                                                            <RadioButton id="rbtFuseFStation" text="at" groupName="rbtFuseFStationG" />
-                                                            <RadioButton id="rbtFuseString" text="at" groupName="rbtFuseStringG" />
-                                                            <RadioButton id="rbtFuseBLine" text="at" groupName="rbtFuseBLineG" />
-                                                            <RadioButton id="rbtFuseWLine" text="at" groupName="rbtFuseWLineG" />
-                                                            <RadioButton id="rbtFuseOml" text="OML" groupName="chbFuseOmlIml" />
+                                                            <RadioButton id="rbtFuseStation" text="at" groupName="rbtFuseSationG" selected="{= ${oPartLocationList>/FuseStatnSel} === 'AT' ? true : false  }" />
+                                                            <RadioButton id="rbtFuseFStation" text="at" groupName="rbtFuseFStationG" selected="{= ${oPartLocationList>/FuseFrameSel} === 'AT' ? true : false  }" />
+                                                            <RadioButton id="rbtFuseString" text="at" groupName="rbtFuseStringG" selected="{= ${oPartLocationList>/FuseStringerSel} === 'AT' ? true : false  }" />
+                                                            <RadioButton id="rbtFuseBLine" text="at" groupName="rbtFuseBLineG" selected="{= ${oPartLocationList>/ButtockLineSel} === 'AT' ? true : false  }" />
+                                                            <RadioButton id="rbtFuseWLine" text="at" groupName="rbtFuseWLineG" selected="{= ${oPartLocationList>/WaterLineSel} === 'AT' ? true : false  }" />
+                                                            <RadioButton id="rbtFuseOml" text="OML" groupName="chbFuseOmlIml" selected="{= ${oPartLocationList>/OmlImlValue} === 'OML' ? true : false  }" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtFuseStation1" text="b/w" groupName="rbtFuseSationG" />
-                                                            <RadioButton id="rbtFuseFStation1" text="b/w" groupName="rbtFuseFStationG" />
-                                                            <RadioButton id="rbtFuseString1" text="b/w" groupName="rbtFuseStringG" />
-                                                            <RadioButton id="rbtFuseBLine1" text="b/w" groupName="rbtFuseBLineG" />
-                                                            <RadioButton id="rbtFuseWLine1" text="b/w" groupName="rbtFuseWLineG" />
-                                                            <RadioButton id="rbtFuseIml" text="IML" groupName="chbFuseOmlIml" />
+                                                            <RadioButton id="rbtFuseStation1" text="b/w" groupName="rbtFuseSationG" selected="{= ${oPartLocationList>/FuseStatnSel} === 'BETWEEN' ? true : false  }" />
+                                                            <RadioButton id="rbtFuseFStation1" text="b/w" groupName="rbtFuseFStationG" selected="{= ${oPartLocationList>/FuseFrameSel} === 'BETWEEN' ? true : false  }" />
+                                                            <RadioButton id="rbtFuseString1" text="b/w" groupName="rbtFuseStringG" selected="{= ${oPartLocationList>/FuseStringerSel} === 'BETWEEN' ? true : false  }" />
+                                                            <RadioButton id="rbtFuseBLine1" text="b/w" groupName="rbtFuseBLineG" selected="{= ${oPartLocationList>/ButtockLineSel} === 'BETWEEN' || 'BETW'? true : false  }" />
+                                                            <RadioButton id="rbtFuseWLine1" text="b/w" groupName="rbtFuseWLineG" selected="{= ${oPartLocationList>/WaterLineSel} === 'BETWEEN' ? true : false  }" />
+                                                            <RadioButton id="rbtFuseIml" text="IML" groupName="chbFuseOmlIml" selected="{= ${oPartLocationList>/OmlImlValue} === 'IML' ? true : false  }" />
                                                         </VBox>
                                                         <VBox class="sapUiSmallMarginBegin">
-                                                            <Input id="inpFuseStation" />
-                                                            <Input id="inpFuseFStation" />
-                                                            <Input id="inpFuseString" />
-                                                            <Input id="inpFuseBLine" />
-                                                            <Input id="inpFuseWLine" />
+                                                            <Input id="inpFuseStation" value="{oPartLocationList>/FuseStatnVal1}" />
+                                                            <Input id="inpFuseFStation" value="{oPartLocationList>/FuseFrameVal1}" />
+                                                            <Input id="inpFuseString" value="{oPartLocationList>/FuseStringerVal1}" />
+                                                            <Input id="inpFuseBLine" value="{oPartLocationList>/ButtockLineVal1}" />
+                                                            <Input id="inpFuseWLine" value="{oPartLocationList>/WaterLineVal1}" />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
                                                             <Text />
                                                             <HBox>
-                                                                <RadioButton id="rbtFuseStringL" text="L" groupName="rbtFuseStringLRG" />
-                                                                <RadioButton id="rbtFuseStringR" text="R" groupName="rbtFuseStringLRG" />
+                                                                <RadioButton id="rbtFuseStringL" text="L" groupName="rbtFuseStringLRG" selected="{oPartLocationList>/FuseFrameLhs1}" />
+                                                                <RadioButton id="rbtFuseStringR" text="R" groupName="rbtFuseStringLRG" selected="{oPartLocationList>/FuseFrameRhs1}" />
                                                             </HBox>
                                                             <HBox>
-                                                                <RadioButton id="rbtFuseBLineL" text="L" groupName="rbtFuseBLineLRG" />
-                                                                <RadioButton id="rbtFuseBLineR" text="R" groupName="rbtFuseBLineLRG" />
+                                                                <RadioButton id="rbtFuseBLineL" text="L" groupName="rbtFuseBLineLRG" selected="{oPartLocationList>/FuseFrameLhs2}" />
+                                                                <RadioButton id="rbtFuseBLineR" text="R" groupName="rbtFuseBLineLRG" selected="{oPartLocationList>/FuseFrameRhs2}" />
                                                             </HBox>
                                                             <Text />
                                                         </VBox>
                                                         <VBox class="sapUiSmallMarginBegin">
-                                                            <Input id="inpFuseStation1" />
-                                                            <Input id="inpFuseFStation1" />
-                                                            <Input id="inpFuseString1" />
-                                                            <Input id="inpFuseBLine1" />
-                                                            <Input id="inpFuseWLine1" />
+                                                            <Input id="inpFuseStation1" value="{oPartLocationList>/FuseStatnVal2}" />
+                                                            <Input id="inpFuseFStation1" value="{oPartLocationList>/FuseFrameVal2}" />
+                                                            <Input id="inpFuseString1" value="{oPartLocationList>/FuseStringerVal2}" />
+                                                            <Input id="inpFuseBLine1" value="{oPartLocationList>/ButtockLineVal2}" />
+                                                            <Input id="inpFuseWLine1" value="{oPartLocationList>/WaterLineVal2}" />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
                                                             <Text />
                                                             <HBox>
-                                                                <RadioButton id="rbtFuseStringL1" text="L" groupName="rbtFuseStringLRG1" />
-                                                                <RadioButton id="rbtFuseStringR1" text="R" groupName="rbtFuseStringLRG1" />
+                                                                <RadioButton id="rbtFuseStringL1" text="L" groupName="rbtFuseStringLRG1" selected="{oPartLocationList>/FuseStringLhs1}" />
+                                                                <RadioButton id="rbtFuseStringR1" text="R" groupName="rbtFuseStringLRG1" selected="{oPartLocationList>/FuseStringRhs1}" />
                                                             </HBox>
                                                             <HBox>
-                                                                <RadioButton id="rbtFuseBLineL1" text="L" groupName="rbtFuseBLineLRG1" />
-                                                                <RadioButton id="rbtFuseBLineR1" text="R" groupName="rbtFuseBLineLRG1" />
+                                                                <RadioButton id="rbtFuseBLineL1" text="L" groupName="rbtFuseBLineLRG1" selected="{oPartLocationList>/FuseStringLhs2}" />
+                                                                <RadioButton id="rbtFuseBLineR1" text="R" groupName="rbtFuseBLineLRG1" selected="{oPartLocationList>/FuseStringRhs2}" />
                                                             </HBox>
                                                             <Text />
                                                         </VBox>
                                                     </HBox>
                                                     <HBox id="idWing" visible="false" class="sapUiSizeCompact">
                                                         <VBox>
-                                                            <CheckBox id="chbWingLhsRhs" text="LHS /RHS" />
-                                                            <CheckBox id="chbWingStation" text=" Wing Station(WS)" />
-                                                            <CheckBox id="chbWingRib" text="Wing Rib" />
-                                                            <CheckBox id="chbWingOmlIml" text="OML / IML" />
+                                                            <CheckBox id="chbWingLhsRhs" text="LHS /RHS" selected="{oPartLocationList>/Lhs_Rhs}" />
+                                                            <CheckBox id="chbWingStation" text=" Wing Station(WS)" selected="{oPartLocationList>/WingStation}" />
+                                                            <CheckBox id="chbWingRib" text="Wing Rib" selected="{oPartLocationList>/WingRib}" />
+                                                            <CheckBox id="chbWingOmlIml" text="OML / IML" selected="{oPartLocationList>/OmlIml}" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtWingLhsRhsL" text="L" groupName="rbtWingLhsRhsG" />
-                                                            <RadioButton id="rbtWingStationat" text="at" groupName="rbtWingStationG" />
-                                                            <RadioButton id="rbtWingRibat" text="at" groupName="rbtWingRibG" />
-                                                            <RadioButton id="rbtWingOml" text="OML " groupName="chbWingOmlImlG" />
+                                                            <RadioButton id="rbtWingLhsRhsL" text="L" groupName="rbtWingLhsRhsG" selected="{oPartLocationList>/Lhs}" />
+                                                            <RadioButton id="rbtWingStationat" text="at" groupName="rbtWingStationG" selected="{= ${oPartLocationList>/WingStationSel} === 'AT' ? true : false  }" />
+                                                            <RadioButton id="rbtWingRibat" text="at" groupName="rbtWingRibG" selected="{= ${oPartLocationList>/WingRibSel} === 'AT' ? true : false  }" />
+                                                            <RadioButton id="rbtWingOml" text="OML " groupName="chbWingOmlImlG" selected="{= ${oPartLocationList>/OmlImlValue} === 'OML' ? true : false  }" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtWingLhsRhsR" text="R" groupName="rbtWingLhsRhsG" />
-                                                            <RadioButton id="rbtWingStationbw" text="between" groupName="rbtWingStationG" />
-                                                            <RadioButton id="rbtWingRibbw" text="between" groupName="rbtWingRibG" />
-                                                            <RadioButton id="rbtWingIml" text="IML" groupName="chbWingOmlImlG" />
-                                                        </VBox>
-                                                        <VBox>
-                                                            <Text />
-                                                            <Input width="50px" id="inpWingStation" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input width="50px" id="inpWingRib" class="sapUiSmallMarginBeginEnd" />
-                                                            <Text />
+                                                            <RadioButton id="rbtWingLhsRhsR" text="R" groupName="rbtWingLhsRhsG" selected="{oPartLocationList>/Rhs}" />
+                                                            <RadioButton id="rbtWingStationbw" text="between" groupName="rbtWingStationG" selected="{= ${oPartLocationList>/WingStationSel} === 'BETWEEN' ? true : false  }" />
+                                                            <RadioButton id="rbtWingRibbw" text="between" groupName="rbtWingRibG" selected="{= ${oPartLocationList>/WingRibSel} === 'BETWEEN' ? true : false  }" />
+                                                            <RadioButton id="rbtWingIml" text="IML" groupName="chbWingOmlImlG" selected="{= ${oPartLocationList>/OmlImlValue} === 'IML' ? true : false  }" />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
-                                                            <Text />
-                                                            <Text />
+                                                            <Input width="50px" id="inpWingStation" class="sapUiSmallMarginBeginEnd" value="{oPartLocationList>/WingStationVal1}" />
+                                                            <Input width="50px" id="inpWingRib" class="sapUiSmallMarginBeginEnd" value="{oPartLocationList>/WingRibVal1}" />
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
-                                                            <Input width="50px" id="inpWingStation1" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input width="50px" id="inpWingRib1" class="sapUiSmallMarginBeginEnd" />
+                                                            <Text />
+                                                            <Text />
+                                                            <Text />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text />
+                                                            <Input width="50px" id="inpWingStation1" class="sapUiSmallMarginBeginEnd" value="{oPartLocationList>/WinfStationVal2}" />
+                                                            <Input width="50px" id="inpWingRib1" class="sapUiSmallMarginBeginEnd" value="{oPartLocationList>/WingRibVal2}" />
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
@@ -587,39 +587,39 @@
                                                     </HBox>
                                                     <HBox id="idVertical" visible="false" class="sapUiSizeCompact">
                                                         <VBox>
-                                                            <CheckBox id="chbVerticalLhsRhs" text="LHS /RHS" />
-                                                            <CheckBox id="chbVerticalStation" text="Vertical Empennage Stations(ZV)" />
-                                                            <CheckBox id="chbVerticalRib" text="Vertical Empennage Rib" />
-                                                            <CheckBox id="chbVerticalOmlIml" text="OML / IML" />
+                                                            <CheckBox id="chbVerticalLhsRhs" text="LHS /RHS" selected="{oPartLocationList>/Lhs_Rhs}" />
+                                                            <CheckBox id="chbVerticalStation" text="Vertical Empennage Stations(ZV)" selected="{oPartLocationList>/VerticalEmpStation}" />
+                                                            <CheckBox id="chbVerticalRib" text="Vertical Empennage Rib" selected="{oPartLocationList>/VerticalEmpRib}" />
+                                                            <CheckBox id="chbVerticalOmlIml" text="OML / IML" selected="{oPartLocationList>/OmlIml}" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtVerticalLhsRhsL" text="L" groupName="rbtVerticalLhsRhsG" />
-                                                            <RadioButton id="rbtVerticalStationat" text="at" groupName="rbtVerticalStationG" />
-                                                            <RadioButton id="rbtVerticalRibat" text="at" groupName="rbtVerticalRibG" />
-                                                            <RadioButton id="rbtVerticalOml" text="OML" groupName="chbVerticalOmlG" />
+                                                            <RadioButton id="rbtVerticalLhsRhsL" text="L" groupName="rbtVerticalLhsRhsG" selected="{oPartLocationList>/Lhs}" />
+                                                            <RadioButton id="rbtVerticalStationat" text="at" groupName="rbtVerticalStationG" selected="{= ${oPartLocationList>/VerticalEmpStationSel} === 'AT' ? true : false  }" />
+                                                            <RadioButton id="rbtVerticalRibat" text="at" groupName="rbtVerticalRibG" selected="{= ${oPartLocationList>/VerticalEmpRibSel} === 'AT' ? true : false  }" />
+                                                            <RadioButton id="rbtVerticalOml" text="OML" groupName="chbVerticalOmlG" selected="{= ${oPartLocationList>/OmlImlValue} === 'OML' ? true : false  }" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtVerticalLhsRhsR" text="R" groupName="rbtVerticalLhsRhsG" />
-                                                            <RadioButton id="rbtVerticalStationbw" text="between" groupName="rbtVerticalStationG" />
-                                                            <RadioButton id="rbtVerticalRibbw" text="between" groupName="rbtVerticalRibG" />
-                                                            <RadioButton id="rbtVerticalIml" text="IML" groupName="chbVerticalOmlG" />
-                                                        </VBox>
-                                                        <VBox>
-                                                            <Text />
-                                                            <Input width="50px" id="inpVerticalStation" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input width="50px" id="inpVerticalRib" class="sapUiSmallMarginBeginEnd" />
-                                                            <Text />
+                                                            <RadioButton id="rbtVerticalLhsRhsR" text="R" groupName="rbtVerticalLhsRhsG" selected="{oPartLocationList>/Rhs}" />
+                                                            <RadioButton id="rbtVerticalStationbw" text="between" groupName="rbtVerticalStationG" selected="{= ${oPartLocationList>/VerticalEmpStationSel} === 'BETWEEN' ? true : false  }" />
+                                                            <RadioButton id="rbtVerticalRibbw" text="between" groupName="rbtVerticalRibG" selected="{= ${oPartLocationList>/VerticalEmpRibSel} === 'BETWEEN' ? true : false  }" />
+                                                            <RadioButton id="rbtVerticalIml" text="IML" groupName="chbVerticalOmlG" selected="{= ${oPartLocationList>/OmlImlValue} === 'IML' ? true : false  }" />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
-                                                            <Text />
-                                                            <Text />
+                                                            <Input width="50px" id="inpVerticalStation" class="sapUiSmallMarginBeginEnd" value="{oPartLocationList>/VerticalEmpStationVal1}" />
+                                                            <Input width="50px" id="inpVerticalRib" class="sapUiSmallMarginBeginEnd" value="{oPartLocationList>/VerticalEmpRibVal1}" />
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
-                                                            <Input width="50px" id="inpVerticalStation1" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input width="50px" id="inpVerticalRib1" class="sapUiSmallMarginBeginEnd" />
+                                                            <Text />
+                                                            <Text />
+                                                            <Text />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text />
+                                                            <Input width="50px" id="inpVerticalStation1" class="sapUiSmallMarginBeginEnd" value="{oPartLocationList>/VerticalEmpStationVal2}" />
+                                                            <Input width="50px" id="inpVerticalRib1" class="sapUiSmallMarginBeginEnd" value="{oPartLocationList>/VerticalEmpRibVal2}" />
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
@@ -631,39 +631,39 @@
                                                     </HBox>
                                                     <HBox id="idRudder" visible="false" class="sapUiSizeCompact">
                                                         <VBox>
-                                                            <CheckBox id="chbRudderLhsRhs" text="LHS /RHS" />
-                                                            <CheckBox id="chbRudderStation" text="Rudder Tail Stations(ZVS)" />
-                                                            <CheckBox id="chbRudderRib" text="Rudder Rib" />
-                                                            <CheckBox id="chbRudderOmlIml" text="OML / IML" />
+                                                            <CheckBox id="chbRudderLhsRhs" text="LHS /RHS" selected="{oPartLocationList>/Lhs_Rhs}" />
+                                                            <CheckBox id="chbRudderStation" text="Rudder Tail Stations(ZVS)" selected="{oPartLocationList>/RuderTailStation}" />
+                                                            <CheckBox id="chbRudderRib" text="Rudder Rib" selected="{oPartLocationList>/RuderRib}" />
+                                                            <CheckBox id="chbRudderOmlIml" text="OML / IML" selected="{oPartLocationList>/OmlIml}" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtRudderLhsRhsL" text="L" groupName="rbtRudderLhsRhsG" />
-                                                            <RadioButton id="rbtRudderStationat" text="at" groupName="rbtRudderStationG" />
-                                                            <RadioButton id="rbtRudderRibat" text="at" groupName="rbtRudderRibG" />
-                                                            <RadioButton id="rbtRudderOml" text="OML" groupName="chbRudderOmlImlG" />
+                                                            <RadioButton id="rbtRudderLhsRhsL" text="L" groupName="rbtRudderLhsRhsG" selected="{oPartLocationList>/Lhs}" />
+                                                            <RadioButton id="rbtRudderStationat" text="at" groupName="rbtRudderStationG" selected="{= ${oPartLocationList>/RuderTailStationSel} === 'AT' ? true : false  }" />
+                                                            <RadioButton id="rbtRudderRibat" text="at" groupName="rbtRudderRibG" selected="{= ${oPartLocationList>/RuderRibSel} === 'AT' ? true : false  }" />
+                                                            <RadioButton id="rbtRudderOml" text="OML" groupName="chbRudderOmlImlG" selected="{= ${oPartLocationList>/OmlImlValue} === 'OML' ? true : false  }" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtRudderLhsRhsR" text="R" groupName="rbtRudderLhsRhsG" />
-                                                            <RadioButton id="rbtRudderStationbw" text="between" groupName="rbtRudderStationG" />
-                                                            <RadioButton id="rbtRudderRibbw" text="between" groupName="rbtRudderRibG" />
-                                                            <RadioButton id="rbtRudderIml" text="IML" groupName="chbRudderOmlImlG" />
-                                                        </VBox>
-                                                        <VBox>
-                                                            <Text />
-                                                            <Input width="50px" id="inpRudderStation" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input width="50px" id="inpRudderRib" class="sapUiSmallMarginBeginEnd" />
-                                                            <Text />
+                                                            <RadioButton id="rbtRudderLhsRhsR" text="R" groupName="rbtRudderLhsRhsG" selected="{oPartLocationList>/Rhs}" />
+                                                            <RadioButton id="rbtRudderStationbw" text="between" groupName="rbtRudderStationG" selected="{= ${oPartLocationList>/RuderTailStationSel} === 'BETWEEN' ? true : false  }" />
+                                                            <RadioButton id="rbtRudderRibbw" text="between" groupName="rbtRudderRibG" selected="{= ${oPartLocationList>/RuderRibSel} === 'BETWEEN' ? true : false }" />
+                                                            <RadioButton id="rbtRudderIml" text="IML" groupName="chbRudderOmlImlG" selected="{= ${oPartLocationList>/OmlImlValue} === 'IML' ? true : false  }" />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
-                                                            <Text />
-                                                            <Text />
+                                                            <Input width="50px" id="inpRudderStation" class="sapUiSmallMarginBeginEnd" value="{oPartLocationList>/RuderTailStationVal}" />
+                                                            <Input width="50px" id="inpRudderRib" class="sapUiSmallMarginBeginEnd" value="{oPartLocationList>/RuderRibVal1}" />
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
-                                                            <Input width="50px" id="inpRudderStation1" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input width="50px" id="inpRudderRib1" class="sapUiSmallMarginBeginEnd" />
+                                                            <Text />
+                                                            <Text />
+                                                            <Text />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text />
+                                                            <Input width="50px" id="inpRudderStation1" class="sapUiSmallMarginBeginEnd" value="{oPartLocationList>/RuderTailStationVal1}" />
+                                                            <Input width="50px" id="inpRudderRib1" class="sapUiSmallMarginBeginEnd" value="{oPartLocationList>/RuderRibVal2}" />
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
@@ -675,39 +675,39 @@
                                                     </HBox>
                                                     <HBox id="idHorizontal" visible="false" class="sapUiSizeCompact">
                                                         <VBox>
-                                                            <CheckBox id="chbHorizontalLhsRhs" text="LHS /RHS" />
-                                                            <CheckBox id="chbHorizontalStation" text="Horizontal Empennage Stations(HSS)" />
-                                                            <CheckBox id="chbHorizontalRib" text="Horizontal Empennage Rib" />
-                                                            <CheckBox id="chbHorizontalOmlIml" text="OML / IML" />
+                                                            <CheckBox id="chbHorizontalLhsRhs" text="LHS /RHS" selected="{oPartLocationList>/Lhs_Rhs}" />
+                                                            <CheckBox id="chbHorizontalStation" text="Horizontal Empennage Stations(HSS)" selected="{oPartLocationList>/HorzStation}" />
+                                                            <CheckBox id="chbHorizontalRib" text="Horizontal Empennage Rib" selected="{oPartLocationList>/HorzRib}" />
+                                                            <CheckBox id="chbHorizontalOmlIml" text="OML / IML" selected="{oPartLocationList>/OmlIml}" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtHorizontalLhsRhsL" text="L" groupName="rbtHorizontalLhsRhsG" />
-                                                            <RadioButton id="rbtHorizontalStationat" text="at" groupName="rbtHorizontalStationG" />
-                                                            <RadioButton id="rbtHorizontalRibat" text="at" groupName="rbtHorizontalRibG" />
-                                                            <RadioButton id="rbtHorizontalOml" text="OML" groupName="chbHorizontalOmlIml" />
+                                                            <RadioButton id="rbtHorizontalLhsRhsL" text="L" groupName="rbtHorizontalLhsRhsG" selected="{oPartLocationList>/Lhs}" />
+                                                            <RadioButton id="rbtHorizontalStationat" text="at" groupName="rbtHorizontalStationG" selected="{= ${oPartLocationList>/HorzStationSel} === 'AT' ? true : false }" />
+                                                            <RadioButton id="rbtHorizontalRibat" text="at" groupName="rbtHorizontalRibG" selected="{= ${oPartLocationList>/HorzRibSel} === 'AT' ? true : false }" />
+                                                            <RadioButton id="rbtHorizontalOml" text="OML" groupName="chbHorizontalOmlIml" selected="{= ${oPartLocationList>/OmlImlValue} === 'OML' ? true : false  }" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtHorizontalLhsRhsR" text="R" groupName="rbtHorizontalLhsRhsG" />
-                                                            <RadioButton id="rbtHorizontalStationbw" text="between" groupName="rbtHorizontalStationG" />
-                                                            <RadioButton id="rbtHorizontalRibbw" text="between" groupName="rbtHorizontalRibG" />
-                                                            <RadioButton id="rbtHorizontalIml" text="IML" groupName="chbHorizontalOmlIml" />
-                                                        </VBox>
-                                                        <VBox>
-                                                            <Text />
-                                                            <Input width="50px" id="inpHorizontalStation" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input width="50px" id="inpHorizontalRib" class="sapUiSmallMarginBeginEnd" />
-                                                            <Text />
+                                                            <RadioButton id="rbtHorizontalLhsRhsR" text="R" groupName="rbtHorizontalLhsRhsG" selected="{oPartLocationList>/Rhs}" />
+                                                            <RadioButton id="rbtHorizontalStationbw" text="between" groupName="rbtHorizontalStationG" selected="{= ${oPartLocationList>/HorzStationSel} === 'BETWEEN' ? true : false }" />
+                                                            <RadioButton id="rbtHorizontalRibbw" text="between" groupName="rbtHorizontalRibG" selected="{= ${oPartLocationList>/HorzRibSel} === 'BETWEEN' ? true : false }" />
+                                                            <RadioButton id="rbtHorizontalIml" text="IML" groupName="chbHorizontalOmlIml" selected="{= ${oPartLocationList>/OmlImlValue} === 'IML' ? true : false  }" />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
-                                                            <Text />
-                                                            <Text />
+                                                            <Input width="50px" id="inpHorizontalStation" class="sapUiSmallMarginBeginEnd" value="{oPartLocationList>/HorzStationVal1}" />
+                                                            <Input width="50px" id="inpHorizontalRib" class="sapUiSmallMarginBeginEnd" value="{oPartLocationList>/HorzRibVal}" />
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
-                                                            <Input width="50px" id="inpHorizontalStation1" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input width="50px" id="inpHorizontalRib1" class="sapUiSmallMarginBeginEnd" />
+                                                            <Text />
+                                                            <Text />
+                                                            <Text />
+                                                        </VBox>
+                                                        <VBox>
+                                                            <Text />
+                                                            <Input width="50px" id="inpHorizontalStation1" class="sapUiSmallMarginBeginEnd" value="{oPartLocationList>/HorzStationVal2}" />
+                                                            <Input width="50px" id="inpHorizontalRib1" class="sapUiSmallMarginBeginEnd" value="{oPartLocationList>/HorzRibVal2}" />
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
@@ -719,49 +719,49 @@
                                                     </HBox>
                                                     <HBox id="idPlyon" visible="false" class="sapUiSizeCompact">
                                                         <VBox>
-                                                            <CheckBox id="chbPlyonStation" text="Fuselage Station(FS) (X)" />
-                                                            <CheckBox id="chbPlyonBLine" text="Buttock Line(BL) (Y)" />
-                                                            <CheckBox id="chbPlyonWLine" text="Water Line(WL) (Z)" />
-                                                            <CheckBox id="chbPlyonOmlIml" text="OML / IML" />
+                                                            <CheckBox id="chbPlyonStation" text="Fuselage Station(FS) (X)" selected="{oPartLocationList>/FuselageStation}" />
+                                                            <CheckBox id="chbPlyonBLine" text="Buttock Line(BL) (Y)" selected="{oPartLocationList>/ButtockLine}" />
+                                                            <CheckBox id="chbPlyonWLine" text="Water Line(WL) (Z)" selected="{oPartLocationList>/WaterLine}" />
+                                                            <CheckBox id="chbPlyonOmlIml" text="OML / IML" selected="{oPartLocationList>/OmlIml}" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtPlyonStationat" text="at" groupName="rbtPlyonStationG" />
-                                                            <RadioButton id="rbtPlyonBLineat" text="at" groupName="rbtPlyonBLineG" />
-                                                            <RadioButton id="rbtPlyonWLineat" text="at" groupName="rbtPlyonWLineG" />
-                                                            <RadioButton id="rbtPlyonOml" text="OML" groupName="chbPlyonOmlImlG" />
+                                                            <RadioButton id="rbtPlyonStationat" text="at" groupName="rbtPlyonStationG" selected="{= ${oPartLocationList>/FuseStatnSel} === 'AT' ? true : false }" />
+                                                            <RadioButton id="rbtPlyonBLineat" text="at" groupName="rbtPlyonBLineG" selected="{= ${oPartLocationList>/ButtockLineSel} === 'AT' ? true : false }" />
+                                                            <RadioButton id="rbtPlyonWLineat" text="at" groupName="rbtPlyonWLineG" selected="{= ${oPartLocationList>/WaterLineSel} === 'AT' ? true : false }" />
+                                                            <RadioButton id="rbtPlyonOml" text="OML" groupName="chbPlyonOmlImlG" selected="{= ${oPartLocationList>/OmlImlValue} === 'OML' ? true : false  }" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtPlyonStationbw" text="b/w" groupName="rbtPlyonStationG" />
-                                                            <RadioButton id="rbtPlyonBLinebw" text="b/w" groupName="rbtPlyonBLineG" />
-                                                            <RadioButton id="rbtPlyonWLinebw" text="b/w" groupName="rbtPlyonWLineG" />
-                                                            <RadioButton id="rbtPlyonIml" text="IML" groupName="chbPlyonOmlImlG" />
+                                                            <RadioButton id="rbtPlyonStationbw" text="b/w" groupName="rbtPlyonStationG" selected="{= ${oPartLocationList>/FuseStatnSel} === 'BETWEEN' ? true : false }" />
+                                                            <RadioButton id="rbtPlyonBLinebw" text="b/w" groupName="rbtPlyonBLineG" selected="{= ${oPartLocationList>/ButtockLineSel} === 'BETWEEN' ? true : false }" />
+                                                            <RadioButton id="rbtPlyonWLinebw" text="b/w" groupName="rbtPlyonWLineG" selected="{= ${oPartLocationList>/WaterLineSel} === 'BETWEEN' ? true : false }" />
+                                                            <RadioButton id="rbtPlyonIml" text="IML" groupName="chbPlyonOmlImlG" selected="{= ${oPartLocationList>/OmlImlValue} === 'IML' ? true : false  }" />
                                                         </VBox>
                                                         <VBox>
-                                                            <Input id="inpPlyonStation" width="50px" class="sapUiSmallMarginBegin" />
-                                                            <Input id="inpPlyonBLine" width="50px" class="sapUiSmallMarginBegin" />
-                                                            <Input id="inpPlyonWLine" width="50px" class="sapUiSmallMarginBegin" />
+                                                            <Input id="inpPlyonStation" width="50px" class="sapUiSmallMarginBegin" value="{oPartLocationList>/FuseStatnVal1}" />
+                                                            <Input id="inpPlyonBLine" width="50px" class="sapUiSmallMarginBegin" value="{oPartLocationList>/ButtockLineVal1}" />
+                                                            <Input id="inpPlyonWLine" width="50px" class="sapUiSmallMarginBegin" value="{oPartLocationList>/WaterLineVal1}" />
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
                                                             <HBox>
-                                                                <RadioButton id="rbtPlyonBLineL" text="L" groupName="rbtPlyonBLineG" />
-                                                                <RadioButton id="rbtPlyonBLineR" text="R" groupName="rbtPlyonBLineG" />
+                                                                <RadioButton id="rbtPlyonBLineL" text="L" groupName="rbtPlyonBLineG" selected="{oPartLocationList>/ButtockLineLhs1}" />
+                                                                <RadioButton id="rbtPlyonBLineR" text="R" groupName="rbtPlyonBLineG" selected="{oPartLocationList>/ButtockLineRhs1}" />
                                                             </HBox>
                                                             <HBox />
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
-                                                            <Input id="inpPlyonStation1" width="50px" class="sapUiSmallMarginBegin" />
-                                                            <Input id="inpPlyonBLine1" width="50px" class="sapUiSmallMarginBegin" />
-                                                            <Input id="inpPlyonWLine1" width="50px" class="sapUiSmallMarginBegin" />
+                                                            <Input id="inpPlyonStation1" width="50px" class="sapUiSmallMarginBegin" value="{oPartLocationList>/FuseStatnVal2}" />
+                                                            <Input id="inpPlyonBLine1" width="50px" class="sapUiSmallMarginBegin" value="{oPartLocationList>/ButtockLineVal2}" />
+                                                            <Input id="inpPlyonWLine1" width="50px" class="sapUiSmallMarginBegin" value="{oPartLocationList>/WaterLineVal2}" />
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
                                                             <HBox>
-                                                                <RadioButton id="rbtPlyonBLineL1" text="L" groupName="rbtPlyonBLineG1" />
-                                                                <RadioButton id="rbtPlyonBLineR1" text="R" groupName="rbtPlyonBLineG1" />
+                                                                <RadioButton id="rbtPlyonBLineL1" text="L" groupName="rbtPlyonBLineG1" selected="{oPartLocationList>/ButtockLineLhs2}" />
+                                                                <RadioButton id="rbtPlyonBLineR1" text="R" groupName="rbtPlyonBLineG1" selected="{oPartLocationList>/ButtockLineRhs2}" />
                                                             </HBox>
                                                             <HBox />
                                                             <Text />
@@ -769,56 +769,56 @@
                                                     </HBox>
                                                     <HBox id="idOthers" visible="false" class="sapUiSizeCompact">
                                                         <VBox>
-                                                            <CheckBox id="chbOthersLhsRhs" text="LHS / RHS" />
-                                                            <CheckBox id="chbOthersFStation" text="Fuselage Station(FS) (X)" />
-                                                            <CheckBox id="chbOthersBLine" text="Buttock Line(BL) (Y)" />
-                                                            <CheckBox id="chbOthersWLine" text="Water Line(WL) (Z)" />
-                                                            <CheckBox id="chbOthersOmlIml" text="OML / IML" />
+                                                            <CheckBox id="chbOthersLhsRhs" text="LHS / RHS" selected="{oPartLocationList>/Lhs_Rhs}" />
+                                                            <CheckBox id="chbOthersFStation" text="Fuselage Station(FS) (X)" selected="{oPartLocationList>/FuselageStation}" />
+                                                            <CheckBox id="chbOthersBLine" text="Buttock Line(BL) (Y)" selected="{oPartLocationList>/ButtockLine}" />
+                                                            <CheckBox id="chbOthersWLine" text="Water Line(WL) (Z)" selected="{oPartLocationList>/WaterLine}" />
+                                                            <CheckBox id="chbOthersOmlIml" text="OML / IML" selected="{oPartLocationList>/OmlIml}" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtOthersLhsRhsL" text="L" groupName="rbtOthersLhsRhsG" />
-                                                            <RadioButton id="rbtOthersFStationat" text="at" groupName="rbtOthersFStationG" />
-                                                            <RadioButton id="rbtOthersBLineat" text="at" groupName="rbtOthersBLineG" />
-                                                            <RadioButton id="rbtOthersWLineat" text="at" groupName="rbtOthersWLineG" />
-                                                            <RadioButton id="rbtOthersOml" text="OML " groupName="chbOthersOmlImlG" />
+                                                            <RadioButton id="rbtOthersLhsRhsL" text="L" groupName="rbtOthersLhsRhsG" selected="{oPartLocationList>/Lhs}" />
+                                                            <RadioButton id="rbtOthersFStationat" text="at" groupName="rbtOthersFStationG" selected="{= ${oPartLocationList>/FuseStatnSel} === 'AT' ? true : false }" />
+                                                            <RadioButton id="rbtOthersBLineat" text="at" groupName="rbtOthersBLineG" selected="{= ${oPartLocationList>/ButtockLineSel} === 'AT' ? true : false }" />
+                                                            <RadioButton id="rbtOthersWLineat" text="at" groupName="rbtOthersWLineG" selected="{= ${oPartLocationList>/WaterLineSel} === 'AT' ? true : false }" />
+                                                            <RadioButton id="rbtOthersOml" text="OML " groupName="chbOthersOmlImlG" selected="{oPartLocationList>/}" />
                                                         </VBox>
                                                         <VBox>
-                                                            <RadioButton id="rbtOthersLhsRhsR" text="R" groupName="rbtOthersLhsRhsG" />
-                                                            <RadioButton id="rbtOthersFStationbw" text="between" groupName="rbtOthersFStationG" />
-                                                            <RadioButton id="rbtOthersBLinebw" text="between" groupName="rbtOthersBLineG" />
-                                                            <RadioButton id="rbtOthersWLinebw" text="between" groupName="rbtOthersWLineG" />
-                                                            <RadioButton id="rbtOthersIml" text="IML" groupName="chbOthersOmlImlG" />
+                                                            <RadioButton id="rbtOthersLhsRhsR" text="R" groupName="rbtOthersLhsRhsG" selected="{oPartLocationList>/Rhs}" />
+                                                            <RadioButton id="rbtOthersFStationbw" text="between" groupName="rbtOthersFStationG" selected="{= ${oPartLocationList>/FuseStatnSel} === 'BETWEEN' ? true : false }" />
+                                                            <RadioButton id="rbtOthersBLinebw" text="between" groupName="rbtOthersBLineG" selected="{= ${oPartLocationList>/ButtockLineSel} === 'BETWEEN' ? true : false }" />
+                                                            <RadioButton id="rbtOthersWLinebw" text="between" groupName="rbtOthersWLineG" selected="{= ${oPartLocationList>/WaterLineSel} === 'BETWEEN' ? true : false }" />
+                                                            <RadioButton id="rbtOthersIml" text="IML" groupName="chbOthersOmlImlG" selected="{= ${oPartLocationList>/OmlImlValue} === 'IML' ? true : false  }" />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
-                                                            <Input id="inpOthersFStation" width="50px" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input id="inpOthersBLine" width="50px" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input id="inpOthersWLine" width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input id="inpOthersFStation" width="50px" class="sapUiSmallMarginBeginEnd" value="{oPartLocationList>/FuseStatnVal1}" />
+                                                            <Input id="inpOthersBLine" width="50px" class="sapUiSmallMarginBeginEnd" value="{oPartLocationList>/ButtockLineVal1}" />
+                                                            <Input id="inpOthersWLine" width="50px" class="sapUiSmallMarginBeginEnd" value="{oPartLocationList>/WaterLineVal1}" />
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
                                                             <Text />
                                                             <HBox>
-                                                                <RadioButton id="rbtOthersBLineL" text="L" />
-                                                                <RadioButton id="rbtOthersBLineR" text="R" />
+                                                                <RadioButton id="rbtOthersBLineL" text="L" selected="{oPartLocationList>/ButtockLineLhs1}" />
+                                                                <RadioButton id="rbtOthersBLineR" text="R" selected="{oPartLocationList>/ButtockLineRhs1}" />
                                                             </HBox>
                                                             <Text />
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
-                                                            <Input id="inpOthersFStation1" width="50px" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input id="inpOthersBLine1" width="50px" class="sapUiSmallMarginBeginEnd" />
-                                                            <Input id="inpOthersWLine1" width="50px" class="sapUiSmallMarginBeginEnd" />
+                                                            <Input id="inpOthersFStation1" width="50px" class="sapUiSmallMarginBeginEnd" value="{oPartLocationList>/FuseStatnVal2}" />
+                                                            <Input id="inpOthersBLine1" width="50px" class="sapUiSmallMarginBeginEnd" value="{oPartLocationList>/ButtockLineVal2}" />
+                                                            <Input id="inpOthersWLine1" width="50px" class="sapUiSmallMarginBeginEnd" value="{oPartLocationList>/WaterLineVal2}" />
                                                             <Text />
                                                         </VBox>
                                                         <VBox>
                                                             <Text />
                                                             <Text />
                                                             <HBox class="sapUiSmallMarginBeginEnd">
-                                                                <RadioButton id="rbtOthersBLineL1" text="L" />
-                                                                <RadioButton id="rbtOthersBLineR1" text="R" />
+                                                                <RadioButton id="rbtOthersBLineL1" text="L" selected="{oPartLocationList>/ButtockLineLhs2}" />
+                                                                <RadioButton id="rbtOthersBLineR1" text="R" selected="{oPartLocationList>/ButtockLineRhs2}" />
                                                             </HBox>
                                                             <Text />
                                                             <Text />
@@ -855,7 +855,7 @@
                                                         <Input id="idDiscPartDesc" editable="false" />
                                                         <Label id="idLblDiscQtyIns" text="Quantity Inspected" />
                                                         <HBox>
-                                                            <Input id="idDiscQtyIns" change="hanldeChangeInspectQty" >
+                                                            <Input id="idDiscQtyIns" change="hanldeChangeInspectQty">
                                                                 <layoutData>
                                                                     <FlexItemData growFactor="1" baseSize="0" />
                                                                 </layoutData>
@@ -868,7 +868,7 @@
                                                         </HBox>
                                                         <Label id="idLblDiscQtyRej" text="Quantity Rejected" />
                                                         <HBox>
-                                                            <Input id="idDiscQtyRej" change="hanldeChangeRejectQty" >
+                                                            <Input id="idDiscQtyRej" change="hanldeChangeRejectQty">
                                                                 <layoutData>
                                                                     <FlexItemData growFactor="1" baseSize="0" />
                                                                 </layoutData>
