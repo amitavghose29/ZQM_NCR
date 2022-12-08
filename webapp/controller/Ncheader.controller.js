@@ -921,6 +921,14 @@ sap.ui.define([
                         var oSeverity = JSON.parse(Response.headers["sap-message"]).severity;
                         if (oSeverity == "success") {
                             MessageBox.success(oMsg);
+                            this.getView().byId("cmbDescSelect").setSelectedKey();
+                            this.getView().byId("idFuselage").setVisible(false);
+                            this.getView().byId("idWing").setVisible(false);
+                            this.getView().byId("idVertical").setVisible(false);
+                            this.getView().byId("idRudder").setVisible(false);
+                            this.getView().byId("idHorizontal").setVisible(false);
+                            this.getView().byId("idPlyon").setVisible(false);
+                            this.getView().byId("idOthers").setVisible(false);
                             this.onClearPartLocation();
                         } else {
                             MessageBox.error(oMsg);
