@@ -441,6 +441,7 @@ sap.ui.define([
             this.getView().byId("idObjNCStatusDiscrep").setVisible(false);
             this.getView().byId("idObjNCStatusDispo").setVisible(false);
             this.getView().byId("btnWorkGrp").setVisible(false);
+            this.getView().byId("idBtnCancel").setVisible(true);
             if (key === "Hdata") {
                 this.getView().byId("idstatus").setVisible(true);
                 this.getView().byId("idObjNCStatus").setVisible(true);
@@ -488,6 +489,7 @@ sap.ui.define([
                 this.getView().byId("idObjNCStatus").setVisible(false);
                 this.getView().byId("idObjNCStatusDiscrep").setVisible(false);
                 this.getView().byId("idObjNCStatusDispo").setVisible(true);
+                this.getView().byId("idBtnCancel").setVisible(false);
             }
         },
 
@@ -2310,6 +2312,7 @@ sap.ui.define([
                         this.getView().byId("idObjNCStatus").setVisible(false);
                         this.getView().byId("idObjNCStatusDiscrep").setVisible(false);
                         this.getView().byId("idObjNCStatusDispo").setVisible(true);
+                        this.getView().byId("idBtnCancel").setVisible(false);
                         this.bindDispositionDetails(discrepancyNo);
                         this.bindMajorMinorNc();
                     }
@@ -6172,6 +6175,8 @@ sap.ui.define([
                         discrepancyNum = data.DiscrepancyNo == 0 ? "" : data.DiscrepancyNo,
                         partNumber = data.PartNumber,
                         partDesc = data.PartDesc,
+                        partner = data.Partner,
+                        partnername = data.PartnerName,
                         prelimInvest = data.PrelimInvest,
                         partQuarantine = data.PartQuarantine,
                         mesIssue = data.MESissue,
@@ -6199,8 +6204,8 @@ sap.ui.define([
                     this.getView().byId("dispGenDropPoint").setValue();
                     this.getView().byId("dispGenRestrictPart").setSelected(false);
                     this.getView().byId("dispGenCSN").setState(false);
-                    this.getView().byId("dispGenPartSuppName").setValue();
-                    this.getView().byId("dispGenPartSuppDesc").setValue();
+                    this.getView().byId("dispGenPartSuppName").setValue(partner);
+                    this.getView().byId("dispGenPartSuppDesc").setValue(partnername);
                     this.getView().byId("dispGenMajorMinorNC").setSelectedKey();
                     this.getView().byId("dispGenMajorMinorNC").setValue();
                     this._oMultiInputDispoSN.removeAllTokens();
@@ -6733,6 +6738,8 @@ sap.ui.define([
                 this.getView().byId("dispGenMajorMinorNC").setSelectedKey();
                 this.getView().byId("dispGenMajorMinorNC").setValue();
                 this.getView().byId("idTableDisposition").removeSelections(true);
+                var oDiscNo = this.getView().byId("idDispCobDscNo").getValue();
+                this.getView().byId("headertext").setText("Discrepancy/Disposition No: " + oDiscNo + "/");
                 this._oMultiInputDispoSN.removeAllTokens();
                 this._oMultiInputDispoRewrkOrd.removeAllTokens();
             }
@@ -7220,6 +7227,7 @@ sap.ui.define([
             if (oParentDispoNo) {
                 this.getView().byId("headertext").setText("Discrepancy/Disposition No: " + oDispoDiscrepancy + "/" + oParentDispoNo);
                 this.getView().byId("idBtnDispositionCopy").setEnabled(true);
+                this.getView().byId("idBtnDispositionDlt").setEnabled(true);
                 if (oDispositionCode == "RTV") {
                     this.getView().byId("idBtnDispositionRTV").setEnabled(true);
                 } else {
@@ -7301,6 +7309,7 @@ sap.ui.define([
                 MessageBox.warning("The line item can not be selected since no Disposition Number is generated..!");
                 this.getView().byId("idTableDisposition").removeSelections(true);
                 this.getView().byId("idBtnDispositionCopy").setEnabled(false);
+                this.getView().byId("idBtnDispositionDlt").setEnabled(false);
             }
         },
 

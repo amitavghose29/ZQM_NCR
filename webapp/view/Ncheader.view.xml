@@ -21,7 +21,7 @@
                         <!--		<core:Fragment fragmentName="com.airbus.ZQM_NCR.fragments.notespopup" type="XML"/>-->
                         <!--	</dependents>-->
                         <!--</Button>-->
-                        <Button icon="sap-icon://cancel" press="handlePressCancel" class="sapUiSmallMarginEnd" />
+                        <Button id="idBtnCancel" icon="sap-icon://cancel" press="handlePressCancel" class="sapUiSmallMarginEnd" />
                         <Button icon="sap-icon://print" press="onPressPrint" visible="false" />
                     </Toolbar>
                 </subHeader>
@@ -1346,9 +1346,10 @@
                                                 <Title text="Disposition Details" level="H2" />
 
                                                 <ToolbarSpacer />
-                                                <Button id="idBtnDispositionRTV" type="Emphasized" text="RTV" press="onPressDispositionRTV" enabled="false" />
-                                                <Button id="idBtnDispositionCopy" type="Emphasized" icon="sap-icon://copy" press="onPressDispositionCopy" enabled="false" />
-                                                <Button id="idBtnDispositionAdd" type="Emphasized" icon="sap-icon://add" press="onAddDispositionLineItem" />
+                                                <Button id="idBtnDispositionRTV" type="Emphasized" text="RTV" press="onPressDispositionRTV" enabled="false" tooltip="RTV" />
+                                                <Button id="idBtnDispositionCopy" type="Emphasized" icon="sap-icon://copy" press="onPressDispositionCopy" enabled="false" tooltip="Copy Disposition" />
+                                                <Button id="idBtnDispositionDlt" type="Emphasized" icon="sap-icon://cancel" press="onRemoveDispositionLineItem" enabled="false" tooltip="Cancel Disposition" />
+                                                <Button id="idBtnDispositionAdd" type="Emphasized" icon="sap-icon://add" press="onAddDispositionLineItem" tooltip="Add Disposition Line Item" />
                                             </Toolbar>
                                         </headerToolbar>
                                         <columns>
