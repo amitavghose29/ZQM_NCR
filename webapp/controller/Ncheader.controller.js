@@ -572,8 +572,9 @@ sap.ui.define([
                 case "OTHER":
                     this.getView().byId("idOthers").setVisible(true);
                     break;
-                default:
+                case "FUSELAGE":
                     this.getView().byId("idFuselage").setVisible(true);
+                    break;
             }
             this.onSelectDiscPartlocationList();
         },
