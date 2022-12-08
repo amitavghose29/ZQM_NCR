@@ -1051,7 +1051,7 @@ sap.ui.define([
             this.getView().byId("rbtPlyonStationat").setSelected(false);
             this.getView().byId("rbtPlyonBLineat").setSelected(false);
             this.getView().byId("rbtPlyonWLineat").setSelected(false);
-            this.getView().byId("omlPlyonOml").setSelected(false);
+            this.getView().byId("rbtPlyonOml").setSelected(false);
             this.getView().byId("rbtPlyonStationbw").setSelected(false);
             this.getView().byId("rbtPlyonBLinebw").setSelected(false);
             this.getView().byId("rbtPlyonIml").setSelected(false);
