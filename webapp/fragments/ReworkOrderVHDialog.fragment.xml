@@ -8,7 +8,7 @@
 		ok=".onVHDispoRewrkOrdPress"
 		cancel=".onVHDispoRewrkOrdCancelPress"
 		afterClose=".onVHDispoRewrkOrdAfterClose"
-		key="OrderNo" descriptionKey="Description" >
+		key="OrderNo" descriptionKey="Empty" >
         <filterBar>
 			<fb:FilterBar advancedMode="true" search="onFBSearchDispoRewrkOrd">
 				<fb:filterGroupItems>

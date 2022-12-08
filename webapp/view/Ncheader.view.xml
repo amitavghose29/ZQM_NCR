@@ -419,7 +419,7 @@
                                                         </ComboBox>
                                                         <Label id="idLblDiscLiability" text="Liability" labelFor="idDcIpLblty" />
                                                         <VBox>
-                                                            <Input id="idDcIpLblty" showValueHelp="true" valueHelpRequest="onVHReqLiability" />
+                                                            <Input id="idDcIpLblty" showValueHelp="true" valueHelpRequest="onVHReqLiability" change="handleChangeLiability" />
                                                             <TextArea rows="3" width="100%" id="idDiscLbltyTxt" />
                                                         </VBox>
                                                         <Label text="Partner / Suppilier" />
@@ -855,7 +855,7 @@
                                                         <Input id="idDiscPartDesc" editable="false" />
                                                         <Label id="idLblDiscQtyIns" text="Quantity Inspected" />
                                                         <HBox>
-                                                            <Input id="idDiscQtyIns">
+                                                            <Input id="idDiscQtyIns" change="hanldeChangeInspectQty" >
                                                                 <layoutData>
                                                                     <FlexItemData growFactor="1" baseSize="0" />
                                                                 </layoutData>
@@ -868,7 +868,7 @@
                                                         </HBox>
                                                         <Label id="idLblDiscQtyRej" text="Quantity Rejected" />
                                                         <HBox>
-                                                            <Input id="idDiscQtyRej">
+                                                            <Input id="idDiscQtyRej" change="hanldeChangeRejectQty" >
                                                                 <layoutData>
                                                                     <FlexItemData growFactor="1" baseSize="0" />
                                                                 </layoutData>
@@ -999,7 +999,7 @@
                                                         <Label text="Drop Point" />
                                                         <Input id="idDcIpDp" showValueHelp="true" valueHelpRequest="onOpenVHDrpPt" />
                                                         <Label text="Is" />
-                                                        <TextArea id="idDcTxtIs" />
+                                                        <TextArea id="idDcTxtIs" change="handleChangeIsText" />
                                                         <Label text="Should be" />
                                                         <TextArea id="idDcTaSb" />
                                                         <Label text="Format" />
