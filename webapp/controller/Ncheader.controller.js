@@ -579,9 +579,9 @@ sap.ui.define([
             this.onSelectDiscPartlocationList();
         },
 
-        onDiscPartSelectLocationList:function(){
+        onDiscPartSelectLocationList: function () {
             var oDataModel = this.getOwnerComponent().getModel();
-            var oModel = new JSONModel();        
+            var oModel = new JSONModel();
             var sDiscrepancy = this.getView().byId("idDispCobDscNo").getValue();
             if (sDiscrepancy == "") {
                 var sDisp = this.getView().byId("headertext").getText();
@@ -591,9 +591,9 @@ sap.ui.define([
                 var sDiscrepancy = sDiscrepancy;
             }
             var sSequence = this.getView().byId("cmbDescSelect1").getSelectedKey();
-            var sStation = this.getView().byId("cmbDescSelect").getSelectedKey();          
+            var sStation = this.getView().byId("cmbDescSelect").getSelectedKey();
             // var sPath = "/DiscrepancyPartAircraftSet(NotificationNo='200001061',DiscrepancyNo='0100',Location='FUSELAGE',SequenceNo='11')"
-            var sPath = "/DiscrepancyPartAircraftSet(NotificationNo='"+sObjectId+"',DiscrepancyNo='"+sDiscrepancy+"',Location='"+sStation+"',SequenceNo='"+sSequence+"')"
+            var sPath = "/DiscrepancyPartAircraftSet(NotificationNo='" + sObjectId + "',DiscrepancyNo='" + sDiscrepancy + "',Location='" + sStation + "',SequenceNo='" + sSequence + "')"
             oDataModel.read(sPath, {
                 success: function (oData, oResult) {
                     sap.ui.core.BusyIndicator.hide();
@@ -606,7 +606,7 @@ sap.ui.define([
                     var msg = JSON.parse(oError.responseText).error.message.value;
                     MessageBox.error(msg);
                 }
-            });   
+            });
         },
 
         onSelectDiscPartlocationList: function () {
@@ -923,7 +923,7 @@ sap.ui.define([
                             MessageBox.success(oMsg);
                             this.onClearPartLocation();
                             this.onSelectDiscPartlocationList();
-                            
+
                         } else {
                             MessageBox.error(oMsg);
                         }
@@ -1315,6 +1315,12 @@ sap.ui.define([
                 this.getView().byId("idlast").setValue();
                 this.getView().byId("idncr").setValue();*/
             if ((this.workingQueueMode == "EDIT") || (this.workingQueueMode == "COPY")) {
+                var modeData = {};
+                modeData.ModeBtn = "CANCEL";
+                var modeModel = new JSONModel();
+                modeModel.setData(modeData);
+                sap.ui.getCore().setModel(modeModel, "cancelModel");
+
                 var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation"); // get a handle on the global XAppNav service
                 var hash = (oCrossAppNavigator && oCrossAppNavigator.hrefForExternal({
                     target: {
@@ -5596,7 +5602,7 @@ sap.ui.define([
                                         if (sAction == MessageBox.Action.OK) { }
                                     }.bind(this)
                                 });
-                            } else{
+                            } else {
                                 var oMessage = "No matching Part master records found.";
                                 MessageBox.warning(
                                     oMessage, {
@@ -7309,7 +7315,7 @@ sap.ui.define([
                             oDispositionMajorMinor = oData.DispositionMajorMinor,
                             oDispositionROProp = oData.DispoChangeFields;
 
-                        this.getView().byId("idObjNCStatusDispo").setText(oDispoStatus);    
+                        this.getView().byId("idObjNCStatusDispo").setText(oDispoStatus);
                         if (oSerialData.length > 0) {
                             for (var i = 0; i < oSerialData.length; i++) {
                                 var oSerialNosToken = oSerialData[i].SerialNo;
