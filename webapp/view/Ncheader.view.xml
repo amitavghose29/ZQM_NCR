@@ -56,7 +56,7 @@
                                                 >
                                                     <f:content>
                                                         <!--<core:Title text="General Info"/>-->
-                                                        <Label text="Nc Type" />
+                                                        <Label text="NC Type" />
                                                         <ComboBox id="idCombNcType" items="{/NCTYPE_SOSet}" change="onNcrchange" showSecondaryValues="true">
                                                             <core:ListItem key="{Nctype}" text="{Nctype}" additionalText="{NctypeDesc}" />
                                                         </ComboBox>
@@ -1344,11 +1344,10 @@
                                         <headerToolbar>
                                             <Toolbar>
                                                 <Title text="Disposition Details" level="H2" />
-
                                                 <ToolbarSpacer />
                                                 <Button id="idBtnDispositionRTV" type="Emphasized" text="RTV" press="onPressDispositionRTV" enabled="false" tooltip="RTV" />
                                                 <Button id="idBtnDispositionCopy" type="Emphasized" icon="sap-icon://copy" press="onPressDispositionCopy" enabled="false" tooltip="Copy Disposition" />
-                                                <Button id="idBtnDispositionDlt" type="Emphasized" icon="sap-icon://cancel" press="onRemoveDispositionLineItem" enabled="false" tooltip="Cancel Disposition" />
+                                                <Button id="idBtnDispositionDlt" type="Emphasized" icon="sap-icon://cancel" press="onCancelDisposition" enabled="false" tooltip="Cancel Disposition" />
                                                 <Button id="idBtnDispositionAdd" type="Emphasized" icon="sap-icon://add" press="onAddDispositionLineItem" tooltip="Add Disposition Line Item" />
                                             </Toolbar>
                                         </headerToolbar>

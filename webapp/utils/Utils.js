@@ -6,9 +6,9 @@ sap.ui.define([ "sap/ui/model/json/JSONModel"
         getScreenFieldPropsOnSelectedTab: function (oSelectedTab) {
             switch (oSelectedTab) {
             case "Hdata":
-               return ["NCType","NCPriority","NCArea","PlantCode","ProductCode","WorkInstruction","ProdOrder","SupercedesNC","PartNumber","PartDescription","SerialNo","TraceabilityNo","SupercededByNC","ReferenceNC","Aircraft","Binlocation","DropPoint","NCCreatedBy","NCDetectedAt"];
+               return ["NCType","NCPriority","NCArea","PlantCode","ProductCode","WorkInstruction","ProdOrder","SupercedesNC","PartNumber","PartDescription","SerialNo","TraceabilityNo","SupercededByNC","ReferenceNC","Aircraftno","Binlocation","DropPoint","NCCreatedBy","NCDetectedAt"];
             case "Discre":
-               return ["LinkedTo","Liability","LiabilityText","Partner","PartDesc","SupersedesItem","SupersedesByItem","Aircraft","PartNumber","InspQnty","RejectQnty","PrelimInvest","PrelimCause","DefectCode","PartQuarantine","MESissue","CsmsIssue","DropPoint","DropShip2","Is","Shouldbe","AsPer","Incompletion","Select"];
+               return ["LinkedTo","Liability","LiabilityText","Partner","PartDesc","SupercedesItem","SupercededByItem","Aircraft","PartNumber","CompSerialNo","TraceNo","InspQnty","RejectQnty","PrelimInvest","PrelimCause","DefectCode","PartQuarantine","MESissue","CsmsIssue","DropPoint","DropShip2","Is","Shouldbe","AsPer","Incompletion","Select"];
             case "Signoff":
                return [];
             case "Dispo":
