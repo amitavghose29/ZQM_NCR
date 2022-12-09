@@ -19,6 +19,14 @@ sap.ui.define([
 		 */
         onInit: function () { 
             sap.ui.core.BusyIndicator.show();
+            this.workingQueueMode = "";
+             //var workingQueueMode = "";
+             if (sap.ui.getCore().getModel("modeModel")) {
+                if ((sap.ui.getCore().getModel("modeModel").oData.ModeBtn != "")) {  //&& (sap.ui.getCore().getModel("modeModel") != undefined)
+                    this.workingQueueMode = sap.ui.getCore().getModel("modeModel").oData.ModeBtn;
+                }
+            }
+            /*** End*/
             var oModel = new JSONModel();
             oModel.setSizeLimit(10000);
             var oDataModel = this.getOwnerComponent().getModel();
@@ -2362,6 +2370,21 @@ sap.ui.define([
         },
 
         onPressCancel:function(){
+
+            if (this.workingQueueMode == "CREATE") {
+                var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation"); // get a handle on the global XAppNav service
+                var hash = (oCrossAppNavigator && oCrossAppNavigator.hrefForExternal({
+                    target: {
+                        semanticObject: "zwrkque",
+                        action: "display"
+                    }
+                })) || "";
+                oCrossAppNavigator.toExternal({
+                    target: {
+                        shellHash: hash
+                    }
+                });
+            }
             this.getView().byId("idncr").setSelectedKey();
             this.getView().byId("idiwa").setSelectedKey();
             this.getView().byId("idlinksubc").setSelectedKey();
