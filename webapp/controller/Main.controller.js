@@ -760,7 +760,7 @@ sap.ui.define([
                 sap.ui.core.BusyIndicator.show();
                 if (Number(oSubCat) == "0001") {
                     //Value Help Code for Production Order(001)           
-                    this._oPODialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.f4category", this);
+                    this._oPODialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.ProductionOrderVH", this);
                     this.getView().addDependent(this._oPODialog);
                     this._oPODialog.open();
                     // this._oPODialog.setModel(this.getOwnerComponent().getModel());

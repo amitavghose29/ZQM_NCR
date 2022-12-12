@@ -7,7 +7,7 @@ sap.ui.define([], function () {
                /**var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
                 pattern : dispFormat
                 });**/
-                var oDateFormat = sap.ui.core.format.DateFormat.getDateTimeInstance({ pattern: dispFormat+"THH:mm" ,UTC:false});
+                var oDateFormat = sap.ui.core.format.DateFormat.getDateTimeInstance({ pattern: dispFormat + " HH:mm", UTC:false});
                 //"dd.MM.yyyy"
                 // setDisplayFormat(sap.ui.getCore().getConfiguration().getFormatSettings().getDatePattern("medium"));
                 var pDate = oDateFormat.format(podate);

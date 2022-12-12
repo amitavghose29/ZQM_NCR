@@ -16,29 +16,46 @@
             columnsM="2"
             singleContainerFullSize="false"
             class="sapUiSizeCompact"
-            labelMinWidth="1px"
-        >
+            labelMinWidth="1px">
+            <f:toolbar>
+				<Toolbar id="TB1">
+					<!-- <Title id="Title1" text=""/> -->
+                    <Input placeholder="Enter MRB Request Number" showValueHelp="true" valueHelpRequest="onOpenMrbVHReqNo" />
+					<ToolbarSpacer />
+				</Toolbar>
+			</f:toolbar>
             <f:content>
                 <Label text="MRB Request Number" />
-                <Input id="idmrbReqno" value="" width="230px" />
+                <Input id="idmrbReqno" value="" editable="false" />
                 <Label text="Part Number" />
-                <Input id="idmrbPartno" value="" />
+                <Input id="idmrbPartno" value="" editable="false" />
                 <Label text="Order Number" />
-                <Input id="idmrbOrderno" value="" width="100px" />
+                <Input id="idmrbOrderno" value="" showValueHelp="true" valueHelpRequest="onVHReqPrdOrd" />
                 <Label text="Quantity" />
-                <Input id="idmrbQuantity" value="" width="50%" />
-                <Label text="A/C Number" />
-                <Input id="idmrACno" width="50%" />
-                <Label text="Project Stock? Yes or No" />
-                <Switch id="idmrbProjectStock" state="true" customTextOn="Yes" customTextOff="No" />
+                <HBox>
+                    <Input id="idmrbQuantity" value="">
+                        <layoutData>
+                            <FlexItemData growFactor="1" baseSize="0" />
+                        </layoutData>
+                    </Input>
+                    <Text id="idmrbUnit" class="sapUiSmallMarginBegin">
+                        <layoutData>
+                            <FlexItemData growFactor="1" baseSize="0" />
+                        </layoutData>
+                    </Text>
+                </HBox>
+                <Label text="Aircraft Number" />
+                <Input id="idmrbAircraftNo" showValueHelp="true" valueHelpRequest="onVHReqAircraft" />
+                <!-- <Label text="Project Stock? Yes or No" />
+                <Switch id="idmrbProjectStock" state="true" customTextOn="Yes" customTextOff="No" /> -->
                 <Label text="Work Center" />
-                <Input id="idmrbWorkCenter" width="50%" />
+                <Input id="idmrbWorkCenter" showValueHelp="true" valueHelpRequest="onOpenVHNCCreated" />
                 <Label text="Drop Point" />
-                <Input id="idmrbDropPoint" width="50%" />
+                <Input id="idmrbDropPoint" showValueHelp="true" valueHelpRequest="onOpenVHDrpPt" />
                 <Label text="To the Attention of Name" />
-                <Input id="idmrbTotheAtt" width="50%" />
+                <Input id="idmrbTotheAtt" />
                 <Label text="Additional Information" />
-                <Input id="idmrbAddInfo" width="50%" />
+                <TextArea id="idmrbAddInfo" />
             </f:content>
         </f:SimpleForm>
         <buttons>

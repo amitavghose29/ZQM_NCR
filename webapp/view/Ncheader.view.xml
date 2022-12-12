@@ -1409,7 +1409,7 @@
                                         </items>
                                     </Table>
                                     <Label text="Disposition Text" design="Bold" class="sapUiTinyMarginTop" />
-                                    <TextArea value="" maxLength="40" placeholder="Text" width="100%" />
+                                    <TextArea id="idDispoTextArea" value="" maxLength="40" placeholder="Text" width="100%" />
                                     <Table items="" class="formcolor1" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
                                         <headerToolbar>
                                             <Toolbar>

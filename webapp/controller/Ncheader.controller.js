@@ -9,12 +9,14 @@ sap.ui.define([
     "sap/ui/model/FilterOperator",
     "sap/m/Tokenizer",
     "sap/m/MessageBox",
-    "../utils/Utils"
-], function (Controller, Fragment, JSONModel, MenuItem, Token, SearchField, Filter, FilterOperator, Tokenizer, MessageBox, Utils) {
+    "../utils/Utils",
+    "../model/formatter"
+], function (Controller, Fragment, JSONModel, MenuItem, Token, SearchField, Filter, FilterOperator, Tokenizer, MessageBox, Utils, formatter) {
     "use strict";
     var sObjectId, oNctype, oDiscrepancy;
 
     return Controller.extend("com.airbus.ZQM_NCR.controller.Ncheader", {
+        formatter: formatter,
 
         /**
          * Called when a controller is instantiated and its View controls (if available) are already created.
@@ -2121,30 +2123,6 @@ sap.ui.define([
             });
         },
 
-        onDispoistionMRB: function () {
-            this._oMRBDialog = sap.ui.xmlfragment(this.getView().getId(), "com.airbus.ZQM_NCR.fragments.MRBDisposition", this);
-            this.getView().addDependent(this._oMRBDialog);
-            this._oMRBDialog.open();
-        },
-
-        onCloseMRBRequestOut: function () {
-            this._oMRBDialog.close();
-            this._oMRBDialog.destroy();
-        },
-
-        onPressSaveMRBRequestOut: function () {
-            var mrbReqNo = sap.ui.getCore().byId("idmrbReqno").getValue();
-            var mrbPartNo = sap.ui.getCore().byId("idmrbPartno").getValue();
-            var mrbOrderNo = sap.ui.getCore().byId("idmrbOrderno").getValue();
-            var mrbQuantity = sap.ui.getCore().byId("idmrbQuantity").getValue();
-            var mrbACNo = sap.ui.getCore().byId("idmrACno").getValue();
-            var mrbProjStock = sap.ui.getCore().byId("idmrbProjectStock").getSelected();
-            var mrbWorkCenter = sap.ui.getCore().byId("idmrbWorkCenter").getValue();
-            var mrbDropPoint = sap.ui.getCore().byId("idmrbDropPoint").getValue();
-            var mrbToAttach = sap.ui.getCore().byId("idmrbTotheAtt").getValue();
-            var mrbAddInfo = sap.ui.getCore().byId("idmrbAddInfo").getValue();
-        },
-
         /**Function is triggered when clicked on Close button in Stock Purge Dilaog */
         onCloseStockPurge: function () {
             this._oStockPurgeDialog.destroy();
@@ -3608,7 +3586,7 @@ sap.ui.define([
         },
 
         onVHReqPrdOrd: function () {
-            this._oPrdOrdDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.f4category", this);
+            this._oPrdOrdDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.ProductionOrderVH", this);
             this.getView().addDependent(this._oPrdOrdDialog);
             this._oPrdOrdDialog.open();
 
@@ -3641,18 +3619,6 @@ sap.ui.define([
         */
         onCloseProdOrdPopup: function () {
             this._oPrdOrdDialog.close();
-            this._oPrdOrdDialog.destroy();
-        },
-
-        _configProdOrdVHDialog: function (oEvent) {
-            var oSelectedItem = oEvent.getParameter("selectedItem"),
-                oInput = this.getView().byId("idInpPrdOrd");
-            if (!oSelectedItem) {
-                oInput.resetProperty("value");
-                return;
-            }
-
-            oInput.setValue(oSelectedItem.getTitle());
             this._oPrdOrdDialog.destroy();
         },
 
@@ -3798,7 +3764,11 @@ sap.ui.define([
 
         handleCloseUserValueHelpProdOrd: function (oEvent) {
             var oSelectedItem = oEvent.getParameters("selectedItem").listItem.getBindingContext("oPOModel").getProperty("Order");
-            var oInput = this.getView().byId("idInpPrdOrd");
+            if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata") {
+                var oInput = this.getView().byId("idInpPrdOrd");
+            } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Dispo") {
+                var oInput = this.getView().byId("idmrbOrderno");
+            }
             if (!oSelectedItem && !oSelectedItemSub) {
                 oInput.resetProperty("value");
                 return;
@@ -4021,6 +3991,8 @@ sap.ui.define([
                 var oInput = this.getView().byId("idInpAircraft");
             } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre") {
                 var oInput = this.getView().byId("idDiscAircraft");
+            } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Dispo") {
+                var oInput = this.getView().byId("idmrbAircraftNo");
             }
             if (!oSelectedItem) {
                 oInput.resetProperty("value");
@@ -4271,7 +4243,6 @@ sap.ui.define([
             this._oValueHelpDialogNCCrt = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.NCCreatedBy", this);
             this.getView().addDependent(this._oValueHelpDialogNCCrt);
             this._oValueHelpDialogNCCrt.open();
-            // this._oValueHelpDialogNCCrt.setModel(this.getOwnerComponent().getModel());
         },
 
         _handleNCCrtdByClose: function () {
@@ -4316,7 +4287,12 @@ sap.ui.define([
 
         handleNCCrtItemSelection: function (oEvent) {
             var oSelectedItem = oEvent.getParameters("selectedItem").listItem.getBindingContext("NCCreatedByModel").getProperty("WorkCenter");
-            var oInput = this.getView().byId("idInpNCCrtBy");
+            if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata") {
+                var oInput = this.getView().byId("idInpNCCrtBy");
+            } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Dispo") {
+                var oInput = this.getView().byId("idmrbWorkCenter");
+            }
+
             if (!oSelectedItem) {
                 oInput.resetProperty("value");
                 return;
@@ -4576,10 +4552,11 @@ sap.ui.define([
             oBinding.filter([oFilter]);
         },
 
-        onOpenVHDrpPt: function () {
+        onOpenVHDrpPt: function (oEvent) {
             this._oDrpPtDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.DropPointVH", this);
             this.getView().addDependent(this._oDrpPtDialog);
             this._oDrpPtDialog.open();
+            this.oDrpPointInput = oEvent.getSource();
             sap.ui.core.BusyIndicator.show();
             var oModel = new JSONModel();
             oModel.setSizeLimit(10000);
@@ -4605,15 +4582,14 @@ sap.ui.define([
 
         _configDrpPntVHDialog: function (oEvent) {
             var oSelectedItem = oEvent.getParameter("selectedItem");
-            var oInput;
-            if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata") {
-                oInput = this.getView().byId("idInpDrpPt");
-            } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre") {
-                oInput = this.getView().byId("idDcIpDp");
-            } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Dispo") {
-                oInput = this.getView().byId("dispGenDropPoint");
-            }
-
+            var oInput = this.oDrpPointInput;
+            // if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata") {
+            //     oInput = this.getView().byId("idInpDrpPt");
+            // } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre") {
+            //     oInput = this.getView().byId("idDcIpDp");
+            // } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Dispo") {
+            //     oInput = this.getView().byId("dispGenDropPoint");
+            // }
             if (!oSelectedItem) {
                 oInput.resetProperty("value");
                 return;
@@ -6286,6 +6262,7 @@ sap.ui.define([
                     this.getView().byId("idDispTaSb").setValue(shouldbe);
                     this.getView().byId("idDispInpAp").setValue(asPer);
                     this.getView().byId("idDispCbIf").setSelected(incompletion);
+                    this.getView().byId("idDispoTextArea").setValue();
                     this.bindDispositionDetails();
                 }.bind(this),
                 error: function (oError) {
@@ -6790,6 +6767,30 @@ sap.ui.define([
             oBinding.filter([oFilter]);
         },
 
+        onDispoistionMRB: function () {
+            this._oMRBDialog = sap.ui.xmlfragment(this.getView().getId(), "com.airbus.ZQM_NCR.fragments.MRBDisposition", this);
+            this.getView().addDependent(this._oMRBDialog);
+            this._oMRBDialog.open();
+        },
+
+        onCloseMRBRequestOut: function () {
+            this._oMRBDialog.close();
+            this._oMRBDialog.destroy();
+        },
+
+        onPressSaveMRBRequestOut: function () {
+            var mrbReqNo = sap.ui.getCore().byId("idmrbReqno").getValue();
+            var mrbPartNo = sap.ui.getCore().byId("idmrbPartno").getValue();
+            var mrbOrderNo = sap.ui.getCore().byId("idmrbOrderno").getValue();
+            var mrbQuantity = sap.ui.getCore().byId("idmrbQuantity").getValue();
+            var mrbACNo = sap.ui.getCore().byId("idmrACno").getValue();
+            var mrbProjStock = sap.ui.getCore().byId("idmrbProjectStock").getSelected();
+            var mrbWorkCenter = sap.ui.getCore().byId("idmrbWorkCenter").getValue();
+            var mrbDropPoint = sap.ui.getCore().byId("idmrbDropPoint").getValue();
+            var mrbToAttach = sap.ui.getCore().byId("idmrbTotheAtt").getValue();
+            var mrbAddInfo = sap.ui.getCore().byId("idmrbAddInfo").getValue();
+        },
+
         onAddDispositionLineItem: function () {
             if (this.getView().byId("idTableDisposition").getSelectedItem()) {
                 this.getView().byId("dispGenInterCharge").setSelected(false);
@@ -6806,6 +6807,7 @@ sap.ui.define([
                 this.getView().byId("headertext").setText("Discrepancy/Disposition No: " + oDiscNo + "/");
                 this._oMultiInputDispoSN.removeAllTokens();
                 this._oMultiInputDispoRewrkOrd.removeAllTokens();
+                this.getView().byId("idDispoTextArea").setValue();
             }
             var oDispositionTable = this.getView().byId("idTableDisposition");
             var oDispoTableModel = oDispositionTable.getModel("DispositionDetails").getData();
@@ -6872,12 +6874,13 @@ sap.ui.define([
                 success: function (odata, Response) {
                     debugger;
                     sap.ui.core.BusyIndicator.hide();
-                    if (Response.headers["sap-message"]) {
+                    if (Response.headers["sap-message"] && JSON.parse(Response.headers["sap-message"]).severity === "success") {
                         var oMsg = JSON.parse(Response.headers["sap-message"]).message;
                         MessageBox.success(oMsg, {
                             onClose: function () {
                             }.bind(this)
                         });
+                        this.bindDispositionDetails(odata.DiscrepancyNo);
                     }
                 }.bind(this),
                 error: function (oError) {
@@ -7045,6 +7048,7 @@ sap.ui.define([
             var oDispositionDropPoint = this.getView().byId("dispGenDropPoint").getValue();
             var oDispositionPartner = this.getView().byId("dispGenPartSuppName").getValue();
             var oDispositionPartnerName = this.getView().byId("dispGenPartSuppDesc").getValue();
+            var oDispositionText = this.getView().byId("idDispoTextArea").getValue();
 
             if (oDiscrepancyNo) {
                 if (this.getView().byId("idTableDisposition").getModel("DispositionDetails").getData().length === 0) {
@@ -7077,7 +7081,8 @@ sap.ui.define([
                             "DispositionPartnerName": oDispositionPartnerName,
                             "DispositionRestrictPart": oDispositionRestrictPart,
                             "to_disposerial": [],
-                            "to_disporework": []
+                            "to_disporework": [],
+                            "DispositionText": oDispositionText
                         }
 
                         if (oDispositionSerialNo.getTokens().length === 1) {
@@ -7139,7 +7144,8 @@ sap.ui.define([
                             "DispositionPartnerName": oDispositionPartnerName,
                             "DispositionRestrictPart": oDispositionRestrictPart,
                             "to_disposerial": [],
-                            "to_disporework": []
+                            "to_disporework": [],
+                            "DispositionText": oDispositionText
                         }
 
                         if (oDispositionSerialNo.getTokens().length === 1) {
@@ -7219,6 +7225,7 @@ sap.ui.define([
                         var oQntyChk = oData.QuantityCheck;
                         if (oQntyChk === false) {
                             MessageBox.warning("One Sub disposition for the selected parent is already in open state, can not create another one.");
+                            this.getView().byId("idTableDisposition").removeSelections();
                         } else {
                             var oParentDispoNo = oData.ParentDispoNo;
                             var oParData = {
@@ -7226,6 +7233,9 @@ sap.ui.define([
                             };
                             this.oParentDispoModel.setData(oParData);
                             this.onAddDispositionLineItem();
+                            this.getView().byId("idBtnDispositionRTV").setEnabled(false);
+                            this.getView().byId("idBtnDispositionCopy").setEnabled(false);
+                            this.getView().byId("idBtnDispositionDlt").setEnabled(false);
                         }
                     }.bind(this),
                     error: function (oError) {
@@ -7251,6 +7261,7 @@ sap.ui.define([
             this.getView().byId("idObjNCStatusDispo").setText();
             this._oMultiInputDispoSN.removeAllTokens();
             this._oMultiInputDispoRewrkOrd.removeAllTokens();
+            this.getView().byId("idDispoTextArea").setValue();
         },
 
         onDispoLineItemSelection: function (oEvent) {
@@ -7258,6 +7269,7 @@ sap.ui.define([
             var oDispoDiscrepancy = oEvent.getParameters().listItem.getBindingContext("DispositionDetails").getProperty("DiscrepancyNo");
             var oParentDispoNo = oEvent.getParameters().listItem.getBindingContext("DispositionDetails").getProperty("ParentDispoNo");
             var oDispositionCode = oEvent.getParameters().listItem.getBindingContext("DispositionDetails").getProperty("DispositionCode");
+            var oDispositionStatus = oEvent.getParameters().listItem.getBindingContext("DispositionDetails").getProperty("DispositionStatus");
             if (oParentDispoNo) {
                 this.getView().byId("headertext").setText("Discrepancy/Disposition No: " + oDispoDiscrepancy + "/" + oParentDispoNo);
                 this.getView().byId("idBtnDispositionCopy").setEnabled(true);
@@ -7266,6 +7278,11 @@ sap.ui.define([
                     this.getView().byId("idBtnDispositionRTV").setEnabled(true);
                 } else {
                     this.getView().byId("idBtnDispositionRTV").setEnabled(false);
+                }
+                if (oDispositionStatus == "Cancelled") {
+                    this.getView().byId("idBtnDispositionDlt").setEnabled(false);
+                } else {
+                    this.getView().byId("idBtnDispositionDlt").setEnabled(true);
                 }
                 sap.ui.core.BusyIndicator.show();
                 var oModel = new JSONModel();
@@ -7291,6 +7308,7 @@ sap.ui.define([
                             oDispositionPartner = oData.DispositionPartner,
                             oDispositionPartnerName = oData.DispositionPartnerName,
                             oDispositionMajorMinor = oData.DispositionMajorMinor,
+                            oDispositionText = oData.DispositionText,
                             oDispositionROProp = oData.DispoChangeFields;
 
                         this.getView().byId("idObjNCStatusDispo").setText(oDispoStatus);
@@ -7322,6 +7340,7 @@ sap.ui.define([
                         this.getView().byId("dispGenPartSuppDesc").setValue(oDispositionPartnerName);
                         this.getView().byId("dispGenMajorMinorNC").setSelectedKey(oDispositionMajorMinor);
                         this.getView().byId("dispGenMajorMinorNC").setValue(oDispositionMajorMinor);
+                        this.getView().byId("idDispoTextArea").setValue(oDispositionText);
 
                         if (this.workingQueueMode == "EDIT") {
                             var dispoODataArray = [];

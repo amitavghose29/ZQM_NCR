@@ -1,6 +1,112 @@
-<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-	<SelectDialog  title="{i18n>ProductionOrderTitle}" items="{sample>/prodorder}" liveChange="onSearchOrder" confirm="_configProdOrdVHDialog"
-		cancel="_handleProdOrdVHClose">
-		<StandardListItem title="{sample>Id}" info="{sample>field1}"/>
-	</SelectDialog>
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:layout="sap.ui.layout" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar">
+    <Dialog title="{i18n>POSearch}" class="vhdialogPOSearchstyle">
+        <VBox class="sapUiSizeCompact">
+            <fb:FilterBar search="_onProdOrdSearchGo" showRestoreButton="false">
+                <fb:filterGroupItems>
+                    <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="A1" label="{i18n>Aircraft}">
+                        <fb:control>
+                            <Input id="idFlBarPrOrdVhPrdseq" type="Text" showSuggestion="true" suggestionItems="{oAircrafttNoModel>/}">
+                                <suggestionItems>
+                                    <core:Item text="{oAircrafttNoModel>Value}" />
+                                </suggestionItems>
+                            </Input>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                    <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="B1" label="Part No. Affected">
+                        <fb:control>
+                            <!-- suggestionItems="{ path : '/f4_genericSet',
+                            filters : [{   
+                                 path : 'Key',                        
+                                 operator : 'EQ',
+                                 value1 : 'PEFF'
+                            }]
+                        }"
+                        suggest="onHandleSuggestPartNo"  -->
+                            <Input id="idFlBarPrOrdVhPartNo" showSuggestion="true" suggestionItems="{oProdOrdPartSuggModel>/}" valueHelpRequest="_onValueHelpReqPartNo" showValueHelp="true">
+                                <suggestionItems>
+                                    <core:Item text="{oProdOrdPartSuggModel>Value}" />
+                                </suggestionItems>
+                            </Input>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                    <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="C1" label="{i18n>NLP}">
+                        <fb:control>
+                            <Input id="idFlBarPrOrdVhnlp" type="Text" showSuggestion="true" suggestionItems="{oProdOrdNLPSuggModel>/}" valueHelpRequest="_onValueHelpReqNLP" showValueHelp="true">
+                                <suggestionItems>
+                                    <core:Item text="{oProdOrdNLPSuggModel>Value}" />
+                                </suggestionItems>
+                            </Input>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                    <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="D1" label="Work Instruction">
+                        <fb:control>
+                            <Input id="idFlBarPrOrdVhWrkIns" type="Text" showSuggestion="true" showValueHelp="true" suggestionItems="{oProdOrdWISuggModel>/}" valueHelpRequest="_onValueHelpReqWorkIns">
+                                <suggestionItems>
+                                    <core:Item text="{oProdOrdWISuggModel>Value}" />
+                                </suggestionItems>
+                            </Input>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                    <fb:FilterGroupItem visibleInFilterBar="true" groupName="G1" groupTitle="Group1" name="E1" label="Closed Orders">
+                        <fb:control>
+                            <CheckBox id="idFlBarPrdOrdVhClsOrd" />
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                </fb:filterGroupItems>
+            </fb:FilterBar>
+            <Table id="idProdOrderTable" inset="false" items="{oPOModel>/}" mode="SingleSelectMaster" selectionChange="handleCloseUserValueHelpProdOrd" itemPress="handleCloseUserValueHelpProdOrd">
+                <columns>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>plant}" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>Order}" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>ProdSeq}" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>Prodorderitem}" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>type}" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>parent}" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>NLP}" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>Startdate}" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>EndData}" />
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="{i18n>IssueQty}" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem vAlign="Middle" type="Active" press="_configValueHelpDialogOrderPartNo">
+                        <cells>
+                            <Text text="{oPOModel>Plant}" />
+                            <Text text="{oPOModel>Order}" />
+                            <Text text="{oPOModel>ProductSequence}" />
+                            <Text text="{oPOModel>ProdOrdItem}" />
+                            <Text text="{oPOModel>Type}" />
+                            <Text text="{oPOModel>PartNumber}" />
+                            <Text text="{oPOModel>NLP}" />
+                            <Text text="{path:'oPOModel>StartDate', formatter: '.formatter.prdordDate'}" />
+                            <Text text="{path:'oPOModel>EndDate', formatter: '.formatter.prdordDate'}" />
+                            <Text text="{oPOModel>IssueQty}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </VBox>
+        <endButton>
+            <Button text="{i18n>Close}" press="onCloseProdOrdPopup" />
+        </endButton>
+    </Dialog>
 </core:FragmentDefinition>
