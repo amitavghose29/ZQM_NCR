@@ -20,29 +20,43 @@
             <f:toolbar>
 				<Toolbar id="TB1">
 					<!-- <Title id="Title1" text=""/> -->
-                    <Input placeholder="Enter MRB Request Number" showValueHelp="true" valueHelpRequest="onOpenMrbVHReqNo" />
+                    <Input id="idmrbExstReqNo" placeholder="Enter existing MRB request number" showValueHelp="true" valueHelpRequest="onOpenMrbVHReqNo" />
 					<ToolbarSpacer />
+                    <Button text="Go" tooltip="Search Existing MRB Request" type="Emphasized" press="handleGoMRBRequestNo" />
+                    <Button icon="sap-icon://add" tooltip="Create new MRB Request" type="Emphasized" press="handleCrtMRBRequestNo" />
 				</Toolbar>
 			</f:toolbar>
             <f:content>
                 <Label text="MRB Request Number" />
                 <Input id="idmrbReqno" value="" editable="false" />
                 <Label text="Part Number" />
-                <Input id="idmrbPartno" value="" editable="false" />
-                <Label text="Order Number" />
-                <Input id="idmrbOrderno" value="" showValueHelp="true" valueHelpRequest="onVHReqPrdOrd" />
-                <Label text="Quantity" />
+                <!-- <Input id="idmrbPartno" value="" editable="false" /> -->
                 <HBox>
-                    <Input id="idmrbQuantity" value="">
+                    <Input id="idmrbPartno" editable="false" >
                         <layoutData>
                             <FlexItemData growFactor="1" baseSize="0" />
                         </layoutData>
                     </Input>
-                    <Text id="idmrbUnit" class="sapUiSmallMarginBegin">
+                    <Input id="idmrbPartDesc" editable="false" >
                         <layoutData>
                             <FlexItemData growFactor="1" baseSize="0" />
                         </layoutData>
-                    </Text>
+                    </Input>
+                </HBox>
+                <Label text="Order Number" />
+                <Input id="idmrbOrderno" value="" showValueHelp="true" valueHelpRequest="onVHReqPrdOrd" />
+                <Label text="Quantity" />
+                <HBox>
+                    <Input id="idmrbQuantity" value="" >
+                        <layoutData>
+                            <FlexItemData growFactor="1" baseSize="0" />
+                        </layoutData>
+                    </Input>
+                    <Input id="idmrbUnit" editable="false" placeholder="UOM" >
+                        <layoutData>
+                            <FlexItemData growFactor="1" baseSize="0" />
+                        </layoutData>
+                    </Input>
                 </HBox>
                 <Label text="Aircraft Number" />
                 <Input id="idmrbAircraftNo" showValueHelp="true" valueHelpRequest="onVHReqAircraft" />
@@ -59,8 +73,8 @@
             </f:content>
         </f:SimpleForm>
         <buttons>
-            <Button text="Save" press="onPressSaveMRBRequestOut" />
-            <Button text="Close" press="onCloseMRBRequestOut" />
+            <Button text="Save" press="onPressSaveMRBRequestOut" type="Emphasized" />
+            <Button text="Close" press="onCloseMRBRequestOut" type="Emphasized" />
         </buttons>
     </Dialog>
 </core:FragmentDefinition>

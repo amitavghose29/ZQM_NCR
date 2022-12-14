@@ -6264,6 +6264,7 @@ sap.ui.define([
                     this.getView().byId("idDispCbIf").setSelected(incompletion);
                     this.getView().byId("idDispoTextArea").setValue();
                     this.bindDispositionDetails();
+                    this.oQtyUOM = data.QntyUOM;
                 }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
@@ -6327,6 +6328,14 @@ sap.ui.define([
                     var data = oData.to_disposition.results;
                     oModel.setData(data);
                     this.getView().byId("idTableDisposition").setModel(oModel, "DispositionDetails");
+                    this.getView().byId("idBtnDispositionRTV").setEnabled(false);
+                    this.getView().byId("idBtnDispositionCopy").setEnabled(false);
+                    this.getView().byId("idBtnDispositionDlt").setEnabled(false);
+                    this.getView().byId("idBtnMRBDisp").setEnabled(false);
+                    this.resetDispositionGenInfoFields();
+                    var oDiscNo = this.getView().byId("idDispCobDscNo").getValue();
+                    this.getView().byId("headertext").setText("Discrepancy/Disposition No: " + oDiscNo + "/");
+                    this.getView().byId("idObjNCStatusDispo").setText();
                 }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
@@ -6771,6 +6780,9 @@ sap.ui.define([
             this._oMRBDialog = sap.ui.xmlfragment(this.getView().getId(), "com.airbus.ZQM_NCR.fragments.MRBDisposition", this);
             this.getView().addDependent(this._oMRBDialog);
             this._oMRBDialog.open();
+            this.getView().byId("idmrbPartno").setValue(this.getView().byId("idInpDispPrtNo").getValue());
+            this.getView().byId("idmrbPartDesc").setValue(this.getView().byId("idOsDispPrtDesc").getText());
+            this.getView().byId("idmrbUnit").setValue(this.oQtyUOM);
         },
 
         onCloseMRBRequestOut: function () {
@@ -6779,16 +6791,163 @@ sap.ui.define([
         },
 
         onPressSaveMRBRequestOut: function () {
-            var mrbReqNo = sap.ui.getCore().byId("idmrbReqno").getValue();
-            var mrbPartNo = sap.ui.getCore().byId("idmrbPartno").getValue();
-            var mrbOrderNo = sap.ui.getCore().byId("idmrbOrderno").getValue();
-            var mrbQuantity = sap.ui.getCore().byId("idmrbQuantity").getValue();
-            var mrbACNo = sap.ui.getCore().byId("idmrACno").getValue();
-            var mrbProjStock = sap.ui.getCore().byId("idmrbProjectStock").getSelected();
-            var mrbWorkCenter = sap.ui.getCore().byId("idmrbWorkCenter").getValue();
-            var mrbDropPoint = sap.ui.getCore().byId("idmrbDropPoint").getValue();
-            var mrbToAttach = sap.ui.getCore().byId("idmrbTotheAtt").getValue();
-            var mrbAddInfo = sap.ui.getCore().byId("idmrbAddInfo").getValue();
+            var oMrbReqNo = this.getView().byId("idmrbReqno").getValue();
+            var oMrbPartNo = this.getView().byId("idmrbPartno").getValue();
+            var oMrbOrderNo = this.getView().byId("idmrbOrderno").getValue();
+            var oMrbQty = this.getView().byId("idmrbQuantity").getValue();
+            var oMrbUnit = this.getView().byId("idmrbUnit").getValue();
+            var oMrbAircraftNo = this.getView().byId("idmrbAircraftNo").getValue();
+            var oMrbWrkCntr = this.getView().byId("idmrbWorkCenter").getValue();
+            var oMrbDrpPnt = this.getView().byId("idmrbDropPoint").getValue();
+            var oMrbAttenName = this.getView().byId("idmrbTotheAtt").getValue();
+            var oMrbAddInfo = this.getView().byId("idmrbAddInfo").getValue();
+            var oDispoNotification = this.getView().byId("idTableDisposition").getSelectedItem().getBindingContext("DispositionDetails").getProperty("NotificationNo");
+            var oDispoDiscrepancy = this.getView().byId("idTableDisposition").getSelectedItem().getBindingContext("DispositionDetails").getProperty("DiscrepancyNo");
+            var oParentDispoNo = this.getView().byId("idTableDisposition").getSelectedItem().getBindingContext("DispositionDetails").getProperty("ParentDispoNo");
+
+            var payloadMRBData = {
+                "NotificationNo": oDispoNotification,
+                "DiscrepancyNo": oDispoDiscrepancy,
+                "ParentDispoNo": oParentDispoNo,
+                "MRBReqNo": oMrbReqNo,
+                "PartNo": oMrbPartNo,
+                "OrderNo": oMrbOrderNo,
+                "Quantity": oMrbQty,
+                "UOM": oMrbUnit,
+                "AircraftNo": oMrbAircraftNo,
+                "WorkCenter": oMrbWrkCntr,
+                "Droppoint": oMrbDrpPnt,
+                "AttentionName": oMrbAttenName,
+                "Comments": oMrbAddInfo
+            }
+
+            this.getOwnerComponent().getModel().create("/DispositionMRBReqSet", payloadMRBData, {
+                success: function (odata, Response) {
+                    sap.ui.core.BusyIndicator.hide();
+                    if (Response.headers["sap-message"]) {
+                        var oMsg = JSON.parse(Response.headers["sap-message"]).message;
+                        MessageBox.success(oMsg, {
+                            onClose: function () {
+                                this.getView().byId("idmrbOrderno").setValue();
+                                this.getView().byId("idmrbQuantity").setValue();
+                                this.getView().byId("idmrbAircraftNo").setValue();
+                                this.getView().byId("idmrbWorkCenter").setValue();
+                                this.getView().byId("idmrbDropPoint").setValue();
+                                this.getView().byId("idmrbTotheAtt").setValue();
+                                this.getView().byId("idmrbAddInfo").setValue();
+                            }.bind(this)
+                        });
+                    }
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+        },
+
+        onOpenMrbVHReqNo: function () {
+            this._oMRBVHDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.MRBValueHelp", this);
+            this.getView().addDependent(this._oMRBVHDialog);
+            this._oMRBVHDialog.open();
+            var oDispoNotification = this.getView().byId("idTableDisposition").getSelectedItem().getBindingContext("DispositionDetails").getProperty("NotificationNo");
+            var oDispoDiscrepancy = this.getView().byId("idTableDisposition").getSelectedItem().getBindingContext("DispositionDetails").getProperty("DiscrepancyNo");
+            var oParentDispoNo = this.getView().byId("idTableDisposition").getSelectedItem().getBindingContext("DispositionDetails").getProperty("ParentDispoNo");
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new JSONModel();
+            oModel.setSizeLimit(10000);
+            var oDataModel = this.getOwnerComponent().getModel();
+            var sPath = "/NotificationDispositionSet(NotificationNo='" + oDispoNotification + "',DiscrepancyNo='" + oDispoDiscrepancy + "',ParentDispoNo='" + oParentDispoNo + "')";
+            oDataModel.read(sPath, {
+                urlParameters: {
+                    "$expand": "to_disposerial,to_dispomrb"
+                },
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.to_dispomrb.results;
+                    oModel.setData(data);
+                    this._oMRBVHDialog.setModel(oModel, "MRBModel");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+        },
+
+        _confirmMRBReqOutVHDialog: function (oEvent) {
+            var oSelectedItem = oEvent.getParameter("selectedItem"),
+                oInput;
+            oInput = this.getView().byId("idmrbExstReqNo");
+
+            if (!oSelectedItem) {
+                oInput.resetProperty("value");
+                return;
+            }
+            oInput.setValue(oSelectedItem.getTitle());
+            this._oMRBVHDialog.destroy();
+        },
+
+        onMRBReqOutSearch: function (oEvent) {
+            var sValue = oEvent.getParameter("value");
+            var oFilter = new Filter("MRBReqNo", FilterOperator.Contains, sValue);
+            var oBinding = oEvent.getParameter("itemsBinding");
+            oBinding.filter([oFilter]);
+        },
+
+        handleGoMRBRequestNo: function () {
+            var oDispoNotification = this.getView().byId("idTableDisposition").getSelectedItem().getBindingContext("DispositionDetails").getProperty("NotificationNo");
+            var oDispoDiscrepancy = this.getView().byId("idTableDisposition").getSelectedItem().getBindingContext("DispositionDetails").getProperty("DiscrepancyNo");
+            var oParentDispoNo = this.getView().byId("idTableDisposition").getSelectedItem().getBindingContext("DispositionDetails").getProperty("ParentDispoNo");
+            var oMrbReqNo = this.getView().byId("idmrbExstReqNo").getValue();
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new JSONModel();
+            oModel.setSizeLimit(10000);
+            var oDataModel = this.getOwnerComponent().getModel();
+            var sPath = "/DispositionMRBReqSet(NotificationNo='" + oDispoNotification + "',DiscrepancyNo='" + oDispoDiscrepancy + "',ParentDispoNo='" + oParentDispoNo + "',MRBReqNo='" + oMrbReqNo + "')";
+            oDataModel.read(sPath, {
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var oAircraftNo = oData.AircraftNo,
+                        oAttentionName = oData.AttentionName,
+                        oComments = oData.Comments,
+                        oDroppoint = oData.Droppoint,
+                        oMRBReqNo = oData.MRBReqNo,
+                        oOrderNo = oData.OrderNo,
+                        oPartNo = oData.PartNo,
+                        oQuantity = oData.Quantity,
+                        oUOM = oData.UOM,
+                        oWorkCenter = oData.WorkCenter
+
+                        this.getView().byId("idmrbOrderno").setValue(oOrderNo);
+                        this.getView().byId("idmrbQuantity").setValue(oQuantity);
+                        this.getView().byId("idmrbAircraftNo").setValue(oAircraftNo);
+                        this.getView().byId("idmrbWorkCenter").setValue(oWorkCenter);
+                        this.getView().byId("idmrbDropPoint").setValue(oDroppoint);
+                        this.getView().byId("idmrbTotheAtt").setValue(oAttentionName);
+                        this.getView().byId("idmrbAddInfo").setValue(oComments);
+                        this.getView().byId("idmrbReqno").setValue(oMRBReqNo);
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+        },
+
+        handleCrtMRBRequestNo: function(){
+            this.getView().byId("idmrbOrderno").setValue();
+            this.getView().byId("idmrbQuantity").setValue();
+            this.getView().byId("idmrbAircraftNo").setValue();
+            this.getView().byId("idmrbWorkCenter").setValue();
+            this.getView().byId("idmrbDropPoint").setValue();
+            this.getView().byId("idmrbTotheAtt").setValue();
+            this.getView().byId("idmrbAddInfo").setValue();
+            this.getView().byId("idmrbReqno").setValue();
+            this.getView().byId("idmrbExstReqNo").setValue();
         },
 
         onAddDispositionLineItem: function () {
@@ -6872,7 +7031,6 @@ sap.ui.define([
 
             this.getOwnerComponent().getModel().create("/CancelStatusSet", payloadDispoCancelData, {
                 success: function (odata, Response) {
-                    debugger;
                     sap.ui.core.BusyIndicator.hide();
                     if (Response.headers["sap-message"] && JSON.parse(Response.headers["sap-message"]).severity === "success") {
                         var oMsg = JSON.parse(Response.headers["sap-message"]).message;
@@ -6881,6 +7039,9 @@ sap.ui.define([
                             }.bind(this)
                         });
                         this.bindDispositionDetails(odata.DiscrepancyNo);
+                        // var oDiscNo = this.getView().byId("idDispCobDscNo").getValue();
+                        // this.getView().byId("headertext").setText("Discrepancy/Disposition No: " + odata.DiscrepancyNo + "/");
+                        // this.getView().byId("idObjNCStatusDispo").setText();
                     }
                 }.bind(this),
                 error: function (oError) {
@@ -7220,7 +7381,6 @@ sap.ui.define([
                 var sPath = "/GetDispositionQuantityCheckSet(NotificationNo='" + oDispoNotification + "',DiscrepancyNo='" + oDispoDiscrepancy + "',ParentDispoNo='" + oParentDispoNo + "')";
                 oDataModel.read(sPath, {
                     success: function (oData, oResult) {
-                        debugger;
                         sap.ui.core.BusyIndicator.hide();
                         var oQntyChk = oData.QuantityCheck;
                         if (oQntyChk === false) {
@@ -7236,6 +7396,7 @@ sap.ui.define([
                             this.getView().byId("idBtnDispositionRTV").setEnabled(false);
                             this.getView().byId("idBtnDispositionCopy").setEnabled(false);
                             this.getView().byId("idBtnDispositionDlt").setEnabled(false);
+                            this.getView().byId("idBtnMRBDisp").setEnabled(false);
                         }
                     }.bind(this),
                     error: function (oError) {
@@ -7274,6 +7435,7 @@ sap.ui.define([
                 this.getView().byId("headertext").setText("Discrepancy/Disposition No: " + oDispoDiscrepancy + "/" + oParentDispoNo);
                 this.getView().byId("idBtnDispositionCopy").setEnabled(true);
                 this.getView().byId("idBtnDispositionDlt").setEnabled(true);
+                this.getView().byId("idBtnMRBDisp").setEnabled(true);
                 if (oDispositionCode == "RTV") {
                     this.getView().byId("idBtnDispositionRTV").setEnabled(true);
                 } else {
@@ -7294,7 +7456,6 @@ sap.ui.define([
                         "$expand": "to_disposerial,to_disporework"
                     },
                     success: function (oData, oResult) {
-                        debugger;
                         sap.ui.core.BusyIndicator.hide();
                         this._oMultiInputDispoSN.removeAllTokens();
                         this._oMultiInputDispoRewrkOrd.removeAllTokens();
@@ -7365,6 +7526,7 @@ sap.ui.define([
                 this.getView().byId("idTableDisposition").removeSelections(true);
                 this.getView().byId("idBtnDispositionCopy").setEnabled(false);
                 this.getView().byId("idBtnDispositionDlt").setEnabled(false);
+                this.getView().byId("idBtnMRBDisp").setEnabled(false);
                 this.resetDispositionGenInfoFields();
             }
         },
@@ -7457,8 +7619,64 @@ sap.ui.define([
         },
 
         handlePressCancel: function () {
-            this.getView().byId("idIconTabBarHeader").setSelectedKey("Hdata");
-            this.handleIconbarSelect();
+            // this.getView().byId("idIconTabBarHeader").setSelectedKey("Hdata");
+            // this.handleIconbarSelect();
+            var iconTabBarKey = this.getView().byId("idIconTabBarHeader").getSelectedKey();
+            if (iconTabBarKey == "Hdata") {
+                var payloadHeaderCancelData = {
+                    "NotificationNo": sObjectId,
+                    "HeaderStatus": true
+                }
+                this.getOwnerComponent().getModel().create("/CancelStatusSet", payloadHeaderCancelData, {
+                    success: function (odata, Response) {
+                        sap.ui.core.BusyIndicator.hide();
+                        if (Response.headers["sap-message"] && JSON.parse(Response.headers["sap-message"]).severity === "success") {
+                            var oMsg = JSON.parse(Response.headers["sap-message"]).message;
+                            MessageBox.success(oMsg, {
+                                onClose: function () {
+                                }.bind(this)
+                            });
+                            var sObjectPath = "CreateNotificationHeaderSet('" + sObjectId + "')";
+                            this._bindView("/" + sObjectPath);
+                            this._bindTable("/" + sObjectPath);
+                        }
+                    }.bind(this),
+                    error: function (oError) {
+                        sap.ui.core.BusyIndicator.hide();
+                        var msg = JSON.parse(oError.responseText).error.message.value;
+                        MessageBox.error(msg);
+                    }
+                });
+            } else if (iconTabBarKey == "Discre") {
+                var oDiscrepancyNo = this.getView().byId("idDcCobDscNo").getValue();
+                if (oDiscrepancyNo !== "") {
+                    var payloadDiscrCancelData = {
+                        "NotificationNo": sObjectId,
+                        "DiscrepancyNo": oDiscrepancyNo,
+                        "DiscrepancyStatus": true
+                    }
+                    this.getOwnerComponent().getModel().create("/CancelStatusSet", payloadDiscrCancelData, {
+                        success: function (odata, Response) {
+                            sap.ui.core.BusyIndicator.hide();
+                            if (Response.headers["sap-message"] && JSON.parse(Response.headers["sap-message"]).severity === "success") {
+                                var oMsg = JSON.parse(Response.headers["sap-message"]).message;
+                                MessageBox.success(oMsg, {
+                                    onClose: function () {
+                                    }.bind(this)
+                                });
+                                // this.bindDiscrepancyTab(oDiscrepancyNo);
+                            }
+                        }.bind(this),
+                        error: function (oError) {
+                            sap.ui.core.BusyIndicator.hide();
+                            var msg = JSON.parse(oError.responseText).error.message.value;
+                            MessageBox.error(msg);
+                        }
+                    });
+                } else {
+                    MessageBox.warning("Please select a discrepancy to cancel.");
+                }
+            }
         },
 
         /**

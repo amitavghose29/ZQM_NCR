@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog title="MRB Request No" items="{path : 'MRBModel>/'}" liveChange="onMRBReqOutSearch" confirm="_confirmMRBReqOutVHDialog"
+		cancel="_handleMRBValueHelpClose">
+		<StandardListItem  title="{MRBModel>MRBReqNo}" />
+	</SelectDialog>
+</core:FragmentDefinition>

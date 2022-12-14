@@ -1278,7 +1278,7 @@
                                                         <Label text="Partner / Supplier Name" />
                                                         <Input id="dispGenPartSuppDesc" editable="false" />
                                                         <Label text="MRB" />
-                                                        <Button id="idBtnMRBDisp" type="Emphasized" width="10%" icon="sap-icon://popup-window" press="onDispoistionMRB" />
+                                                        <Button id="idBtnMRBDisp" type="Emphasized" width="10%" icon="sap-icon://popup-window" press="onDispoistionMRB" enabled="false" />
                                                         <Label text="Serial Number" />
                                                         <MultiInput id="idMulInpDispoSerNo" showValueHelp="true" valueHelpRequest=".onOpenVHDispoSerNo" tokenUpdate="_onTokenUpdateDispoSN" />
                                                         <Label text="Incomplete Flag" />
