@@ -7331,27 +7331,6 @@ sap.ui.define([
                                 });
                             }
                         }
-                        oModel.create("/NotificationDispositionSet", payloadDispoData, {
-                            success: function (odata, Response) {
-                                sap.ui.core.BusyIndicator.hide();
-                                if (Response.headers["sap-message"]) {
-                                    var oMsg = JSON.parse(Response.headers["sap-message"]).message;
-                                    MessageBox.success(oMsg, {
-                                        onClose: function () {
-                                            this.bindDispositionDetails();
-                                            this.resetDispositionGenInfoFields();
-                                            var oParData = { ParentDispoNo: "" };
-                                            this.oParentDispoModel.setData(oParData);
-                                        }.bind(this)
-                                    });
-                                }
-                            }.bind(this),
-                            error: function (oError) {
-                                sap.ui.core.BusyIndicator.hide();
-                                var msg = JSON.parse(oError.responseText).error.message.value;
-                                MessageBox.error(msg);
-                            }
-                        });
                     }
                 } else if (this.getView().byId("idTableDisposition").getModel("DispositionDetails").getData().length > 0) {
                     var oDispoTabData = this.getView().byId("idTableDisposition").getModel("DispositionDetails").getData();
@@ -7416,58 +7395,39 @@ sap.ui.define([
                                 });
                             }
                         }
-                        oModel.create("/NotificationDispositionSet", payloadDispoData, {
-                            success: function (odata, Response) {
-                                sap.ui.core.BusyIndicator.hide();
-                                if (Response.headers["sap-message"]) {
-                                    var oMsg = JSON.parse(Response.headers["sap-message"]).message;
-                                    MessageBox.success(oMsg, {
-                                        onClose: function () {
-                                            this.bindDispositionDetails();
-                                            this.resetDispositionGenInfoFields();
-                                            var oParData = { ParentDispoNo: "" };
-                                            this.oParentDispoModel.setData(oParData);
-                                        }.bind(this)
-                                    });
-                                }
-                            }.bind(this),
-                            error: function (oError) {
-                                sap.ui.core.BusyIndicator.hide();
-                                var msg = JSON.parse(oError.responseText).error.message.value;
-                                MessageBox.error(msg);
-                            }
-                        });
-                    } else if(this.getView().byId("idTableDisposition").getSelectedItem()){
-                        var oParentDispoNo = this.getView().byId("idTableDisposition").getSelectedItem().getBindingContext("DispositionDetails").getProperty("ParentDispoNo");
-                        if(oParentDispoNo !== ""){
-                            MessageBox.information("The Disposition details updatation functionality is coming soon..!");
-                        }
-                    } else {
+                    } 
+                    // else if(this.getView().byId("idTableDisposition").getSelectedItem()){
+                    //     var oParentDispoNo = this.getView().byId("idTableDisposition").getSelectedItem().getBindingContext("DispositionDetails").getProperty("ParentDispoNo");
+                    //     if(oParentDispoNo !== ""){
+                    //         MessageBox.information("The Disposition details updatation functionality is coming soon..!");
+                    //     }
+                    // } 
+                    else {
                         MessageBox.warning("Please add a line item to create disposition.");
                         return;
                     }
                 }
-                // oModel.create("/NotificationDispositionSet", payloadDispoData, {
-                //     success: function (odata, Response) {
-                //         sap.ui.core.BusyIndicator.hide();
-                //         if (Response.headers["sap-message"]) {
-                //             var oMsg = JSON.parse(Response.headers["sap-message"]).message;
-                //             MessageBox.success(oMsg, {
-                //                 onClose: function () {
-                //                     this.bindDispositionDetails();
-                //                     this.resetDispositionGenInfoFields();
-                //                     var oParData = { ParentDispoNo: "" };
-                //                     this.oParentDispoModel.setData(oParData);
-                //                 }.bind(this)
-                //             });
-                //         }
-                //     }.bind(this),
-                //     error: function (oError) {
-                //         sap.ui.core.BusyIndicator.hide();
-                //         var msg = JSON.parse(oError.responseText).error.message.value;
-                //         MessageBox.error(msg);
-                //     }
-                // });
+                oModel.create("/NotificationDispositionSet", payloadDispoData, {
+                    success: function (odata, Response) {
+                        sap.ui.core.BusyIndicator.hide();
+                        if (Response.headers["sap-message"]) {
+                            var oMsg = JSON.parse(Response.headers["sap-message"]).message;
+                            MessageBox.success(oMsg, {
+                                onClose: function () {
+                                    this.bindDispositionDetails();
+                                    this.resetDispositionGenInfoFields();
+                                    var oParData = { ParentDispoNo: "" };
+                                    this.oParentDispoModel.setData(oParData);
+                                }.bind(this)
+                            });
+                        }
+                    }.bind(this),
+                    error: function (oError) {
+                        sap.ui.core.BusyIndicator.hide();
+                        var msg = JSON.parse(oError.responseText).error.message.value;
+                        MessageBox.error(msg);
+                    }
+                });
             } else {
                 MessageBox.warning("Please select a discrepancy number using dropdown to create a disposition.");
             }
