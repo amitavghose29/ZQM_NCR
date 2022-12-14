@@ -85,7 +85,7 @@
 				
 				</fb:filterGroupItems>
 			</fb:FilterBar>
-            <Table id="idTableNCCreatedBy" items="{NCCreatedByModel>/}" itemPress="handleNCCrtItemSelection">
+            <Table id="idTableNCCreatedBy" sticky="ColumnHeaders" items="{NCCreatedByModel>/}" itemPress="handleNCCrtItemSelection" growing="true" growingThreshold="10" >
 		        <columns>
 			        <Column>
 				        <Text text="{i18n>WorkcenterCategory}" />

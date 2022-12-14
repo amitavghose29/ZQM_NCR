@@ -9,7 +9,7 @@
 		cancel="handleClosePartnerCode"
 		items="{
 			path : '/ProdOrderPartIdSet'
-		}">
+		}" contentHeight="500px" contentWidth="900px">
 		<ColumnListItem type="Active">
 			<cells>
 				<Text text="{ProductCode}" />

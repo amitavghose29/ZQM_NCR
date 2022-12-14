@@ -38,7 +38,7 @@
                     </fb:FilterGroupItem>
                 </fb:filterGroupItems>
             </fb:FilterBar>
-            <Table id="idGRTable" inset="false" items="{oGRModel>/}" mode="SingleSelectMaster" itemPress="handleGRItemSelection">
+            <Table id="idGRTable" inset="false" items="{oGRModel>/}" mode="SingleSelectMaster" sticky="ColumnHeaders" itemPress="handleGRItemSelection" growing="true" growingThreshold="10" >
                 <columns>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="{i18n>GRId}" />

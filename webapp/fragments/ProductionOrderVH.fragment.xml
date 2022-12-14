@@ -54,7 +54,7 @@
                     </fb:FilterGroupItem>
                 </fb:filterGroupItems>
             </fb:FilterBar>
-            <Table id="idProdOrderTable" inset="false" items="{oPOModel>/}" mode="SingleSelectMaster" selectionChange="handleCloseUserValueHelpProdOrd" itemPress="handleCloseUserValueHelpProdOrd">
+            <Table id="idProdOrderTable" inset="false" items="{oPOModel>/}" mode="SingleSelectMaster" selectionChange="handleCloseUserValueHelpProdOrd" itemPress="handleCloseUserValueHelpProdOrd" sticky="ColumnHeaders" growing="true" growingThreshold="10" >
                 <columns>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="{i18n>plant}" />

@@ -3,7 +3,7 @@
         <Table items="{WorkGroupModel>/}" itemPress="onWorkGrpItemSel">
             <columns>
                 <Column minScreenWidth="Tablet" demandPopin="true"> 
-                    <Text text="WorkGroup" />
+                    <Label design="Bold" text="WorkGroup" />
                 </Column>
 				<Column minScreenWidth="Tablet" demandPopin="true">
                     <Text text="" />
@@ -23,10 +23,3 @@
         </endButton>
     </Dialog>
 </core:FragmentDefinition>
-	<!-- <Dialog title="WorkGroup">
-    items="{WorkGroupModel>/}" liveChange="onAircraftliveSearch" confirm="_confirmAircraftValueHelpDialog"
-		cancel="_handleAircraftValueHelpClose"
-        <List>
-        </List>
-		<StandardListItem  title="{WorkGroupModel>WorkGroup}"/>
-	</Dialog> -->

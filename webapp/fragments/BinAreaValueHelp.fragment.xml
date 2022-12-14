@@ -1,23 +1,4 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-    <!-- <Dialog title="Select Bin Area" contentHeight="250px" contentWidth="400px">
-        <Table id="idBinAreaTab" items="{/BinlocationSet}" mode="SingleSelectMaster" selectionChange="onSelectBinArea">
-            <columns>
-                <Column>
-                    <Text text="Bin Area" />
-                </Column>
-            </columns>
-            <items>
-                <ColumnListItem>
-                    <cells>
-                        <Text text="{BinLocation}" />
-                    </cells>
-                </ColumnListItem>
-            </items>
-        </Table>
-        <endButton>
-            <Button text="Close" press="onCloseBinAreaDialog" />
-        </endButton>
-    </Dialog> -->
     <SelectDialog   title="{i18n>SelectBinArea}" items="{BinAreaModel>/}" liveChange="onBinArealiveSearch" confirm="_confirmBinAreaVHDialog"
 		cancel="_handleBinAreaVHClose">
 		<StandardListItem  title="{BinAreaModel>BinLocation}" />

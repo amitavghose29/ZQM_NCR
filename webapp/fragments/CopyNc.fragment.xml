@@ -44,7 +44,7 @@
                 </fb:filterGroupItems>
             </fb:FilterBar>
             <Table id="idCopyNCTable" inset="false" items="{oNcCopyModel>/}" mode="SingleSelectMaster" 
-				itemPress="handleCloseUserValueHelpNCcopy" growing="true" growingThreshold="10">
+				itemPress="handleCloseUserValueHelpNCcopy" growing="true" growingThreshold="10" sticky="ColumnHeaders" >
                 <columns>
                     <Column minScreenWidth="Tablet" demandPopin="true">
                         <Text text="{i18n>Nc}" />
