@@ -1123,7 +1123,7 @@
                                             </ColumnListItem>
                                         </items>
                                     </Table>
-                                    <Table id="idsingoff1" items="" class="formcolor1 sapUiSizeCompact" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
+                                    <Table id="idsingoff1" items="{oDiscSingoff>/}" class="formcolor1 sapUiSizeCompact" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
                                         <headerToolbar>
                                             <Toolbar>
                                                 <Title text="Discrepancy and Disposition Signoff Sheet" level="H2" />
@@ -1170,33 +1170,17 @@
                                         <items>
                                             <ColumnListItem>
                                                 <cells>
-                                                    <Text text="C3QAMANU" />
-                                                    <Text text="" />
-                                                    <Link text="AB012345" />
-                                                    <!--<Input value="" valueHelpIconSrc="sap-icon://document-text" liveChange="onEnterText" showValueHelp="true" valueHelpRequest="onNotesChange"/>-->
+                                                     <Text text="{oDiscSingoff>WorkGroup}" />
+                                                    <!--<Text text=""/>-->
+                                                    <Link text="{oDiscSingoff>User}" />
+                                                    <!--<Input value="" liveChange="onEnterText" valueHelpIconSrc="sap-icon://document-text" showValueHelp="true" valueHelpRequest="onNotesChange"/>-->
                                                     <Input />
-                                                    <Input value="RJ" showValueHelp="true" />
-                                                    <Text text="11-Mar-2016 10:26" />
-                                                    <Text text="11-Mar-2016 10:26" />
-                                                    <Text text="11-Mar-2016 10:26" />
-                                                    <Input value="A" showValueHelp="true" />
-                                                    <Input value="Approved" />
-                                                    <Button icon="sap-icon://less" />
-                                                </cells>
-                                            </ColumnListItem>
-                                            <ColumnListItem>
-                                                <cells>
-                                                    <Text text="C3QAMAZU" />
-                                                    <Text text="" />
-                                                    <Text text="XY012345" />
-                                                    <!--<Input value="" valueHelpIconSrc="sap-icon://document-text" liveChange="onEnterText" showValueHelp="true" valueHelpRequest="onNotesChange"/>-->
-                                                    <Input />
-                                                    <Input value="AJ" />
-                                                    <Text text="11-Mar-2016 10:26" />
-                                                    <Text text="11-Mar-2016 10:26" />
-                                                    <Text text="11-Mar-2016 10:26" />
-                                                    <Input value="R" />
-                                                    <Input value="Rejected" />
+                                                    <Input value="{oDiscSingoff>SignOffNote}" showValueHelp="true" />
+                                                    <Text text="{oDiscSingoff>DateInQueue}" />
+                                                    <Text text="{oDiscSingoff>ActualStart} {oDiscSingoff>ActualSTime}" />
+                                                    <Text text="{oDiscSingoff>FinishDate} {oDiscSingoff>FinishTime}" />
+                                                    <Input value="{oDiscSingoff>AR}" showValueHelp="true" />
+                                                    <Input value="{oDiscSingoff>Comments}" />
                                                     <Button icon="sap-icon://less" />
                                                 </cells>
                                             </ColumnListItem>
