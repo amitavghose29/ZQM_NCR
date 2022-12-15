@@ -1111,7 +1111,7 @@
                                                     <!--<Text text=""/>-->
                                                     <Link text="{oHeaderSingoff>User}" />
                                                     <!--<Input value="" liveChange="onEnterText" valueHelpIconSrc="sap-icon://document-text" showValueHelp="true" valueHelpRequest="onNotesChange"/>-->
-                                                    <Input />
+                                                    <Input value="{oHeaderSingoff>ActionCode}"/>
                                                     <Input value="{oHeaderSingoff>SignOffNote}" showValueHelp="true" />
                                                     <Text text="{oHeaderSingoff>ActualStart}" />
                                                     <Text text="{oHeaderSingoff>ActualStart}{oHeaderSingoff>ActualSTime}" />
@@ -1170,11 +1170,11 @@
                                         <items>
                                             <ColumnListItem>
                                                 <cells>
-                                                     <Text text="{oDiscSingoff>WorkGroup}" />
-                                                    <!--<Text text=""/>-->
+                                                    <Text text="{oDiscSingoff>WorkGroup}" />
+                                                    <Text text="{oDiscSingoff>Discrepancy}"/>
                                                     <Link text="{oDiscSingoff>User}" />
                                                     <!--<Input value="" liveChange="onEnterText" valueHelpIconSrc="sap-icon://document-text" showValueHelp="true" valueHelpRequest="onNotesChange"/>-->
-                                                    <Input />
+                                                    <Input value="{oDiscSingoff>ActionCode}"/>
                                                     <Input value="{oDiscSingoff>SignOffNote}" showValueHelp="true" />
                                                     <Text text="{oDiscSingoff>DateInQueue}" />
                                                     <Text text="{oDiscSingoff>ActualStart} {oDiscSingoff>ActualSTime}" />
