@@ -6438,6 +6438,36 @@ sap.ui.define([
             });
         },
 
+        handleChangeMajorMinorNC: function(){
+            sap.ui.core.BusyIndicator.show();
+            var oDataModel = this.getOwnerComponent().getModel();
+            var oMajorMinorNCValue = this.getView().byId("dispGenMajorMinorNC").getValue();
+            var oMajorMinorNCKey = this.getView().byId("dispGenMajorMinorNC").getSelectedKey();
+            var sPath = "/CheckMajorMinorChangeSet(DispositionMajorMinor='" + oMajorMinorNCValue + "')";
+            oDataModel.read(sPath, {
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    if(oData.Change == false && this.getView().byId("idTableDisposition").getSelectedItem() == null){
+                        MessageBox.warning("User is not allowed to change the Major/Minor NC.");
+                        this.getView().byId("dispGenMajorMinorNC").setSelectedKey();
+                        this.getView().byId("dispGenMajorMinorNC").setValue();
+                    }else if(oData.Change == false && this.getView().byId("idTableDisposition").getSelectedItem()){
+                        MessageBox.warning("User is not allowed to change the Major/Minor NC.");
+                        this.getView().byId("dispGenMajorMinorNC").setSelectedKey("DISPIMPACT");
+                        this.getView().byId("dispGenMajorMinorNC").setValue(this.oMajorMinorNC);
+                    }else{
+                        this.getView().byId("dispGenMajorMinorNC").setSelectedKey(oMajorMinorNCKey);
+                        this.getView().byId("dispGenMajorMinorNC").setValue(oMajorMinorNCValue);
+                    }
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+        },
+
         onOpenVHDispoSerNo: function () {
             this.oSerNoColModel = new JSONModel(sap.ui.require.toUrl("com/airbus/ZQM_NCR") + "/model/disposernocolmodel.json");
             var aCols = this.oSerNoColModel.getData().cols;
@@ -7655,8 +7685,9 @@ sap.ui.define([
                         this.getView().byId("dispGenCSN").setState(oDispositionCSN);
                         this.getView().byId("dispGenPartSuppName").setValue(oDispositionPartner);
                         this.getView().byId("dispGenPartSuppDesc").setValue(oDispositionPartnerName);
-                        this.getView().byId("dispGenMajorMinorNC").setSelectedKey(oDispositionMajorMinor);
+                        this.getView().byId("dispGenMajorMinorNC").setSelectedKey("DISPIMPACT");
                         this.getView().byId("dispGenMajorMinorNC").setValue(oDispositionMajorMinor);
+                        this.oMajorMinorNC = oDispositionMajorMinor;
                         this.getView().byId("idDispoTextArea").setValue(oDispositionText);
 
                         if (this.workingQueueMode == "EDIT") {

@@ -1226,12 +1226,12 @@
                                                         <Input id="idInpDispPrtNo" enabled="false" />
                                                         <Label text="Part Description" />
                                                         <!--<TextArea value="Hose Assembly" editable="false"/>-->
-                                                        <ObjectStatus id="idOsDispPrtDesc" class="sapUiSmallMarginBottom" state="Information" />
+                                                        <ObjectStatus id="idOsDispPrtDesc" class="sapUiTinyMarginBottom" state="Information" />
                                                         <Label text="Inter Chargeability Affected" />
                                                         <CheckBox id="dispGenInterCharge" text="" />
                                                         <Label text="Major/Minor NC" />
-                                                        <ComboBox id="dispGenMajorMinorNC" items="{DispoMajMinNCModel>/}" showSecondaryValues="true">
-                                                            <core:ListItem key="{DispoMajMinNCModel>DISPIMPACT}" text="{DispoMajMinNCModel>Value}" additionalText="{DispoMajMinNCModel>Description}" />
+                                                        <ComboBox id="dispGenMajorMinorNC" items="{DispoMajMinNCModel>/}" showSecondaryValues="true" selectionChange="handleChangeMajorMinorNC" >
+                                                            <core:ListItem key="{DispoMajMinNCModel>Key}" text="{DispoMajMinNCModel>Value}" additionalText="{DispoMajMinNCModel>Description}" />
                                                         </ComboBox>
                                                         <Label text="Rework Order" />
                                                         <!-- <Input id="dispGenReworkOrder" /> -->
