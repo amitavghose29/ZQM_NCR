@@ -7057,7 +7057,7 @@ sap.ui.define([
         onAddDispositionLineItem: function () {
             if (this.getView().byId("idTableDisposition").getSelectedItem()) {
                 this.getView().byId("dispGenInterCharge").setSelected(false);
-                this.getView().byId("idDispoGenInfoIncompFlag").setSelected(false);
+                this.getView().byId("idDispoGenInfoIncompFlag").setSelected(true);
                 this.getView().byId("dispGenDropPoint").setValue();
                 this.getView().byId("dispGenRestrictPart").setSelected(false);
                 this.getView().byId("dispGenCSN").setState(false);
@@ -7301,6 +7301,51 @@ sap.ui.define([
             oBinding.filter([oFilter]);
         },
 
+        handleDispIncompFlagCheck: function(){
+            if(this.getView().byId("idDispoGenInfoIncompFlag").getSelected() === false){
+                this._oQualityWkGrpDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.DispositionWorkGroupQuality", this);
+                this.getView().addDependent(this._oQualityWkGrpDialog);
+                this._oQualityWkGrpDialog.open();
+                sap.ui.core.BusyIndicator.show();
+                var oModel = new JSONModel();
+                oModel.setSizeLimit(10000);
+                var oDataModel = this.getOwnerComponent().getModel();
+                var oFilter = [];
+                oFilter.push(new Filter("Key", FilterOperator.EQ, "DISPOWRKF4"));
+                var sPath = "/f4_genericSet";
+                oDataModel.read(sPath, {
+                    filters: oFilter,
+                    success: function (oData, oResult) {
+                        sap.ui.core.BusyIndicator.hide();
+                        var data = oData.results;
+                        oModel.setData(data);
+                        this._oQualityWkGrpDialog.setModel(oModel, "WorkGroupQual")
+                    }.bind(this),
+                    error: function (oError) {
+                        sap.ui.core.BusyIndicator.hide();
+                        var msg = JSON.parse(oError.responseText).error.message.value;
+                        MessageBox.error(msg);
+                    }
+                });
+            }     
+        },
+
+        onQualWorkGrpItemSel: function (oEvent) {
+            this.oSelectedQualWrkGrp = oEvent.getParameters().listItem.getBindingContext("WorkGroupQual").getProperty("Value");
+            this._oQualityWkGrpDialog.close();
+            if(this.oSelectedQualWrkGrp){
+                this.oQualityWrkGrp = this.oSelectedQualWrkGrp;
+            } else{
+                this.oQualityWrkGrp = "";
+            }
+        },
+
+        onCloseWrkGrpQuality: function () {
+            this.getView().byId("idDispoGenInfoIncompFlag").setSelected(true);
+            this._oQualityWkGrpDialog.close();
+            this._oQualityWkGrpDialog.destroy();
+        },
+
         createDisposition: function () {
             var oModel = this.getOwnerComponent().getModel();
             var oNotifNo = sObjectId;
@@ -7351,6 +7396,7 @@ sap.ui.define([
                             "to_disposerial": [],
                             "to_disporework": [],
                             "DispositionText": oDispositionText,
+                            "DispositionGroupQuality": oDispositionIncompleteChk === true ? "" : this.oQualityWrkGrp,
                             "Create": true
                         }
 
@@ -7425,6 +7471,7 @@ sap.ui.define([
                             "to_disposerial": [],
                             "to_disporework": [],
                             "DispositionText": oDispositionText,
+                            "DispositionGroupQuality": oDispositionIncompleteChk === true ? "" : this.oQualityWrkGrp,
                             "Update": true
                         }
 
@@ -7486,6 +7533,7 @@ sap.ui.define([
                             "to_disposerial": [],
                             "to_disporework": [],
                             "DispositionText": oDispositionText,
+                            "DispositionGroupQuality": oDispositionIncompleteChk === true ? "" : this.oQualityWrkGrp,
                             "Create": true
                         }
 
@@ -7595,7 +7643,7 @@ sap.ui.define([
 
         resetDispositionGenInfoFields: function () {
             this.getView().byId("dispGenInterCharge").setSelected(false);
-            this.getView().byId("idDispoGenInfoIncompFlag").setSelected(false);
+            this.getView().byId("idDispoGenInfoIncompFlag").setSelected(true);
             this.getView().byId("dispGenDropPoint").setValue();
             this.getView().byId("dispGenRestrictPart").setSelected(false);
             this.getView().byId("dispGenCSN").setState(false);

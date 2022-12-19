@@ -1251,7 +1251,7 @@
                                                         <Label text="Serial Number" />
                                                         <MultiInput id="idMulInpDispoSerNo" showValueHelp="true" valueHelpRequest=".onOpenVHDispoSerNo" tokenUpdate="_onTokenUpdateDispoSN" />
                                                         <Label text="Incomplete Flag" />
-                                                        <CheckBox id="idDispoGenInfoIncompFlag" selected="true" />
+                                                        <CheckBox id="idDispoGenInfoIncompFlag" selected="true" select="handleDispIncompFlagCheck" />
                                                     </f:content>
                                                 </f:SimpleForm>
                                             </l:BlockLayoutCell>
