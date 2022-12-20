@@ -1379,7 +1379,7 @@
                                     </Table>
                                     <Label text="Disposition Text" design="Bold" class="sapUiTinyMarginTop" />
                                     <TextArea id="idDispoTextArea" value="" maxLength="40" placeholder="Text" width="100%" />
-                                    <Table items="" class="formcolor1" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
+                                    <Table id="idTableDispoBuyOff" items="{DispositionBuyOffModel>/}" class="formcolor1" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
                                         <headerToolbar>
                                             <Toolbar>
                                                 <Title text="Buyoff" level="H2" />
@@ -1408,12 +1408,11 @@
                                         <items>
                                             <ColumnListItem>
                                                 <cells>
-                                                    <Input value="" />
-                                                    <Input value="" />
-                                                    <Input value="" />
-                                                    <Input value="" />
-                                                    <Input value="" />
-                                                    <Input value="" />
+                                                    <Input value="{DispositionBuyOffModel>DispositionGroup}" showValueHelp="true" valueHelpRequest="onOpenVHBuyOffGroup" />
+                                                    <Input value="{DispositionBuyOffModel>WorkCenter}" showValueHelp="true" valueHelpRequest="onOpenVHNCCreated" />
+                                                    <Text text="{DispositionBuyOffModel>BuyOffUser}" />
+                                                    <Text text="{DispositionBuyOffModel>BuyOffDate}" />
+                                                    <Input value="{DispositionBuyOffModel>BuyOffStatusText}" showValueHelp="true" valueHelpRequest="onOpenVHBuyOffStatus" />
                                                 </cells>
                                             </ColumnListItem>
                                         </items>

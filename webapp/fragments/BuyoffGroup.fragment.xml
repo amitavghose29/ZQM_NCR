@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog  title="Buyoff Group" items="{BuyOffGroupModel>/}" liveChange="onSearchBuyOffGroup" confirm="_configBuyOffGroupVHDialog"
+		cancel="_handleBuyOffGroupVHClose" draggable="true" >
+		<StandardListItem title="{BuyOffGroupModel>Value}" description="{BuyOffGroupModel>Value1}" info="{BuyOffGroupModel>Description}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

@@ -1745,7 +1745,14 @@ sap.ui.define([
                     this.IsUserMRBCertifiedCheck();
                 }
             } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Dispo") {
-                this.createDisposition();
+                if(this.getView().byId("idDispoGenInfoIncompFlag").getSelected() === true){
+                    this.createDisposition();             
+                }else if((this.getView().byId("idTableDisposition").getSelectedItem()) && (this.getView().byId("idDispoGenInfoIncompFlag").getSelected() === false)){
+                    this.dispoIsUserMRBCertifiedCheck();
+                    // .getBindingContext("DispositionDetails").getProperty("DispositionStatus") != "Open"
+                } else if(this.getView().byId("idDispoGenInfoIncompFlag").getSelected() === false){
+                    this.dispoIsUserMRBCertifiedCheck();
+                }
             }
         },
 
@@ -4299,10 +4306,11 @@ sap.ui.define([
             }
         },
 
-        onOpenVHNCCreated: function () {
+        onOpenVHNCCreated: function (oEvent) {
             this._oValueHelpDialogNCCrt = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.NCCreatedBy", this);
             this.getView().addDependent(this._oValueHelpDialogNCCrt);
             this._oValueHelpDialogNCCrt.open();
+            this.oInputWorkCenter = oEvent.getSource();
         },
 
         _handleNCCrtdByClose: function () {
@@ -4347,11 +4355,7 @@ sap.ui.define([
 
         handleNCCrtItemSelection: function (oEvent) {
             var oSelectedItem = oEvent.getParameters("selectedItem").listItem.getBindingContext("NCCreatedByModel").getProperty("WorkCenter");
-            if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata") {
-                var oInput = this.getView().byId("idInpNCCrtBy");
-            } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Dispo") {
-                var oInput = this.getView().byId("idmrbWorkCenter");
-            }
+            var oInput = this.oInputWorkCenter;
 
             if (!oSelectedItem) {
                 oInput.resetProperty("value");
@@ -7102,7 +7106,7 @@ sap.ui.define([
                     }
                 }
                 if (bFlag === false) {
-                    MessageBox.warning("User can create single disposition at a time, please use existing line item entry in table.");
+                    MessageBox.warning("User can add single disposition entry at a time, please use existing line item entry in table.");
                 } else {
                     oDispoTableModel.push({
                         "ParentDispoNo": "",
@@ -7346,6 +7350,82 @@ sap.ui.define([
             this._oQualityWkGrpDialog.destroy();
         },
 
+        dispoIsUserMRBCertifiedCheck: function(){
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new JSONModel();
+            oModel.setSizeLimit(10000);
+            var oDataModel = this.getOwnerComponent().getModel();
+            var oWrkGrp = this.getView().byId("idworkgroup").getText();
+            var sPath = "/IsUserMRBCertifiedSet(Bname='',Workgroup='" + oWrkGrp + "')";
+            oDataModel.read(sPath, {
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    // oData.MRBCertified = true;
+                    this.oSelectedDispoWrkGrp = "";
+                    if (oData.MRBCertified === false) {
+                        this.dispoInitialiseWorkGroupDialog();
+                    }
+                    else if (oData.MRBCertified === true) {
+                        MessageBox.show(
+                            "Do you wish to go to the other workgroup and save.", {
+                            icon: MessageBox.Icon.INFORMATION,
+                            title: "MRB certified User",
+                            actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+                            onClose: function (oAction) {
+                                if (oAction === "YES") {
+                                    this.dispoInitialiseWorkGroupDialog();
+                                } else {
+                                    this.createDisposition();
+                                }
+                            }.bind(this)
+                        }
+                        );
+                    }
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+        },
+
+        dispoInitialiseWorkGroupDialog: function () {
+            this._oDispoWrkOrdDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.DispositionWorkGroupMRB", this);
+            this.getView().addDependent(this._oDispoWrkOrdDialog);
+            this._oDispoWrkOrdDialog.open();
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new JSONModel();
+            oModel.setSizeLimit(10000);
+            var oDataModel = this.getOwnerComponent().getModel();
+            var sPath = "/UserWorkGroupS";
+            oDataModel.read(sPath, {
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.results;
+                    oModel.setData(data);
+                    this._oDispoWrkOrdDialog.setModel(oModel, "DispoWorkGroupModel");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+        },
+
+        onDispoWorkGrpItemSel: function(oEvent){
+            this.oSelectedDispoWrkGrp = oEvent.getParameters().listItem.getBindingContext("DispoWorkGroupModel").getProperty("WorkGroup");
+            this._oDispoWrkOrdDialog.close();
+            this.createDisposition();
+        },
+
+        onCloseDispoWrkGrpMRB: function () {
+            this._oDispoWrkOrdDialog.close();
+            this._oDispoWrkOrdDialog.destroy();
+            this.createDisposition();
+        },
+
         createDisposition: function () {
             var oModel = this.getOwnerComponent().getModel();
             var oNotifNo = sObjectId;
@@ -7361,6 +7441,8 @@ sap.ui.define([
             var oDispositionPartnerName = this.getView().byId("dispGenPartSuppDesc").getValue();
             var oDispositionIncompleteChk = this.getView().byId("idDispoGenInfoIncompFlag").getSelected();
             var oDispositionText = this.getView().byId("idDispoTextArea").getValue();
+            var oDefaultWrkGroup = this.getView().byId("idworkgroup").getText();
+            var oBuyOffTableData = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData();
 
             if (oDiscrepancyNo) {
                 if (this.getView().byId("idTableDisposition").getModel("DispositionDetails").getData().length === 0) {
@@ -7380,11 +7462,15 @@ sap.ui.define([
                             "DispositionBadge": oDispoTabData[0].DispositionBadge,
                             "DispositionCode": oDispoTabData[0].DispositionCode,
                             // "DispositionDateinWorking": oDispoTabData[0].DispositionDateinWorking,
-                            "DispositionGroup": oDispoTabData[0].DispositionGroup,
+                            "DispositionGroup": oDefaultWrkGroup,
+                            "DispositionMRBGroup": (this.oSelectedDispoWrkGrp === "" || this.oSelectedDispoWrkGrp == undefined) ? "" : this.oSelectedDispoWrkGrp,
                             "DispositionPartReq": oDispoTabData[0].DispositionPartReq,
                             "DispositionQnty": oDispoTabData[0].DispositionQnty,
                             "DispositionStatus": oDispoTabData[0].DispositionStatus,
                             "DispostionType": oDispoTabData[0].DispostionType,
+                            "IsMRB": (this.oSelectedDispoWrkGrp === "" || this.oSelectedDispoWrkGrp == undefined) ? false : true,
+                            "IsMRBYes": (this.oSelectedDispoWrkGrp === "" || this.oSelectedDispoWrkGrp == undefined) ? false : true,
+                            "IsMRBNo": (this.oSelectedDispoWrkGrp === "" || this.oSelectedDispoWrkGrp == undefined) ? false : true,
                             "DispositionDropPoint": oDispositionDropPoint,
                             "DispositionIntCharge": oDispositionIntCharge,
                             "Incomplete": oDispositionIncompleteChk,
@@ -7430,7 +7516,7 @@ sap.ui.define([
                                     "Order": oOrderNo
                                 });
                             }
-                        }
+                        } 
                     }
                 } else if (this.getView().byId("idTableDisposition").getModel("DispositionDetails").getData().length > 0) {
                     sap.ui.core.BusyIndicator.show();
@@ -7455,11 +7541,15 @@ sap.ui.define([
                             "DispositionBadge": oDispositionBadge,
                             "DispositionCode": oDispositionCode,
                             // "DispositionDateinWorking": oDispoTabData[0].DispositionDateinWorking,
-                            "DispositionGroup": oDispositionGroup,
+                            "DispositionGroup": oDefaultWrkGroup,
+                            "DispositionMRBGroup": (this.oSelectedDispoWrkGrp === "" || this.oSelectedDispoWrkGrp == undefined) ? "" : this.oSelectedDispoWrkGrp,
                             "DispositionPartReq": oDispositionPartReq,
                             "DispositionQnty": oDispositionQty,
                             "DispositionStatus": oDispositionStatus,
                             "DispostionType": oDispositionType,
+                            "IsMRB": (this.oSelectedDispoWrkGrp === "" || this.oSelectedDispoWrkGrp == undefined) ? false : true,
+                            "IsMRBYes": (this.oSelectedDispoWrkGrp === "" || this.oSelectedDispoWrkGrp == undefined) ? false : true,
+                            "IsMRBNo": (this.oSelectedDispoWrkGrp === "" || this.oSelectedDispoWrkGrp == undefined) ? false : true,
                             "DispositionDropPoint": oDispositionDropPoint,
                             "DispositionIntCharge": oDispositionIntCharge,
                             "Incomplete": oDispositionIncompleteChk,
@@ -7517,11 +7607,15 @@ sap.ui.define([
                             "DispositionBadge": oDispoTabData[oIndex].DispositionBadge,
                             "DispositionCode": oDispoTabData[oIndex].DispositionCode,
                             // "DispositionDateinWorking": oDispoTabData[0].DispositionDateinWorking,
-                            "DispositionGroup": oDispoTabData[oIndex].DispositionGroup,
+                            "DispositionGroup": oDefaultWrkGroup,
+                            "DispositionMRBGroup": (this.oSelectedDispoWrkGrp === "" || this.oSelectedDispoWrkGrp == undefined) ? "" : this.oSelectedDispoWrkGrp,
                             "DispositionPartReq": oDispoTabData[oIndex].DispositionPartReq,
                             "DispositionQnty": oDispoTabData[oIndex].DispositionQnty,
                             "DispositionStatus": oDispoTabData[oIndex].DispositionStatus,
                             "DispostionType": oDispoTabData[oIndex].DispostionType,
+                            "IsMRB": (this.oSelectedDispoWrkGrp === "" || this.oSelectedDispoWrkGrp == undefined) ? false : true,
+                            "IsMRBYes": (this.oSelectedDispoWrkGrp === "" || this.oSelectedDispoWrkGrp == undefined) ? false : true,
+                            "IsMRBNo": (this.oSelectedDispoWrkGrp === "" || this.oSelectedDispoWrkGrp == undefined) ? false : true,
                             "DispositionDropPoint": oDispositionDropPoint,
                             "DispositionIntCharge": oDispositionIntCharge,
                             "Incomplete": oDispositionIncompleteChk,
@@ -7585,6 +7679,8 @@ sap.ui.define([
                                     this.resetDispositionGenInfoFields();
                                     var oParData = { ParentDispoNo: "" };
                                     this.oParentDispoModel.setData(oParData);
+                                    this.oSelectedDispoWrkGrp = "";
+                                    this.oSelectedWrkGrp = "";
                                 }.bind(this)
                             });
                         }
@@ -7737,6 +7833,7 @@ sap.ui.define([
                         this.getView().byId("dispGenMajorMinorNC").setValue(oDispositionMajorMinor);
                         this.oMajorMinorNC = oDispositionMajorMinor;
                         this.getView().byId("idDispoTextArea").setValue(oDispositionText);
+                        this.bindBuyOffTable(oData.NotificationNo, oData.DiscrepancyNo, oData.ParentDispoNo);
 
                         if (this.workingQueueMode == "EDIT") {
                             var dispoODataArray = [];
@@ -7764,6 +7861,34 @@ sap.ui.define([
                 this.getView().byId("idBtnMRBDisp").setEnabled(false);
                 this.resetDispositionGenInfoFields();
             }
+        },
+
+        bindBuyOffTable: function(sNotif, sDiscre, sParDispo){
+            sap.ui.core.BusyIndicator.show();
+            var oDispoNotification = sNotif,
+                oDispoDiscrepancy = sDiscre,
+                oParentDispoNo = sParDispo;
+            var oModel = new JSONModel();
+                oModel.setSizeLimit(10000);
+            var oDataModel = this.getOwnerComponent().getModel();
+            var sPath = "/NotificationDispositionSet(NotificationNo='" + oDispoNotification + "',DiscrepancyNo='" + oDispoDiscrepancy + "',ParentDispoNo='" + oParentDispoNo + "')";
+            oDataModel.read(sPath, {
+                urlParameters: {
+                    "$expand": "to_dispobuyoff"
+                },
+                success: function (oData, oResult) {
+                    debugger;
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.to_dispobuyoff.results;
+                    oModel.setData(data);
+                    this.getView().byId("idTableDispoBuyOff").setModel(oModel, "DispositionBuyOffModel");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
         },
 
         bindRODispoProps: function (oROModel) {
@@ -7831,6 +7956,144 @@ sap.ui.define([
 
         onCloseRTVPopout: function () {
             this._oRTVDialog.destroy();
+        },
+
+        onOpenVHBuyOffGroup: function (oEvent) {
+            this._oBuyoffGrpDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.BuyoffGroup", this);
+            this.getView().addDependent(this._oBuyoffGrpDialog);
+            this._oBuyoffGrpDialog.open();
+            this.oBuyOffGrpInp = oEvent.getSource();
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new JSONModel();
+            oModel.setSizeLimit(10000);
+            var oDataModel = this.getOwnerComponent().getModel();
+            var oFilter = [];
+            oFilter.push(new Filter("Key", FilterOperator.EQ, "BUYWRKGRP"));
+            var sPath = "/f4_genericSet";
+            oDataModel.read(sPath, {
+                filters: oFilter,
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.results;
+                    oModel.setData(data);
+                    this._oBuyoffGrpDialog.setModel(oModel, "BuyOffGroupModel");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+        },
+
+        _configBuyOffGroupVHDialog: function (oEvent) {
+            var oSelectedItem = oEvent.getParameter("selectedItem"),
+                oInput = this.oBuyOffGrpInp;
+
+            if (!oSelectedItem) {
+                oInput.resetProperty("value");
+                return;
+            }
+
+            oInput.setValue(oSelectedItem.getTitle());
+            this._oBuyoffGrpDialog.destroy();
+        },
+
+        onSearchBuyOffGroup: function (oEvent) {
+            var sValue = oEvent.getParameter("value");
+            var aFilter = [], oFilter = [];
+                oFilter.push(new Filter("Value", FilterOperator.Contains, sValue));
+                oFilter.push(new Filter("Value1", FilterOperator.Contains, sValue));
+                oFilter.push(new Filter("Description", FilterOperator.Contains, sValue));
+                aFilter.push(new Filter(oFilter, false));
+            var oBinding = oEvent.getParameter("itemsBinding");
+            oBinding.filter(aFilter);
+        },
+
+        onOpenVHBuyOffStatus: function(oEvent){
+            this._oBuyoffStatusDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.BuyoffStatus", this);
+            this.getView().addDependent(this._oBuyoffStatusDialog);
+            this._oBuyoffStatusDialog.open();
+            this.oBuyOffStatusInp = oEvent.getSource();
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new JSONModel();
+            oModel.setSizeLimit(10000);
+            var oDataModel = this.getOwnerComponent().getModel();
+            var oFilter = [];
+            oFilter.push(new Filter("Key", FilterOperator.EQ, "BUYOFFSTATUS"));
+            var sPath = "/f4_genericSet";
+            oDataModel.read(sPath, {
+                filters: oFilter,
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.results;
+                    oModel.setData(data);
+                    this._oBuyoffStatusDialog.setModel(oModel, "BuyOffStatusModel");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+        },
+
+        _configBuyOffStatusVHDialog: function (oEvent) {
+            var oSelectedItem = oEvent.getParameter("selectedItem"),
+                oInput = this.oBuyOffStatusInp;
+
+            if (!oSelectedItem) {
+                oInput.resetProperty("value");
+                return;
+            }
+
+            oInput.setValue(oSelectedItem.getTitle());
+            this._oBuyoffStatusDialog.destroy();
+        },
+
+        onSearchBuyOffStatus: function (oEvent) {
+            var sValue = oEvent.getParameter("value");
+            var oFilter = new Filter("Description", FilterOperator.Contains, sValue);
+            var oBinding = oEvent.getParameter("itemsBinding");
+            oBinding.filter([oFilter]);
+        },
+
+        onBuyoffAdd: function(){
+            var oBuyOffTable = this.getView().byId("idTableDispoBuyOff");
+            var oBuyOffTableModel = oBuyOffTable.getModel("DispositionBuyOffModel").getData();
+            if (oBuyOffTableModel.length === 0) {
+                oBuyOffTableModel.push({
+                    "DispositionGroup": "",
+                    "WorkCenter": "",
+                    "BuyOffUser": "",
+                    "BuyOffDate": "",
+                    "BuyOffStatusText": ""
+                });
+                oBuyOffTable.getModel("DispositionBuyOffModel").setData(oBuyOffTableModel);
+            } else if (oBuyOffTableModel.length > 0) {
+                var bFlag = false, sBuyOffUser;
+                for (var k = 0; k < oBuyOffTableModel.length; k++) {
+                    sBuyOffUser = oBuyOffTableModel[k].BuyOffUser;
+                    if (sBuyOffUser === "") {
+                        bFlag = false;
+                        break;
+                    } else {
+                        bFlag = true;
+                    }
+                }
+                if (bFlag === false) {
+                    MessageBox.warning("User can add single buy off entry at a time, please use existing line item entry in table.");
+                } else {
+                    oBuyOffTableModel.push({
+                        "DispositionGroup": "",
+                        "WorkCenter": "",
+                        "BuyOffUser": "",
+                        "BuyOffDate": "",
+                        "BuyOffStatusText": ""
+                    });
+                    oBuyOffTable.getModel("DispositionBuyOffModel").setData(oBuyOffTableModel);
+                }
+            }
         },
 
         /**
