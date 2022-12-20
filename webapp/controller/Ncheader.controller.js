@@ -7442,7 +7442,7 @@ sap.ui.define([
             var oDispositionIncompleteChk = this.getView().byId("idDispoGenInfoIncompFlag").getSelected();
             var oDispositionText = this.getView().byId("idDispoTextArea").getValue();
             var oDefaultWrkGroup = this.getView().byId("idworkgroup").getText();
-            var oBuyOffTableData = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData();
+            // var oBuyOffTableData = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData();
 
             if (oDiscrepancyNo) {
                 if (this.getView().byId("idTableDisposition").getModel("DispositionDetails").getData().length === 0) {
@@ -7481,6 +7481,7 @@ sap.ui.define([
                             "DispositionRestrictPart": oDispositionRestrictPart,
                             "to_disposerial": [],
                             "to_disporework": [],
+                            "to_dispobuyoff": [],
                             "DispositionText": oDispositionText,
                             "DispositionGroupQuality": oDispositionIncompleteChk === true ? "" : this.oQualityWrkGrp,
                             "Create": true
@@ -7516,7 +7517,10 @@ sap.ui.define([
                                     "Order": oOrderNo
                                 });
                             }
-                        } 
+                        }
+                        
+                      
+                        
                     }
                 } else if (this.getView().byId("idTableDisposition").getModel("DispositionDetails").getData().length > 0) {
                     sap.ui.core.BusyIndicator.show();
