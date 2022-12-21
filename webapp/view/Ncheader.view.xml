@@ -1242,9 +1242,9 @@
                                                         <CheckBox id="dispGenRestrictPart" text="" />
                                                         <Label text="Customer Support Notification" />
                                                         <Switch id="dispGenCSN" state="false" customTextOn="Yes" customTextOff="No" />
-                                                        <Label text="Partner / Supplier" />
+                                                        <Label text="Supplier" />
                                                         <Input id="dispGenPartSuppName" editable="false" showValueHelp="false" valueHelpRequest="onVHReqPartner" />
-                                                        <Label text="Partner / Supplier Name" />
+                                                        <Label text="Supplier Name" />
                                                         <Input id="dispGenPartSuppDesc" editable="false" />
                                                         <Label text="MRB" />
                                                         <Button id="idBtnMRBDisp" type="Emphasized" width="10%" icon="sap-icon://popup-window" press="onDispoistionMRB" enabled="false" />
@@ -1309,7 +1309,7 @@
                                             </l:BlockLayoutCell>
                                         </l:BlockLayoutRow>
                                     </l:BlockLayout>
-                                    <Table items="{path: 'DispositionDetails>/'}" id="idTableDisposition" mode="SingleSelectLeft" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true" class="formcolor1" selectionChange="onDispoLineItemSelection">
+                                    <Table items="{path: 'DispositionDetails>/'}" id="idTableDisposition" mode="SingleSelectLeft" growing="true" growingThreshold="10" growingScrollToLoad="false" includeItemInSelection="true" class="formcolor1" selectionChange="onDispoLineItemSelection">
                                         <headerToolbar>
                                             <Toolbar>
                                                 <Title text="Disposition Details" level="H2" />
@@ -1321,10 +1321,10 @@
                                             </Toolbar>
                                         </headerToolbar>
                                         <columns>
-                                            <Column hAlign="Left">
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
                                                 <Text text="No." />
                                             </Column>
-                                            <Column hAlign="Left">
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
                                                 <Text text="Type" />
                                             </Column>
                                             <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
@@ -1378,31 +1378,40 @@
                                         </items>
                                     </Table>
                                     <Label text="Disposition Text" design="Bold" class="sapUiTinyMarginTop" />
-                                    <TextArea id="idDispoTextArea" value="" maxLength="40" placeholder="Text" width="100%" />
-                                    <Table id="idTableDispoBuyOff" items="{DispositionBuyOffModel>/}" class="formcolor1" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
+                                    <TextArea id="idDispoTextArea" value="" maxLength="1024" placeholder="Text" width="100%" />
+                                    <Table id="idTableDispoBuyOff" items="{DispositionBuyOffModel>/}" mode="None" class="formcolor1" growing="true" growingThreshold="10" growingScrollToLoad="false" includeItemInSelection="true">
                                         <headerToolbar>
                                             <Toolbar>
                                                 <Title text="Buyoff" level="H2" />
                                                 <ToolbarSpacer />
-                                                <Button type="Emphasized" icon="sap-icon://copy" press="onBuyoffCopy" />
-                                                <Button type="Emphasized" icon="sap-icon://add" press="onBuyoffAdd" />
+                                                <Button id="idBtnBuyOffCopy" type="Emphasized" icon="sap-icon://copy" press="onBuyoffCopy" enabled="false" />
+                                                <Button id="idBtnBuyOffAdd" type="Emphasized" icon="sap-icon://add" press="onBuyoffAdd" enabled="false" />
                                             </Toolbar>
                                         </headerToolbar>
                                         <columns>
-                                            <Column hAlign="Left">
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="14%" >
                                                 <Text text="Buyoff Group" />
                                             </Column>
-                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="14%">
                                                 <Text text="Work Center" />
                                             </Column>
-                                            <Column hAlign="Left">
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="12%">
                                                 <Text text="Buyoff User" />
                                             </Column>
-                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="12%">
                                                 <Text text="Buyoff Date" />
                                             </Column>
-                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="13%">
                                                 <Text text="Status" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="35%">
+                                                <Text text="Buyoff Text" />
+                                            </Column>
+                                            <Column hAlign="Left" visible="false">
+                                                <Text text="Disposition Sequence" />
+                                            </Column>
+                                            <Column hAlign="Left" visible="false">
+                                                <Text text="Buyoff Status Key" />
                                             </Column>
                                         </columns>
                                         <items>
@@ -1413,12 +1422,15 @@
                                                     <Text text="{DispositionBuyOffModel>BuyOffUser}" />
                                                     <Text text="{DispositionBuyOffModel>BuyOffDate}" />
                                                     <Input value="{DispositionBuyOffModel>BuyOffStatusText}" showValueHelp="true" valueHelpRequest="onOpenVHBuyOffStatus" />
+                                                    <TextArea value="{DispositionBuyOffModel>BuyOffComment}" rows="3" maxLength="1024" width="100%" />
+                                                    <Text text="{DispositionBuyOffModel>DispositionSequence}" />
+                                                    <Text text="{DispositionBuyOffModel>BuyOffStatusKey}" />
                                                 </cells>
                                             </ColumnListItem>
                                         </items>
                                     </Table>
-                                    <Label text="Buyoff Text" design="Bold" class="sapUiTinyMarginTop" />
-                                    <TextArea value="" maxLength="40" placeholder="Text" width="100%" />
+                                    <!-- <Label text="Buyoff Text" design="Bold" class="sapUiTinyMarginTop" />
+                                    <TextArea id="idBuyOffComment" maxLength="40" placeholder="Text" width="100%" /> -->
                                     <upload:UploadSet
                                         id="UploadSet"
                                         instantUpload="true"
