@@ -982,10 +982,10 @@
                                                         <Label text="Part Received in Quarantine(Z11):" width="125%" />
                                                         <CheckBox id="idDcCbPrq" class="sapUiLargeMarginBegin" />
                                                         <Label text="MES Issue" />
-                                                        <CheckBox id="idDcCbMesi" class="sapUiLargeMarginBegin" />
+                                                        <Input id="idDcCbMesi" maxLength="8" />
                                                         <!-- <Input width="130px" /> -->
                                                         <Label text="CSMS Issue" />
-                                                        <CheckBox id="idDcCbCsmsi" class="sapUiLargeMarginBegin" />
+                                                        <Input id="idDcCbCsmsi" maxLength="10" />
                                                         <Label text="Preliminary Cause" />
                                                         <ComboBox id="idDcCobPc" items="{preliminarycauseModel>/}">
                                                             <core:Item key="{preliminarycauseModel>Value}" text="{preliminarycauseModel>Value}" />
@@ -1281,9 +1281,9 @@
                                                         <Label text="Part Received in Quarantine(Z11):" width="125%" />
                                                         <CheckBox id="idDispCbPrq" class="sapUiLargeMarginBegin" enabled="false" />
                                                         <Label text="MES Issue" />
-                                                        <CheckBox id="idDispCbMesi" class="sapUiLargeMarginBegin" enabled="false" />
+                                                        <Input id="idDispCbMesi" enabled="false" />
                                                         <Label text="CSMS Issue" />
-                                                        <CheckBox id="idDispCbCsmsi" class="sapUiLargeMarginBegin" enabled="false" />
+                                                        <Input id="idDispCbCsmsi" enabled="false" />
                                                         <Label text="Preliminary Cause" />
                                                         <ComboBox id="idDispCobPc" items="{preliminarycauseModel>/}" enabled="false">
                                                             <core:Item key="{preliminarycauseModel>Value}" text="{preliminarycauseModel>Value}" />

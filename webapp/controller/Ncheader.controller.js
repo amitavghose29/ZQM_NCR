@@ -1707,7 +1707,14 @@ sap.ui.define([
                     } else {
                         this.getView().byId("idDiscAircraft").setValueState("None");
                         this.getView().byId("idDiscAircraft").setValueStateText();
-                        this.IsUserMRBCertifiedCheck();
+                        // this.IsUserMRBCertifiedCheck();
+                        if (this.getView().byId("idDcCobDscNo").getValue() === "" && this.getView().byId("idDcCbIf").getSelected() === true) {
+                            this.createDiscrepancyData();
+                        } else if (this.getView().byId("idDcCobDscNo").getValue() !== "" && this.getView().byId("idDcCbIf").getSelected() === true) {
+                            this.updateDiscrepancyData();
+                        } else if((this.getView().byId("idDcCobDscNo").getValue() !== "" || this.getView().byId("idDcCobDscNo").getValue() === "") && this.getView().byId("idDcCbIf").getSelected() === false){
+                            this.IsUserMRBCertifiedCheck();
+                        }
                     }
                 } else if (this.getView().byId("idComBoxDiscLinkTo").getValue() == "AIRCRAFT" || this.getView().byId("idComBoxDiscLinkTo").getValue() == "ASSEMBLY") {
                     if (this.getView().byId("idDiscAircraft").getValue() == "" || this.getView().byId("idDcIpLblty").getValue() == ""
@@ -1739,10 +1746,24 @@ sap.ui.define([
                         this.getView().byId("idDiscQtyRej").setValueStateText();
                         this.getView().byId("idDcIpDc").setValueStateText();
                         this.getView().byId("idDcTxtIs").setValueStateText();
-                        this.IsUserMRBCertifiedCheck();
+                        // this.IsUserMRBCertifiedCheck();
+                        if (this.getView().byId("idDcCobDscNo").getValue() === "" && this.getView().byId("idDcCbIf").getSelected() === true) {
+                            this.createDiscrepancyData();
+                        } else if (this.getView().byId("idDcCobDscNo").getValue() !== "" && this.getView().byId("idDcCbIf").getSelected() === true) {
+                            this.updateDiscrepancyData();
+                        } else if((this.getView().byId("idDcCobDscNo").getValue() !== "" || this.getView().byId("idDcCobDscNo").getValue() === "") && this.getView().byId("idDcCbIf").getSelected() === false){
+                            this.IsUserMRBCertifiedCheck();
+                        }
                     }
                 } else {
-                    this.IsUserMRBCertifiedCheck();
+                    // this.IsUserMRBCertifiedCheck();
+                    if (this.getView().byId("idDcCobDscNo").getValue() === "" && this.getView().byId("idDcCbIf").getSelected() === true) {
+                        this.createDiscrepancyData();
+                    } else if (this.getView().byId("idDcCobDscNo").getValue() !== "" && this.getView().byId("idDcCbIf").getSelected() === true) {
+                        this.updateDiscrepancyData();
+                    } else if((this.getView().byId("idDcCobDscNo").getValue() !== "" || this.getView().byId("idDcCobDscNo").getValue() === "") && this.getView().byId("idDcCbIf").getSelected() === false){
+                        this.IsUserMRBCertifiedCheck();
+                    }
                 }
             } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Dispo") {
                 if(this.getView().byId("idDispoGenInfoIncompFlag").getSelected() === true){
@@ -2554,8 +2575,8 @@ sap.ui.define([
                     //setting values in descripancy details 
                     this.getView().byId("idDcTAPi").setValue(prelimInvest);
                     this.getView().byId("idDcCbPrq").setSelected(partQuarantine);
-                    this.getView().byId("idDcCbMesi").setSelected(mesIssue);
-                    this.getView().byId("idDcCbCsmsi").setSelected(csmsIssue);
+                    this.getView().byId("idDcCbMesi").setValue(mesIssue);
+                    this.getView().byId("idDcCbCsmsi").setValue(csmsIssue);
                     this.getView().byId("idDcCobPc").setSelectedKey(prelimCause);
                     this.getView().byId("idDcIpDc").setValue(defectCode);
                     this.getView().byId("idDcTxtDc").setText(defectCodeDesc);
@@ -2658,8 +2679,8 @@ sap.ui.define([
             // this.getView().byId("idMulInpDiscTrcNo").setEditable(oROModel.oData.RejectQnty);
             this.getView().byId("idDcTAPi").setEditable(oROModel.oData.PrelimInvest);
             this.getView().byId("idDcCbPrq").setEnabled(oROModel.oData.PartQuarantine);
-            this.getView().byId("idDcCbMesi").setEnabled(oROModel.oData.MESissue);
-            this.getView().byId("idDcCbCsmsi").setEnabled(oROModel.oData.CsmsIssue);
+            this.getView().byId("idDcCbMesi").setEditable(oROModel.oData.MESissue);
+            this.getView().byId("idDcCbCsmsi").setEditable(oROModel.oData.CsmsIssue);
             this.getView().byId("idDcCobPc").setEnabled(oROModel.oData.PrelimCause);
             this.getView().byId("idDcIpDc").setEditable(oROModel.oData.DefectCode);
             this.getView().byId("idDcIpDp").setEditable(oROModel.oData.DropPoint);
@@ -5867,8 +5888,8 @@ sap.ui.define([
             var oDiscTraceNo = this.getView().byId("idMulInpDiscTrcNo").getTokens();
             var oDiscPrelimInvest = this.getView().byId("idDcTAPi").getValue();
             var oDiscPartQuarantine = this.getView().byId("idDcCbPrq").getSelected();
-            var oDiscMESissue = this.getView().byId("idDcCbMesi").getSelected();
-            var oDiscCsmsIssue = this.getView().byId("idDcCbCsmsi").getSelected();
+            var oDiscMESissue = this.getView().byId("idDcCbMesi").getValue();
+            var oDiscCsmsIssue = this.getView().byId("idDcCbCsmsi").getValue();
             var oDiscPrelimCause = this.getView().byId("idDcCobPc").getSelectedKey();
             var oDiscDefectCode = this.getView().byId("idDcIpDc").getValue();
             var oDiscDefect = this.getView().byId("idDcIpDcVal1").getValue();
@@ -6044,8 +6065,8 @@ sap.ui.define([
             var oDiscTraceNo = this.getView().byId("idMulInpDiscTrcNo").getTokens();
             var oDiscPrelimInvest = this.getView().byId("idDcTAPi").getValue();
             var oDiscPartQuarantine = this.getView().byId("idDcCbPrq").getSelected();
-            var oDiscMESissue = this.getView().byId("idDcCbMesi").getSelected();
-            var oDiscCsmsIssue = this.getView().byId("idDcCbCsmsi").getSelected();
+            var oDiscMESissue = this.getView().byId("idDcCbMesi").getValue();
+            var oDiscCsmsIssue = this.getView().byId("idDcCbCsmsi").getValue();
             var oDiscPrelimCause = this.getView().byId("idDcCobPc").getSelectedKey();
             var oDiscDefectCode = this.getView().byId("idDcIpDc").getValue();
             var oDiscDefect = this.getView().byId("idDcIpDcVal1").getValue();
@@ -6329,8 +6350,8 @@ sap.ui.define([
                     //setting values in descripancy details                     
                     this.getView().byId("idDispTAPi").setValue(prelimInvest);
                     this.getView().byId("idDispCbPrq").setSelected(partQuarantine);
-                    this.getView().byId("idDispCbMesi").setSelected(mesIssue);
-                    this.getView().byId("idDispCbCsmsi").setSelected(csmsIssue);
+                    this.getView().byId("idDispCbMesi").setValue(mesIssue);
+                    this.getView().byId("idDispCbCsmsi").setValue(csmsIssue);
                     this.getView().byId("idDispCobPc").setSelectedKey(prelimCause);
                     this.getView().byId("idDispIpDc").setValue(defectCode);
                     this.getView().byId("idDispIpDcVal1").setValue(defect);
@@ -7132,6 +7153,7 @@ sap.ui.define([
                 }
             }
             this.bindBuyOffTable();
+            this.getView().byId("idBtnBuyOffAdd").setEnabled(false);
         },
 
         onCancelDisposition: function () {
@@ -7394,13 +7416,13 @@ sap.ui.define([
                             actions: [MessageBox.Action.YES, MessageBox.Action.NO],
                             onClose: function (oAction) {
                                 if (oAction === "YES") {
-                                    this.dispoInitialiseWorkGroupDialog();
                                     this.oMRBActionYes = true;
                                     this.oMRBActionNo = false;
+                                    this.dispoInitialiseWorkGroupDialog();
                                 } else {
-                                    this.createDisposition();
                                     this.oMRBActionYes = false;
                                     this.oMRBActionNo = true;
+                                    this.createDisposition();
                                 }
                             }.bind(this)
                         }
@@ -7551,7 +7573,7 @@ sap.ui.define([
                                 var oWorkCenter = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].WorkCenter;
                                 var oBuyOffStatusText = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].BuyOffStatusText;
                                 var oBuyOffSequence = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].DispositionSequence;
-                                var oBuyOffStatusKey = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].BuyOffStatusKey;
+                                var oBuyOffStatusKey = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].BuyOffStatusKey === "" ? this.getView().byId("idTableDispoBuyOff").getItems()[0].getCells()[4].getTooltip() : this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].BuyOffStatusKey;
                                 var oBuyOffComment = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].BuyOffComment;
                                 payloadDispoData["to_dispobuyoff"].push({
                                     "DispositionGroup": oDispositionGroup,
@@ -7568,7 +7590,7 @@ sap.ui.define([
                                     var oWorkCenter = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[k].WorkCenter;
                                     var oBuyOffStatusText = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[k].BuyOffStatusText;
                                     var oBuyOffSequence = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[k].DispositionSequence;
-                                    var oBuyOffStatusKey = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[k].BuyOffStatusKey;
+                                    var oBuyOffStatusKey = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[k].BuyOffStatusKey === "" ? this.getView().byId("idTableDispoBuyOff").getItems()[k].getCells()[4].getTooltip() : this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[k].BuyOffStatusKey;
                                     var oBuyOffComment = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[k].BuyOffComment;
                                     payloadDispoData["to_dispobuyoff"].push({
                                         "DispositionGroup": oDispositionGroup,
@@ -7671,7 +7693,7 @@ sap.ui.define([
                                 var oWorkCenter = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].WorkCenter;
                                 var oBuyOffStatusText = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].BuyOffStatusText;
                                 var oBuyOffSequence = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].DispositionSequence;
-                                var oBuyOffStatusKey = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].BuyOffStatusKey;
+                                var oBuyOffStatusKey = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].BuyOffStatusKey === "" ? this.getView().byId("idTableDispoBuyOff").getItems()[0].getCells()[4].getTooltip() : this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].BuyOffStatusKey;
                                 var oBuyOffComment = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].BuyOffComment;
                                 payloadDispoData["to_dispobuyoff"].push({
                                     "DispositionGroup": oDispositionGroup,
@@ -7688,7 +7710,7 @@ sap.ui.define([
                                     var oWorkCenter = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[k].WorkCenter;
                                     var oBuyOffStatusText = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[k].BuyOffStatusText;
                                     var oBuyOffSequence = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[k].DispositionSequence;
-                                    var oBuyOffStatusKey = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[k].BuyOffStatusKey;
+                                    var oBuyOffStatusKey = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[k].BuyOffStatusKey === "" ? this.getView().byId("idTableDispoBuyOff").getItems()[k].getCells()[4].getTooltip() : this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[k].BuyOffStatusKey;
                                     var oBuyOffComment = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[k].BuyOffComment;
                                     payloadDispoData["to_dispobuyoff"].push({
                                         "DispositionGroup": oDispositionGroup,
@@ -7778,7 +7800,7 @@ sap.ui.define([
                                 var oWorkCenter = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].WorkCenter;
                                 var oBuyOffStatusText = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].BuyOffStatusText;
                                 var oBuyOffSequence = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].DispositionSequence;
-                                var oBuyOffStatusKey = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].BuyOffStatusKey;
+                                var oBuyOffStatusKey = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].BuyOffStatusKey === "" ? this.getView().byId("idTableDispoBuyOff").getItems()[0].getCells()[4].getTooltip() : this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].BuyOffStatusKey;
                                 var oBuyOffComment = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].BuyOffComment;
                                 payloadDispoData["to_dispobuyoff"].push({
                                     "DispositionGroup": oDispositionGroup,
@@ -7795,7 +7817,7 @@ sap.ui.define([
                                     var oWorkCenter = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[k].WorkCenter;
                                     var oBuyOffStatusText = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[k].BuyOffStatusText;
                                     var oBuyOffSequence = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[k].DispositionSequence;
-                                    var oBuyOffStatusKey = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[k].BuyOffStatusKey;
+                                    var oBuyOffStatusKey = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[k].BuyOffStatusKey === "" ? this.getView().byId("idTableDispoBuyOff").getItems()[k].getCells()[4].getTooltip() : this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[k].BuyOffStatusKey;
                                     var oBuyOffComment = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[k].BuyOffComment;
                                     payloadDispoData["to_dispobuyoff"].push({
                                         "DispositionGroup": oDispositionGroup,
@@ -8217,8 +8239,10 @@ sap.ui.define([
                 oInput.resetProperty("value");
                 return;
             }
-
-            oInput.setValue(oSelectedItem.getTitle());
+            if(oSelectedItem){
+                oInput.setValue(oSelectedItem.getTitle());
+                oInput.setTooltip(oSelectedItem.getInfo());
+            }
             this._oBuyoffStatusDialog.destroy();
         },
 
