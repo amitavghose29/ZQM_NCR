@@ -2638,6 +2638,9 @@ sap.ui.define([
                         this.getView().byId("headertext").setText("Discrepancy No: ");
                         this.getView().byId("idDcCobDscNo").setValue();
                         this.getView().byId("idDcCobDscNo").setSelectedKey();
+                        this._oMultiInputDiscSN.removeAllTokens();
+                        this._oMultiInputDiscTN.removeAllTokens();
+                        this.getView().byId("idDcCbIf").setSelected(true);
                     }
 
                     if (this.workingQueueMode == "EDIT") {
@@ -5267,7 +5270,7 @@ sap.ui.define([
                     sap.ui.core.BusyIndicator.hide();
                     var data = oData.results;
                     oModel.setData(data);
-                    this.getView().byId("idComBoxDiscLinkTo").setModel(oModel, "LinkToModel");
+                    this.getView().setModel(oModel, "LinkToModel");
                 }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
@@ -7855,10 +7858,6 @@ sap.ui.define([
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
-                        this.bindDispositionDetails();
-                        this.bindBuyOffTable();
-                        this.resetDispositionGenInfoFields();
-                        this.resetInitialisedFields();
                         var msg = JSON.parse(oError.responseText).error.message.value;
                         MessageBox.error(msg);   
                     }.bind(this)

@@ -422,7 +422,7 @@
                                                             <Input id="idDcIpLblty" showValueHelp="true" valueHelpRequest="onVHReqLiability" change="handleChangeLiability" />
                                                             <TextArea rows="3" width="100%" id="idDiscLbltyTxt" />
                                                         </VBox>
-                                                        <Label text="Suppilier" />
+                                                        <Label text="Supplier" />
                                                         <Input id="idDcIpPrtnr" showValueHelp="true" valueHelpRequest="onVHReqPartner" change="handleChangeSupplierName" />
                                                         <Label text="Suppilier Name" />
                                                         <Input id="idDcIpPrtnrNm" editable="false" />
