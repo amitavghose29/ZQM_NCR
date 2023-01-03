@@ -1417,12 +1417,12 @@
                                         <items>
                                             <ColumnListItem>
                                                 <cells>
-                                                    <Input value="{DispositionBuyOffModel>DispositionGroup}" showValueHelp="true" valueHelpRequest="onOpenVHBuyOffGroup" />
-                                                    <Input value="{DispositionBuyOffModel>WorkCenter}" showValueHelp="true" valueHelpRequest="onOpenVHNCCreated" />
+                                                    <Input value="{DispositionBuyOffModel>DispositionGroup}" showValueHelp="true" valueHelpRequest="onOpenVHBuyOffGroup" editable ="{= ${DispositionBuyOffModel>DispositionSequence} === '' ? true : ${DispositionBuyOffModel>RowEdit} === true ? true : false}" />
+                                                    <Input value="{DispositionBuyOffModel>WorkCenter}" showValueHelp="true" valueHelpRequest="onOpenVHNCCreated" editable ="{= ${DispositionBuyOffModel>DispositionSequence} === '' ? true : ${DispositionBuyOffModel>RowEdit} === true ? true : false}" />
                                                     <Text text="{DispositionBuyOffModel>BuyOffUser}" />
                                                     <Text text="{DispositionBuyOffModel>BuyOffDate}" />
-                                                    <Input value="{DispositionBuyOffModel>BuyOffStatusText}" showValueHelp="true" valueHelpRequest="onOpenVHBuyOffStatus" />
-                                                    <TextArea value="{DispositionBuyOffModel>BuyOffComment}" rows="3" maxLength="1024" width="100%" />
+                                                    <Input value="{DispositionBuyOffModel>BuyOffStatusText}" showValueHelp="true" valueHelpRequest="onOpenVHBuyOffStatus" editable ="{= ${DispositionBuyOffModel>DispositionSequence} === '' ? true : ${DispositionBuyOffModel>RowEdit} === true ? true : false}" />
+                                                    <TextArea value="{DispositionBuyOffModel>BuyOffComment}" rows="3" maxLength="1024" width="100%" editable ="{= ${DispositionBuyOffModel>DispositionSequence} === '' ? true : ${DispositionBuyOffModel>RowEdit} === true ? true : false}" />
                                                     <Text text="{DispositionBuyOffModel>DispositionSequence}" />
                                                     <Text text="{DispositionBuyOffModel>BuyOffStatusKey}" />
                                                 </cells>

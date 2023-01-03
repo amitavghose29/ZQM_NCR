@@ -2324,7 +2324,7 @@ sap.ui.define([
                         this._setDiscrepancyComboBox();
                         this._setPrelimCauseComboBox();
                         this._setFormatComboBox();
-                        this.bindLinkedToDiscrepancy();
+                        // this.bindLinkedToDiscrepancy();
                         this.onSelectDiscPartlocation();
                         this.onSelectDiscPartlocationList();
                         this.bindSupplier();
@@ -5270,7 +5270,7 @@ sap.ui.define([
                     sap.ui.core.BusyIndicator.hide();
                     var data = oData.results;
                     oModel.setData(data);
-                    this.getView().setModel(oModel, "LinkToModel");
+                    this.getView().byId("idComBoxDiscLinkTo").setModel(oModel, "LinkToModel");
                 }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
@@ -6993,11 +6993,12 @@ sap.ui.define([
             var oDispoNotification = this.getView().byId("idTableDisposition").getSelectedItem().getBindingContext("DispositionDetails").getProperty("NotificationNo");
             var oDispoDiscrepancy = this.getView().byId("idTableDisposition").getSelectedItem().getBindingContext("DispositionDetails").getProperty("DiscrepancyNo");
             var oParentDispoNo = this.getView().byId("idTableDisposition").getSelectedItem().getBindingContext("DispositionDetails").getProperty("ParentDispoNo");
+            var oWorkGroupKey = this.getView().byId("idworkgroup").getText();
             sap.ui.core.BusyIndicator.show();
             var oModel = new JSONModel();
             oModel.setSizeLimit(10000);
             var oDataModel = this.getOwnerComponent().getModel();
-            var sPath = "/NotificationDispositionSet(NotificationNo='" + oDispoNotification + "',DiscrepancyNo='" + oDispoDiscrepancy + "',ParentDispoNo='" + oParentDispoNo + "')";
+            var sPath = "/NotificationDispositionSet(NotificationNo='" + oDispoNotification + "',DiscrepancyNo='" + oDispoDiscrepancy + "',ParentDispoNo='" + oParentDispoNo + "',WorkGroupKey='" + oWorkGroupKey + "')";
             oDataModel.read(sPath, {
                 urlParameters: {
                     "$expand": "to_disposerial,to_dispomrb"
@@ -7940,6 +7941,7 @@ sap.ui.define([
             var oParentDispoNo = oEvent.getParameters().listItem.getBindingContext("DispositionDetails").getProperty("ParentDispoNo");
             var oDispositionCode = oEvent.getParameters().listItem.getBindingContext("DispositionDetails").getProperty("DispositionCode");
             var oDispositionStatus = oEvent.getParameters().listItem.getBindingContext("DispositionDetails").getProperty("DispositionStatus");
+            var oWorkGroupKey = this.getView().byId("idworkgroup").getText();
             if (oParentDispoNo) {
                 this.getView().byId("headertext").setText("Discrepancy/Disposition No: " + oDispoDiscrepancy + "/" + oParentDispoNo);
                 this.getView().byId("idBtnDispositionCopy").setEnabled(true);
@@ -7960,7 +7962,7 @@ sap.ui.define([
                 var oModel = new JSONModel();
                 oModel.setSizeLimit(10000);
                 var oDataModel = this.getOwnerComponent().getModel();
-                var sPath = "/NotificationDispositionSet(NotificationNo='" + oDispoNotification + "',DiscrepancyNo='" + oDispoDiscrepancy + "',ParentDispoNo='" + oParentDispoNo + "')";
+                var sPath = "/NotificationDispositionSet(NotificationNo='" + oDispoNotification + "',DiscrepancyNo='" + oDispoDiscrepancy + "',ParentDispoNo='" + oParentDispoNo + "',WorkGroupKey='" + oWorkGroupKey + "')";
                 oDataModel.read(sPath, {
                     urlParameters: {
                         "$expand": "to_disposerial,to_disporework"
@@ -8059,11 +8061,12 @@ sap.ui.define([
             }
             var oDispoNotification = sNotif,
                 oDispoDiscrepancy = sDiscre,
-                oParentDispoNo = sParDispo;
+                oParentDispoNo = sParDispo,
+                oWorkGroupKey = this.getView().byId("idworkgroup").getText();
             var oModel = new JSONModel();
                 oModel.setSizeLimit(10000);
             var oDataModel = this.getOwnerComponent().getModel();
-            var sPath = "/NotificationDispositionSet(NotificationNo='" + oDispoNotification + "',DiscrepancyNo='" + oDispoDiscrepancy + "',ParentDispoNo='" + oParentDispoNo + "')";
+            var sPath = "/NotificationDispositionSet(NotificationNo='" + oDispoNotification + "',DiscrepancyNo='" + oDispoDiscrepancy + "',ParentDispoNo='" + oParentDispoNo + "',WorkGroupKey='" + oWorkGroupKey + "')";
             oDataModel.read(sPath, {
                 urlParameters: {
                     "$expand": "to_dispobuyoff"
