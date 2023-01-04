@@ -2345,8 +2345,9 @@ sap.ui.define([
                                 this.getOwnerComponent().setModel(jsonModel, "NCSaveModel");
 
                                 this.getOwnerComponent().getRouter().navTo("Ncheader", {
-                                    ID: data.Notification
-                                });          
+                                    ID: data.Notification,
+                                    APP:"NCQM"
+                                });            
                                 this.onPressCancel();
                                 sap.ui.core.BusyIndicator.hide();
                                 // saveData = payload;

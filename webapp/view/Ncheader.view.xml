@@ -424,7 +424,7 @@
                                                         </VBox>
                                                         <Label text="Supplier" />
                                                         <Input id="idDcIpPrtnr" showValueHelp="true" valueHelpRequest="onVHReqPartner" change="handleChangeSupplierName" />
-                                                        <Label text="Suppilier Name" />
+                                                        <Label text="Supplier Name" />
                                                         <Input id="idDcIpPrtnrNm" editable="false" />
                                                         <Label text="Supersedes Item" />
                                                         <Input id="idDcIpSpsdsItm" showValueHelp="true" valueHelpRequest="onVHReqSupersedesItem" />

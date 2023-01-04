@@ -121,7 +121,7 @@
 				"target": ["TargetMain"]
 			}, {
 				"name": "Ncheader",
-				"pattern": "Ncheader/{ID}",
+				"pattern": "Ncheader/{ID}/{APP}",
 				"titleTarget": "",
 				"greedy": false,
 				"target": ["Ncheader"]

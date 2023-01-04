@@ -1,19 +1,28 @@
-<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" class="sapUiSizeCompact">
-	<Dialog title="WorkGroup" resizable="true" contentHeight="250px" contentWidth="250px">
-        <Table items="{WorkGroupQual>/}" itemPress="onQualWorkGrpItemSel">
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:fb="sap.ui.comp.filterbar" class="sapUiSizeCompact">
+    <Dialog title="Quality WorkGroup" resizable="true" contentWidth="540px">
+    <SearchField liveChange=".onSearchQualityWorkGroup" width="100%" class="sapUiTinyMargin" />
+        <Table growing="true" growingThreshold="10" items="{WorkGroupQual>/}" itemPress="onQualWorkGrpItemSel" sticky="ColumnHeaders" >
             <columns>
-                <Column minScreenWidth="Tablet" demandPopin="true"> 
+                <Column minScreenWidth="Tablet" demandPopin="true">
                     <Text text="WorkGroup" />
                 </Column>
-				<Column minScreenWidth="Tablet" demandPopin="true">
+                <Column minScreenWidth="Tablet" demandPopin="true">
                     <Text text="Description" />
+                </Column>
+                <Column minScreenWidth="Tablet" demandPopin="true">
+                    <Text text="Plant" />
+                </Column>
+                <Column minScreenWidth="Tablet" demandPopin="true">
+                    <Text text="Function Type" />
                 </Column>
             </columns>
             <items>
                 <ColumnListItem type="Active">
                     <cells>
                         <Text text="{WorkGroupQual>Value}" />
-						<Text text="{WorkGroupQual>Description}" />
+                        <Text text="{WorkGroupQual>Description}" />
+                        <Text text="{WorkGroupQual>KeyValue}" />
+                        <Text text="{WorkGroupQual>Value1}" />
                     </cells>
                 </ColumnListItem>
             </items>

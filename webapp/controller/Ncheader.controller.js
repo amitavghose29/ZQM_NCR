@@ -31,7 +31,8 @@ sap.ui.define([
             this.addMultiInputValidator();
             var oAttachModel = new JSONModel();
             oAttachModel.setData([]);
-            this.getView().setModel(oAttachModel, "AttachmentModel")
+            this.getView().setModel(oAttachModel, "AttachmentModel");
+            this.oAppMode = "";
         },
 
         // Added code for multiinput control id initialisation and validator
@@ -83,6 +84,7 @@ sap.ui.define([
             // var oArgs = oEvent.getParameter("arguments");
             // var fid = oArgs.ID;
             sObjectId = oEvent.getParameter("arguments").ID;
+            this.oAppMode = oEvent.getParameter("arguments").APP;
             this.getOwnerComponent().getModel().metadataLoaded().then(function () {
                 var sObjectPath = this.getOwnerComponent().getModel().createKey("CreateNotificationHeaderSet", {
                     NotificationNo: sObjectId
@@ -651,7 +653,8 @@ sap.ui.define([
             obj.Location = locationKey;
             obj.DiscrepancyNo = this.getView().byId("idDcCobDscNo").getSelectedKey();
             if (obj.DiscrepancyNo == "") {
-                MessageBox.warning("Please Select DiscrepancyNo");
+                var oSavPrtLocMsg = this.getView().getModel("i18n").getProperty("SplDiscMsg");
+                MessageBox.warning(oSavPrtLocMsg);
                 return
             }
             if (locationKey == "FUSELAGE") {
@@ -1376,6 +1379,19 @@ sap.ui.define([
                         shellHash: hash
                     }
                 });
+            } else if(this.oAppMode == "NETLIST"){
+                var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation"); // get a handle on the global XAppNav service
+                var hash = (oCrossAppNavigator && oCrossAppNavigator.hrefForExternal({
+                    target: {
+                        semanticObject: "zncretreivelist",
+                        action: "display"
+                    }
+                })) || "";
+                oCrossAppNavigator.toExternal({
+                    target: {
+                        shellHash: hash
+                    }
+                });
             } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre") {
                 this.getView().byId("idIconTabBarHeader").setSelectedKey("Hdata");
                 this.handleIconbarSelect();
@@ -1608,14 +1624,16 @@ sap.ui.define([
             if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Hdata") {
                 var oNCType = this.getView().byId("idCombNcType").getValue();
                 if (oNCType == "SUPPLIER" && this.getView().byId("idMNInputSN").getTokens().length === 0 && this.getView().byId("idMNInputTN").getTokens().length === 0) {
-                    MessageBox.warning("Please enter Serial or Traceability Number.");
+                    var oNcrSaveTrcMsg = this.getView().getModel("i18n").getProperty("NCSaveTrcMsg");
+                    MessageBox.warning(oNcrSaveTrcMsg);
                 } else if (Number(this.getOwnerComponent().getModel("NCSaveModel").getData().Category) == "002" || this.getView().byId("idInpWrkIns").getValue() !== "") {
                     if (this.getView().byId("idInpAircraft").getValue() !== "") {
                         this.getView().byId("idInpAircraft").setValueState("None");
                         this.getView().byId("idInpAircraft").setValueStateText("");
                         this.updateHeaderData();
                     } else {
-                        MessageBox.information("Please enter data in all mandatory fields.");
+                        var oNcrSaveFldMsg = this.getView().getModel("i18n").getProperty("NCSaveFieldMsg");
+                        MessageBox.information(oNcrSaveFldMsg);
                         this.getView().byId("idInpAircraft").setValueState("Error");
                         this.getView().byId("idInpAircraft").setValueStateText("Please Enter Aircraft Number");
                     }
@@ -1701,7 +1719,8 @@ sap.ui.define([
             } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Discre") {
                 if (oNctype == "STOCK PURGE") {
                     if (this.getView().byId("idDiscAircraft").getValue() == "") {
-                        MessageBox.information("Please enter data in all mandatory fields.");
+                        var oNcrSaveFldMsg = this.getView().getModel("i18n").getProperty("NCSaveFieldMsg");
+                        MessageBox.information(oNcrSaveFldMsg);
                         this.getView().byId("idDiscAircraft").setValueState("Warning");
                         this.getView().byId("idDiscAircraft").setValueStateText("Please Enter Aircraft Number.");
                     } else {
@@ -1720,7 +1739,9 @@ sap.ui.define([
                     if (this.getView().byId("idDiscAircraft").getValue() == "" || this.getView().byId("idDcIpLblty").getValue() == ""
                         || this.getView().byId("idDiscQtyIns").getValue() == "" || this.getView().byId("idDiscQtyRej").getValue() == ""
                         || this.getView().byId("idDcIpDc").getValue() == "" || this.getView().byId("idDcTxtIs").getValue() == "") {
-                        MessageBox.information("Please enter data in all mandatory fields.");
+                        
+                        var oNcrSaveFldMsg = this.getView().getModel("i18n").getProperty("NCSaveFieldMsg");
+                        MessageBox.information(oNcrSaveFldMsg);
                         this.getView().byId("idDiscAircraft").getValue() === "" ? this.getView().byId("idDiscAircraft").setValueState("Warning") : "";
                         this.getView().byId("idDiscAircraft").getValue() === "" ? this.getView().byId("idDiscAircraft").setValueStateText("Please Enter Aircraft Number") : "";
                         this.getView().byId("idDcIpLblty").getValue() === "" ? this.getView().byId("idDcIpLblty").setValueState("Warning") : "";
@@ -2312,7 +2333,8 @@ sap.ui.define([
             if (iconKey == "Hdata") {
                 var hdatatab = this.getView().byId("idHeaderDiscTable").getSelectedItems();
                 if (hdatatab.length == 0) {
-                    MessageBox.warning("Please select a line item to copy Discrepancy details.");
+                    var oSelDiscMsg = this.getView().getModel("i18n").getProperty("SelDiscMsg");
+                    MessageBox.warning(oSelDiscMsg);
                     return;
                 } else {
                     if (this.getView().byId("idHeaderDiscTable").getSelectedItem().getBindingContext("oHeaderDiscTable")) {
@@ -2369,7 +2391,8 @@ sap.ui.define([
             if (iconKey == "Hdata") {
                 var hdatatab = this.getView().byId("idHeaderDiscTable").getSelectedItems();
                 if (hdatatab.length == 0) {
-                    MessageBox.warning("Please select a line item to navigate to Discrepancy.");
+                    var oNavToDisc = this.getView().getModel("i18n").getProperty("NavToDiscMsg");
+                    MessageBox.warning(oNavToDisc);
                     return;
                 } else {
                     if (this.getView().byId("idHeaderDiscTable").getSelectedItem().getBindingContext("oHeaderDiscTable")) {
@@ -2407,7 +2430,8 @@ sap.ui.define([
             if (iconKey == "Hdata") {
                 var hdatatab = this.getView().byId("idHeaderDiscTable").getSelectedItems();
                 if (hdatatab.length == 0) {
-                    MessageBox.warning("Please select a line item to navigate to Discrepancy.");
+                    var oNavToDispoMsg = this.getView().getModel("i18n").getProperty("NavToDispoMsg");
+                    MessageBox.warning(oNavToDispoMsg);
                     return;
                 } else {
                     if (this.getView().byId("idHeaderDiscTable").getSelectedItem().getBindingContext("oHeaderDiscTable")) {
@@ -3204,8 +3228,9 @@ sap.ui.define([
                             }
                             if (bFlag === false) {
                                 var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
+                                var oTokUpdateSnMsg = this.getView().getModel("i18n").getProperty("TokenUpdateSerNoMsg");
                                 MessageBox.information(
-                                    "Serial Number not available in SAP.",
+                                    oTokUpdateSnMsg,
                                     {
                                         styleClass: bCompact ? "sapUiSizeCompact" : ""
                                     }
@@ -3258,8 +3283,9 @@ sap.ui.define([
                             }
                             if (bFlag === false) {
                                 var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
+                                var oTokUpdateSnMsg = this.getView().getModel("i18n").getProperty("TokenUpdateSerNoMsg");
                                 MessageBox.information(
-                                    "Serial Number not available in SAP.",
+                                    oTokUpdateSnMsg,
                                     {
                                         styleClass: bCompact ? "sapUiSizeCompact" : ""
                                     }
@@ -3328,8 +3354,9 @@ sap.ui.define([
                             }
                             if (bFlag === false) {
                                 var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
+                                var oTokUpdateTnMsg = this.getView().getModel("i18n").getProperty("TokenUpdateTrcNoMsg");
                                 MessageBox.information(
-                                    "Traceability Number not available in SAP.",
+                                    oTokUpdateTnMsg,
                                     {
                                         styleClass: bCompact ? "sapUiSizeCompact" : ""
                                     }
@@ -3384,8 +3411,9 @@ sap.ui.define([
                             }
                             if (bFlag === false) {
                                 var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
+                                var oTokUpdateTnMsg = this.getView().getModel("i18n").getProperty("TokenUpdateTrcNoMsg");
                                 MessageBox.information(
-                                    "Traceability Number not available in SAP.",
+                                    oTokUpdateTnMsg,
                                     {
                                         styleClass: bCompact ? "sapUiSizeCompact" : ""
                                     }
@@ -3799,8 +3827,9 @@ sap.ui.define([
                     if (data.length === 0 && sap.ui.getCore().byId("idFlBarPrOrdVhPrdseq").getValue() === "" && sap.ui.getCore().byId(
                         "idFlBarPrOrdVhPartNo").getValue() === "" && sap.ui.getCore().byId("idFlBarPrOrdVhnlp").getValue() === "" && sap.ui.getCore()
                             .byId("idFlBarPrOrdVhWrkIns").getValue() === "") {
+                        var oProdOrdNodata = this.getView().getModel("i18n").getProperty("ProductionorderWRNodata");
                         MessageBox.warning(
-                            "No data found.! Please try to search using filter bar fields provided.", {
+                            oProdOrdNodata, {
                             icon: MessageBox.Icon.WARNING,
                             title: "No matching order found",
                             actions: [MessageBox.Action.OK],
@@ -3815,8 +3844,9 @@ sap.ui.define([
                         "idFlBarPrOrdVhPartNo").getValue() !== "" ||
                         sap.ui.getCore().byId("idFlBarPrOrdVhnlp").getValue() !== "" ||
                         sap.ui.getCore().byId("idFlBarPrOrdVhWrkIns").getValue() !== "")) {
+                        var oPartnerCodeMsg = this.getView().getModel("i18n").getProperty("PartnerCodeMsg");
                         MessageBox.warning(
-                            "Do you want to specify a Partner Code for this Part?", {
+                            oPartnerCodeMsg, {
                             icon: MessageBox.Icon.WARNING,
                             title: "No matching order found",
                             actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
@@ -4310,8 +4340,9 @@ sap.ui.define([
                         if (bFlag === true) {
                             this.getView().byId("idInpStatPartDesc").setEditable(true);
                             this.getView().byId("idInpStatPartDesc").setValue();
+                            var oPrtNoMsg = this.getView().getModel("i18n").getProperty("PartNumMatchMsg");
                             MessageBox.warning(
-                                "No matching Part master records found.", {
+                                oPrtNoMsg, {
                                 icon: MessageBox.Icon.WARNING,
                                 title: "Information",
                                 actions: [MessageBox.Action.OK],
@@ -5660,7 +5691,7 @@ sap.ui.define([
                             this.getView().byId("idDiscUomIns").setText();
                             this.getView().byId("idDiscUomRej").setText();
                             if (this.getView().byId("idComBoxDiscLinkTo").getValue() == "AIRCRAFT") {
-                                var oMessage = "No matching Part master records found.";
+                                var oMessage = this.getView().getModel("i18n").getProperty("PartNumMatchMsg");
                                 MessageBox.warning(
                                     oMessage, {
                                     icon: MessageBox.Icon.WARNING,
@@ -5673,7 +5704,7 @@ sap.ui.define([
                                     }.bind(this)
                                 });
                             } else if (this.getView().byId("idComBoxDiscLinkTo").getValue() == "DETAIL") {
-                                var oMessage = "No matching Part master records found, please contact the responsible team.";
+                                var oMessage = this.getView().getModel("i18n").getProperty("DiscPrtNoDetMsg");
                                 MessageBox.warning(
                                     oMessage, {
                                     icon: MessageBox.Icon.WARNING,
@@ -5686,7 +5717,7 @@ sap.ui.define([
                                     }.bind(this)
                                 });
                             } else {
-                                var oMessage = "No matching Part master records found.";
+                                var oMessage = this.getView().getModel("i18n").getProperty("PartNumMatchMsg");
                                 MessageBox.warning(
                                     oMessage, {
                                     icon: MessageBox.Icon.WARNING,
@@ -5733,8 +5764,9 @@ sap.ui.define([
                     //     this.updateDiscrepancyData();
                     // } 
                     else if (oData.MRBCertified === true) {
+                        var oMRBCertMsg = this.getView().getModel("i18n").getProperty("MRBCertMsg");
                         MessageBox.show(
-                            "Do you wish to go to the other workgroup and save.", {
+                            oMRBCertMsg, {
                             icon: MessageBox.Icon.INFORMATION,
                             title: "MRB certified User",
                             actions: [MessageBox.Action.YES, MessageBox.Action.NO],
@@ -6483,11 +6515,13 @@ sap.ui.define([
                 success: function (oData, oResult) {
                     sap.ui.core.BusyIndicator.hide();
                     if(oData.Change == false && this.getView().byId("idTableDisposition").getSelectedItem() == null){
-                        MessageBox.warning("User is not allowed to change the Major/Minor NC.");
+                        var oMajMinNCMsg = this.getView().getModel("i18n").getProperty("MajMinNCMsg");
+                        MessageBox.warning(oMajMinNCMsg);
                         this.getView().byId("dispGenMajorMinorNC").setSelectedKey();
                         this.getView().byId("dispGenMajorMinorNC").setValue();
                     }else if(oData.Change == false && this.getView().byId("idTableDisposition").getSelectedItem()){
-                        MessageBox.warning("User is not allowed to change the Major/Minor NC.");
+                        var oMajMinNCMsg = this.getView().getModel("i18n").getProperty("MajMinNCMsg");
+                        MessageBox.warning(oMajMinNCMsg);
                         this.getView().byId("dispGenMajorMinorNC").setSelectedKey("DISPIMPACT");
                         this.getView().byId("dispGenMajorMinorNC").setValue(this.oMajorMinorNC);
                     }else{
@@ -6656,8 +6690,9 @@ sap.ui.define([
                         }
                         if (bFlag === false) {
                             var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
+                            var oSerMsg = this.getView().getModel("i18n").getProperty("TokenUpdateSerNoMsg");
                             MessageBox.information(
-                                "Serial Number not available in SAP.",
+                                oSerMsg,
                                 {
                                     styleClass: bCompact ? "sapUiSizeCompact" : ""
                                 }
@@ -7138,7 +7173,8 @@ sap.ui.define([
                     }
                 }
                 if (bFlag === false) {
-                    MessageBox.warning("User can add single disposition entry at a time, please use existing line item entry in table.");
+                    var oDispoAddItemMsg = this.getView().getModel("i18n").getProperty("DispoAddItemMsg");
+                    MessageBox.warning(oDispoAddItemMsg);
                 } else {
                     oDispoTableModel.push({
                         "ParentDispoNo": "",
@@ -7369,11 +7405,29 @@ sap.ui.define([
             }else if((this.getView().byId("idDispoGenInfoIncompFlag").getSelected() === true) && (this.getView().byId("idTableDisposition").getSelectedItem())){
                 if(this.getView().byId("idTableDisposition").getSelectedItem().getBindingContext("DispositionDetails").getProperty("DispositionStatus") == "Open"){
                     this.getView().byId("idDispoGenInfoIncompFlag").setSelected(false);
-                    MessageBox.warning("User is not allowed to change incomplete flag once the disposition status is Open.")
+                    var oDispIncompMsg = this.getView().getModel("i18n").getProperty("DispoIncompMsg");
+                    MessageBox.warning(oDispIncompMsg);
                 }else{
                     this.getView().byId("idDispoGenInfoIncompFlag").setSelected(true);
                 }
             }   
+        },
+
+        onSearchQualityWorkGroup: function(oEvent){
+            var sQuery = oEvent.getSource().getValue();
+            // add filter for search
+            var aFilter = [], oFilter = [];
+            if (sQuery && sQuery.length > 0) {
+                oFilter.push(new Filter("Value", FilterOperator.Contains, sQuery));
+                oFilter.push(new Filter("Value1", FilterOperator.Contains, sQuery));
+                oFilter.push(new Filter("Description", FilterOperator.Contains, sQuery));
+                oFilter.push(new Filter("KeyValue", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter(oFilter, false));
+            }  
+            // update list binding
+			var oWrkGrpTable = this._oQualityWkGrpDialog.getContent()[1];
+            var oBinding = oWrkGrpTable.getBinding("items");
+                oBinding.filter(aFilter);
         },
 
         onQualWorkGrpItemSel: function (oEvent) {
@@ -7413,8 +7467,9 @@ sap.ui.define([
                     }
                     else if (oData.MRBCertified === true) {
                         this.oMRBCertifiedUser = true;
+                        var oDsipoMrbCertMsg = this.getView().getModel("i18n").getProperty("MRBCertMsg");
                         MessageBox.show(
-                            "Do you wish to go to the other workgroup and save.", {
+                            oDsipoMrbCertMsg, {
                             icon: MessageBox.Icon.INFORMATION,
                             title: "MRB certified User",
                             actions: [MessageBox.Action.YES, MessageBox.Action.NO],
@@ -7497,7 +7552,8 @@ sap.ui.define([
             if (oDiscrepancyNo) {
                 if (this.getView().byId("idTableDisposition").getModel("DispositionDetails").getData().length === 0) {
                     if (this.getView().byId("idTableDisposition").getModel("DispositionDetails").getData().length === 0) {
-                        MessageBox.warning("Please add a line item to create disposition.");
+                        var oDispoAddLineItemMsg = this.getView().getModel("i18n").getProperty("DispoAddLineItemMsg");
+                        MessageBox.warning(oDispoAddLineItemMsg);
                         return;
                     } else {
                         sap.ui.core.BusyIndicator.show();
@@ -7837,7 +7893,8 @@ sap.ui.define([
 
 
                     } else {
-                        MessageBox.warning("Please add a line item to create disposition.");
+                        var oDispoLineItemMsg = this.getView().getModel("i18n").getProperty("DispoAddLineItemMsg");
+                        MessageBox.warning(oDispoLineItemMsg);
                         sap.ui.core.BusyIndicator.hide();
                         return;
                     }
@@ -7864,7 +7921,8 @@ sap.ui.define([
                     }.bind(this)
                 });
             } else {
-                MessageBox.warning("Please select a discrepancy number using dropdown to create a disposition.");
+                var oSelDiscToCrtDispo = this.getView().getModel("i18n").getProperty("SelDiscToCrtDispoMsg");
+                MessageBox.warning(oSelDiscToCrtDispo);
             }
         },
 
@@ -7881,7 +7939,8 @@ sap.ui.define([
                         sap.ui.core.BusyIndicator.hide();
                         var oQntyChk = oData.QuantityCheck;
                         if (oQntyChk === false) {
-                            MessageBox.warning("One Sub disposition for the selected parent is already in open state, can not create another one.");
+                            var oQtyChkMsg = this.getView().getModel("i18n").getProperty("QtyChkMsg");
+                            MessageBox.warning(oQtyChkMsg);
                             this.getView().byId("idTableDisposition").removeSelections();
                         } else {
                             var oParentDispoNo = oData.ParentDispoNo;
@@ -7904,7 +7963,8 @@ sap.ui.define([
                     }
                 });
             } else {
-                MessageBox.warning("Please select a line item first.");
+                var oSelLineItemMsg = this.getView().getModel("i18n").getProperty("SelLineItemMsg");
+                MessageBox.warning(oSelLineItemMsg);
             }
         },
 
@@ -8038,7 +8098,8 @@ sap.ui.define([
                     }
                 });
             } else {
-                MessageBox.warning("The line item can not be selected since no Disposition Number is generated.");
+                var oLineItemSelMsg = this.getView().getModel("i18n").getProperty("SelDispoLineItemMsg");
+                MessageBox.warning(oLineItemSelMsg);
                 this.getView().byId("idTableDisposition").removeSelections(true);
                 this.getView().byId("idBtnDispositionCopy").setEnabled(false);
                 this.getView().byId("idBtnDispositionDlt").setEnabled(false);
@@ -8282,7 +8343,8 @@ sap.ui.define([
                     }
                 }
                 if (bFlag === false) {
-                    MessageBox.warning("User can add single buy off entry at a time, please use existing line item entry in table.");
+                    var oBuyOffAddItemMsg = this.getView().getModel("i18n").getProperty("BuyOffAddItemMsg");
+                    MessageBox.warning(oBuyOffAddItemMsg);
                 } else {
                     oBuyOffTableModel.push({
                         "DispositionGroup": "",
@@ -8375,7 +8437,8 @@ sap.ui.define([
                         }
                     });
                 } else {
-                    MessageBox.warning("Please select a discrepancy to cancel.");
+                    var oDiscCancelMsg = this.getView().getModel("i18n").getProperty("SelDiscCancelMsg");
+                    MessageBox.warning(oDiscCancelMsg);
                 }
             }
         },
