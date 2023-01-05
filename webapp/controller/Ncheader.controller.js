@@ -487,6 +487,8 @@ sap.ui.define([
                 this.getView().byId("idObjNCStatusDispo").setVisible(true);
                 this.getView().byId("idBtnCancel").setVisible(false);
             } else if (key == "Signoff") {
+                this.getView().byId("headertext").setText();
+                this.getView().byId("idBtnCancel").setVisible(false);
                 this.headerSingoffDetails();
                // this.discSingoffDetails();
             }
@@ -2539,6 +2541,17 @@ sap.ui.define([
                     }
                 }
             }
+        },
+
+        handleNavToSignOff: function(){
+            this.getView().byId("idIconTabBarHeader").setSelectedKey("Signoff");
+            this.getView().byId("idHeaderDiscTable").removeSelections();
+            this.getView().byId("idstatus").setVisible(false);
+            this.getView().byId("idObjNCStatus").setVisible(false);
+            this.getView().byId("idObjNCStatusDiscrep").setVisible(false);
+            this.getView().byId("idObjNCStatusDispo").setVisible(false);
+            this.getView().byId("idBtnCancel").setVisible(false);
+            this.getView().byId("btnWorkGrp").setVisible(false);
         },
 
         handleDiscItemSelection: function (oEvent) {
@@ -6556,6 +6569,7 @@ sap.ui.define([
                     this.getView().byId("idBtnDispositionDlt").setEnabled(false);
                     this.getView().byId("idBtnMRBDisp").setEnabled(false);
                     this.getView().byId("idBtnBuyOffAdd").setEnabled(false);
+                    this.getView().byId("idDispoGenInfoIncompFlag").setEnabled(false);
                     this.resetDispositionGenInfoFields();
                     var oDiscNo = this.getView().byId("idDispCobDscNo").getValue();
                     this.getView().byId("headertext").setText("Discrepancy/Disposition No: " + oDiscNo + "/");
@@ -6584,6 +6598,8 @@ sap.ui.define([
                     var data = oData.results;
                     oMajMinModel.setData(data);
                     this.getView().byId("dispGenMajorMinorNC").setModel(oMajMinModel, "DispoMajMinNCModel");
+                    this.getView().byId("dispGenMajorMinorNC").setSelectedKey("DISPIMPACT");
+                    this.getView().byId("dispGenMajorMinorNC").setValue("MINOR");
                 }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
@@ -8042,6 +8058,7 @@ sap.ui.define([
                             this.getView().byId("idBtnDispositionDlt").setEnabled(false);
                             this.getView().byId("idBtnMRBDisp").setEnabled(false);
                             this.getView().byId("idBtnBuyOffAdd").setEnabled(false);
+                            this.getView().byId("idDispoGenInfoIncompFlag").setEnabled(false);
                         }
                     }.bind(this),
                     error: function (oError) {
@@ -8064,8 +8081,8 @@ sap.ui.define([
             this.getView().byId("dispGenCSN").setState(false);
             // this.getView().byId("dispGenPartSuppName").setValue();
             // this.getView().byId("dispGenPartSuppDesc").setValue();
-            this.getView().byId("dispGenMajorMinorNC").setSelectedKey();
-            this.getView().byId("dispGenMajorMinorNC").setValue();
+            this.getView().byId("dispGenMajorMinorNC").setSelectedKey("DISPIMPACT");
+            this.getView().byId("dispGenMajorMinorNC").setValue("MINOR");
             this.getView().byId("idObjNCStatusDispo").setText();
             this._oMultiInputDispoSN.removeAllTokens();
             this._oMultiInputDispoRewrkOrd.removeAllTokens();
@@ -8096,6 +8113,7 @@ sap.ui.define([
                 this.getView().byId("idBtnDispositionDlt").setEnabled(true);
                 this.getView().byId("idBtnMRBDisp").setEnabled(true);
                 this.getView().byId("idBtnBuyOffAdd").setEnabled(true);
+                this.getView().byId("idDispoGenInfoIncompFlag").setEnabled(true);
                 if (oDispositionCode == "RTV") {
                     this.getView().byId("idBtnDispositionRTV").setEnabled(true);
                 } else {
@@ -8193,6 +8211,7 @@ sap.ui.define([
                 this.getView().byId("idBtnDispositionDlt").setEnabled(false);
                 this.getView().byId("idBtnMRBDisp").setEnabled(false);
                 this.getView().byId("idBtnBuyOffAdd").setEnabled(false);
+                this.getView().byId("idDispoGenInfoIncompFlag").setEnabled(false);
                 this.resetDispositionGenInfoFields();
             }
         },

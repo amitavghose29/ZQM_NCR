@@ -271,6 +271,7 @@
                                                 <Button type="Emphasized" icon="sap-icon://copy" press="_onSelectingDiscrepancy" tooltip="Copy Discrepancy" />
                                                 <Button type="Emphasized" icon="sap-icon://add" press="handleAddDiscrepancy" tooltip="Create Discrepancy" />
                                                 <Button type="Emphasized" icon="sap-icon://open-command-field" press="handleNavToDisposition" tooltip="Navigate to Disposition" />
+                                                <Button type="Emphasized" icon="sap-icon://log" press="handleNavToSignOff" tooltip="Navigate to Sign Off" />
                                                 <!-- itemPress="handleDiscItemSelection" -->
                                             </Toolbar>
                                         </headerToolbar>
@@ -299,9 +300,9 @@
                                             <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
                                                 <Text text="Closed Date" />
                                             </Column>
-                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
+                                            <!-- <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
                                                 <Text text="Sign Off" />
-                                            </Column>
+                                            </Column> -->
                                         </columns>
                                         <items>
                                             <ColumnListItem type="Active">
@@ -314,7 +315,7 @@
                                                     <Text text="{oHeaderDiscTable>SupercededByItem}" />
                                                     <Text text="{oHeaderDiscTable>OpenDate}" />
                                                     <Text text="" />
-                                                    <Button icon="sap-icon://log" />
+                                                    <!-- <Button icon="sap-icon://log" /> -->
                                                 </cells>
                                             </ColumnListItem>
                                         </items>
@@ -1130,7 +1131,7 @@
                                     <Table id="idsingoff1" items="{/to_discsignoff/results}" class="formcolor1 sapUiSizeCompact" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
                                         <headerToolbar>
                                             <Toolbar>
-                                                <Title text="Discrepancy and Disposition Signoff Sheet" level="H2" />
+                                                <Title text="Discrepancy Signoff Sheet" level="H2" />
                                                 <ToolbarSpacer />
                                                 <Button tooltip="Filter" type="Accept" icon="sap-icon://filter" press="handleFilterButtonPressed" />
                                                 <Button icon="sap-icon://add" type="Accept" />
@@ -1259,7 +1260,7 @@
                                                         <Label text="Serial Number" />
                                                         <MultiInput id="idMulInpDispoSerNo" showValueHelp="true" valueHelpRequest=".onOpenVHDispoSerNo" tokenUpdate="_onTokenUpdateDispoSN" />
                                                         <Label text="Incomplete Flag" />
-                                                        <CheckBox id="idDispoGenInfoIncompFlag" selected="true" select="handleDispIncompFlagCheck" />
+                                                        <CheckBox id="idDispoGenInfoIncompFlag" selected="true" select="handleDispIncompFlagCheck" enabled="false" />
                                                     </f:content>
                                                 </f:SimpleForm>
                                             </l:BlockLayoutCell>
