@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog  title="Sing Off A/R" items="{oHeaderSingoffAR>/}" confirm="_configSingoffARDialog"
+		cancel="_handleSingoffARClose" contentHeight="150px" draggable="true">
+		<StandardListItem title="{oHeaderSingoffAR>Value}" info="{oHeaderSingoffAR>Description}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

@@ -488,7 +488,7 @@ sap.ui.define([
                 this.getView().byId("idBtnCancel").setVisible(false);
             } else if (key == "Signoff") {
                 this.headerSingoffDetails();
-                this.discSingoffDetails();
+               // this.discSingoffDetails();
             }
         },
 
@@ -1100,15 +1100,18 @@ sap.ui.define([
         headerSingoffDetails: function () {
             var oDataModel = this.getOwnerComponent().getModel();
             var oheaderSingoffModel = new JSONModel();
-            var oFilterPart = [];
-            oFilterPart.push(new Filter("Notification", FilterOperator.EQ, sObjectId));
-            var sPath = "/HeaderSignOffSet"
+            var workgrp = this.getView().byId("idworkgroup").getText();
+          //  var oFilterPart = [];
+           // oFilterPart.push(new Filter("Notification", FilterOperator.EQ, sObjectId));
+            var sPath = "/SignOffSet(Notification='"+sObjectId+"',DiscrepancyNo='0100',WorkGroup='"+workgrp+"')";
             oDataModel.read(sPath, {
-                filters: oFilterPart,
+                urlParameters: {
+                    "$expand": "to_headersignoff,to_discsignoff"
+                },
                 success: function (oData, oResult) {
-                    var data = oData.results;
+                    var data = oData;
                     oheaderSingoffModel.setData(data);
-                    this.getView().setModel(oheaderSingoffModel, "oHeaderSingoff");
+                    this.getView().setModel(oheaderSingoffModel);
                     sap.ui.core.BusyIndicator.hide();
                 }.bind(this),
                 error: function (oError) {
@@ -1118,19 +1121,23 @@ sap.ui.define([
                 }
             });
         },
-
-        discSingoffDetails: function () {
+        onHeadersingoffAR:function(oEvent){
+            this._oHeadersingoffARDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.hedersingoffAR", this);
+            this.getView().addDependent(this._oHeadersingoffARDialog);
+            this._oHeadersingoffARDialog.open();
+            this.oHeadersingoffAR = oEvent.getSource();
+            sap.ui.core.BusyIndicator.show();
             var oDataModel = this.getOwnerComponent().getModel();
-            var odiscSingoffModel = new JSONModel();
+            var oheaderSingoffModelAR = new JSONModel();
             var oFilterPart = [];
-            oFilterPart.push(new Filter("Notification", FilterOperator.EQ, sObjectId));
-            var sPath = "/DiscSignOffSet"
+            oFilterPart.push(new Filter("Key", FilterOperator.EQ, "SIGNOFFAR"));
+            var sPath = "/f4_genericSet"
             oDataModel.read(sPath, {
                 filters: oFilterPart,
                 success: function (oData, oResult) {
                     var data = oData.results;
-                    odiscSingoffModel.setData(data);
-                    this.getView().setModel(odiscSingoffModel, "oDiscSingoff");
+                    oheaderSingoffModelAR.setData(data);
+                    this._oHeadersingoffARDialog.setModel(oheaderSingoffModelAR, "oHeaderSingoffAR");
                     sap.ui.core.BusyIndicator.hide();
                 }.bind(this),
                 error: function (oError) {
@@ -1140,6 +1147,87 @@ sap.ui.define([
                 }
             });
         },
+        _configSingoffARDialog:function(oEvent){
+            var oSelectedItem = oEvent.getParameter("selectedItem"),
+                oInput = this.oHeadersingoffAR;
+
+            if (!oSelectedItem) {
+                oInput.resetProperty("value");
+                return;
+            }
+
+            oInput.setValue(oSelectedItem.getTitle());
+            this._oHeadersingoffARDialog.destroy();
+
+        },
+        _handleSingoffARClose:function(){
+            this._oHeadersingoffARDialog.close();
+
+        },
+        onHeadersingoffStatus:function(oEvent){
+            this._oHeadersingoffStatusDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.hedersingoffStatus", this);
+            this.getView().addDependent(this._oHeadersingoffStatusDialog);
+            this._oHeadersingoffStatusDialog.open();
+            this.oHeadersingoffStatus = oEvent.getSource();
+            sap.ui.core.BusyIndicator.show();
+            var oDataModel = this.getOwnerComponent().getModel();
+            var oheaderSingoffModelStatus = new JSONModel();
+            var oFilterPart = [];
+            oFilterPart.push(new Filter("Key", FilterOperator.EQ, "SIGNOFFSTATUS"));
+            var sPath = "/f4_genericSet"
+            oDataModel.read(sPath, {
+                filters: oFilterPart,
+                success: function (oData, oResult) {
+                    var data = oData.results;
+                    oheaderSingoffModelStatus.setData(data);
+                    this._oHeadersingoffARDialog.setModel(oheaderSingoffModelStatus, "oHeaderSingoffStatus");
+                    sap.ui.core.BusyIndicator.hide();
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+        },
+        _configSingoffStatusDialog:function(oEvent){
+            var oSelectedItem = oEvent.getParameter("selectedItem"),
+                oInput = this.oHeadersingoffstatus;
+
+            if (!oSelectedItem) {
+                oInput.resetProperty("value");
+                return;
+            }
+
+            oInput.setValue(oSelectedItem.getTitle());
+            this._oHeadersingoffStatusDialog.destroy();
+
+        },
+        _handleSingoffStatusClose:function(){
+            this._oHeadersingoffStatusDialog.close();
+
+        },
+        // discSingoffDetails: function () {
+        //     var oDataModel = this.getOwnerComponent().getModel();
+        //     var odiscSingoffModel = new JSONModel();
+        //     var oFilterPart = [];
+        //     oFilterPart.push(new Filter("Notification", FilterOperator.EQ, sObjectId));
+        //     var sPath = "/DiscSignOffSet"
+        //     oDataModel.read(sPath, {
+        //         filters: oFilterPart,
+        //         success: function (oData, oResult) {
+        //             var data = oData.results;
+        //             odiscSingoffModel.setData(data);
+        //             this.getView().setModel(odiscSingoffModel, "oDiscSingoff");
+        //             sap.ui.core.BusyIndicator.hide();
+        //         }.bind(this),
+        //         error: function (oError) {
+        //             sap.ui.core.BusyIndicator.hide();
+        //             var msg = JSON.parse(oError.responseText).error.message.value;
+        //             MessageBox.error(msg);
+        //         }
+        //     });
+        // },
 
         onPressPrint: function () {
             // var ctrlstring = "width=500px,height=500px";

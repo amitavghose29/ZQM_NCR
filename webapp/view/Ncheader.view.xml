@@ -1061,7 +1061,7 @@
                             </IconTabFilter>
                             <IconTabFilter id="idsingoff" text="Sign Off" key="Signoff" visible="true">
                                 <ScrollContainer height="100%" width="100%" horizontal="false" vertical="true">
-                                    <Table class="formcolor1 sapUiSizeCompact" items="{oHeaderSingoff>/}" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
+                                    <Table class="formcolor1 sapUiSizeCompact" items="{/to_headersignoff/results}" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
                                         <headerToolbar>
                                             <Toolbar>
                                                 <Title text="Header Signoff Sheet" level="H2" />
@@ -1095,6 +1095,9 @@
                                                 <Text text="Finish Date(Local)" />
                                             </Column>
                                             <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="5rem">
+                                                <Text text="status" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="5rem">
                                                 <Text text="A/R" />
                                             </Column>
                                             <Column hAlign="Left" width="8rem">
@@ -1107,23 +1110,24 @@
                                         <items>
                                             <ColumnListItem>
                                                 <cells>
-                                                    <Text text="{oHeaderSingoff>WorkGroup}" />
+                                                    <Text text="{WorkGroup}" />
                                                     <!--<Text text=""/>-->
-                                                    <Link text="{oHeaderSingoff>User}" />
+                                                    <Link text="{User}" />
                                                     <!--<Input value="" liveChange="onEnterText" valueHelpIconSrc="sap-icon://document-text" showValueHelp="true" valueHelpRequest="onNotesChange"/>-->
-                                                    <Input value="{oHeaderSingoff>ActionCode}"/>
-                                                    <Input value="{oHeaderSingoff>SignOffNote}" showValueHelp="true" />
-                                                    <Text text="{oHeaderSingoff>ActualStart}" />
-                                                    <Text text="{oHeaderSingoff>ActualStart}{oHeaderSingoff>ActualSTime}" />
-                                                    <Text text="{oHeaderSingoff>FinishDate}{oHeaderSingoff>FinishTime}" />
-                                                    <Input value="{oHeaderSingoff>AR}" showValueHelp="true" />
-                                                    <Input value="{oHeaderSingoff>Comments}" />
+                                                    <Input value="{ActionCode}" editable="{RowEdit}"/>
+                                                    <Input value="{SignOffNote}" editable="{RowEdit}" showValueHelp="true" />
+                                                    <Text text="{ActualStart}" />
+                                                    <Text text="{ActualStart}{ActualSTime}" />
+                                                    <Text text="{FinishDate}{FinishTime}" />
+                                                    <Input value="{Status}" editable="{RowEdit}" showValueHelp="true" valueHelpRequest="onHeadersingoffStatus"/>
+                                                    <Input value="{AR}" editable="{RowEdit}" showValueHelp="true" valueHelpRequest="onHeadersingoffAR"/>
+                                                    <Input value="{Comments}" editable="{RowEdit}"/>
                                                     <Button icon="sap-icon://less" />
                                                 </cells>
                                             </ColumnListItem>
                                         </items>
                                     </Table>
-                                    <Table id="idsingoff1" items="{oDiscSingoff>/}" class="formcolor1 sapUiSizeCompact" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
+                                    <Table id="idsingoff1" items="{/to_discsignoff/results}" class="formcolor1 sapUiSizeCompact" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
                                         <headerToolbar>
                                             <Toolbar>
                                                 <Title text="Discrepancy and Disposition Signoff Sheet" level="H2" />
@@ -1158,6 +1162,9 @@
                                                 <Text text="Finish Date(Local)" />
                                             </Column>
                                             <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="5rem">
+                                                <Text text="status" />
+                                            </Column>
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="5rem">
                                                 <Text text="A/R" />
                                             </Column>
                                             <Column hAlign="Left" width="8rem">
@@ -1170,17 +1177,18 @@
                                         <items>
                                             <ColumnListItem>
                                                 <cells>
-                                                    <Text text="{oDiscSingoff>WorkGroup}" />
-                                                    <Text text="{oDiscSingoff>Discrepancy}"/>
-                                                    <Link text="{oDiscSingoff>User}" />
+                                                    <Text text="{WorkGroup}" />
+                                                    <Text text="{Discrepancy}"/>
+                                                    <Link text="{User}" />
                                                     <!--<Input value="" liveChange="onEnterText" valueHelpIconSrc="sap-icon://document-text" showValueHelp="true" valueHelpRequest="onNotesChange"/>-->
-                                                    <Input value="{oDiscSingoff>ActionCode}"/>
-                                                    <Input value="{oDiscSingoff>SignOffNote}" showValueHelp="true" />
-                                                    <Text text="{oDiscSingoff>DateInQueue}" />
-                                                    <Text text="{oDiscSingoff>ActualStart} {oDiscSingoff>ActualSTime}" />
-                                                    <Text text="{oDiscSingoff>FinishDate} {oDiscSingoff>FinishTime}" />
-                                                    <Input value="{oDiscSingoff>AR}" showValueHelp="true" />
-                                                    <Input value="{oDiscSingoff>Comments}" />
+                                                    <Input value="{ActionCode}" editable="{RowEdit}"/>
+                                                    <Input value="{SignOffNote}" editable="{RowEdit}" showValueHelp="true" />
+                                                    <Text text="{DateInQueue}" />
+                                                    <Text text="{ActualStart} {ActualSTime}" />
+                                                    <Text text="{FinishDate} {FinishTime}" />
+                                                    <Input value="{Status}" editable="{RowEdit}" showValueHelp="true" valueHelpRequest="onHeadersingoffStatus"/>
+                                                    <Input value="{AR}" editable="{RowEdit}" showValueHelp="true" valueHelpRequest="onHeadersingoffAR"/>
+                                                    <Input value="{Comments}" editable="{RowEdit}"/>
                                                     <Button icon="sap-icon://less" />
                                                 </cells>
                                             </ColumnListItem>
