@@ -1,19 +1,24 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" class="sapUiSizeCompact">
-	<Dialog title="WorkGroup" resizable="true" contentHeight="200px" contentWidth="100px">
-        <Table items="{DispoWorkGroupModel>/}" itemPress="onDispoWorkGrpItemSel">
+	<Dialog title="MRB WorkGroup" resizable="true" contentWidth="540px">
+        <SearchField liveChange=".onSearchDispoMRBWorkGroup" width="100%" class="sapUiTinyMargin" />
+        <Table items="{DispoWorkGroupModel>/}" itemPress="onDispoWorkGrpItemSel" sticky="ColumnHeaders" growing="true" growingThreshold="10">
             <columns>
                 <Column minScreenWidth="Tablet" demandPopin="true"> 
-                    <Label design="Bold" text="WorkGroup" />
+                    <Text text="WorkGroup" />
                 </Column>
 				<Column minScreenWidth="Tablet" demandPopin="true">
-                    <Text text="" />
+                    <Text text="Description" />
+                </Column>
+                <Column minScreenWidth="Tablet" demandPopin="true">
+                    <Text text="Function Type" />
                 </Column>
             </columns>
             <items>
                 <ColumnListItem type="Active">
                     <cells>
-                        <Text text="{DispoWorkGroupModel>WorkGroup}" />
-						<Text text="{=${DispoWorkGroupModel>Default} === true ? 'Default' : ''}" />
+                        <Text text="{DispoWorkGroupModel>Value}" />
+						<Text text="{DispoWorkGroupModel>Description}" />
+                        <Text text="{DispoWorkGroupModel>Value1}" />
                     </cells>
                 </ColumnListItem>
             </items>

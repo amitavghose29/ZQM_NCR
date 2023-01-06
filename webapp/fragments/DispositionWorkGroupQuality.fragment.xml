@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:fb="sap.ui.comp.filterbar" class="sapUiSizeCompact">
     <Dialog title="Quality WorkGroup" resizable="true" contentWidth="540px">
-    <SearchField liveChange=".onSearchQualityWorkGroup" width="100%" class="sapUiTinyMargin" />
+        <SearchField liveChange=".onSearchQualityWorkGroup" width="100%" class="sapUiTinyMargin" />
         <Table growing="true" growingThreshold="10" items="{WorkGroupQual>/}" itemPress="onQualWorkGrpItemSel" sticky="ColumnHeaders" >
             <columns>
                 <Column minScreenWidth="Tablet" demandPopin="true">

@@ -1062,12 +1062,12 @@
                             </IconTabFilter>
                             <IconTabFilter id="idsingoff" text="Sign Off" key="Signoff" visible="true">
                                 <ScrollContainer height="100%" width="100%" horizontal="false" vertical="true">
-                                    <Table class="formcolor1 sapUiSizeCompact" items="{/to_headersignoff/results}" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
+                                    <Table id="idTabHeaderSingoff" items="{HeaderSignOffDetails>/}" class="formcolor1 sapUiSizeCompact" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
                                         <headerToolbar>
                                             <Toolbar>
                                                 <Title text="Header Signoff Sheet" level="H2" />
                                                 <ToolbarSpacer />
-                                                <Button icon="sap-icon://add" type="Accept" />
+                                                <Button icon="sap-icon://add" type="Accept" press="onAddHeaderSignOffLineItem" tooltip="Add Header Sign Off Line Item" />
                                             </Toolbar>
                                         </headerToolbar>
                                         <columns>
@@ -1095,8 +1095,8 @@
                                             <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="9rem">
                                                 <Text text="Finish Date(Local)" />
                                             </Column>
-                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="5rem">
-                                                <Text text="status" />
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="9rem">
+                                                <Text text="Status" />
                                             </Column>
                                             <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="5rem">
                                                 <Text text="A/R" />
@@ -1111,30 +1111,32 @@
                                         <items>
                                             <ColumnListItem>
                                                 <cells>
-                                                    <Text text="{WorkGroup}" />
+                                                    <Text text="{HeaderSignOffDetails>WorkGroup}" />
                                                     <!--<Text text=""/>-->
-                                                    <Link text="{User}" />
+                                                    <Link text="{HeaderSignOffDetails>User}" />
                                                     <!--<Input value="" liveChange="onEnterText" valueHelpIconSrc="sap-icon://document-text" showValueHelp="true" valueHelpRequest="onNotesChange"/>-->
-                                                    <Input value="{ActionCode}" editable="{RowEdit}"/>
-                                                    <Input value="{SignOffNote}" editable="{RowEdit}" showValueHelp="true" />
-                                                    <Text text="{ActualStart}" />
-                                                    <Text text="{ActualStart}{ActualSTime}" />
-                                                    <Text text="{FinishDate}{FinishTime}" />
-                                                    <Input value="{Status}" editable="{RowEdit}" showValueHelp="true" valueHelpRequest="onHeadersingoffStatus"/>
-                                                    <Input value="{AR}" editable="{RowEdit}" showValueHelp="true" valueHelpRequest="onHeadersingoffAR"/>
-                                                    <Input value="{Comments}" editable="{RowEdit}"/>
+                                                    <Input value="{HeaderSignOffDetails>SignOffNote}" editable="{HeaderSignOffDetails>RowEdit}"/>
+                                                    <Input value="{HeaderSignOffDetails>ActionCode}" editable="{HeaderSignOffDetails>RowEdit}" showValueHelp="true"/>
+                                                    <Text text="{HeaderSignOffDetails>DateInQueue}"/>
+                                                    <Text text="{HeaderSignOffDetails>ActualStart}"/>
+                                                    <Text text="{HeaderSignOffDetails>FinishDate}"/>
+                                                    <!--<Text text="{HeaderSignOffDetails>ActualStart}{HeaderSignOffDetails>ActualSTime}" />-->                                                    
+                                                    <!--<Text text="{HeaderSignOffDetails>FinishDate}{HeaderSignOffDetails>FinishTime}" />-->
+                                                    <Input value="{HeaderSignOffDetails>Status}" editable="{HeaderSignOffDetails>RowEdit}" showValueHelp="true" valueHelpRequest="onHeadersingoffStatus"/>
+                                                    <Input value="{HeaderSignOffDetails>AR}" editable="{HeaderSignOffDetails>RowEdit}" showValueHelp="true" valueHelpRequest="onHeadersingoffAR"/>
+                                                    <Input value="{HeaderSignOffDetails>Comments}" editable="{HeaderSignOffDetails>RowEdit}"/>
                                                     <Button icon="sap-icon://less" />
                                                 </cells>
                                             </ColumnListItem>
                                         </items>
                                     </Table>
-                                    <Table id="idsingoff1" items="{/to_discsignoff/results}" class="formcolor1 sapUiSizeCompact" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
+                                    <Table id="idTabDiscSingoff" items="{DiscrepancySignOffDetails>/}" class="formcolor1 sapUiSizeCompact" growing="true" growingThreshold="100" growingScrollToLoad="false" includeItemInSelection="true">
                                         <headerToolbar>
                                             <Toolbar>
                                                 <Title text="Discrepancy Signoff Sheet" level="H2" />
                                                 <ToolbarSpacer />
                                                 <Button tooltip="Filter" type="Accept" icon="sap-icon://filter" press="handleFilterButtonPressed" />
-                                                <Button icon="sap-icon://add" type="Accept" />
+                                                <Button icon="sap-icon://add" type="Accept" press="onAddDiscSignOffLineItem" tooltip="Add Discrepancy SignOff Line Item" />
                                             </Toolbar>
                                         </headerToolbar>
                                         <columns>
@@ -1153,17 +1155,17 @@
                                             <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="5rem">
                                                 <Text text="Action Code" />
                                             </Column>
-                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="9rem">
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
                                                 <Text text="Date in Queue(Local)" />
                                             </Column>
-                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="9rem">
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" >
                                                 <Text text="Actual Start(Local)" />
                                             </Column>
-                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="9rem">
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
                                                 <Text text="Finish Date(Local)" />
                                             </Column>
-                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="5rem">
-                                                <Text text="status" />
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="9rem">
+                                                <Text text="Status" />
                                             </Column>
                                             <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="5rem">
                                                 <Text text="A/R" />
@@ -1171,25 +1173,27 @@
                                             <Column hAlign="Left" width="8rem">
                                                 <Text text="Comments" />
                                             </Column>
-                                            <Column hAlign="Right" width="3rem">
+                                            <Column hAlign="Right" >
                                                 <Text text="" />
                                             </Column>
                                         </columns>
                                         <items>
                                             <ColumnListItem>
                                                 <cells>
-                                                    <Text text="{WorkGroup}" />
-                                                    <Text text="{Discrepancy}"/>
-                                                    <Link text="{User}" />
+                                                    <Text text="{DiscrepancySignOffDetails>WorkGroup}"/>
+                                                    <Text text="{DiscrepancySignOffDetails>DiscrepancyNo}"/>
+                                                    <Link text="{DiscrepancySignOffDetails>User}"/>
                                                     <!--<Input value="" liveChange="onEnterText" valueHelpIconSrc="sap-icon://document-text" showValueHelp="true" valueHelpRequest="onNotesChange"/>-->
-                                                    <Input value="{ActionCode}" editable="{RowEdit}"/>
-                                                    <Input value="{SignOffNote}" editable="{RowEdit}" showValueHelp="true" />
-                                                    <Text text="{DateInQueue}" />
-                                                    <Text text="{ActualStart} {ActualSTime}" />
-                                                    <Text text="{FinishDate} {FinishTime}" />
-                                                    <Input value="{Status}" editable="{RowEdit}" showValueHelp="true" valueHelpRequest="onHeadersingoffStatus"/>
-                                                    <Input value="{AR}" editable="{RowEdit}" showValueHelp="true" valueHelpRequest="onHeadersingoffAR"/>
-                                                    <Input value="{Comments}" editable="{RowEdit}"/>
+                                                    <Input value="{DiscrepancySignOffDetails>SignOffNote}" editable="{DiscrepancySignOffDetails>RowEdit}"/>
+                                                    <Input value="{DiscrepancySignOffDetails>ActionCode}" editable="{DiscrepancySignOffDetails>RowEdit}" showValueHelp="true"/>
+                                                    <Text text="{DiscrepancySignOffDetails>DateInQueue}"/>
+                                                    <Text text="{DiscrepancySignOffDetails>ActualStart}" />
+                                                    <Text text="{DiscrepancySignOffDetails>FinishDate}" />
+                                                    <!--<Text text="{DiscrepancySignOffDetails>ActualStart} {DiscrepancySignOffDetails>ActualSTime}" />-->
+                                                    <!--<Text text="{DiscrepancySignOffDetails>FinishDate} {DiscrepancySignOffDetails>FinishTime}" />-->
+                                                    <Input value="{DiscrepancySignOffDetails>Status}" editable="{DiscrepancySignOffDetails>RowEdit}" showValueHelp="true" valueHelpRequest="onHeadersingoffStatus"/>
+                                                    <Input value="{DiscrepancySignOffDetails>AR}" editable="{DiscrepancySignOffDetails>RowEdit}" showValueHelp="true" valueHelpRequest="onHeadersingoffAR"/>
+                                                    <Input value="{DiscrepancySignOffDetails>Comments}" editable="{DiscrepancySignOffDetails>RowEdit}"/>
                                                     <Button icon="sap-icon://less" />
                                                 </cells>
                                             </ColumnListItem>
