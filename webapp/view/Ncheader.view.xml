@@ -1086,13 +1086,13 @@
                                             <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="5rem">
                                                 <Text text="Action Code" />
                                             </Column>
-                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="9rem">
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
                                                 <Text text="Date in Queue(Local)" />
                                             </Column>
-                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="9rem">
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
                                                 <Text text="Actual Start(Local)" />
                                             </Column>
-                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="9rem">
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet">
                                                 <Text text="Finish Date(Local)" />
                                             </Column>
                                             <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="9rem">
@@ -1111,7 +1111,7 @@
                                         <items>
                                             <ColumnListItem>
                                                 <cells>
-                                                    <Text text="{HeaderSignOffDetails>WorkGroup}" />
+                                                    <Text text="{HeaderSignOffDetails>SignOffGroup}" />
                                                     <!--<Text text=""/>-->
                                                     <Link text="{HeaderSignOffDetails>User}" />
                                                     <!--<Input value="" liveChange="onEnterText" valueHelpIconSrc="sap-icon://document-text" showValueHelp="true" valueHelpRequest="onNotesChange"/>-->
@@ -1124,8 +1124,10 @@
                                                     <!--<Text text="{HeaderSignOffDetails>FinishDate}{HeaderSignOffDetails>FinishTime}" />-->
                                                     <Input value="{HeaderSignOffDetails>Status}" editable="{HeaderSignOffDetails>RowEdit}" showValueHelp="true" valueHelpRequest="onHeadersingoffStatus"/>
                                                     <Input value="{HeaderSignOffDetails>AR}" editable="{HeaderSignOffDetails>RowEdit}" showValueHelp="true" valueHelpRequest="onHeadersingoffAR"/>
-                                                    <Input value="{HeaderSignOffDetails>Comments}" editable="{HeaderSignOffDetails>RowEdit}"/>
-                                                    <Button icon="sap-icon://less" />
+                                                    <Input value="{HeaderSignOffDetails>Comments}" editable="{HeaderSignOffDetails>RowEdit}"/>                                                    
+                                                    <Button icon="sap-icon://less" type="Reject" press="onDeleteHeaderSignOffLineItem"/>   
+                                                    <Text text="{HeaderSignOffDetails>Sequence}" visible="false"/>
+                                                    <Text text="{HeaderSignOffDetails>StatusText}" visible="false"/>                                                 
                                                 </cells>
                                             </ColumnListItem>
                                         </items>
@@ -1180,7 +1182,7 @@
                                         <items>
                                             <ColumnListItem>
                                                 <cells>
-                                                    <Text text="{DiscrepancySignOffDetails>WorkGroup}"/>
+                                                    <Text text="{DiscrepancySignOffDetails>SignOffGroup}"/>
                                                     <Text text="{DiscrepancySignOffDetails>DiscrepancyNo}"/>
                                                     <Link text="{DiscrepancySignOffDetails>User}"/>
                                                     <!--<Input value="" liveChange="onEnterText" valueHelpIconSrc="sap-icon://document-text" showValueHelp="true" valueHelpRequest="onNotesChange"/>-->
@@ -1193,8 +1195,10 @@
                                                     <!--<Text text="{DiscrepancySignOffDetails>FinishDate} {DiscrepancySignOffDetails>FinishTime}" />-->
                                                     <Input value="{DiscrepancySignOffDetails>Status}" editable="{DiscrepancySignOffDetails>RowEdit}" showValueHelp="true" valueHelpRequest="onHeadersingoffStatus"/>
                                                     <Input value="{DiscrepancySignOffDetails>AR}" editable="{DiscrepancySignOffDetails>RowEdit}" showValueHelp="true" valueHelpRequest="onHeadersingoffAR"/>
-                                                    <Input value="{DiscrepancySignOffDetails>Comments}" editable="{DiscrepancySignOffDetails>RowEdit}"/>
-                                                    <Button icon="sap-icon://less" />
+                                                    <Input value="{DiscrepancySignOffDetails>Comments}" editable="{DiscrepancySignOffDetails>RowEdit}"/>                                                    
+                                                    <Button icon="sap-icon://less" type="Reject" press="onDeleteDiscSignOffLineItem"/>
+                                                    <Text text="{DiscrepancySignOffDetails>Sequence}" visible="false"/>
+                                                    <Text text="{DiscrepancySignOffDetails>StatusText}" visible="false"/>
                                                 </cells>
                                             </ColumnListItem>
                                         </items>

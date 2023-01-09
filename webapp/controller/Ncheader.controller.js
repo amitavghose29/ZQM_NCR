@@ -490,7 +490,7 @@ sap.ui.define([
                 this.getView().byId("headertext").setText();
                 this.getView().byId("idBtnCancel").setVisible(false);
                 this.headerSingoffDetails();
-               // this.discSingoffDetails();
+                // this.discSingoffDetails();
             }
         },
 
@@ -1107,18 +1107,18 @@ sap.ui.define([
             //  var oFilterPart = [];
             // oFilterPart.push(new Filter("Notification", FilterOperator.EQ, sObjectId));
             //var sPath = "/SignOffSet(Notification='"+sObjectId+"',DiscrepancyNo='0100',WorkGroup='"+workgrp+"')";
-            var sPath = "/SignOffSet(Notification='"+sObjectId+"',WorkGroup='"+workgrp+"')";
+            var sPath = "/SignOffSet(Notification='" + sObjectId + "',WorkGroup='" + workgrp + "')";
             oDataModel.read(sPath, {
                 urlParameters: {
                     "$expand": "to_headersignoff,to_discsignoff"
                 },
-                success: function (oData, oResult) {                  
+                success: function (oData, oResult) {
                     var headerSignOffData = oData.to_headersignoff.results;
                     var discrpncySignOffData = oData.to_discsignoff.results;
                     oheaderSingoffModel.setData(headerSignOffData);
                     odiscSingoffModel.setData(discrpncySignOffData);
-                    this.getView().byId("idTabHeaderSingoff").setModel(oheaderSingoffModel,"HeaderSignOffDetails");
-                    this.getView().byId("idTabDiscSingoff").setModel(odiscSingoffModel,"DiscrepancySignOffDetails");
+                    this.getView().byId("idTabHeaderSingoff").setModel(oheaderSingoffModel, "HeaderSignOffDetails");
+                    this.getView().byId("idTabDiscSingoff").setModel(odiscSingoffModel, "DiscrepancySignOffDetails");
                     sap.ui.core.BusyIndicator.hide();
                 }.bind(this),
                 error: function (oError) {
@@ -1129,7 +1129,7 @@ sap.ui.define([
             });
         },
 
-        onHeadersingoffAR:function(oEvent){
+        onHeadersingoffAR: function (oEvent) {
             this._oHeadersingoffARDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.hedersingoffAR", this);
             this.getView().addDependent(this._oHeadersingoffARDialog);
             this._oHeadersingoffARDialog.open();
@@ -1156,7 +1156,7 @@ sap.ui.define([
             });
         },
 
-        _configSingoffARDialog:function(oEvent){
+        _configSingoffARDialog: function (oEvent) {
             var oSelectedItem = oEvent.getParameter("selectedItem"),
                 oInput = this.oHeadersingoffAR;
 
@@ -1170,12 +1170,12 @@ sap.ui.define([
 
         },
 
-        _handleSingoffARClose:function(){
+        _handleSingoffARClose: function () {
             this._oHeadersingoffARDialog.close();
 
         },
 
-        onHeadersingoffStatus:function(oEvent){
+        onHeadersingoffStatus: function (oEvent) {
             this._oHeadersingoffStatusDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.hedersingoffStatus", this);
             this.getView().addDependent(this._oHeadersingoffStatusDialog);
             this._oHeadersingoffStatusDialog.open();
@@ -1202,7 +1202,7 @@ sap.ui.define([
             });
         },
 
-        _configSingoffStatusDialog:function(oEvent){
+        _configSingoffStatusDialog: function (oEvent) {
             var oSelectedItem = oEvent.getParameter("selectedItem"),
                 oInput = this.oHeadersingoffStatus;
 
@@ -1216,45 +1216,93 @@ sap.ui.define([
 
         },
 
-        _handleSingoffStatusClose:function(){
+        _handleSingoffStatusClose: function () {
             this._oHeadersingoffStatusDialog.close();
         },
 
-        onAddHeaderSignOffLineItem : function(){
+        onAddHeaderSignOffLineItem: function () {
             var oHeaderSignOffTable = this.getView().byId("idTabHeaderSingoff");
             var oHeaderSignOffTableModel = oHeaderSignOffTable.getModel("HeaderSignOffDetails").getData();
-                oHeaderSignOffTableModel.push({
-                    "WorkGroup": "",
-                    "User": "",
-                    "SignOffNote": "",
-                    "ActionCode": "",
-                    "DateInQueue": "",
-                    "ActualStart": "",
-                    "FinishDate":"",
-                    "Status": "",
-                    "AR": "",
-                    "Comments": ""
-                });
+            oHeaderSignOffTableModel.push({
+                "SignOffGroup": "",
+                "User": "",
+                "SignOffNote": "",
+                "ActionCode": "",
+                "DateInQueue": "",
+                "ActualStart": "",
+                "FinishDate": "",
+                "Status": "",
+                "AR": "",
+                "Comments": "",
+                "Sequence":"",
+                "StatusText":""
+            });
             oHeaderSignOffTable.getModel("HeaderSignOffDetails").setData(oHeaderSignOffTableModel);
         },
-        
-        onAddDiscSignOffLineItem : function(){
+
+        onAddDiscSignOffLineItem: function () {
             var oDiscSignOffTable = this.getView().byId("idTabDiscSingoff");
-            var oDiscSignOffTableModel = oDiscSignOffTable.getModel("DiscrepancySignOffDetails").getData();         
-                oDiscSignOffTableModel.push({
-                    "WorkGroup": "",
-                    "DiscrepancyNo":"",
-                    "User": "",
-                    "SignOffNote": "",
-                    "ActionCode": "",
-                    "DateInQueue": "",
-                    "ActualStart": "",
-                    "FinishDate":"",
-                    "Status": "",                   
-                    "AR": "",
-                    "Comments": ""
-                });
+            var oDiscSignOffTableModel = oDiscSignOffTable.getModel("DiscrepancySignOffDetails").getData();
+            oDiscSignOffTableModel.push({
+                "SignOffGroup": "",
+                "DiscrepancyNo": "",
+                "User": "",
+                "SignOffNote": "",
+                "ActionCode": "",
+                "DateInQueue": "",
+                "ActualStart": "",
+                "FinishDate": "",
+                "Status": "",
+                "AR": "",
+                "Comments": "",
+                "Sequence":"",
+                "StatusText":""
+            });
             oDiscSignOffTable.getModel("DiscrepancySignOffDetails").setData(oDiscSignOffTableModel);
+        },
+
+        onDeleteHeaderSignOffLineItem: function (oEvent) {
+            var oBindingContexts = oEvent.getSource().getParent().oBindingContexts['HeaderSignOffDetails'];
+            MessageBox.confirm(
+                "Do you want to delete?", {
+                icon: MessageBox.Icon.CONFRIRMATION,
+                title: "Confirmation",
+                actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+                emphasizedAction: MessageBox.Action.CANCEL,
+                initialFocus: MessageBox.Action.CANCEL,
+                onClose: function (sAction) {
+                    if (sAction == MessageBox.Action.OK) {
+                        var oHeaderSignoffTab = this.getView().byId("idTabHeaderSingoff");
+
+                        var oHeaderSignOffTableModel = oHeaderSignoffTab.getModel("HeaderSignOffDetails").getData();
+                        var index = oBindingContexts.sPath.split('/')[1];
+                        oHeaderSignOffTableModel.splice(index, 1);
+                        oHeaderSignoffTab.getModel("HeaderSignOffDetails").refresh();
+                    }
+                }.bind(this)
+            });
+
+        },
+        onDeleteDiscSignOffLineItem: function (oEvent) {
+            var oBindingContexts = oEvent.getSource().getParent().oBindingContexts['DiscrepancySignOffDetails']
+            MessageBox.confirm(
+                "Do you want to delete?", {
+                icon: MessageBox.Icon.CONFRIRMATION,
+                title: "Confirmation",
+                actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+                emphasizedAction: MessageBox.Action.CANCEL,
+                initialFocus: MessageBox.Action.CANCEL,
+                onClose: function (sAction) {
+                    if (sAction == MessageBox.Action.OK) {
+                        var oDiscSignoffTab = this.getView().byId("idTabDiscSingoff");
+
+                        var oDiscSignOffTableModel = oDiscSignoffTab.getModel("DiscrepancySignOffDetails").getData();
+                        var index = oBindingContexts.sPath.split('/')[1];
+                        oDiscSignOffTableModel.splice(index, 1);
+                        oDiscSignoffTab.getModel("DiscrepancySignOffDetails").refresh();
+                    }
+                }.bind(this)
+            });
         },
 
         // discSingoffDetails: function () {
@@ -1517,7 +1565,7 @@ sap.ui.define([
                         shellHash: hash
                     }
                 });
-            } else if(this.oAppMode == "NETLIST"){
+            } else if (this.oAppMode == "NETLIST") {
                 var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation"); // get a handle on the global XAppNav service
                 var hash = (oCrossAppNavigator && oCrossAppNavigator.hrefForExternal({
                     target: {
@@ -1869,7 +1917,7 @@ sap.ui.define([
                             this.createDiscrepancyData();
                         } else if (this.getView().byId("idDcCobDscNo").getValue() !== "" && this.getView().byId("idDcCbIf").getSelected() === true) {
                             this.updateDiscrepancyData();
-                        } else if((this.getView().byId("idDcCobDscNo").getValue() !== "" || this.getView().byId("idDcCobDscNo").getValue() === "") && this.getView().byId("idDcCbIf").getSelected() === false){
+                        } else if ((this.getView().byId("idDcCobDscNo").getValue() !== "" || this.getView().byId("idDcCobDscNo").getValue() === "") && this.getView().byId("idDcCbIf").getSelected() === false) {
                             this.IsUserMRBCertifiedCheck();
                         }
                     }
@@ -1877,7 +1925,7 @@ sap.ui.define([
                     if (this.getView().byId("idDiscAircraft").getValue() == "" || this.getView().byId("idDcIpLblty").getValue() == ""
                         || this.getView().byId("idDiscQtyIns").getValue() == "" || this.getView().byId("idDiscQtyRej").getValue() == ""
                         || this.getView().byId("idDcIpDc").getValue() == "" || this.getView().byId("idDcTxtIs").getValue() == "") {
-                        
+
                         var oNcrSaveFldMsg = this.getView().getModel("i18n").getProperty("NCSaveFieldMsg");
                         MessageBox.information(oNcrSaveFldMsg);
                         this.getView().byId("idDiscAircraft").getValue() === "" ? this.getView().byId("idDiscAircraft").setValueState("Warning") : "";
@@ -1910,7 +1958,7 @@ sap.ui.define([
                             this.createDiscrepancyData();
                         } else if (this.getView().byId("idDcCobDscNo").getValue() !== "" && this.getView().byId("idDcCbIf").getSelected() === true) {
                             this.updateDiscrepancyData();
-                        } else if((this.getView().byId("idDcCobDscNo").getValue() !== "" || this.getView().byId("idDcCobDscNo").getValue() === "") && this.getView().byId("idDcCbIf").getSelected() === false){
+                        } else if ((this.getView().byId("idDcCobDscNo").getValue() !== "" || this.getView().byId("idDcCobDscNo").getValue() === "") && this.getView().byId("idDcCbIf").getSelected() === false) {
                             this.IsUserMRBCertifiedCheck();
                         }
                     }
@@ -1920,24 +1968,85 @@ sap.ui.define([
                         this.createDiscrepancyData();
                     } else if (this.getView().byId("idDcCobDscNo").getValue() !== "" && this.getView().byId("idDcCbIf").getSelected() === true) {
                         this.updateDiscrepancyData();
-                    } else if((this.getView().byId("idDcCobDscNo").getValue() !== "" || this.getView().byId("idDcCobDscNo").getValue() === "") && this.getView().byId("idDcCbIf").getSelected() === false){
+                    } else if ((this.getView().byId("idDcCobDscNo").getValue() !== "" || this.getView().byId("idDcCobDscNo").getValue() === "") && this.getView().byId("idDcCbIf").getSelected() === false) {
                         this.IsUserMRBCertifiedCheck();
                     }
                 }
             } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Dispo") {
-                if(this.getView().byId("idDispoGenInfoIncompFlag").getSelected() === true){
-                    this.createDisposition();             
-                }else if((this.getView().byId("idTableDisposition").getSelectedItem()) && (this.getView().byId("idDispoGenInfoIncompFlag").getSelected() === false)){
-                    if(this.getView().byId("idTableDisposition").getSelectedItem().getBindingContext("DispositionDetails").getProperty("DispositionStatus") == "Open"){
+                if (this.getView().byId("idDispoGenInfoIncompFlag").getSelected() === true) {
+                    this.createDisposition();
+                } else if ((this.getView().byId("idTableDisposition").getSelectedItem()) && (this.getView().byId("idDispoGenInfoIncompFlag").getSelected() === false)) {
+                    if (this.getView().byId("idTableDisposition").getSelectedItem().getBindingContext("DispositionDetails").getProperty("DispositionStatus") == "Open") {
                         this.createDisposition();
-                    }else {
+                    } else {
                         this.dispoIsUserMRBCertifiedCheck();
-                    }                
-                } else if(this.getView().byId("idDispoGenInfoIncompFlag").getSelected() === false){
+                    }
+                } else if (this.getView().byId("idDispoGenInfoIncompFlag").getSelected() === false) {
                     this.dispoIsUserMRBCertifiedCheck();
                 }
+            }else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Signoff") {
+                this.onSaveSingOff();
             }
+
         },
+
+        onSaveSingOff:function(){
+            sap.ui.core.BusyIndicator.show();
+            var htab = this.getView().byId("idTabHeaderSingoff").getItems();
+            var dtab = this.getView().byId("idTabDiscSingoff").getItems();
+            var hobj={},dobj={},obj={};
+            var hsarr =[], dsarr = [];
+            var workgrp = this.getView().byId("idworkgroup").getText();
+            for(var i=0; i<htab.lenght;i++){
+                hobj.Notification = sObjectId;
+                hobj.SignOffGroup = htab[i].getCells()[0].getText();
+                hobj.Sequence=htab[i].getCells()[11].getText();
+                hobj.SignOffNote=htab[i].getCells()[2].getValue();
+                hobj.ActionCode=htab[i].getCells()[3].getValue();
+                hobj.AR=htab[i].getCells()[8].getValue();
+                hobj.Comments=htab[i].getCells()[9].getValue();
+                hobj.Status=htab[i].getCells()[7].getValue();
+                hobj.StatusText=htab[i].getCells()[12].getText();
+                hsarr.push(hobj);
+            }
+            for(var j=0;j<dtab.length;j++){
+                dobj.Notification = sObjectId;
+                dobj.DiscrepancyNo=dtab[i].getCells()[1].getText();
+                dobj.SignOffGroup = dtab[i].getCells()[0].getText();
+                dobj.Sequence=dtab[i].getCells()[12].getText();
+                dobj.SignOffNote=dtab[i].getCells()[4].getValue();
+                dobj.ActionCode=dtab[i].getCells()[3].getValue();
+                dobj.AR=dtab[i].getCells()[9].getValue();
+                dobj.Comments=dtab[i].getCells()[10].getValue();
+                dobj.Status=dtab[i].getCells()[8].getValue();
+                dobj.StatusText=dtab[i].getCells()[13].getText();
+                dsarr.push(dobj);
+            }
+
+            obj.Notification = sObjectId;
+            obj.WorkGroup= workgrp;
+            obj.to_headersignoff = hsarr;
+            obj.to_discsignoff = dsarr;
+            var oModel = this.getOwnerComponent().getModel();
+            oModel.create("/SignOffSet", obj, {
+                method: "POST",
+                success: function (data, response) {
+                    sap.ui.core.BusyIndicator.hide();
+                    if (response.headers["sap-message"]) {
+                        var sMessg = JSON.parse(response.headers["sap-message"]).message;
+                        MessageBox.success(sMessg);
+                    }
+                    oModel.refresh();
+                },
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+            
+        },
+
 
         handleChangeDiscAircraft: function () {
             if (this.getView().byId("idDiscAircraft").getValue() !== "") {
@@ -2591,7 +2700,7 @@ sap.ui.define([
             }
         },
 
-        handleNavToSignOff: function(){
+        handleNavToSignOff: function () {
             this.getView().byId("idIconTabBarHeader").setSelectedKey("Signoff");
             this.getView().byId("idHeaderDiscTable").removeSelections();
             this.getView().byId("idstatus").setVisible(false);
@@ -5980,7 +6089,7 @@ sap.ui.define([
             }
         },
 
-        onSearchMRBWorkGroup: function(oEvent){
+        onSearchMRBWorkGroup: function (oEvent) {
             var sQuery = oEvent.getSource().getValue();
             // add filter for search
             var aFilter = [], oFilter = [];
@@ -5989,11 +6098,11 @@ sap.ui.define([
                 oFilter.push(new Filter("Value1", FilterOperator.Contains, sQuery));
                 oFilter.push(new Filter("Description", FilterOperator.Contains, sQuery));
                 aFilter.push(new Filter(oFilter, false));
-            }  
+            }
             // update list binding
-			var oWrkGrpTable = this._oWrkOrdDialog.getContent()[1];
+            var oWrkGrpTable = this._oWrkOrdDialog.getContent()[1];
             var oBinding = oWrkGrpTable.getBinding("items");
-                oBinding.filter(aFilter);
+            oBinding.filter(aFilter);
         },
 
         onCloseWrkGrpMRB: function () {
@@ -6676,7 +6785,7 @@ sap.ui.define([
             });
         },
 
-        handleChangeMajorMinorNC: function(){
+        handleChangeMajorMinorNC: function () {
             sap.ui.core.BusyIndicator.show();
             var oDataModel = this.getOwnerComponent().getModel();
             var oMajorMinorNCValue = this.getView().byId("dispGenMajorMinorNC").getValue();
@@ -6685,17 +6794,17 @@ sap.ui.define([
             oDataModel.read(sPath, {
                 success: function (oData, oResult) {
                     sap.ui.core.BusyIndicator.hide();
-                    if(oData.Change == false && this.getView().byId("idTableDisposition").getSelectedItem() == null){
+                    if (oData.Change == false && this.getView().byId("idTableDisposition").getSelectedItem() == null) {
                         var oMajMinNCMsg = this.getView().getModel("i18n").getProperty("MajMinNCMsg");
                         MessageBox.warning(oMajMinNCMsg);
                         this.getView().byId("dispGenMajorMinorNC").setSelectedKey();
                         this.getView().byId("dispGenMajorMinorNC").setValue();
-                    }else if(oData.Change == false && this.getView().byId("idTableDisposition").getSelectedItem()){
+                    } else if (oData.Change == false && this.getView().byId("idTableDisposition").getSelectedItem()) {
                         var oMajMinNCMsg = this.getView().getModel("i18n").getProperty("MajMinNCMsg");
                         MessageBox.warning(oMajMinNCMsg);
                         this.getView().byId("dispGenMajorMinorNC").setSelectedKey("DISPIMPACT");
                         this.getView().byId("dispGenMajorMinorNC").setValue(this.oMajorMinorNC);
-                    }else{
+                    } else {
                         this.getView().byId("dispGenMajorMinorNC").setSelectedKey(oMajorMinorNCKey);
                         this.getView().byId("dispGenMajorMinorNC").setValue(oMajorMinorNCValue);
                     }
@@ -7547,8 +7656,8 @@ sap.ui.define([
             oBinding.filter([oFilter]);
         },
 
-        handleDispIncompFlagCheck: function(){
-            if(this.getView().byId("idDispoGenInfoIncompFlag").getSelected() === false){
+        handleDispIncompFlagCheck: function () {
+            if (this.getView().byId("idDispoGenInfoIncompFlag").getSelected() === false) {
                 this._oQualityWkGrpDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.DispositionWorkGroupQuality", this);
                 this.getView().addDependent(this._oQualityWkGrpDialog);
                 this._oQualityWkGrpDialog.open();
@@ -7573,18 +7682,18 @@ sap.ui.define([
                         MessageBox.error(msg);
                     }
                 });
-            }else if((this.getView().byId("idDispoGenInfoIncompFlag").getSelected() === true) && (this.getView().byId("idTableDisposition").getSelectedItem())){
-                if(this.getView().byId("idTableDisposition").getSelectedItem().getBindingContext("DispositionDetails").getProperty("DispositionStatus") == "Open"){
+            } else if ((this.getView().byId("idDispoGenInfoIncompFlag").getSelected() === true) && (this.getView().byId("idTableDisposition").getSelectedItem())) {
+                if (this.getView().byId("idTableDisposition").getSelectedItem().getBindingContext("DispositionDetails").getProperty("DispositionStatus") == "Open") {
                     this.getView().byId("idDispoGenInfoIncompFlag").setSelected(false);
                     var oDispIncompMsg = this.getView().getModel("i18n").getProperty("DispoIncompMsg");
                     MessageBox.warning(oDispIncompMsg);
-                }else{
+                } else {
                     this.getView().byId("idDispoGenInfoIncompFlag").setSelected(true);
                 }
-            }   
+            }
         },
 
-        onSearchQualityWorkGroup: function(oEvent){
+        onSearchQualityWorkGroup: function (oEvent) {
             var sQuery = oEvent.getSource().getValue();
             // add filter for search
             var aFilter = [], oFilter = [];
@@ -7594,19 +7703,19 @@ sap.ui.define([
                 oFilter.push(new Filter("Description", FilterOperator.Contains, sQuery));
                 oFilter.push(new Filter("KeyValue", FilterOperator.Contains, sQuery));
                 aFilter.push(new Filter(oFilter, false));
-            }  
+            }
             // update list binding
-			var oWrkGrpTable = this._oQualityWkGrpDialog.getContent()[1];
+            var oWrkGrpTable = this._oQualityWkGrpDialog.getContent()[1];
             var oBinding = oWrkGrpTable.getBinding("items");
-                oBinding.filter(aFilter);
+            oBinding.filter(aFilter);
         },
 
         onQualWorkGrpItemSel: function (oEvent) {
             this.oSelectedQualWrkGrp = oEvent.getParameters().listItem.getBindingContext("WorkGroupQual").getProperty("Value");
             this._oQualityWkGrpDialog.close();
-            if(this.oSelectedQualWrkGrp){
+            if (this.oSelectedQualWrkGrp) {
                 this.oQualityWrkGrp = this.oSelectedQualWrkGrp;
-            } else{
+            } else {
                 this.oQualityWrkGrp = "";
             }
         },
@@ -7617,7 +7726,7 @@ sap.ui.define([
             this._oQualityWkGrpDialog.destroy();
         },
 
-        dispoIsUserMRBCertifiedCheck: function(){
+        dispoIsUserMRBCertifiedCheck: function () {
             sap.ui.core.BusyIndicator.show();
             var oModel = new JSONModel();
             oModel.setSizeLimit(10000);
@@ -7694,13 +7803,13 @@ sap.ui.define([
             });
         },
 
-        onDispoWorkGrpItemSel: function(oEvent){
+        onDispoWorkGrpItemSel: function (oEvent) {
             this.oSelectedDispoWrkGrp = oEvent.getParameters().listItem.getBindingContext("DispoWorkGroupModel").getProperty("Value");
             this._oDispoWrkOrdDialog.close();
             this.createDisposition();
         },
 
-        onSearchDispoMRBWorkGroup: function(oEvent){
+        onSearchDispoMRBWorkGroup: function (oEvent) {
             var sQuery = oEvent.getSource().getValue();
             // add filter for search
             var aFilter = [], oFilter = [];
@@ -7709,11 +7818,11 @@ sap.ui.define([
                 oFilter.push(new Filter("Value1", FilterOperator.Contains, sQuery));
                 oFilter.push(new Filter("Description", FilterOperator.Contains, sQuery));
                 aFilter.push(new Filter(oFilter, false));
-            }  
+            }
             // update list binding
-			var oWrkGrpTable = this._oDispoWrkOrdDialog.getContent()[1];
+            var oWrkGrpTable = this._oDispoWrkOrdDialog.getContent()[1];
             var oBinding = oWrkGrpTable.getBinding("items");
-                oBinding.filter(aFilter);
+            oBinding.filter(aFilter);
         },
 
         onCloseDispoWrkGrpMRB: function () {
@@ -7815,9 +7924,9 @@ sap.ui.define([
                             }
                         }
 
-                        if(this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel")){
+                        if (this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel")) {
                             var oBuyOffTableData = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData();
-                            if(oBuyOffTableData.length === 1){
+                            if (oBuyOffTableData.length === 1) {
                                 payloadDispoData["to_dispobuyoff"] = [];
                                 var oDispositionGroup = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].DispositionGroup;
                                 var oWorkCenter = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].WorkCenter;
@@ -7833,7 +7942,7 @@ sap.ui.define([
                                     "BuyOffStatusKey": oBuyOffStatusKey,
                                     "BuyOffComment": oBuyOffComment
                                 });
-                            }else if(oBuyOffTableData.length > 1){
+                            } else if (oBuyOffTableData.length > 1) {
                                 payloadDispoData["to_dispobuyoff"] = [];
                                 for (var k = 0; k < oBuyOffTableData.length; k++) {
                                     var oDispositionGroup = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[k].DispositionGroup;
@@ -7859,8 +7968,8 @@ sap.ui.define([
                     sap.ui.core.BusyIndicator.show();
                     var oDispoTabData = this.getView().byId("idTableDisposition").getModel("DispositionDetails").getData();
                     var oIndex = oDispoTabData.length - 1;
-                    if(this.getView().byId("idTableDisposition").getSelectedItem()){
-                        if(oDispoTabData[oIndex].ParentDispoNo === ""){
+                    if (this.getView().byId("idTableDisposition").getSelectedItem()) {
+                        if (oDispoTabData[oIndex].ParentDispoNo === "") {
                             this.getView().byId("idTableDisposition").removeItem(this.getView().byId("idTableDisposition").getItems()[oIndex]);
                         }
                         var oParentDispoNo = this.getView().byId("idTableDisposition").getSelectedItem().getBindingContext("DispositionDetails").getProperty("ParentDispoNo");
@@ -7935,9 +8044,9 @@ sap.ui.define([
                             }
                         }
 
-                        if(this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel")){
+                        if (this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel")) {
                             var oBuyOffTableData = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData();
-                            if(oBuyOffTableData.length === 1){
+                            if (oBuyOffTableData.length === 1) {
                                 payloadDispoData["to_dispobuyoff"] = [];
                                 var oDispositionGroup = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].DispositionGroup;
                                 var oWorkCenter = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].WorkCenter;
@@ -7953,7 +8062,7 @@ sap.ui.define([
                                     "BuyOffStatusKey": oBuyOffStatusKey,
                                     "BuyOffComment": oBuyOffComment
                                 });
-                            }else if(oBuyOffTableData.length > 1){
+                            } else if (oBuyOffTableData.length > 1) {
                                 payloadDispoData["to_dispobuyoff"] = [];
                                 for (var k = 0; k < oBuyOffTableData.length; k++) {
                                     var oDispositionGroup = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[k].DispositionGroup;
@@ -7974,7 +8083,7 @@ sap.ui.define([
                             }
                         }
 
-                    }else if (oDispoTabData[oIndex].ParentDispoNo === "") {
+                    } else if (oDispoTabData[oIndex].ParentDispoNo === "") {
                         var payloadDispoData = {
                             "NotificationNo": oNotifNo,
                             "DiscrepancyNo": oDiscrepancyNo,
@@ -8042,9 +8151,9 @@ sap.ui.define([
                             }
                         }
 
-                        if(this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel")){
+                        if (this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel")) {
                             var oBuyOffTableData = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData();
-                            if(oBuyOffTableData.length === 1){
+                            if (oBuyOffTableData.length === 1) {
                                 payloadDispoData["to_dispobuyoff"] = [];
                                 var oDispositionGroup = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].DispositionGroup;
                                 var oWorkCenter = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[0].WorkCenter;
@@ -8060,7 +8169,7 @@ sap.ui.define([
                                     "BuyOffStatusKey": oBuyOffStatusKey,
                                     "BuyOffComment": oBuyOffComment
                                 });
-                            }else if(oBuyOffTableData.length > 1){
+                            } else if (oBuyOffTableData.length > 1) {
                                 payloadDispoData["to_dispobuyoff"] = [];
                                 for (var k = 0; k < oBuyOffTableData.length; k++) {
                                     var oDispositionGroup = this.getView().byId("idTableDispoBuyOff").getModel("DispositionBuyOffModel").getData()[k].DispositionGroup;
@@ -8107,7 +8216,7 @@ sap.ui.define([
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
                         var msg = JSON.parse(oError.responseText).error.message.value;
-                        MessageBox.error(msg);   
+                        MessageBox.error(msg);
                     }.bind(this)
                 });
             } else {
@@ -8175,11 +8284,11 @@ sap.ui.define([
             this.getView().byId("idDispoTextArea").setValue();
         },
 
-        resetInitialisedFields: function(){
+        resetInitialisedFields: function () {
             var oParData = { ParentDispoNo: "" };
             this.oParentDispoModel.setData(oParData);
             this.oSelectedDispoWrkGrp = "";
-            this.oSelectedWrkGrp = "";                  
+            this.oSelectedWrkGrp = "";
             this.oMRBCertifiedUser = "";
             this.oMRBActionYes = "";
             this.oMRBActionNo = "";
@@ -8302,15 +8411,15 @@ sap.ui.define([
             }
         },
 
-        bindBuyOffTable: function(sNotif, sDiscre, sParDispo){
+        bindBuyOffTable: function (sNotif, sDiscre, sParDispo) {
             sap.ui.core.BusyIndicator.show();
-            if(sNotif == undefined || sNotif == null){
+            if (sNotif == undefined || sNotif == null) {
                 sNotif = "";
             }
-            if(sDiscre == undefined || sDiscre == null){
+            if (sDiscre == undefined || sDiscre == null) {
                 sDiscre = "";
             }
-            if(sParDispo == undefined || sParDispo == null){
+            if (sParDispo == undefined || sParDispo == null) {
                 sParDispo = "";
             }
             var oDispoNotification = sNotif,
@@ -8318,7 +8427,7 @@ sap.ui.define([
                 oParentDispoNo = sParDispo,
                 oWorkGroupKey = this.getView().byId("idworkgroup").getText();
             var oModel = new JSONModel();
-                oModel.setSizeLimit(10000);
+            oModel.setSizeLimit(10000);
             var oDataModel = this.getOwnerComponent().getModel();
             var sPath = "/NotificationDispositionSet(NotificationNo='" + oDispoNotification + "',DiscrepancyNo='" + oDispoDiscrepancy + "',ParentDispoNo='" + oParentDispoNo + "',WorkGroupKey='" + oWorkGroupKey + "')";
             oDataModel.read(sPath, {
@@ -8326,7 +8435,7 @@ sap.ui.define([
                     "$expand": "to_dispobuyoff"
                 },
                 success: function (oData, oResult) {
-                    debugger;
+                    //debugger;
                     sap.ui.core.BusyIndicator.hide();
                     var data = oData.to_dispobuyoff.results;
                     oModel.setData(data);
@@ -8451,15 +8560,15 @@ sap.ui.define([
         onSearchBuyOffGroup: function (oEvent) {
             var sValue = oEvent.getParameter("value");
             var aFilter = [], oFilter = [];
-                oFilter.push(new Filter("Value", FilterOperator.Contains, sValue));
-                oFilter.push(new Filter("Value1", FilterOperator.Contains, sValue));
-                oFilter.push(new Filter("Description", FilterOperator.Contains, sValue));
-                aFilter.push(new Filter(oFilter, false));
+            oFilter.push(new Filter("Value", FilterOperator.Contains, sValue));
+            oFilter.push(new Filter("Value1", FilterOperator.Contains, sValue));
+            oFilter.push(new Filter("Description", FilterOperator.Contains, sValue));
+            aFilter.push(new Filter(oFilter, false));
             var oBinding = oEvent.getParameter("itemsBinding");
             oBinding.filter(aFilter);
         },
 
-        onOpenVHBuyOffStatus: function(oEvent){
+        onOpenVHBuyOffStatus: function (oEvent) {
             this._oBuyoffStatusDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.BuyoffStatus", this);
             this.getView().addDependent(this._oBuyoffStatusDialog);
             this._oBuyoffStatusDialog.open();
@@ -8495,7 +8604,7 @@ sap.ui.define([
                 oInput.resetProperty("value");
                 return;
             }
-            if(oSelectedItem){
+            if (oSelectedItem) {
                 oInput.setValue(oSelectedItem.getTitle());
                 oInput.setTooltip(oSelectedItem.getInfo());
             }
@@ -8509,7 +8618,7 @@ sap.ui.define([
             oBinding.filter([oFilter]);
         },
 
-        onBuyoffAdd: function(){
+        onBuyoffAdd: function () {
             var oBuyOffTable = this.getView().byId("idTableDispoBuyOff");
             var oBuyOffTableModel = oBuyOffTable.getModel("DispositionBuyOffModel").getData();
             if (oBuyOffTableModel.length === 0) {
