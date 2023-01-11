@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog title="{i18n>DiscrepencyNum}" items="{oDiscreSingoffDNO>/}" confirm="_configSingoffdnoDialog"
+		cancel="_handleSingoffDNOClose" >
+		<StandardListItem title="{oDiscreSingoffDNO>DiscrepancyNo}" />
+	</SelectDialog>
+</core:FragmentDefinition>

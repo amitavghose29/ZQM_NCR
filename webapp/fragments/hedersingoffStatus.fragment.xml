@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
 	<SelectDialog  title="Sing Off Status" items="{oHeaderSingoffStatus>/}" confirm="_configSingoffStatusDialog"
 		cancel="_handleSingoffStatusClose" contentHeight="150px" >
-		<StandardListItem title="{oHeaderSingoffStatus>Value}" info="{oHeaderSingoffStatus>Description}"/>
+		<StandardListItem title="{oHeaderSingoffStatus>Description}" info="{oHeaderSingoffStatus>Value}"/>
 	</SelectDialog>
 </core:FragmentDefinition>

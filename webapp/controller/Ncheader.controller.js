@@ -1208,6 +1208,7 @@ sap.ui.define([
                 }
             });
         },
+       
 
         _configSingoffARDialog: function (oEvent) {
             var oSelectedItem = oEvent.getParameter("selectedItem"),
@@ -1272,6 +1273,49 @@ sap.ui.define([
         _handleSingoffStatusClose: function () {
             this._oHeadersingoffStatusDialog.close();
         },
+
+        onDiscsingoffdiscno: function (oEvent) {
+            this._oDiscrepancysingoffdnoDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.DiscNo", this);
+            this.getView().addDependent(this._oDiscrepancysingoffdnoDialog);
+            this._oDiscrepancysingoffdnoDialog.open();
+            this.oDiscrepancysingoffdnoDialog = oEvent.getSource();
+            
+                sap.ui.core.BusyIndicator.show();
+                var oModel = new JSONModel();
+                var oDataModel = this.getOwnerComponent().getModel();
+                var sPath = "/CreateNotificationHeaderSet('" +sObjectId+"')";
+                oDataModel.read(sPath, {
+                    urlParameters: {
+                        "$expand": "to_discrepancy"
+                    },
+                    success: function (oData, oResult) {
+                        sap.ui.core.BusyIndicator.hide();
+                        var data = oData.to_discrepancy.results;
+                        oModel.setData(data);
+                        this._oDiscrepancysingoffdnoDialog.setModel(oModel, "oDiscreSingoffDNO");
+                    }.bind(this),
+                    error: function (oError) {
+                        sap.ui.core.BusyIndicator.hide();
+                        var msg = JSON.parse(oError.responseText).error.message.value;
+                        MessageBox.error(msg);
+                    }
+                });
+                                       
+        },
+        _configSingoffdnoDialog:function(oEvent){
+            var oSelectedItem = oEvent.getParameter("selectedItem"),
+            oInput = this.oDiscrepancysingoffdnoDialog;
+       if (!oSelectedItem) {
+            oInput.resetProperty("value");
+            return;
+        }
+        oInput.setValue(oSelectedItem.getTitle());
+        this._oDiscrepancysingoffdnoDialog.destroy();
+       },
+		_handleSingoffDNOClose:function(){
+            this._oDiscrepancysingoffdnoDialog.close();
+        },
+
 
         onAddHeaderSignOffLineItem: function () {
             var oHeaderSignOffTable = this.getView().byId("idTabHeaderSingoff");
@@ -1408,8 +1452,11 @@ sap.ui.define([
                     initialFocus: MessageBox.Action.CANCEL,
                     onClose: function (sAction) {
                         if (sAction == MessageBox.Action.OK) {
-                            oModel.remove("/HeaderSignOffSet(Notification ='" + notification + "', SignOffGroup ='" + signoffgroup + "', Sequence = '" + sequence + "', WorkGroup ='" + workgroup + "')", {
-                                success: function (response) {
+                           // oModel.remove("/HeaderSignOffSet(Notification ='" + notification + "', SignOffGroup ='" + signoffgroup + "', Sequence = '" + sequence + "', WorkGroup ='" + workgroup + "')", {
+                            var payload = "/HeaderSignOffSet(Notification ='" + notification + "', SignOffGroup ='" + signoffgroup + "', Sequence = '" + sequence + "', WorkGroup ='" + workgroup + "')";
+                            oModel.remove(payload, {
+                                method: "DELETE",  
+                           success: function (response) {
                                     // sap.ui.core.BusyIndicator.hide();
                                     if (response.headers["sap-message"]) {
                                         var sMessg = JSON.parse(response.headers["sap-message"]).message;
@@ -1424,7 +1471,7 @@ sap.ui.define([
                                     var msg = oError.message;
                                     MessageBox.error(msg);
                                 }
-                            })
+                            });
                         }
                     }.bind(this)
                 });
@@ -1459,7 +1506,9 @@ sap.ui.define([
                     initialFocus: MessageBox.Action.CANCEL,
                     onClose: function (sAction) {
                         if (sAction == MessageBox.Action.OK) {
-                            oModel.remove("/DiscSignOffSet(Notification ='" + notification + "', SignOffGroup ='" + signoffgroup + "', Sequence = '" + sequence + "', WorkGroup ='" + workgroup + "')", {
+                         var payload= "/DiscSignOffSet(Notification ='" + notification + "', SignOffGroup ='" + signoffgroup + "', Sequence = '" + sequence + "', WorkGroup ='" + workgroup + "')";
+                            oModel.remove(payload, {
+                                method: "DELETE",
                                 success: function (response) {
                                     //sap.ui.core.BusyIndicator.hide();
                                     if (response.headers["sap-message"]) {
@@ -1475,7 +1524,7 @@ sap.ui.define([
                                     var msg = oError.message;
                                     MessageBox.error(msg);
                                 }
-                            })
+                            });
                         }
                     }.bind(this)
                 });
@@ -2193,10 +2242,11 @@ sap.ui.define([
             sap.ui.core.BusyIndicator.show();
             var htab = this.getView().byId("idTabHeaderSingoff").getItems();
             var dtab = this.getView().byId("idTabDiscSingoff").getItems();
-            var hobj = {}, dobj = {}, obj = {};
+            var obj = {};
             var hsarr = [], dsarr = [];
             var workgrp = this.getView().byId("idworkgroup").getText();
-            for (var i = 0; i < htab.lenght; i++) {
+            for (var i = 0; i < htab.length; i++) {
+                var hobj = {};
                 hobj.Notification = sObjectId;
                 hobj.SignOffGroup = htab[i].getCells()[0].getText();
                 hobj.Sequence = htab[i].getCells()[11].getText();
@@ -2204,21 +2254,22 @@ sap.ui.define([
                 hobj.ActionCode = htab[i].getCells()[3].getValue();
                 hobj.AR = htab[i].getCells()[8].getValue();
                 hobj.Comments = htab[i].getCells()[9].getValue();
-                hobj.Status = htab[i].getCells()[7].getValue();
-                hobj.StatusText = htab[i].getCells()[12].getText();
+                hobj.Status = htab[i].getCells()[12].getValue();
+                hobj.StatusText = htab[i].getCells()[7].getText();
                 hsarr.push(hobj);
             }
             for (var j = 0; j < dtab.length; j++) {
+                var dobj={};
                 dobj.Notification = sObjectId;
-                dobj.DiscrepancyNo = dtab[i].getCells()[1].getText();
-                dobj.SignOffGroup = dtab[i].getCells()[0].getText();
-                dobj.Sequence = dtab[i].getCells()[12].getText();
-                dobj.SignOffNote = dtab[i].getCells()[3].getValue();
-                dobj.ActionCode = dtab[i].getCells()[4].getValue();
-                dobj.AR = dtab[i].getCells()[9].getValue();
-                dobj.Comments = dtab[i].getCells()[10].getValue();
-                dobj.Status = dtab[i].getCells()[8].getValue();
-                dobj.StatusText = dtab[i].getCells()[13].getText();
+                dobj.DiscrepancyNo = dtab[j].getCells()[1].getText();
+                dobj.SignOffGroup = dtab[j].getCells()[0].getText();
+                dobj.Sequence = dtab[j].getCells()[12].getText();
+                dobj.SignOffNote = dtab[j].getCells()[3].getValue();
+                dobj.ActionCode = dtab[j].getCells()[4].getValue();
+                dobj.AR = dtab[j].getCells()[9].getValue();
+                dobj.Comments = dtab[j].getCells()[10].getValue();
+                dobj.Status = dtab[j].getCells()[13].getValue();
+                dobj.StatusText = dtab[j].getCells()[8].getText();
                 dsarr.push(dobj);
             }
 

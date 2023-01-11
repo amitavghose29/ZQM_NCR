@@ -1111,7 +1111,7 @@
                                         <items>
                                             <ColumnListItem>
                                                 <cells>
-                                                    <Text text="{HeaderSignOffDetails>SignOffGroup}" />
+                                                    <Input value="{HeaderSignOffDetails>SignOffGroup}" editable="{HeaderSignOffDetails>RowEdit}" showValueHelp="true" valueHelpRequest="onOpenVHBuyOffGroup"/>
                                                     <!--<Text text=""/>-->
                                                     <Link text="{HeaderSignOffDetails>User}" />
                                                     <!--<Input value="" liveChange="onEnterText" valueHelpIconSrc="sap-icon://document-text" showValueHelp="true" valueHelpRequest="onNotesChange"/>-->
@@ -1122,12 +1122,12 @@
                                                     <Text text="{HeaderSignOffDetails>FinishDate}" />
                                                     <!--<Text text="{HeaderSignOffDetails>ActualStart}{HeaderSignOffDetails>ActualSTime}" />-->
                                                     <!--<Text text="{HeaderSignOffDetails>FinishDate}{HeaderSignOffDetails>FinishTime}" />-->
-                                                    <Input value="{HeaderSignOffDetails>Status}" editable="{HeaderSignOffDetails>RowEdit}" showValueHelp="true" valueHelpRequest="onHeadersingoffStatus" />
+                                                    <Input value="{HeaderSignOffDetails>StatusText}" editable="{HeaderSignOffDetails>RowEdit}" showValueHelp="true" valueHelpRequest="onHeadersingoffStatus" />
                                                     <Input value="{HeaderSignOffDetails>AR}" editable="{HeaderSignOffDetails>RowEdit}" showValueHelp="true" valueHelpRequest="onHeadersingoffAR" />
                                                     <Input value="{HeaderSignOffDetails>Comments}" editable="{HeaderSignOffDetails>RowEdit}" />
-                                                    <Button icon="sap-icon://less" type="Reject" press="onDeleteHeaderSignOffLineItem" />
+                                                    <Button icon="sap-icon://less" type="Reject" press="onDeleteHeaderSignOffLineItem" enabled="{HeaderSignOffDetails>RowEdit}"/>
                                                     <Text text="{HeaderSignOffDetails>Sequence}" visible="false" />
-                                                    <Text text="{HeaderSignOffDetails>StatusText}" visible="false" />
+                                                    <Text text="{HeaderSignOffDetails>Status}" visible="false" />
                                                     <Text text="{HeaderSignOffDetails>WorkGroup}" visible="false" />
                                                 </cells>
                                             </ColumnListItem>
@@ -1183,8 +1183,9 @@
                                         <items>
                                             <ColumnListItem>
                                                 <cells>
-                                                    <Text text="{DiscrepancySignOffDetails>SignOffGroup}" />
-                                                    <Text text="{DiscrepancySignOffDetails>DiscrepancyNo}" />
+                                                <Input value="{DiscrepancySignOffDetails>SignOffGroup}" editable="{DiscrepancySignOffDetails>RowEdit}" showValueHelp="true" valueHelpRequest="onOpenVHBuyOffGroup"/>
+                                                 <Input value="{DiscrepancySignOffDetails>DiscrepancyNo}" editable="{DiscrepancySignOffDetails>RowEdit}" showValueHelp="true" valueHelpRequest="onDiscsingoffdiscno"/>  
+                                                   
                                                     <Link text="{DiscrepancySignOffDetails>User}" />
                                                     <!--<Input value="" liveChange="onEnterText" valueHelpIconSrc="sap-icon://document-text" showValueHelp="true" valueHelpRequest="onNotesChange"/>-->
                                                     <Input value="{DiscrepancySignOffDetails>SignOffNote}" editable="{DiscrepancySignOffDetails>RowEdit}" />
@@ -1194,12 +1195,12 @@
                                                     <Text text="{DiscrepancySignOffDetails>FinishDate}" />
                                                     <!--<Text text="{DiscrepancySignOffDetails>ActualStart} {DiscrepancySignOffDetails>ActualSTime}" />-->
                                                     <!--<Text text="{DiscrepancySignOffDetails>FinishDate} {DiscrepancySignOffDetails>FinishTime}" />-->
-                                                    <Input value="{DiscrepancySignOffDetails>Status}" editable="{DiscrepancySignOffDetails>RowEdit}" showValueHelp="true" valueHelpRequest="onHeadersingoffStatus" />
+                                                    <Input value="{DiscrepancySignOffDetails>StatusText}" editable="{DiscrepancySignOffDetails>RowEdit}" showValueHelp="true" valueHelpRequest="onHeadersingoffStatus" />
                                                     <Input value="{DiscrepancySignOffDetails>AR}" editable="{DiscrepancySignOffDetails>RowEdit}" showValueHelp="true" valueHelpRequest="onHeadersingoffAR" />
                                                     <Input value="{DiscrepancySignOffDetails>Comments}" editable="{DiscrepancySignOffDetails>RowEdit}" />
-                                                    <Button icon="sap-icon://less" type="Reject" press="onDeleteDiscSignOffLineItem" />
+                                                    <Button icon="sap-icon://less" type="Reject" press="onDeleteDiscSignOffLineItem" enabled="{DiscrepancySignOffDetails>RowEdit}"/>
                                                     <Text text="{DiscrepancySignOffDetails>Sequence}" visible="false" />
-                                                    <Text text="{DiscrepancySignOffDetails>StatusText}" visible="false" />
+                                                    <Text text="{DiscrepancySignOffDetails>Status}" visible="false" />
                                                     <Text text="{DiscrepancySignOffDetails>WorkGroup}" visible="false" />
                                                 </cells>
                                             </ColumnListItem>
