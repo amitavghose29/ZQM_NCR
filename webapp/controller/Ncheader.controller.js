@@ -1316,6 +1316,52 @@ sap.ui.define([
             this._oDiscrepancysingoffdnoDialog.close();
         },
 
+        onHeadersingoffAC: function (oEvent) {
+            this._oHeadersingoffACDialog = sap.ui.xmlfragment("com.airbus.ZQM_NCR.fragments.Actioncode", this);
+            this.getView().addDependent(this._oHeadersingoffACDialog);
+            this._oHeadersingoffACDialog.open();
+            this.oHeadersingoffAC = oEvent.getSource();
+            sap.ui.core.BusyIndicator.show();
+            var oDataModel = this.getOwnerComponent().getModel();
+            var oheaderSingoffModelAC = new JSONModel();
+            var oFilterPart = [];
+            oFilterPart.push(new Filter("Key", FilterOperator.EQ, "SIGNOFFACTCODE"));
+            var sPath = "/f4_genericSet"
+            oDataModel.read(sPath, {
+                filters: oFilterPart,
+                success: function (oData, oResult) {
+                    var data = oData.results;
+                    oheaderSingoffModelAC.setData(data);
+                    this._oHeadersingoffACDialog.setModel(oheaderSingoffModelAC, "oHeaderSingoffAC");
+                    sap.ui.core.BusyIndicator.hide();
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+        },
+       
+
+        _configSingoffACDialog: function (oEvent) {
+            var oSelectedItem = oEvent.getParameter("selectedItem"),
+                oInput = this.oHeadersingoffAC;
+
+            if (!oSelectedItem) {
+                oInput.resetProperty("value");
+                return;
+            }
+
+            oInput.setValue(oSelectedItem.getTitle());
+            this._oHeadersingoffACDialog.destroy();
+
+        },
+
+        _handleSingoffACClose: function () {
+            this._oHeadersingoffACDialog.close();
+
+        },
 
         onAddHeaderSignOffLineItem: function () {
             var oHeaderSignOffTable = this.getView().byId("idTabHeaderSingoff");

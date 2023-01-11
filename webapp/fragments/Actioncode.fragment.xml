@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog  title="Action Code" items="{oHeaderSingoffAC>/}" confirm="_configSingoffACDialog"
+		cancel="_handleSingoffACClose" search="onSearchDiscNoFB" contentHeight="150px" >
+		<StandardListItem title="{oHeaderSingoffAC>Value}" info="{oHeaderSingoffAC>Description}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

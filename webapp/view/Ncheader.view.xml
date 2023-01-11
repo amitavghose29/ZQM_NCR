@@ -1116,7 +1116,7 @@
                                                     <Link text="{HeaderSignOffDetails>User}" />
                                                     <!--<Input value="" liveChange="onEnterText" valueHelpIconSrc="sap-icon://document-text" showValueHelp="true" valueHelpRequest="onNotesChange"/>-->
                                                     <Input value="{HeaderSignOffDetails>SignOffNote}" editable="{HeaderSignOffDetails>RowEdit}" />
-                                                    <Input value="{HeaderSignOffDetails>ActionCode}" editable="{HeaderSignOffDetails>RowEdit}" showValueHelp="true" />
+                                                    <Input value="{HeaderSignOffDetails>ActionCode}" editable="{HeaderSignOffDetails>RowEdit}" showValueHelp="true" valueHelpRequest="onHeadersingoffAC"/>
                                                     <Text text="{HeaderSignOffDetails>DateInQueue}" />
                                                     <Text text="{HeaderSignOffDetails>ActualStart}" />
                                                     <Text text="{HeaderSignOffDetails>FinishDate}" />
@@ -1143,16 +1143,16 @@
                                             </Toolbar>
                                         </headerToolbar>
                                         <columns>
-                                            <Column hAlign="Left" width="6rem">
+                                            <Column hAlign="Left" width="8rem">
                                                 <Text text="Group" />
                                             </Column>
-                                            <Column hAlign="Left" width="4rem">
+                                            <Column hAlign="Left" width="7rem">
                                                 <Text text="Disc" />
                                             </Column>
                                             <Column hAlign="Left" width="6rem">
                                                 <Text text="User" />
                                             </Column>
-                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="12rem">
+                                            <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="8rem">
                                                 <Text text="Note" />
                                             </Column>
                                             <Column hAlign="Left" demandPopin="true" minScreenWidth="tablet" width="5rem">
@@ -1189,7 +1189,7 @@
                                                     <Link text="{DiscrepancySignOffDetails>User}" />
                                                     <!--<Input value="" liveChange="onEnterText" valueHelpIconSrc="sap-icon://document-text" showValueHelp="true" valueHelpRequest="onNotesChange"/>-->
                                                     <Input value="{DiscrepancySignOffDetails>SignOffNote}" editable="{DiscrepancySignOffDetails>RowEdit}" />
-                                                    <Input value="{DiscrepancySignOffDetails>ActionCode}" editable="{DiscrepancySignOffDetails>RowEdit}" showValueHelp="true" />
+                                                    <Input value="{DiscrepancySignOffDetails>ActionCode}" valueHelpRequest="onHeadersingoffAC" editable="{DiscrepancySignOffDetails>RowEdit}" showValueHelp="true" />
                                                     <Text text="{DiscrepancySignOffDetails>DateInQueue}" />
                                                     <Text text="{DiscrepancySignOffDetails>ActualStart}" />
                                                     <Text text="{DiscrepancySignOffDetails>FinishDate}" />
