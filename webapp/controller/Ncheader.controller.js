@@ -1,7 +1,7 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     'sap/ui/core/Fragment',
-    "sap/ui/model/json/JSONModel",_onSelectingDiscrepancy
+    "sap/ui/model/json/JSONModel",
     "sap/m/Token",
     "sap/m/SearchField",
     "sap/ui/model/Filter",
