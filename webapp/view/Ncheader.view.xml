@@ -1382,11 +1382,11 @@
                                             <ColumnListItem>
                                                 <cells>
                                                     <Text text="{DispositionDetails>ParentDispoNo}" />
-                                                    <Input value="{DispositionDetails>DispostionType}" showValueHelp="true" valueHelpRequest="onOpenVHDispositionType" editable="{DispositionDetails>DispostionTypeRO}" />
-                                                    <Input value="{DispositionDetails>DispositionCode}" showValueHelp="true" valueHelpRequest="onOpenVHDispositionCode" editable="{DispositionDetails>DispositionCodeRO}" />
+                                                    <Input value="{DispositionDetails>DispostionType}" showValueHelp="true" valueHelpRequest="onOpenVHDispositionType"  />
+                                                    <Input value="{DispositionDetails>DispositionCode}" showValueHelp="true" valueHelpRequest="onOpenVHDispositionCode"  />
                                                     <Text text="{DispositionDetails>DispositionStatus}" />
-                                                    <Input value="{DispositionDetails>DispositionQnty}" editable="{DispositionDetails>DispositionQntyRO}" />
-                                                    <Input value="{DispositionDetails>DispositionPartReq}" showValueHelp="true" valueHelpRequest="onOpenVHDispoPartReq" editable="{DispositionDetails>DispositionPartReqRO}" />
+                                                    <Input value="{DispositionDetails>DispositionQnty}"  />
+                                                    <Input value="{DispositionDetails>DispositionPartReq}" showValueHelp="true" valueHelpRequest="onOpenVHDispoPartReq"  />
                                                     <Text text="{DispositionDetails>DispositionAttchement}" />
                                                     <Text text="{DispositionDetails>DispositionCreateBy}" />
                                                     <Text text="{DispositionDetails>DispositionBadge}" />

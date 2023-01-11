@@ -1,8 +1,7 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     'sap/ui/core/Fragment',
-    "sap/ui/model/json/JSONModel",
-    "sap/m/MenuItem",
+    "sap/ui/model/json/JSONModel",_onSelectingDiscrepancy
     "sap/m/Token",
     "sap/m/SearchField",
     "sap/ui/model/Filter",
@@ -7059,7 +7058,7 @@ sap.ui.define([
                 success: function (oData, oResult) {
                     sap.ui.core.BusyIndicator.hide();
                     /*** Working Queue*/
-                    if (oData.to_disposition.results.length > 0) {
+                    /**if (oData.to_disposition.results.length > 0) {
                         if (this.workingQueueMode == "EDIT") {
                             var dispLineItemODataArray = [];
                             var oROLineItemModel;
@@ -7087,7 +7086,7 @@ sap.ui.define([
                                 oData.to_disposition.results[i].DispositionPartReqRO = true;
                             }
                         }
-                    }
+                    }**/
                     /**
                      * Working queue end
                      */
