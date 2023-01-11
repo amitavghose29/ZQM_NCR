@@ -8971,7 +8971,12 @@ sap.ui.define([
             var oBinding = oEvent.getParameter("itemsBinding");
             oBinding.filter([oFilter]);
         },
-
+        onSearchDiscNoSignoff:function(){
+            var sValue = oEvent.getParameter("value");
+            var oFilter = new Filter("DiscrepancyNo", FilterOperator.Contains, sValue);
+            var oBinding = oEvent.getParameter("itemsBinding");
+            oBinding.filter([oFilter]); 
+        },
         onBuyoffAdd: function () {
             var oBuyOffTable = this.getView().byId("idTableDispoBuyOff");
             var oBuyOffTableModel = oBuyOffTable.getModel("DispositionBuyOffModel").getData();
