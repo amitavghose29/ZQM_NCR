@@ -101,6 +101,11 @@ sap.ui.define([
                 }
             }
             /*** End*/
+            if (this.oAppMode === "QUEUE") {
+                this.oIsWorkingQueueFlag = true;
+            } else {
+                this.oIsWorkingQueueFlag = false;
+            }
         },
 
         _bindView: function (sObjectPath) {
@@ -471,6 +476,7 @@ sap.ui.define([
                 var oDiscrepancyNo = "";
                 this.bindDiscrepancyTab(oDiscrepancyNo);
                 this.bindSupplier();
+                this.bindDefaultPartNumber();
                 this.getView().byId("idstatus").setVisible(true);
                 this.getView().byId("idObjNCStatus").setVisible(false);
                 this.getView().byId("idObjNCStatusDiscrep").setVisible(true);
@@ -496,7 +502,6 @@ sap.ui.define([
 
         bindSupplier: function () {
             var oDataModel = this.getOwnerComponent().getModel();
-            var oModel = new JSONModel();
             var sPath = "/GetDiscSupplierCodeSet('" + sObjectId + "')";
             oDataModel.read(sPath, {
                 success: function (oData, oResult) {
@@ -508,6 +513,36 @@ sap.ui.define([
                         this.getView().byId("idDcIpPrtnrNm").setValue(oDiscPartnerDesc);
                     } else {
                         this.bindSupplierFromPurInfo();
+                    }
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+        },
+
+        bindDefaultPartNumber: function () {
+            var oDataModel = this.getOwnerComponent().getModel();
+            var sPath = "/DefaultPartNumberHeaderSet(NotificationNo='" + sObjectId + "')";
+            oDataModel.read(sPath, {
+                success: function (oData, oResult) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var oMulInpSer = this.getView().byId("idMulInpDiscSerNo"),
+                        oMulInpTrc = this.getView().byId("idMulInpDiscTrcNo");
+                    if (oData.PartNumber !== "") {
+                        var oDiscPartNum = oData.PartNumber,
+                            oDiscPartDesc = oData.PartDescription;
+                        this.getView().byId("idDiscPartNumber").setValue(oDiscPartNum);
+                        this.getView().byId("idDiscPartDesc").setValue(oDiscPartDesc);
+                        this.getView().byId("idDiscPartDesc").setEditable(false);
+                        oMulInpSer.setEditable(true);
+                        oMulInpTrc.setEditable(true);
+                    } else {
+                        this.getView().byId("idDiscPartDesc").setEditable(true);
+                        oMulInpSer.setEditable(false);
+                        oMulInpTrc.setEditable(false);
                     }
                 }.bind(this),
                 error: function (oError) {
@@ -576,6 +611,7 @@ sap.ui.define([
                     this.getView().byId("idFuselage").setVisible(true);
                     break;
             }
+            this.onClearPartLocation();
             this.onSelectDiscPartlocationList();
         },
 
@@ -591,6 +627,10 @@ sap.ui.define([
                 var sDiscrepancy = sDiscrepancy;
             }
             var sSequence = this.getView().byId("cmbDescSelect1").getSelectedKey();
+            if (sSequence == "") {
+                this.onClearPartLocation();
+                return;
+            }
             var sStation = this.getView().byId("cmbDescSelect").getSelectedKey();
             // var sPath = "/DiscrepancyPartAircraftSet(NotificationNo='200001061',DiscrepancyNo='0100',Location='FUSELAGE',SequenceNo='11')"
             var sPath = "/DiscrepancyPartAircraftSet(NotificationNo='" + sObjectId + "',DiscrepancyNo='" + sDiscrepancy + "',Location='" + sStation + "',SequenceNo='" + sSequence + "')"
@@ -603,6 +643,7 @@ sap.ui.define([
                 }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
+                    this.onClearPartLocation();
                     var msg = JSON.parse(oError.responseText).error.message.value;
                     MessageBox.error(msg);
                 }
@@ -1223,86 +1264,214 @@ sap.ui.define([
         onAddHeaderSignOffLineItem: function () {
             var oHeaderSignOffTable = this.getView().byId("idTabHeaderSingoff");
             var oHeaderSignOffTableModel = oHeaderSignOffTable.getModel("HeaderSignOffDetails").getData();
-            oHeaderSignOffTableModel.push({
-                "SignOffGroup": "",
-                "User": "",
-                "SignOffNote": "",
-                "ActionCode": "",
-                "DateInQueue": "",
-                "ActualStart": "",
-                "FinishDate": "",
-                "Status": "",
-                "AR": "",
-                "Comments": "",
-                "Sequence":"",
-                "StatusText":""
-            });
-            oHeaderSignOffTable.getModel("HeaderSignOffDetails").setData(oHeaderSignOffTableModel);
+            if (oHeaderSignOffTableModel.length === 0) {
+                oHeaderSignOffTableModel.push({
+                    "SignOffGroup": "",
+                    "User": "",
+                    "SignOffNote": "",
+                    "ActionCode": "",
+                    "DateInQueue": "",
+                    "ActualStart": "",
+                    "FinishDate": "",
+                    "Status": "",
+                    "AR": "",
+                    "Comments": "",
+                    "Sequence": "",
+                    "StatusText": "",
+                    "WorkGroup": ""
+                });
+                oHeaderSignOffTable.getModel("HeaderSignOffDetails").setData(oHeaderSignOffTableModel);
+            } else if (oHeaderSignOffTableModel.length > 0) {
+                var userFlag = false, sHeaderSignOffUser;
+                for (var i = 0; i < oHeaderSignOffTableModel.length; i++) {
+                    sHeaderSignOffUser = oHeaderSignOffTableModel[i].User;
+                    if (sHeaderSignOffUser === "") {
+                        userFlag = false;
+                        break;
+                    } else {
+                        userFlag = true;
+                    }
+                }
+                if (userFlag === false) {
+                    var sHeaderSignOffAddItemMsg = this.getView().getModel("i18n").getProperty("HeaderSignOffAddItemMsg");
+                    MessageBox.warning(sHeaderSignOffAddItemMsg);
+                } else {
+                    oHeaderSignOffTableModel.push({
+                        "SignOffGroup": "",
+                        "User": "",
+                        "SignOffNote": "",
+                        "ActionCode": "",
+                        "DateInQueue": "",
+                        "ActualStart": "",
+                        "FinishDate": "",
+                        "Status": "",
+                        "AR": "",
+                        "Comments": "",
+                        "Sequence": "",
+                        "StatusText": "",
+                        "WorkGroup": ""
+                    });
+                    oHeaderSignOffTable.getModel("HeaderSignOffDetails").setData(oHeaderSignOffTableModel);
+                }
+            }
         },
 
         onAddDiscSignOffLineItem: function () {
             var oDiscSignOffTable = this.getView().byId("idTabDiscSingoff");
             var oDiscSignOffTableModel = oDiscSignOffTable.getModel("DiscrepancySignOffDetails").getData();
-            oDiscSignOffTableModel.push({
-                "SignOffGroup": "",
-                "DiscrepancyNo": "",
-                "User": "",
-                "SignOffNote": "",
-                "ActionCode": "",
-                "DateInQueue": "",
-                "ActualStart": "",
-                "FinishDate": "",
-                "Status": "",
-                "AR": "",
-                "Comments": "",
-                "Sequence":"",
-                "StatusText":""
-            });
-            oDiscSignOffTable.getModel("DiscrepancySignOffDetails").setData(oDiscSignOffTableModel);
+            if (oDiscSignOffTableModel.length === 0) {
+                oDiscSignOffTableModel.push({
+                    "SignOffGroup": "",
+                    "DiscrepancyNo": "",
+                    "User": "",
+                    "SignOffNote": "",
+                    "ActionCode": "",
+                    "DateInQueue": "",
+                    "ActualStart": "",
+                    "FinishDate": "",
+                    "Status": "",
+                    "AR": "",
+                    "Comments": "",
+                    "Sequence": "",
+                    "StatusText": "",
+                    "WorkGroup": ""
+                });
+                oDiscSignOffTable.getModel("DiscrepancySignOffDetails").setData(oDiscSignOffTableModel);
+            } else if (oDiscSignOffTableModel.length > 0) {
+                var userFlag = false, sDiscSignOffUser;
+                for (var i = 0; i < oDiscSignOffTableModel.length; i++) {
+                    sDiscSignOffUser = oDiscSignOffTableModel[i].User;
+                    if (sDiscSignOffUser === "") {
+                        userFlag = false;
+                        break;
+                    } else {
+                        userFlag = true;
+                    }
+                }
+                if (userFlag === false) {
+                    var sDiscSignOffAddItemMsg = this.getView().getModel("i18n").getProperty("DiscSignOffAddItemMsg");
+                    MessageBox.warning(sDiscSignOffAddItemMsg);
+                } else {
+                    oDiscSignOffTableModel.push({
+                        "SignOffGroup": "",
+                        "User": "",
+                        "SignOffNote": "",
+                        "ActionCode": "",
+                        "DateInQueue": "",
+                        "ActualStart": "",
+                        "FinishDate": "",
+                        "Status": "",
+                        "AR": "",
+                        "Comments": "",
+                        "Sequence": "",
+                        "StatusText": "",
+                        "WorkGroup": ""
+                    });
+                    oDiscSignOffTable.getModel("HeaderSignOffDetails").setData(oDiscSignOffTableModel);
+                }
+            }
         },
 
         onDeleteHeaderSignOffLineItem: function (oEvent) {
+            sap.ui.core.BusyIndicator.show();
+            var oModel = this.getOwnerComponent().getModel();
+            var oHeaderSignoffTab = this.getView().byId("idTabHeaderSingoff");
+            var oHeaderSignOffTableModel = oHeaderSignoffTab.getModel("HeaderSignOffDetails").getData();
             var oBindingContexts = oEvent.getSource().getParent().oBindingContexts['HeaderSignOffDetails'];
-            MessageBox.confirm(
-                "Do you want to delete?", {
-                icon: MessageBox.Icon.CONFRIRMATION,
-                title: "Confirmation",
-                actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
-                emphasizedAction: MessageBox.Action.CANCEL,
-                initialFocus: MessageBox.Action.CANCEL,
-                onClose: function (sAction) {
-                    if (sAction == MessageBox.Action.OK) {
-                        var oHeaderSignoffTab = this.getView().byId("idTabHeaderSingoff");
+            var index = oBindingContexts.sPath.split('/')[1];
+            var notification = oHeaderSignOffTableModel[index].Notification;
+            var signoffgroup = oHeaderSignOffTableModel[index].SignOffGroup;
+            var sequence = oHeaderSignOffTableModel[index].Sequence;
+            var workgroup = oHeaderSignOffTableModel[index].WorkGroup;
 
-                        var oHeaderSignOffTableModel = oHeaderSignoffTab.getModel("HeaderSignOffDetails").getData();
-                        var index = oBindingContexts.sPath.split('/')[1];
-                        oHeaderSignOffTableModel.splice(index, 1);
-                        oHeaderSignoffTab.getModel("HeaderSignOffDetails").refresh();
-                    }
-                }.bind(this)
-            });
-
+            if (sequence != "") {
+                sap.ui.core.BusyIndicator.hide();
+                var sDeleteConfirm = this.getView().getModel("i18n").getProperty("DleteConfirm");
+                MessageBox.confirm(
+                    sDeleteConfirm, {
+                    icon: MessageBox.Icon.CONFRIRMATION,
+                    title: "Confirmation",
+                    actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+                    emphasizedAction: MessageBox.Action.CANCEL,
+                    initialFocus: MessageBox.Action.CANCEL,
+                    onClose: function (sAction) {
+                        if (sAction == MessageBox.Action.OK) {
+                            oModel.remove("/HeaderSignOffSet(Notification ='" + notification + "', SignOffGroup ='" + signoffgroup + "', Sequence = '" + sequence + "', WorkGroup ='" + workgroup + "')", {
+                                success: function (response) {
+                                    // sap.ui.core.BusyIndicator.hide();
+                                    if (response.headers["sap-message"]) {
+                                        var sMessg = JSON.parse(response.headers["sap-message"]).message;
+                                        MessageBox.success(sMessg);
+                                    }
+                                    oModel.refresh();
+                                    this.headerSingoffDetails();
+                                },
+                                error: function (oError) {
+                                    //sap.ui.core.BusyIndicator.hide();
+                                    //var msg = JSON.parse(oError.responseText).error.message.value;
+                                    var msg = oError.message;
+                                    MessageBox.error(msg);
+                                }
+                            })
+                        }
+                    }.bind(this)
+                });
+            } else {
+                sap.ui.core.BusyIndicator.hide();
+                var sNoSeqMessg = this.getView().getModel("i18n").getProperty("NoSeqMessg");
+                MessageBox.warning(sNoSeqMessg);
+            }
         },
-        onDeleteDiscSignOffLineItem: function (oEvent) {
-            var oBindingContexts = oEvent.getSource().getParent().oBindingContexts['DiscrepancySignOffDetails']
-            MessageBox.confirm(
-                "Do you want to delete?", {
-                icon: MessageBox.Icon.CONFRIRMATION,
-                title: "Confirmation",
-                actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
-                emphasizedAction: MessageBox.Action.CANCEL,
-                initialFocus: MessageBox.Action.CANCEL,
-                onClose: function (sAction) {
-                    if (sAction == MessageBox.Action.OK) {
-                        var oDiscSignoffTab = this.getView().byId("idTabDiscSingoff");
 
-                        var oDiscSignOffTableModel = oDiscSignoffTab.getModel("DiscrepancySignOffDetails").getData();
-                        var index = oBindingContexts.sPath.split('/')[1];
-                        oDiscSignOffTableModel.splice(index, 1);
-                        oDiscSignoffTab.getModel("DiscrepancySignOffDetails").refresh();
-                    }
-                }.bind(this)
-            });
+        onDeleteDiscSignOffLineItem: function (oEvent) {
+            sap.ui.core.BusyIndicator.show();
+            var oModel = this.getOwnerComponent().getModel();
+            var oDiscSignOffTab = this.getView().byId("idTabDiscSingoff");
+            var oDiscSignOffTableModel = oDiscSignOffTab.getModel("DiscrepancySignOffDetails").getData();
+            var oBindingContexts = oEvent.getSource().getParent().oBindingContexts['DiscrepancySignOffDetails'];
+            var index = oBindingContexts.sPath.split('/')[1];
+            var notification = oDiscSignOffTableModel[index].Notification;
+            var signoffgroup = oDiscSignOffTableModel[index].SignOffGroup;
+            var sequence = oDiscSignOffTableModel[index].Sequence;
+            var workgroup = oDiscSignOffTableModel[index].WorkGroup;
+
+            if (sequence != "") {
+                sap.ui.core.BusyIndicator.hide();
+                var sDeleteConfirm = this.getView().getModel("i18n").getProperty("DleteConfirm");
+                MessageBox.confirm(
+                    sDeleteConfirm, {
+                    icon: MessageBox.Icon.CONFRIRMATION,
+                    title: "Confirmation",
+                    actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+                    emphasizedAction: MessageBox.Action.CANCEL,
+                    initialFocus: MessageBox.Action.CANCEL,
+                    onClose: function (sAction) {
+                        if (sAction == MessageBox.Action.OK) {
+                            oModel.remove("/DiscSignOffSet(Notification ='" + notification + "', SignOffGroup ='" + signoffgroup + "', Sequence = '" + sequence + "', WorkGroup ='" + workgroup + "')", {
+                                success: function (response) {
+                                    //sap.ui.core.BusyIndicator.hide();
+                                    if (response.headers["sap-message"]) {
+                                        var sMessg = JSON.parse(response.headers["sap-message"]).message;
+                                        MessageBox.success(sMessg);
+                                    }
+                                    oModel.refresh();
+                                    this.headerSingoffDetails();
+                                },
+                                error: function (oError) {
+                                    //sap.ui.core.BusyIndicator.hide();
+                                    //var msg = JSON.parse(oError.responseText).error.message.value;
+                                    var msg = oError.message;
+                                    MessageBox.error(msg);
+                                }
+                            })
+                        }
+                    }.bind(this)
+                });
+            } else {
+                sap.ui.core.BusyIndicator.hide();
+                var sNoSeqMessg = this.getView().getModel("i18n").getProperty("NoSeqMessg");
+                MessageBox.warning(sNoSeqMessg);
+            }
         },
 
         // discSingoffDetails: function () {
@@ -1536,6 +1705,7 @@ sap.ui.define([
             this.getView().byId("page").setTitle("NC Creation");
             this.getView().byId("idheader").setVisible(false);
         },
+
         onNcrPressCancel: function () {
             /*	this.getView().byId("idlink").setValue();
                 this.getView().byId("idlink").setVisible(false);
@@ -1850,7 +2020,6 @@ sap.ui.define([
                     }
 
                     if (updateFlag) {
-
                         var ponumber = this.getView().byId("idPurInfPurOrdip").getValue(),
                             polinenum = this.getView().byId("idPurInfPolnip").getValue(),
                             suppliercode = this.getView().byId("idPurInfSupSCip").getValue(),
@@ -1865,10 +2034,8 @@ sap.ui.define([
                             "NCSupplierPartNo": supplierpartno
                         }
                         this.updatePurchaseInfoData(payloadPurchInfData);
-
                     }
                 } else {
-
                     var ponumber = this.getView().byId("idPurInfPurOrdip").getValue(),
                         polinenum = this.getView().byId("idPurInfPolnip").getValue(),
                         suppliercode = this.getView().byId("idPurInfSupSCip").getValue(),
@@ -1913,11 +2080,11 @@ sap.ui.define([
                         this.getView().byId("idDiscAircraft").setValueState("None");
                         this.getView().byId("idDiscAircraft").setValueStateText();
                         // this.IsUserMRBCertifiedCheck();
-                        if (this.getView().byId("idDcCobDscNo").getValue() === "" && this.getView().byId("idDcCbIf").getSelected() === true) {
+                        if (this.getView().byId("idDcCobDscNo").getValue() === "" && (this.getView().byId("idDcCbIf").getSelected() === true || this.oDiscIncompleteFlag === true)) {
                             this.createDiscrepancyData();
-                        } else if (this.getView().byId("idDcCobDscNo").getValue() !== "" && this.getView().byId("idDcCbIf").getSelected() === true) {
+                        } else if (this.getView().byId("idDcCobDscNo").getValue() !== "" && (this.getView().byId("idDcCbIf").getSelected() === true || this.oDiscIncompleteFlag === true)) {
                             this.updateDiscrepancyData();
-                        } else if ((this.getView().byId("idDcCobDscNo").getValue() !== "" || this.getView().byId("idDcCobDscNo").getValue() === "") && this.getView().byId("idDcCbIf").getSelected() === false) {
+                        } else if ((this.getView().byId("idDcCobDscNo").getValue() !== "" || this.getView().byId("idDcCobDscNo").getValue() === "") && this.oDiscIncompleteFlag === false) {
                             this.IsUserMRBCertifiedCheck();
                         }
                     }
@@ -1954,21 +2121,21 @@ sap.ui.define([
                         this.getView().byId("idDcIpDc").setValueStateText();
                         this.getView().byId("idDcTxtIs").setValueStateText();
                         // this.IsUserMRBCertifiedCheck();
-                        if (this.getView().byId("idDcCobDscNo").getValue() === "" && this.getView().byId("idDcCbIf").getSelected() === true) {
+                        if (this.getView().byId("idDcCobDscNo").getValue() === "" && (this.getView().byId("idDcCbIf").getSelected() === true || this.oDiscIncompleteFlag === true)) {
                             this.createDiscrepancyData();
-                        } else if (this.getView().byId("idDcCobDscNo").getValue() !== "" && this.getView().byId("idDcCbIf").getSelected() === true) {
+                        } else if (this.getView().byId("idDcCobDscNo").getValue() !== "" && (this.getView().byId("idDcCbIf").getSelected() === true || this.oDiscIncompleteFlag === true)) {
                             this.updateDiscrepancyData();
-                        } else if ((this.getView().byId("idDcCobDscNo").getValue() !== "" || this.getView().byId("idDcCobDscNo").getValue() === "") && this.getView().byId("idDcCbIf").getSelected() === false) {
+                        } else if ((this.getView().byId("idDcCobDscNo").getValue() !== "" || this.getView().byId("idDcCobDscNo").getValue() === "") && this.oDiscIncompleteFlag === false) {
                             this.IsUserMRBCertifiedCheck();
                         }
                     }
                 } else {
                     // this.IsUserMRBCertifiedCheck();
-                    if (this.getView().byId("idDcCobDscNo").getValue() === "" && this.getView().byId("idDcCbIf").getSelected() === true) {
+                    if (this.getView().byId("idDcCobDscNo").getValue() === "" && (this.getView().byId("idDcCbIf").getSelected() === true || this.oDiscIncompleteFlag === true)) {
                         this.createDiscrepancyData();
-                    } else if (this.getView().byId("idDcCobDscNo").getValue() !== "" && this.getView().byId("idDcCbIf").getSelected() === true) {
+                    } else if (this.getView().byId("idDcCobDscNo").getValue() !== "" && (this.getView().byId("idDcCbIf").getSelected() === true || this.oDiscIncompleteFlag === true)) {
                         this.updateDiscrepancyData();
-                    } else if ((this.getView().byId("idDcCobDscNo").getValue() !== "" || this.getView().byId("idDcCobDscNo").getValue() === "") && this.getView().byId("idDcCbIf").getSelected() === false) {
+                    } else if ((this.getView().byId("idDcCobDscNo").getValue() !== "" || this.getView().byId("idDcCobDscNo").getValue() === "") && this.oDiscIncompleteFlag === false) {
                         this.IsUserMRBCertifiedCheck();
                     }
                 }
@@ -1984,47 +2151,47 @@ sap.ui.define([
                 } else if (this.getView().byId("idDispoGenInfoIncompFlag").getSelected() === false) {
                     this.dispoIsUserMRBCertifiedCheck();
                 }
-            }else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Signoff") {
+            } else if (this.getView().byId("idIconTabBarHeader").getSelectedKey() === "Signoff") {
                 this.onSaveSingOff();
             }
 
         },
 
-        onSaveSingOff:function(){
+        onSaveSingOff: function () {
             sap.ui.core.BusyIndicator.show();
             var htab = this.getView().byId("idTabHeaderSingoff").getItems();
             var dtab = this.getView().byId("idTabDiscSingoff").getItems();
-            var hobj={},dobj={},obj={};
-            var hsarr =[], dsarr = [];
+            var hobj = {}, dobj = {}, obj = {};
+            var hsarr = [], dsarr = [];
             var workgrp = this.getView().byId("idworkgroup").getText();
-            for(var i=0; i<htab.lenght;i++){
+            for (var i = 0; i < htab.lenght; i++) {
                 hobj.Notification = sObjectId;
                 hobj.SignOffGroup = htab[i].getCells()[0].getText();
-                hobj.Sequence=htab[i].getCells()[11].getText();
-                hobj.SignOffNote=htab[i].getCells()[2].getValue();
-                hobj.ActionCode=htab[i].getCells()[3].getValue();
-                hobj.AR=htab[i].getCells()[8].getValue();
-                hobj.Comments=htab[i].getCells()[9].getValue();
-                hobj.Status=htab[i].getCells()[7].getValue();
-                hobj.StatusText=htab[i].getCells()[12].getText();
+                hobj.Sequence = htab[i].getCells()[11].getText();
+                hobj.SignOffNote = htab[i].getCells()[2].getValue();
+                hobj.ActionCode = htab[i].getCells()[3].getValue();
+                hobj.AR = htab[i].getCells()[8].getValue();
+                hobj.Comments = htab[i].getCells()[9].getValue();
+                hobj.Status = htab[i].getCells()[7].getValue();
+                hobj.StatusText = htab[i].getCells()[12].getText();
                 hsarr.push(hobj);
             }
-            for(var j=0;j<dtab.length;j++){
+            for (var j = 0; j < dtab.length; j++) {
                 dobj.Notification = sObjectId;
-                dobj.DiscrepancyNo=dtab[i].getCells()[1].getText();
+                dobj.DiscrepancyNo = dtab[i].getCells()[1].getText();
                 dobj.SignOffGroup = dtab[i].getCells()[0].getText();
-                dobj.Sequence=dtab[i].getCells()[12].getText();
-                dobj.SignOffNote=dtab[i].getCells()[4].getValue();
-                dobj.ActionCode=dtab[i].getCells()[3].getValue();
-                dobj.AR=dtab[i].getCells()[9].getValue();
-                dobj.Comments=dtab[i].getCells()[10].getValue();
-                dobj.Status=dtab[i].getCells()[8].getValue();
-                dobj.StatusText=dtab[i].getCells()[13].getText();
+                dobj.Sequence = dtab[i].getCells()[12].getText();
+                dobj.SignOffNote = dtab[i].getCells()[3].getValue();
+                dobj.ActionCode = dtab[i].getCells()[4].getValue();
+                dobj.AR = dtab[i].getCells()[9].getValue();
+                dobj.Comments = dtab[i].getCells()[10].getValue();
+                dobj.Status = dtab[i].getCells()[8].getValue();
+                dobj.StatusText = dtab[i].getCells()[13].getText();
                 dsarr.push(dobj);
             }
 
             obj.Notification = sObjectId;
-            obj.WorkGroup= workgrp;
+            obj.WorkGroup = workgrp;
             obj.to_headersignoff = hsarr;
             obj.to_discsignoff = dsarr;
             var oModel = this.getOwnerComponent().getModel();
@@ -2037,16 +2204,16 @@ sap.ui.define([
                         MessageBox.success(sMessg);
                     }
                     oModel.refresh();
-                },
+                    this.headerSingoffDetails();
+                }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
                     var msg = JSON.parse(oError.responseText).error.message.value;
                     MessageBox.error(msg);
                 }
             });
-            
-        },
 
+        },
 
         handleChangeDiscAircraft: function () {
             if (this.getView().byId("idDiscAircraft").getValue() !== "") {
@@ -2597,6 +2764,7 @@ sap.ui.define([
                         this.onSelectDiscPartlocation();
                         this.onSelectDiscPartlocationList();
                         this.bindSupplier();
+                        this.bindDefaultPartNumber();
                         this.getView().byId("idstatus").setVisible(true);
                         this.getView().byId("idObjNCStatus").setVisible(false);
                         this.getView().byId("idObjNCStatusDiscrep").setVisible(true);
@@ -2661,6 +2829,7 @@ sap.ui.define([
                         this.bindLinkedToDiscrepancy();
                         this.onSelectDiscPartlocation();
                         this.bindSupplier();
+                        this.bindDefaultPartNumber();
                         this.getView().byId("idstatus").setVisible(true);
                         this.getView().byId("idObjNCStatus").setVisible(false);
                         this.getView().byId("idObjNCStatusDiscrep").setVisible(true);
@@ -2869,8 +3038,15 @@ sap.ui.define([
                     this.getView().byId("idDcInpAp").setValue(asPer);
                     if (this.getView().byId("idDcCobDscNo").getValue() === "") {
                         this.getView().byId("idDcCbIf").setSelected(true);
+                        this.getView().byId("idDcCbIf").setEnabled(false);
                     } else {
                         this.getView().byId("idDcCbIf").setSelected(incompletion);
+                        this.getView().byId("idDcCbIf").setEnabled(true);
+                    }
+                    if (this.getView().byId("idDcCbIf").getSelected() === true) {
+                        this.oDiscIncompleteFlag = true;
+                    } else {
+                        this.oDiscIncompleteFlag = false;
                     }
                     if (discrepancyNo != "") {
                         oDiscrepancy = discrepancyNo;
@@ -2923,6 +3099,12 @@ sap.ui.define([
                         this._oMultiInputDiscSN.removeAllTokens();
                         this._oMultiInputDiscTN.removeAllTokens();
                         this.getView().byId("idDcCbIf").setSelected(true);
+                    }
+
+                    if (discstatus == "Cancelled") {
+                        this.getView().byId("idBtnCancel").setEnabled(false);
+                    } else {
+                        this.getView().byId("idBtnCancel").setEnabled(true);
                     }
 
                     if (this.workingQueueMode == "EDIT") {
@@ -5530,6 +5712,7 @@ sap.ui.define([
             var oDiscrepancyNo = "";
             this.bindDiscrepancyTab(oDiscrepancyNo);
             this.bindSupplier();
+            this.bindDefaultPartNumber();
             this.bindLinkedToDiscrepancy();
             this._setPrelimCauseComboBox();
             this._setFormatComboBox();
@@ -5637,10 +5820,10 @@ sap.ui.define([
         onChangeLinkedTo: function (oEvent) {
             var oSelLinkedTo = oEvent.getSource().getSelectedItem();
             var oSelLinkToTxt = oSelLinkedTo.getText();
-            if (this.getView().byId("idDcCobDscNo").getValue() === "") {
-                this.getView().byId("idDiscPartNumber").setValue();
-                this.getView().byId("idDiscPartDesc").setValue();
-            }
+            // if (this.getView().byId("idDcCobDscNo").getValue() !== "") {
+            //     this.getView().byId("idDiscPartNumber").setValue();
+            //     this.getView().byId("idDiscPartDesc").setValue();
+            // }
             if (oSelLinkToTxt == "AIRCRAFT") {
                 // this.getView().byId("idDiscPartNumber").setValueHelpOnly(false);
                 this.getView().byId("idDiscPartDesc").setEditable(true);
@@ -5662,6 +5845,7 @@ sap.ui.define([
                 this.getView().byId("idLblDiscQtyRej").setRequired(true);
                 this.getView().byId("idLblDiscDefCode").setRequired(true);
                 this.getView().byId("idDcTxtIs").setRequired(true);
+                this.oIsMasterCheckFlag = false;
             } else {
                 this.getView().byId("idDiscAircraft").setRequired(false);
                 this.getView().byId("idLblDiscLiability").setRequired(false);
@@ -5971,7 +6155,9 @@ sap.ui.define([
                                     emphasizedAction: MessageBox.Action.OK,
                                     initialFocus: MessageBox.Action.OK,
                                     onClose: function (sAction) {
-                                        if (sAction == MessageBox.Action.OK) { }
+                                        if (sAction == MessageBox.Action.OK) {
+                                            this.oIsMasterCheckFlag = true;
+                                        }
                                     }.bind(this)
                                 });
                             } else {
@@ -6014,8 +6200,12 @@ sap.ui.define([
                     sap.ui.core.BusyIndicator.hide();
                     // oData.MRBCertified = true;
                     this.oSelectedWrkGrp = "";
+                    this.oDiscMRBCertifiedUser = "";
+                    this.oDiscMRBActionYes = "";
+                    this.oDiscMRBActionNo = "";
                     if (oData.MRBCertified === false) {
                         this.initialiseWorkGroupDialog();
+                        this.oDiscMRBCertifiedUser = false;
                         // this.createDiscrepancyData();
                     }
                     // else if (oData.MRBCertified === false && this.getView().byId("idDcCobDscNo").getValue() !== "") {
@@ -6030,8 +6220,12 @@ sap.ui.define([
                             actions: [MessageBox.Action.YES, MessageBox.Action.NO],
                             onClose: function (oAction) {
                                 if (oAction === "YES") {
+                                    this.oDiscMRBActionYes = true;
+                                    this.oDiscMRBActionNo = false;
                                     this.initialiseWorkGroupDialog();
                                 } else {
+                                    this.oDiscMRBActionYes = false;
+                                    this.oDiscMRBActionNo = true;
                                     if (this.getView().byId("idDcCobDscNo").getValue() === "") {
                                         this.createDiscrepancyData();
                                     } else if (this.getView().byId("idDcCobDscNo").getValue() !== "") {
@@ -6128,12 +6322,46 @@ sap.ui.define([
                 oDataModel.read(sPath, {
                     success: function (oData, oResult) {
                         sap.ui.core.BusyIndicator.hide();
-                        if (oData.IncompleteCheck === false && oData.Message === "") {
-                            this.getView().byId("idDcCbIf").setSelected(oData.IncompleteCheck);
-                            this.initiatePasswordCheck(oData.IncompleteCheck);
-                        } else if (oData.IncompleteCheck === true && oData.Message !== "") {
-                            MessageBox.information(oData.Message);
-                            this.getView().byId("idDcCbIf").setSelected(oData.IncompleteCheck);
+                        // if (oData.IncompleteCheck === false && oData.Message === "") {
+                        // this.getView().byId("idDcCbIf").setSelected(oData.IncompleteCheck);
+                        // this.initiatePasswordCheck(oData.IncompleteCheck);
+                        // } else if (oData.IncompleteCheck === true && oData.Message !== "") {
+                        //     MessageBox.information(oData.Message);
+                        //     this.getView().byId("idDcCbIf").setSelected(oData.IncompleteCheck);
+                        // }
+                        if(oData.IncompleteCheck === false && this.getView().byId("idObjNCStatusDiscrep").getText() == "Open"){
+                            MessageBox.information("User can not again check the incomplete flag once the status of discrepancy is Open.");
+                            this.oDiscIncompleteFlag = true;
+                        }else if ((oData.IncompleteCheck === true || oData.IncompleteCheck === false) && oData.Linkto == "ASSEMBLY") {
+                            var message = oData.Message;
+                            if(message !== ""){
+                                MessageBox.information(message);
+                                this.getView().byId("idDcCbIf").setSelected(oData.IncompleteCheck);
+                                this.oDiscIncompleteFlag = true;
+                            }else{
+                                this.getView().byId("idDcCbIf").setSelected(oData.IncompleteCheck);
+                                this.oDiscIncompleteFlag = false;
+                            }         
+                        } else if ((oData.IncompleteCheck === true || oData.IncompleteCheck === false) && oData.Linkto == "DETAIL") {
+                            var message = oData.Message;
+                            if(message !== ""){
+                                MessageBox.information(message);
+                                this.getView().byId("idDcCbIf").setSelected(oData.IncompleteCheck);
+                                this.oDiscIncompleteFlag = true;
+                            }else{
+                                this.getView().byId("idDcCbIf").setSelected(oData.IncompleteCheck);
+                                this.oDiscIncompleteFlag = false;
+                            }
+                        } else if ((oData.IncompleteCheck === true || oData.IncompleteCheck === false) && oData.Linkto == "AIRCRAFT") {
+                            var message = oData.Message;
+                            if(message !== ""){
+                                MessageBox.information(message);
+                                this.getView().byId("idDcCbIf").setSelected(oData.IncompleteCheck);
+                                this.oDiscIncompleteFlag = true;
+                            }else{
+                                this.getView().byId("idDcCbIf").setSelected(oData.IncompleteCheck);
+                                this.oDiscIncompleteFlag = false;
+                            }
                         }
                     }.bind(this),
                     error: function (oError) {
@@ -6178,7 +6406,7 @@ sap.ui.define([
         createDiscrepancyData: function () {
             var oModel = this.getOwnerComponent().getModel();
             var oNotifNo = sObjectId;
-            var oWorkGroup = this.oSelectedWrkGrp;
+            var oWorkGroup = this.getView().byId("idworkgroup").getText();
             var oDiscrepancyNo = this.getView().byId("idDcCobDscNo").getValue();
             var oDisLinkedTo = this.getView().byId("idComBoxDiscLinkTo").getValue();
             var oDiscLiability = this.getView().byId("idDcIpLblty").getValue();
@@ -6252,7 +6480,13 @@ sap.ui.define([
                     "Is": oDiscIs,
                     "Shouldbe": oDiscShouldbe,
                     "AsPer": oDiscAsPer,
-                    "Incompletion": oDiscIncompletion
+                    "Incompletion": oDiscIncompletion,
+                    "WorkGroupMRB": (this.oSelectedWrkGrp === "" || this.oSelectedWrkGrp == undefined || this.oSelectedWrkGrp == false) ? "" : this.oSelectedWrkGrp,
+                    "IsMRB": (this.oDiscMRBCertifiedUser === "" || this.oDiscMRBCertifiedUser == undefined || this.oDiscMRBCertifiedUser == false) ? false : true,
+                    "IsMRBYes": (this.oDiscMRBActionYes === "" || this.oDiscMRBActionYes == undefined || this.oDiscMRBActionYes == false) ? false : true,
+                    "IsMRBNo": (this.oDiscMRBActionNo === "" || this.oDiscMRBActionNo == undefined || this.oDiscMRBActionNo == false) ? false : true,
+                    "IsMasterCheck": (this.oIsMasterCheckFlag === "" || this.oIsMasterCheckFlag == undefined || this.oIsMasterCheckFlag == false) ? false : true,
+                    "IsWorkingQueue": this.oIsWorkingQueueFlag
                 }
                 oModel.create("/NotificationDiscrepancySet", payloadCrtDisData, {
                     success: function (odata, Response) {
@@ -6265,6 +6499,7 @@ sap.ui.define([
                         var oDiscrepancyNo = odata.DiscrepancyNo;
                         this.bindDiscrepancyTab(oDiscrepancyNo);
                         this._setDiscrepancyComboBox();
+                        this.resetDiscInitialisedFields();
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
@@ -6306,7 +6541,13 @@ sap.ui.define([
                     "Is": oDiscIs,
                     "Shouldbe": oDiscShouldbe,
                     "AsPer": oDiscAsPer,
-                    "Incompletion": oDiscIncompletion
+                    "Incompletion": oDiscIncompletion,
+                    "WorkGroupMRB": (this.oSelectedWrkGrp === "" || this.oSelectedWrkGrp == undefined || this.oSelectedWrkGrp == false) ? "" : this.oSelectedWrkGrp,
+                    "IsMRB": (this.oDiscMRBCertifiedUser === "" || this.oDiscMRBCertifiedUser == undefined || this.oDiscMRBCertifiedUser == false) ? false : true,
+                    "IsMRBYes": (this.oDiscMRBActionYes === "" || this.oDiscMRBActionYes == undefined || this.oDiscMRBActionYes == false) ? false : true,
+                    "IsMRBNo": (this.oDiscMRBActionNo === "" || this.oDiscMRBActionNo == undefined || this.oDiscMRBActionNo == false) ? false : true,
+                    "IsMasterCheck": (this.oIsMasterCheckFlag === "" || this.oIsMasterCheckFlag == undefined || this.oIsMasterCheckFlag == false) ? false : true,
+                    "IsWorkingQueue": this.oIsWorkingQueueFlag
                 };
                 if (oDiscCompSerialNo.length > 1) {
                     payloadCrtDisData["to_serials"] = [];
@@ -6342,6 +6583,7 @@ sap.ui.define([
                         var oDiscrepancyNo = odata.DiscrepancyNo;
                         this.bindDiscrepancyTab(oDiscrepancyNo);
                         this._setDiscrepancyComboBox();
+                        this.resetDiscInitialisedFields();
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
@@ -6356,7 +6598,7 @@ sap.ui.define([
             var oModel = this.getOwnerComponent().getModel();
             var oNotifNo = sObjectId;
             var oDiscrepancyNo = this.getView().byId("idDcCobDscNo").getValue();
-            var oWorkGroup = this.oSelectedWrkGrp;
+            var oWorkGroup = this.getView().byId("idworkgroup").getText();
             var oDisLinkedTo = this.getView().byId("idComBoxDiscLinkTo").getValue();
             var oDiscLiability = this.getView().byId("idDcIpLblty").getValue();
             var oLiabilityText = this.getView().byId("idDiscLbltyTxt").getValue();
@@ -6430,7 +6672,13 @@ sap.ui.define([
                     "Is": oDiscIs,
                     "Shouldbe": oDiscShouldbe,
                     "AsPer": oDiscAsPer,
-                    "Incompletion": oDiscIncompletion
+                    "Incompletion": oDiscIncompletion,
+                    "WorkGroupMRB": (this.oSelectedWrkGrp === "" || this.oSelectedWrkGrp == undefined || this.oSelectedWrkGrp == false) ? "" : this.oSelectedWrkGrp,
+                    "IsMRB": (this.oDiscMRBCertifiedUser === "" || this.oDiscMRBCertifiedUser == undefined || this.oDiscMRBCertifiedUser == false) ? false : true,
+                    "IsMRBYes": (this.oDiscMRBActionYes === "" || this.oDiscMRBActionYes == undefined || this.oDiscMRBActionYes == false) ? false : true,
+                    "IsMRBNo": (this.oDiscMRBActionNo === "" || this.oDiscMRBActionNo == undefined || this.oDiscMRBActionNo == false) ? false : true,
+                    "IsMasterCheck": (this.oIsMasterCheckFlag === "" || this.oIsMasterCheckFlag == undefined || this.oIsMasterCheckFlag == false) ? false : true,
+                    "IsWorkingQueue": this.oIsWorkingQueueFlag
                 }
                 oModel.create("/NotificationDiscrepancySet", payloadUpdDisData, {
                     success: function (odata, Response) {
@@ -6441,6 +6689,7 @@ sap.ui.define([
                         }
                         var oDiscrepancyNo = odata.DiscrepancyNo;
                         this.bindDiscrepancyTab(oDiscrepancyNo);
+                        this.resetDiscInitialisedFields();
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
@@ -6483,7 +6732,13 @@ sap.ui.define([
                     "Is": oDiscIs,
                     "Shouldbe": oDiscShouldbe,
                     "AsPer": oDiscAsPer,
-                    "Incompletion": oDiscIncompletion
+                    "Incompletion": oDiscIncompletion,
+                    "WorkGroupMRB": (this.oSelectedWrkGrp === "" || this.oSelectedWrkGrp == undefined || this.oSelectedWrkGrp == false) ? "" : this.oSelectedWrkGrp,
+                    "IsMRB": (this.oDiscMRBCertifiedUser === "" || this.oDiscMRBCertifiedUser == undefined || this.oDiscMRBCertifiedUser == false) ? false : true,
+                    "IsMRBYes": (this.oDiscMRBActionYes === "" || this.oDiscMRBActionYes == undefined || this.oDiscMRBActionYes == false) ? false : true,
+                    "IsMRBNo": (this.oDiscMRBActionNo === "" || this.oDiscMRBActionNo == undefined || this.oDiscMRBActionNo == false) ? false : true,
+                    "IsMasterCheck": (this.oIsMasterCheckFlag === "" || this.oIsMasterCheckFlag == undefined || this.oIsMasterCheckFlag == false) ? false : true,
+                    "IsWorkingQueue": this.oIsWorkingQueueFlag
                 };
                 if (oDiscCompSerialNo.length > 1) {
                     payloadUpdDisData["to_serials"] = [];
@@ -6518,6 +6773,7 @@ sap.ui.define([
                         }
                         var oDiscrepancyNo = odata.DiscrepancyNo;
                         this.bindDiscrepancyTab(oDiscrepancyNo);
+                        this.resetDiscInitialisedFields();
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
@@ -6526,6 +6782,15 @@ sap.ui.define([
                     }
                 });
             }
+        },
+
+        resetDiscInitialisedFields: function () {
+            this.oSelectedWrkGrp = "";
+            this.oDiscMRBCertifiedUser = "";
+            this.oDiscMRBActionYes = "";
+            this.oDiscMRBActionNo = "";
+            this.oDiscIncompleteFlag = "";
+            this.oIsMasterCheckFlag = "";
         },
 
         onChangeAttachNCHeader: function (oEvent) {
@@ -6677,6 +6942,12 @@ sap.ui.define([
                     this.bindDispositionDetails();
                     this.bindBuyOffTable();
                     this.oQtyUOM = data.QntyUOM;
+                    if (discstatus == "Cancelled") {
+                        this.getView().byId("idBtnDispositionAdd").setEnabled(false);
+                        MessageBox.information("The selected discrepancy is in cancelled status, so disposition can't be created.");
+                    } else {
+                        this.getView().byId("idBtnDispositionAdd").setEnabled(true);
+                    }
                 }.bind(this),
                 error: function (oError) {
                     sap.ui.core.BusyIndicator.hide();
@@ -8727,9 +8998,9 @@ sap.ui.define([
                                 var oMsg = JSON.parse(Response.headers["sap-message"]).message;
                                 MessageBox.success(oMsg, {
                                     onClose: function () {
+                                        this.bindDiscrepancyTab(odata.DiscrepancyNo);
                                     }.bind(this)
                                 });
-                                // this.bindDiscrepancyTab(oDiscrepancyNo);
                             }
                         }.bind(this),
                         error: function (oError) {
