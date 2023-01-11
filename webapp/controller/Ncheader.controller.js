@@ -1,7 +1,8 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
-    'sap/ui/core/Fragment',
+    "sap/ui/core/Fragment",
     "sap/ui/model/json/JSONModel",
+    "sap/m/MenuItem",
     "sap/m/Token",
     "sap/m/SearchField",
     "sap/ui/model/Filter",
@@ -105,18 +106,6 @@ sap.ui.define([
             } else {
                 this.oIsWorkingQueueFlag = false;
             }
-            if(this.workingQueueMode === "BUYEDIT"){
-                /**  var oIconTabBar = this.getView().byId("idIconTabBarHeader");
-                    oIconTabBar.fireSelect({ 
-                    key: "Dispo",
-                    item: oIconTabBar.getItems()[0]
-                  } );
-                  oIconTabBar.setSelectedKey("Dispo");**/
- 
-               }
- 
-
-
         },
 
         _bindView: function (sObjectPath) {
@@ -269,6 +258,23 @@ sap.ui.define([
             this.getView().byId("btnWorkGrp").setVisible(true);
             var oParData = { ParentDispoNo: "" };
             this.oParentDispoModel = new JSONModel(oParData);
+            if(this.workingQueueMode === "BUYEDIT"){ 
+                var oIconTabBar = this.getView().byId("idIconTabBarHeader");
+                    // oIconTabBar.fireSelect({ 
+                    //     key: "Dispo",
+                    //     item: oIconTabBar.getItems()[0]
+                    // });
+                oIconTabBar.setSelectedKey("Dispo");
+                this._setDiscrepancyComboBox();
+                var oDiscrepancyNo = "0100";
+                this.bindDispositionTab(oDiscrepancyNo);
+                this.bindMajorMinorNc();
+                this.getView().byId("idstatus").setVisible(true);
+                this.getView().byId("idObjNCStatus").setVisible(false);
+                this.getView().byId("idObjNCStatusDiscrep").setVisible(false);
+                this.getView().byId("idObjNCStatusDispo").setVisible(true);
+                this.getView().byId("idBtnCancel").setVisible(false);
+            }
         },
 
         bindPriority: function () {
@@ -2293,7 +2299,7 @@ sap.ui.define([
             for (var i = 0; i < htab.length; i++) {
                 var hobj = {};
                 hobj.Notification = sObjectId;
-                hobj.SignOffGroup = htab[i].getCells()[0].getText();
+                hobj.SignOffGroup = htab[i].getCells()[0].getValue();
                 hobj.Sequence = htab[i].getCells()[11].getText();
                 hobj.SignOffNote = htab[i].getCells()[2].getValue();
                 hobj.ActionCode = htab[i].getCells()[3].getValue();
@@ -2307,7 +2313,7 @@ sap.ui.define([
                 var dobj={};
                 dobj.Notification = sObjectId;
                 dobj.DiscrepancyNo = dtab[j].getCells()[1].getText();
-                dobj.SignOffGroup = dtab[j].getCells()[0].getText();
+                dobj.SignOffGroup = dtab[j].getCells()[0].getValue();
                 dobj.Sequence = dtab[j].getCells()[12].getText();
                 dobj.SignOffNote = dtab[j].getCells()[3].getValue();
                 dobj.ActionCode = dtab[j].getCells()[4].getValue();
@@ -6459,6 +6465,7 @@ sap.ui.define([
                         // }
                         if(oData.IncompleteCheck === false && this.getView().byId("idObjNCStatusDiscrep").getText() == "Open"){
                             MessageBox.information("User can not again check the incomplete flag once the status of discrepancy is Open.");
+                            this.getView().byId("idDcCbIf").setSelected(oData.IncompleteCheck);
                             this.oDiscIncompleteFlag = true;
                         }else if ((oData.IncompleteCheck === true || oData.IncompleteCheck === false) && oData.Linkto == "ASSEMBLY") {
                             var message = oData.Message;
