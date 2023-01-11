@@ -106,6 +106,18 @@ sap.ui.define([
             } else {
                 this.oIsWorkingQueueFlag = false;
             }
+            if(this.workingQueueMode === "BUYEDIT"){
+                /**  var oIconTabBar = this.getView().byId("idIconTabBarHeader");
+                    oIconTabBar.fireSelect({ 
+                    key: "Dispo",
+                    item: oIconTabBar.getItems()[0]
+                  } );
+                  oIconTabBar.setSelectedKey("Dispo");**/
+ 
+               }
+ 
+
+
         },
 
         _bindView: function (sObjectPath) {
@@ -1716,7 +1728,7 @@ sap.ui.define([
                 this.getView().byId("idworkorder").setValue();
                 this.getView().byId("idlast").setValue();
                 this.getView().byId("idncr").setValue();*/
-            if ((this.workingQueueMode == "EDIT") || (this.workingQueueMode == "COPY")) {
+            if ((this.workingQueueMode === "EDIT") || (this.workingQueueMode === "COPY")) {
                 var modeData = {};
                 modeData.ModeBtn = "CANCEL";
                 var modeModel = new JSONModel();
@@ -1735,7 +1747,27 @@ sap.ui.define([
                         shellHash: hash
                     }
                 });
-            } else if (this.oAppMode == "NETLIST") {
+            }else if((this.workingQueueMode === "BUYEDIT")){
+                var modeData = {};
+                modeData.ModeBtn = "CANCEL";
+                var modeModel = new JSONModel();
+                modeModel.setData(modeData);
+                sap.ui.getCore().setModel(modeModel, "cancelModel");
+
+                var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation"); // get a handle on the global XAppNav service
+                var hash = (oCrossAppNavigator && oCrossAppNavigator.hrefForExternal({
+                    target: {
+                        semanticObject: "zbuyoffqueue",
+                        action: "display"
+                    }
+                })) || "";
+                oCrossAppNavigator.toExternal({
+                    target: {
+                        shellHash: hash
+                    }
+                });
+
+            }else if (this.oAppMode === "NETLIST") {
                 var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation"); // get a handle on the global XAppNav service
                 var hash = (oCrossAppNavigator && oCrossAppNavigator.hrefForExternal({
                     target: {
