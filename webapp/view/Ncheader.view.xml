@@ -367,7 +367,7 @@
                                         maximumFilenameLength="55"
                                         maximumFileSize="10"
                                         multiple="true"
-                                        sameFilenameAllowed="true"
+                                        sameFilenameAllowed="true" 
                                         fileType="jpg,txt,doc,docx,xls,xlsx,pdf,png,msg"
                                         noDataDescription="Drop files or use the &quot;Add&quot; button to keep files ready for upload"
                                         change="onChangeAttachNCHeader"
@@ -377,8 +377,13 @@
                                         typeMissmatch="onTypeMissMatchNCHeader"
                                         uploadComplete="onUploadCompleteNCHeader"
                                         beforeUploadStarts="onBeforeUploadStartsNCHeader"
-                                        uploadEnabled="true"
-                                    />
+                                        uploadEnabled="true">
+                                        <!-- items="{path: 'NCHdrAttachmentModel>/'}" -->
+                                        <!-- <items>
+                                            <UploadCollectionItem fileName="{NCHdrAttachmentModel>FileName}" mimeType="{NCHdrAttachmentModel>MimeType}" >
+                                            </UploadCollectionItem>
+                                        </items> -->
+                                    </UploadCollection>
                                 </ScrollContainer>
                             </IconTabFilter>
                             <IconTabFilter id="iddiscrepancy" text="Discrepancy" key="Discre" visible="true">

@@ -29,10 +29,36 @@ sap.ui.define([
             this.workingQueueMode = "";
             oRouter.getRoute("Ncheader").attachMatched(this._onRouteMatched, this);
             this.addMultiInputValidator();
-            var oAttachModel = new JSONModel();
-            oAttachModel.setData([]);
-            this.getView().setModel(oAttachModel, "AttachmentModel");
+            this.initialiseNCHdrAttachment();
             this.oAppMode = "";
+        },
+
+        _onRouteMatched: function (oEvent) {
+            // var oArgs = oEvent.getParameter("arguments");
+            // var fid = oArgs.ID;
+            sObjectId = oEvent.getParameter("arguments").ID;
+            this.oAppMode = oEvent.getParameter("arguments").APP;
+            this.getOwnerComponent().getModel().metadataLoaded().then(function () {
+                var sObjectPath = this.getOwnerComponent().getModel().createKey("CreateNotificationHeaderSet", {
+                    NotificationNo: sObjectId
+                });
+                this._bindView("/" + sObjectPath);
+                this._bindTable("/" + sObjectPath);
+            }.bind(this));
+            /*** Date-22.11.2022 * Added Working Queue display mode functionality*/
+
+            //var workingQueueMode = "";
+            if (sap.ui.getCore().getModel("modeModel")) {
+                if ((sap.ui.getCore().getModel("modeModel").oData.ModeBtn != "")) {  //&& (sap.ui.getCore().getModel("modeModel") != undefined)
+                    this.workingQueueMode = sap.ui.getCore().getModel("modeModel").oData.ModeBtn;
+                }
+            }
+            /*** End*/
+            if (this.oAppMode === "QUEUE") {
+                this.oIsWorkingQueueFlag = true;
+            } else {
+                this.oIsWorkingQueueFlag = false;
+            }
         },
 
         // Added code for multiinput control id initialisation and validator
@@ -80,32 +106,10 @@ sap.ui.define([
             });
         },
 
-        _onRouteMatched: function (oEvent) {
-            // var oArgs = oEvent.getParameter("arguments");
-            // var fid = oArgs.ID;
-            sObjectId = oEvent.getParameter("arguments").ID;
-            this.oAppMode = oEvent.getParameter("arguments").APP;
-            this.getOwnerComponent().getModel().metadataLoaded().then(function () {
-                var sObjectPath = this.getOwnerComponent().getModel().createKey("CreateNotificationHeaderSet", {
-                    NotificationNo: sObjectId
-                });
-                this._bindView("/" + sObjectPath);
-                this._bindTable("/" + sObjectPath);
-            }.bind(this));
-            /*** Date-22.11.2022 * Added Working Queue display mode functionality*/
-
-            //var workingQueueMode = "";
-            if (sap.ui.getCore().getModel("modeModel")) {
-                if ((sap.ui.getCore().getModel("modeModel").oData.ModeBtn != "")) {  //&& (sap.ui.getCore().getModel("modeModel") != undefined)
-                    this.workingQueueMode = sap.ui.getCore().getModel("modeModel").oData.ModeBtn;
-                }
-            }
-            /*** End*/
-            if (this.oAppMode === "QUEUE") {
-                this.oIsWorkingQueueFlag = true;
-            } else {
-                this.oIsWorkingQueueFlag = false;
-            }
+        initialiseNCHdrAttachment: function(){
+            var oAttachModel = new JSONModel();
+            oAttachModel.setData([]);
+            this.getView().setModel(oAttachModel, "AttachmentModel");
         },
 
         _bindView: function (sObjectPath) {
@@ -258,6 +262,7 @@ sap.ui.define([
             this.getView().byId("btnWorkGrp").setVisible(true);
             var oParData = { ParentDispoNo: "" };
             this.oParentDispoModel = new JSONModel(oParData);
+            // this.getNCHeaderAttachments();
             if(this.workingQueueMode === "BUYEDIT"){ 
                 var oIconTabBar = this.getView().byId("idIconTabBarHeader");
                     // oIconTabBar.fireSelect({ 
@@ -1371,7 +1376,7 @@ sap.ui.define([
         onAddHeaderSignOffLineItem: function () {
             var oHeaderSignOffTable = this.getView().byId("idTabHeaderSingoff");
             var oHeaderSignOffTableModel = oHeaderSignOffTable.getModel("HeaderSignOffDetails").getData();
-            if (oHeaderSignOffTableModel.length === 0) {
+            ///if (oHeaderSignOffTableModel.length === 0) {
                 oHeaderSignOffTableModel.push({
                     "SignOffGroup": "",
                     "User": "",
@@ -1388,7 +1393,7 @@ sap.ui.define([
                     "WorkGroup": ""
                 });
                 oHeaderSignOffTable.getModel("HeaderSignOffDetails").setData(oHeaderSignOffTableModel);
-            } else if (oHeaderSignOffTableModel.length > 0) {
+          /*  } else if (oHeaderSignOffTableModel.length > 0) {
                 var userFlag = false, sHeaderSignOffUser;
                 for (var i = 0; i < oHeaderSignOffTableModel.length; i++) {
                     sHeaderSignOffUser = oHeaderSignOffTableModel[i].User;
@@ -1420,13 +1425,13 @@ sap.ui.define([
                     });
                     oHeaderSignOffTable.getModel("HeaderSignOffDetails").setData(oHeaderSignOffTableModel);
                 }
-            }
+            } */
         },
 
         onAddDiscSignOffLineItem: function () {
             var oDiscSignOffTable = this.getView().byId("idTabDiscSingoff");
             var oDiscSignOffTableModel = oDiscSignOffTable.getModel("DiscrepancySignOffDetails").getData();
-            if (oDiscSignOffTableModel.length === 0) {
+           // if (oDiscSignOffTableModel.length === 0) {
                 oDiscSignOffTableModel.push({
                     "SignOffGroup": "",
                     "DiscrepancyNo": "",
@@ -1444,7 +1449,7 @@ sap.ui.define([
                     "WorkGroup": ""
                 });
                 oDiscSignOffTable.getModel("DiscrepancySignOffDetails").setData(oDiscSignOffTableModel);
-            } else if (oDiscSignOffTableModel.length > 0) {
+           /* } else if (oDiscSignOffTableModel.length > 0) {
                 var userFlag = false, sDiscSignOffUser;
                 for (var i = 0; i < oDiscSignOffTableModel.length; i++) {
                     sDiscSignOffUser = oDiscSignOffTableModel[i].User;
@@ -1476,7 +1481,7 @@ sap.ui.define([
                     });
                     oDiscSignOffTable.getModel("HeaderSignOffDetails").setData(oDiscSignOffTableModel);
                 }
-            }
+            }*/
         },
 
         onDeleteHeaderSignOffLineItem: function (oEvent) {
@@ -2415,14 +2420,27 @@ sap.ui.define([
                     method: "PUT",
                     success: function (odata, Response) {
                         sap.ui.core.BusyIndicator.hide();
-                        // var msg = "The header data has been updated successfully.!";
                         if (Response.headers["sap-message"]) {
-                            var oMsg = JSON.parse(Response.headers["sap-message"]).message;
-                            MessageBox.success(oMsg);
+                            if(JSON.parse(Response.headers["sap-message"]).severity == "success"){
+                                var oMsg = JSON.parse(Response.headers["sap-message"]).message;
+                                MessageBox.success(oMsg, {
+                                    actions: [MessageBox.Action.OK],
+                                    emphasizedAction: MessageBox.Action.OK,
+                                    initialFocus: MessageBox.Action.OK,
+                                    onClose: function (sAction) {
+                                        if (sAction == MessageBox.Action.OK) {
+                                            var sObjectPath = "CreateNotificationHeaderSet('" + oNotifNo + "')";
+                                            this._bindView("/" + sObjectPath);
+                                            this._bindTable("/" + sObjectPath);
+                                        }
+                                    }.bind(this)
+                                });
+                                // this.onUploadAttachNCHeader();
+                            }else if(JSON.parse(Response.headers["sap-message"]).severity == "error"){
+                                var oMsg = JSON.parse(Response.headers["sap-message"]).message;
+                                MessageBox.error(oMsg);
+                            }
                         }
-                        var sObjectPath = "CreateNotificationHeaderSet('" + oNotifNo + "')";
-                        this._bindView("/" + sObjectPath);
-                        this._bindTable("/" + sObjectPath);
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
@@ -2479,25 +2497,141 @@ sap.ui.define([
                 this.getOwnerComponent().getModel().create("/CreateNotificationHeaderSet", payLoadHdrData, {
                     success: function (odata, Response) {
                         sap.ui.core.BusyIndicator.hide();
-                        // var msg = "The header data has been updated successfully.!";
                         if (Response.headers["sap-message"]) {
                             var oMsg = JSON.parse(Response.headers["sap-message"]).message;
                             var oSeverity = JSON.parse(Response.headers["sap-message"]).severity;
-                            if (oSeverity == "success") {
-                                MessageBox.success(oMsg);
+                            if (oSeverity == "success") {                                
+                                MessageBox.success(oMsg, {
+                                    actions: [MessageBox.Action.OK],
+                                    emphasizedAction: MessageBox.Action.OK,
+                                    initialFocus: MessageBox.Action.OK,
+                                    onClose: function (sAction) {
+                                        if (sAction == MessageBox.Action.OK) {
+                                            var sObjectPath = "CreateNotificationHeaderSet('" + oNotifNo + "')";
+                                            this._bindView("/" + sObjectPath);
+                                            this._bindTable("/" + sObjectPath);
+                                        }
+                                    }.bind(this)
+                                });
+                                // this.onUploadAttachNCHeader();
                             } else {
                                 MessageBox.error(oMsg);
                             }
                         }
-                        var sObjectPath = "CreateNotificationHeaderSet('" + oNotifNo + "')";
-                        this._bindView("/" + sObjectPath);
-                        this._bindTable("/" + sObjectPath);
                     }.bind(this),
                     error: function (oError) {
                         sap.ui.core.BusyIndicator.hide();
                         var msg = JSON.parse(oError.responseText).error.message.value;
                         MessageBox.error(msg);
                     }.bind(this)
+                })
+            }
+        },
+
+        getNCHeaderAttachments: function(){
+            sap.ui.core.BusyIndicator.show();
+            var oModel = new JSONModel();
+            oModel.setSizeLimit(10000);
+            var oDataModel = this.getOwnerComponent().getModel();
+            var oFilter = [];
+            oFilter.push(new Filter("NotificationNumber", FilterOperator.EQ, sObjectId));
+            // oFilter.push(new Filter("Discrepancy", FilterOperator.EQ, ""));
+            var sPath = "/FileUploadSet";
+            oDataModel.read(sPath, {
+                filters: oFilter,
+                success: function (oData, oResult) {
+                    debugger;
+                    sap.ui.core.BusyIndicator.hide();
+                    var data = oData.results;
+                    oModel.setData(data);
+                    this.getView().setModel(oModel, "NCHdrAttachmentModel");
+                }.bind(this),
+                error: function (oError) {
+                    sap.ui.core.BusyIndicator.hide();
+                    var msg = JSON.parse(oError.responseText).error.message.value;
+                    MessageBox.error(msg);
+                }
+            });
+        },
+
+        onChangeAttachNCHeader: function (oEvent) {
+            var fileContent = oEvent.getParameter("files")[0];
+            var oUploadCollection = oEvent.getSource();
+            var oModel = this.getOwnerComponent().getModel();
+            var array = [];
+            array.push(oEvent.getParameters().files[0]);
+            oModel.refreshSecurityToken();
+            var oCustomHeaderToken = new sap.m.UploadCollectionParameter({
+                name: "x-csrf-token",
+                value: oModel.getSecurityToken()
+            });
+            oUploadCollection.addHeaderParameter(oCustomHeaderToken);
+
+            var obj = {
+                "FileContent": fileContent,
+                "FileID": Math.floor(Math.random() * 143143)
+            };
+
+            var oAttModel = this.getView().getModel("AttachmentModel").getData();
+            oAttModel.push(obj);
+            this.onUploadAttachNCHeader();
+        },
+
+        onUploadCompleteNCHeader: function (oEvent) {
+            var sUploadedFile = oEvent.getParameter("files")[0].fileName;
+            if (!sUploadedFile) {
+                var aUploadedFile = (oEvent.getParameters().getSource().getProperty("value")).split(/\" "/);
+                sUploadedFile = aUploadedFile[0];
+            }
+            oItem = {
+                "AttachID": jQuery.now().toString(),
+                "FileName": sUploadedFile
+            };
+        },
+
+        onBeforeUploadStartsNCHeader: function (oEvent) {
+            var data = this.getView().getModel("AttachmentModel").getData();
+            for (var k = 0; k < data.length; k++) {
+                var oCustomHeaderSlug = new sap.m.UploadCollectionParameter({
+                    name: "slug",
+                    value: oEvent.getParameter("fileName")
+                });
+                oEvent.getParameters().addHeaderParameter(oCustomHeaderSlug);
+            }
+        },
+
+        onUploadAttachNCHeader: function () {
+            var data = this.getView().getModel("AttachmentModel").getData();
+            for (var k = 0; k < data.length; k++) {
+                var p = 0;
+                var i = this.getView().getModel();
+                var c = new sap.m.UploadCollectionParameter({
+                    name: "x-csrf-token",
+                    value: i.getSecurityToken()
+                });
+                this.token = c.getProperty("value");
+                this.slug = data[k].FileContent.name + "|" + sObjectId + "|" + "0001";
+                this.oContentType = data[k].FileContent.type;
+                var e = {
+                    "x-csrf-token": this.token,
+                    slug: this.slug,
+                    "Content-type": this.oContentType
+                };
+                jQuery.ajax({
+                    type: "POST",
+                    url: this.getOwnerComponent().getModel().sServiceUrl + "/FileUploadSet",
+                    headers: e,
+                    cache: false,
+                    // contentType: this.oContentType,
+                    // datatype : "application/json",
+                    processData: false,
+                    data: data[k].FileContent,
+                    async: true,
+                    success: function (data, response) {
+                        // this.getNCHeaderAttachments();
+                    }.bind(this),
+                    error: function (err) {
+                    }
                 })
             }
         },
@@ -6926,87 +7060,6 @@ sap.ui.define([
             this.oDiscMRBActionNo = "";
             this.oDiscIncompleteFlag = "";
             this.oIsMasterCheckFlag = "";
-        },
-
-        onChangeAttachNCHeader: function (oEvent) {
-            var fileContent = oEvent.getParameter("files")[0];
-            var oUploadCollection = oEvent.getSource();
-            var oModel = this.getOwnerComponent().getModel();
-            var array = [];
-            array.push(oEvent.getParameters().files[0]);
-            oModel.refreshSecurityToken();
-            var oCustomHeaderToken = new sap.m.UploadCollectionParameter({
-                name: "x-csrf-token",
-                value: oModel.getSecurityToken()
-            });
-            oUploadCollection.addHeaderParameter(oCustomHeaderToken);
-
-            var obj = {
-                "FileContent": fileContent,
-                "FileID": Math.floor(Math.random() * 143143)
-            };
-
-            var oAttModel = this.getView().getModel("AttachmentModel").getData();
-            oAttModel.push(obj);
-            this.onUploadAttachNCHeader();
-        },
-
-        onUploadCompleteNCHeader: function (oEvent) {
-            var sUploadedFile = oEvent.getParameter("files")[0].fileName;
-            if (!sUploadedFile) {
-                var aUploadedFile = (oEvent.getParameters().getSource().getProperty("value")).split(/\" "/);
-                sUploadedFile = aUploadedFile[0];
-            }
-            oItem = {
-                "AttachID": jQuery.now().toString(),
-                "FileName": sUploadedFile
-            };
-        },
-
-        onBeforeUploadStartsNCHeader: function (oEvent) {
-            var data = this.getView().getModel("AttachmentModel").getData();
-            for (var k = 0; k < data.length; k++) {
-                var oCustomHeaderSlug = new sap.m.UploadCollectionParameter({
-                    name: "slug",
-                    value: oEvent.getParameter("fileName")
-                });
-                oEvent.getParameters().addHeaderParameter(oCustomHeaderSlug);
-            }
-        },
-
-        onUploadAttachNCHeader: function () {
-            var data = this.getView().getModel("AttachmentModel").getData();
-            for (var k = 0; k < data.length; k++) {
-                var p = 0;
-                var i = this.getView().getModel();
-                var c = new sap.m.UploadCollectionParameter({
-                    name: "x-csrf-token",
-                    value: i.getSecurityToken()
-                });
-                this.token = c.getProperty("value");
-                this.slug = data[k].FileContent.name + "|" + sObjectId + "|" + "0001";
-                this.oContentType = data[k].FileContent.type;
-                var e = {
-                    "x-csrf-token": this.token,
-                    slug: this.slug,
-                    "Content-type": this.oContentType
-                };
-                jQuery.ajax({
-                    type: "POST",
-                    url: this.getOwnerComponent().getModel().sServiceUrl + "/FileUploadSet",
-                    headers: e,
-                    cache: false,
-                    // contentType: this.oContentType,
-                    // datatype : "application/json",
-                    processData: false,
-                    data: data[k].FileContent,
-                    async: true,
-                    success: function (data, response) {
-                    },
-                    error: function (err) {
-                    }
-                })
-            }
         },
 
         bindDispositionTab: function (discrepancyNo) {
